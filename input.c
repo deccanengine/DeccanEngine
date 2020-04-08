@@ -20,11 +20,11 @@ deccan_key_state deccan_key_get(int key_code) {
     return key;
 }
 
-deccan_mouse_state deccan_mouse_get(deccan_info *engine, int button_code) {
+deccan_mouse_state deccan_mouse_get(int button_code) {
     deccan_mouse_state button = {false, false};
 
-    if(engine->event.type == SDL_MOUSEBUTTONDOWN) {
-        if(engine->event.button.button == button_code) { button.is_down = true; }
+    if(deccan_get_global_engine()->event.type == SDL_MOUSEBUTTONDOWN) {
+        if(deccan_get_global_engine()->event.button.button == button_code) { button.is_down = true; }
         else { button.is_up = true; }
     }
 

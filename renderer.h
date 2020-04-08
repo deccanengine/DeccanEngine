@@ -7,5 +7,5 @@ typedef struct {
 
 static deccan_color black = {0, 0, 0, 0};
 
-void deccan_clear_screen(deccan_info *engine, deccan_color color);
-void deccan_set_render_color(deccan_info *engine, deccan_color color);
+void deccan_clear_screen(deccan_color color);
+void deccan_set_render_color(deccan_color color);

@@ -20,5 +20,5 @@ typedef struct {
 } deccan_mouse_pos;
 
 deccan_key_state deccan_key_get(int key_code);
-deccan_mouse_state deccan_mouse_get(deccan_info *engine, int button_code);
+deccan_mouse_state deccan_mouse_get(int button_code);
 deccan_mouse_pos deccan_mouse_get_pos();
