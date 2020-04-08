@@ -21,6 +21,8 @@ typedef struct deccan_info {
 
     float required_fps;
 
+    uint8_t *key_states;
+
     state_func_ptr(at_begining);
     state_func_ptr(at_step);
     state_func_ptr(at_end);

@@ -11,12 +11,14 @@ void step(deccan_info *engine) {
 
     /* Start here */
 #ifdef DECCAN_DEBUG
-    const Uint8 *key_states = SDL_GetKeyboardState(NULL);
+    //const Uint8 *key_states = SDL_GetKeyboardState(NULL);
 
-    if(key_states[SDL_SCANCODE_UP]){ y-=1; }
-    else if(key_states[SDL_SCANCODE_DOWN]){ y+=1; }
-    else if(key_states[SDL_SCANCODE_LEFT]){ x-=1; }
-    else if(key_states[SDL_SCANCODE_RIGHT]){ x+=1; }
+    if(deccan_key_get(SDL_SCANCODE_UP).is_pressed){ y-=1; }
+    else if(deccan_key_get(SDL_SCANCODE_DOWN).is_pressed){ y+=1; }
+    else if(deccan_key_get(SDL_SCANCODE_LEFT).is_pressed){ x-=1; }
+    else if(deccan_key_get(SDL_SCANCODE_RIGHT).is_pressed){ x+=1; }
+
+    if(deccan_key_get(SDL_SCANCODE_SPACE).is_released) { printf("released\n"); }
 
     deccan_set_render_color(engine, black);
     SDL_RenderFillRect(engine->renderer, &(SDL_Rect){x, y, 50, 50});

@@ -1,5 +1,6 @@
 #include "core.h"
 #include "timer.h"
+#include "input.h"
 
 int deccan_init(deccan_info *engine, const char *title, int32_t width, int32_t height) {
     if(SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -24,6 +25,9 @@ int deccan_init(deccan_info *engine, const char *title, int32_t width, int32_t h
     engine->is_running = true;
     engine->is_first_frame = true;
     engine->required_fps = 60.0f;
+
+    memcpy(deccan_prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(deccan_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
     return 1;
 }
@@ -59,6 +63,9 @@ void deccan_run(deccan_info *engine, float required_fps) {
                 break;
             }
         }
+        
+        memcpy(deccan_prev_keys, deccan_key_states, sizeof(uint8_t)*SDL_NUM_SCANCODES);
+        memcpy(deccan_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
         fps_avg = frames/deccan_get_timer_time(&fps_timer);
         if(fps_avg > 20000) { fps_avg = 0.0f; }

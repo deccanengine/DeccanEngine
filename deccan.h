@@ -4,6 +4,7 @@
 
 #include "core.h"
 #include "renderer.h"
+#include "input.h"
 
 #include "log.h"
 #include "timer.h"
