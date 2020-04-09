@@ -71,9 +71,10 @@ void deccan_run(float required_fps) {
         SDL_PollEvent(&global_engine.event);
         switch(global_engine.event.type) {
             case SDL_QUIT: { global_engine.is_running = false; break; }
-            case SDL_KEYDOWN: { 
-                if(global_engine.event.key.keysym.sym == SDLK_ESCAPE) { global_engine.is_running = false; }
-                break;
+            case SDL_KEYDOWN: {
+                if(global_engine.event.key.keysym.sym == SDLK_ESCAPE) { 
+                    global_engine.is_running = false; break;
+                }
             }
         }
         
@@ -95,16 +96,21 @@ void deccan_run(float required_fps) {
         frames++;
         
         int frm_ticks = deccan_get_timer_time_ms(&frm_timer);
-		int ticks_per_frame = 1000/global_engine.required_fps; // 60 = limit;
+		int ticks_per_frame = 1000/global_engine.required_fps;
 
 		if(frm_ticks < ticks_per_frame) {
             deccan_delay(ticks_per_frame - frm_ticks);
 		}
-#ifdef DECCAN_DEBUG
-        printf("FPS Avg: %f\n", fps_avg);
-#endif
     }
     deccan_quit();
+}
+
+deccan_scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {
+    deccan_scene *scene = malloc(sizeof(deccan_scene));
+    scene->at_begining = as;
+    scene->at_step = as;
+    scene->at_end = ae;
+    return scene;
 }
 
 void deccan_add_scene(deccan_scene *scene) {

@@ -34,13 +34,10 @@ void end() {
     /* Start here */
 }
 
-void at_exit_func() { deccan_quit(); }
-
 int main(int argc, char **argv) {
     if(deccan_init("Test", 640, 320)) {
         deccan_add_scene(deccan_new_scene("scene0", begin, step, end));
         deccan_run(120.0f);
     }
-
-    atexit(at_exit_func);
+    atexit(deccan_quit);
 }
