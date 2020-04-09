@@ -4,9 +4,9 @@
 
 typedef struct {
     uint r, g, b, a;
-} deccan_color;
+} deccan_Color;
 
-static deccan_color black = {0, 0, 0, 0};
+static deccan_Color black = {0, 0, 0, 0};
 
-void deccan_clear_screen(deccan_color color);
-void deccan_set_render_color(deccan_color color);
+void deccan_renderer_clear(deccan_Color color);
+void deccan_renderer_set_color(deccan_Color color);

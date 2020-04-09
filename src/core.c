@@ -1,13 +1,13 @@
 #define STB_DS_IMPLEMENTATION
 #include "core.h"
 
-deccan_info global_engine;
+deccan_Info global_engine;
 
-void deccan_set_global_engine(deccan_info *engine) {
+void deccan_set_global_engine(deccan_Info *engine) {
     global_engine = *engine;
 }
 
-deccan_info *deccan_get_global_engine() {
+deccan_Info *deccan_get_global_engine() {
     return &global_engine;
 }
 
@@ -34,8 +34,8 @@ int deccan_init(const char *title, int32_t width, int32_t height) {
     global_engine.required_fps = 60.0f;
     global_engine.scenes = NULL;
     
-    memcpy(deccan_prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
-    memcpy(deccan_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(_prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
     return 1;
 }
@@ -55,13 +55,13 @@ void deccan_run(float required_fps) {
 
     global_engine.required_fps = required_fps;
     
-    deccan_timer fps_timer; deccan_new_timer(&fps_timer);
-    deccan_timer frm_timer; deccan_new_timer(&frm_timer);
+    deccan_Timer fps_timer; deccan_timer_init(&fps_timer);
+    deccan_Timer frm_timer; deccan_timer_init(&frm_timer);
 
-    deccan_start_timer(&fps_timer);
+    deccan_timer_start(&fps_timer);
 
     while(global_engine.is_running) {
-        deccan_start_timer(&frm_timer);
+        deccan_timer_start(&frm_timer);
 
         SDL_PollEvent(&global_engine.event);
         switch(global_engine.event.type) {
@@ -73,10 +73,10 @@ void deccan_run(float required_fps) {
             }
         }
         
-        memcpy(deccan_prev_keys, deccan_key_states, sizeof(uint8_t)*SDL_NUM_SCANCODES);
-        memcpy(deccan_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+        memcpy(_prev_keys, _key_states, sizeof(uint8_t)*SDL_NUM_SCANCODES);
+        memcpy(_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
-        fps_avg = frames/deccan_get_timer_time(&fps_timer);
+        fps_avg = frames/deccan_timer_get_time(&fps_timer);
         if(fps_avg > 20000) { fps_avg = 0.0f; }
 
         int index = stbds_arrlen(global_engine.scenes)-1;
@@ -90,7 +90,7 @@ void deccan_run(float required_fps) {
 
         frames++;
         
-        int frm_ticks = deccan_get_timer_time_ms(&frm_timer);
+        int frm_ticks = deccan_timer_get_time_ms(&frm_timer);
 		int ticks_per_frame = 1000/global_engine.required_fps;
 
 		if(frm_ticks < ticks_per_frame) {
@@ -100,8 +100,8 @@ void deccan_run(float required_fps) {
     deccan_quit();
 }
 
-deccan_scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {
-    deccan_scene *scene = malloc(sizeof(deccan_scene));
+deccan_Scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {
+    deccan_Scene *scene = malloc(sizeof(deccan_Scene));
     
     scene->name = malloc(sizeof(char*)*strlen(name)); strcpy(scene->name, name);
     scene->at_begining = as;
@@ -111,6 +111,6 @@ deccan_scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_
     return scene;
 }
 
-void deccan_add_scene(deccan_scene *scene) {
+void deccan_add_scene(deccan_Scene *scene) {
     stbds_arrput(deccan_get_global_engine()->scenes, scene);
 }

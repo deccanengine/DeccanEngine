@@ -1,16 +1,16 @@
 #include "input.h"
 
-deccan_key_state deccan_key_get(int key_code) {
-    deccan_key_state key;
+deccan_KeyState deccan_input_get_key(int key_code) {
+    deccan_KeyState key;
 
-    if(deccan_key_states[key_code]) { 
-        if(!deccan_prev_keys[key_code]) { key.is_pressed = true; }
+    if(_key_states[key_code]) { 
+        if(!_prev_keys[key_code]) { key.is_pressed = true; }
         else { key.is_pressed = false; }
         key.is_held = true; 
         key.is_released = false;
     }
     else {
-        if(deccan_prev_keys[key_code]) { key.is_released = true; }
+        if(_prev_keys[key_code]) { key.is_released = true; }
         else { key.is_released = false; }
         
         key.is_held = false;
@@ -20,8 +20,8 @@ deccan_key_state deccan_key_get(int key_code) {
     return key;
 }
 
-deccan_mouse_state deccan_mouse_get(int button_code) {
-    deccan_mouse_state button = {false, false};
+deccan_MouseState deccan_input_get_mouse_button(int button_code) {
+    deccan_MouseState button = {false, false};
 
     if(deccan_get_global_engine()->event.type == SDL_MOUSEBUTTONDOWN) {
         if(deccan_get_global_engine()->event.button.button == button_code) { button.is_down = true; }
@@ -31,8 +31,8 @@ deccan_mouse_state deccan_mouse_get(int button_code) {
     return button;
 }
 
-deccan_mouse_pos deccan_mouse_get_pos() {
-    deccan_mouse_pos pos;
+deccan_MousePos deccan_input_get_mouse_pos() {
+    deccan_MousePos pos;
     SDL_GetMouseState(&pos.x, &pos.y);
     return pos;
 }
