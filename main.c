@@ -34,12 +34,11 @@ void end() {
     /* Start here */
 }
 
-//deccan_info game;
 void at_exit_func() { deccan_quit(); }
 
 int main(int argc, char **argv) {
     if(deccan_init("Test", 640, 320)) {
-        deccan_set_states(begin, step, end);
+        deccan_add_scene(deccan_new_scene("scene0", begin, step, end));
         deccan_run(120.0f);
     }
 

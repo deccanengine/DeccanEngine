@@ -1,6 +1,8 @@
+#define STB_DS_IMPLEMENTATION
 #include "core.h"
 #include "timer.h"
 #include "input.h"
+#include "scene.h"
 
 deccan_info global_engine;
 
@@ -35,7 +37,8 @@ int deccan_init(const char *title, int32_t width, int32_t height) {
     global_engine.is_running = true;
     global_engine.is_first_frame = true;
     global_engine.required_fps = 60.0f;
-
+    global_engine.scenes = NULL;
+    
     memcpy(deccan_prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
     memcpy(deccan_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
@@ -43,7 +46,7 @@ int deccan_init(const char *title, int32_t width, int32_t height) {
 }
 
 void deccan_quit() {
-    global_engine.at_end();
+    global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->at_end();
 
     SDL_DestroyRenderer(global_engine.renderer);
     SDL_DestroyWindow(global_engine.window);
@@ -80,11 +83,12 @@ void deccan_run(float required_fps) {
         fps_avg = frames/deccan_get_timer_time(&fps_timer);
         if(fps_avg > 20000) { fps_avg = 0.0f; }
 
+        int index = stbds_arrlen(global_engine.scenes)-1;
         if(global_engine.is_first_frame) {
-            global_engine.at_begining();
+            global_engine.scenes[index]->at_begining();
             global_engine.is_first_frame = false;
         }
-        global_engine.at_step();
+        global_engine.scenes[index]->at_step();
         
         SDL_RenderPresent(global_engine.renderer);
 
@@ -103,8 +107,6 @@ void deccan_run(float required_fps) {
     deccan_quit();
 }
 
-void deccan_set_states(state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {
-    global_engine.at_begining = ab;
-    global_engine.at_step = as;
-    global_engine.at_end = ae;
+void deccan_add_scene(deccan_scene *scene) {
+    stbds_arrput(deccan_get_global_engine()->scenes, scene);
 }
