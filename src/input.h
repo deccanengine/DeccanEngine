@@ -1,5 +1,5 @@
 #pragma once
-
+#include "config.h"
 #include "core.h"
 
 uint8_t deccan_key_states[SDL_NUM_SCANCODES], deccan_prev_keys[SDL_NUM_SCANCODES];

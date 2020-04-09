@@ -1,8 +1,5 @@
 #define STB_DS_IMPLEMENTATION
 #include "core.h"
-#include "timer.h"
-#include "input.h"
-#include "scene.h"
 
 deccan_info global_engine;
 
@@ -23,12 +20,10 @@ int deccan_init(const char *title, int32_t width, int32_t height) {
         deccan_error("Could not initialize SDL2_ttf", ttferr);
     }
 
-    if((global_engine.window = SDL_CreateWindow(
-        title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-        width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
-        )) == NULL) {
-            deccan_error("Could not create window", sdlerr);
-        }
+    int properties = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+    if((global_engine.window = SDL_CreateWindow(title, 0, 0, width, height, properties)) == NULL) {
+        deccan_error("Could not create window", sdlerr);
+    }
 
     if((global_engine.renderer = SDL_CreateRenderer(global_engine.window, -1, SDL_RENDERER_ACCELERATED)) == NULL) {
         deccan_error("Could not create renderer", sdlerr);
@@ -107,9 +102,12 @@ void deccan_run(float required_fps) {
 
 deccan_scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {
     deccan_scene *scene = malloc(sizeof(deccan_scene));
+    
+    scene->name = malloc(sizeof(char*)*strlen(name)); strcpy(scene->name, name);
     scene->at_begining = as;
     scene->at_step = as;
     scene->at_end = ae;
+
     return scene;
 }
 

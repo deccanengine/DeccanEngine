@@ -1,7 +1,9 @@
 #pragma once
 
 #include "config.h"
-#include "log.h"
+#include "input.h"
+#include "utils/log.h"
+#include "utils/timer.h"
 
 typedef struct {
     char *name;

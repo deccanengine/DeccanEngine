@@ -2,9 +2,11 @@
 
 #define DECCAN_DEBUG
 
-#include "core.h"
-#include "renderer.h"
-#include "input.h"
+#include "src/config.h"
 
-#include "log.h"
-#include "timer.h"
+#include "src/core.h"
+#include "src/renderer.h"
+#include "src/input.h"
+
+#include "src/utils/log.h"
+#include "src/utils/timer.h"

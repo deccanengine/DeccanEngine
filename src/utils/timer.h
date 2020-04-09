@@ -1,5 +1,5 @@
 #pragma once
-#include "config.h"
+#include "../config.h"
 
 static inline void deccan_delay(int32_t ms) { SDL_Delay(ms); }
 
