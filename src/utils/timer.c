@@ -1,12 +1,5 @@
 #include "timer.h"
 
-void deccan_timer_init(deccan_Timer *timer) {
-    timer->start_ticks = 0;
-    timer->paused_ticks = 0;
-    timer->is_running = false;
-    timer->is_paused = false;
-}
-
 void deccan_timer_start(deccan_Timer *timer) {
     timer->start_ticks = SDL_GetTicks();
     timer->paused_ticks = 0;
@@ -15,7 +8,10 @@ void deccan_timer_start(deccan_Timer *timer) {
 }
 
 void deccan_timer_stop(deccan_Timer *timer) {
-    deccan_timer_init(timer);
+    timer->start_ticks = 0;
+    timer->paused_ticks = 0;
+    timer->is_running = false;
+    timer->is_paused = false;
 }
 
 void deccan_timer_pause(deccan_Timer *timer) {

@@ -43,7 +43,6 @@
     #define renderer_set_color deccan_renderer_set_color
     #define asset_load_texture deccan_asset_load_texture
     #define asset_get_texture deccan_asset_get_texture
-    #define timer_init deccan_timer_init
     #define timer_start deccan_timer_start
     #define timer_stop deccan_timer_stop
     #define timer_pause deccan_timer_pause

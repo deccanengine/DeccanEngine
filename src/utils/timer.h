@@ -8,7 +8,6 @@ typedef struct {
     bool is_running, is_paused;
 } deccan_Timer;
 
-void deccan_timer_init(deccan_Timer *timer);
 void deccan_timer_start(deccan_Timer *timer);
 void deccan_timer_stop(deccan_Timer *timer);
 void deccan_timer_pause(deccan_Timer *timer);

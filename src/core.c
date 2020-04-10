@@ -48,8 +48,6 @@ int deccan_init(const char *title, int32_t width, int32_t height) {
 }
 
 void deccan_quit() {
-    global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->at_end();
-
     stbds_arrfree(global_engine.scenes);
 
     SDL_DestroyRenderer(global_engine.renderer);
@@ -64,8 +62,7 @@ void deccan_run(float required_fps) {
 
     global_engine.required_fps = required_fps;
     
-    deccan_Timer fps_timer; deccan_timer_init(&fps_timer);
-    deccan_Timer frm_timer; deccan_timer_init(&frm_timer);
+    deccan_Timer fps_timer, frm_timer;
 
     deccan_timer_start(&fps_timer);
 
@@ -106,6 +103,7 @@ void deccan_run(float required_fps) {
             deccan_delay(ticks_per_frame - frm_ticks);
 		}
     }
+    global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->at_end();
     deccan_quit();
 }
 
