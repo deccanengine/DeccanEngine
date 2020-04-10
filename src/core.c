@@ -56,16 +56,14 @@ void deccan_quit() {
     SDL_Quit();
 }
 
-void deccan_run(float required_fps) {
+void deccan_run(float fps) {
     int frames = 0;
     float fps_avg;
 
-    global_engine.required_fps = required_fps;
-    
+    global_engine.required_fps = fps;
+
     deccan_Timer fps_timer, frm_timer;
-
     deccan_timer_start(&fps_timer);
-
     while(global_engine.is_running) {
         deccan_timer_start(&frm_timer);
 
@@ -105,6 +103,27 @@ void deccan_run(float required_fps) {
     }
     global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->at_end();
     deccan_quit();
+}
+
+void deccan_set_mode(int32_t width, int32_t height) {
+    SDL_SetWindowSize(global_engine.window, width, height);
+}
+
+void deccan_set_fullscreen() {
+    SDL_SetWindowFullscreen(global_engine.window, global_engine.is_fullscreen ? 1 : 0);
+    global_engine.is_fullscreen = !global_engine.is_fullscreen;
+}
+
+void deccan_set_framerate_limit(float fps){
+    global_engine.required_fps = fps;
+}
+
+bool deccan_get_fullscreen_status() {
+    return global_engine.is_fullscreen;
+}
+
+float deccan_get_framerate_limit() {
+    return global_engine.required_fps;
 }
 
 deccan_Scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {

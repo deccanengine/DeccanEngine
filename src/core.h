@@ -23,6 +23,7 @@ typedef struct deccan_Info {
     bool is_running;
 
     /* Settings */
+    bool is_fullscreen;
     float required_fps;
 
     /* Input system */
@@ -44,7 +45,14 @@ deccan_Info *deccan_get_global_engine();
 
 int  deccan_init(const char *title, int32_t width, int32_t height);
 void deccan_quit();
-void deccan_run(float required_fps);
+void deccan_run(float fps);
+
+void deccan_set_mode(int32_t width, int32_t height);
+void deccan_set_fullscreen();
+void deccan_set_framerate_limit(float fps);
+
+bool deccan_get_fullscreen_status();
+float deccan_get_framerate_limit();
 
 deccan_Scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae));
 void deccan_add_scene(deccan_Scene *scene, bool is_replacing);

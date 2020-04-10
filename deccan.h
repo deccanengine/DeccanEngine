@@ -30,6 +30,11 @@
     #define init deccan_init
     #define quit deccan_quit
     #define run deccan_run
+    #define set_mode deccan_set_mode
+    #define set_fullscreen deccan_set_fullscreen
+    #define set_framerate_limit deccan_set_framerate_limit
+    #define get_fullscreen_status deccan_get_fullscreen_status
+    #define get_framerate_limit deccan_get_framerate_limit
     #define new_scene deccan_new_scene
     #define add_scene deccan_add_scene
     #define remove_scene deccan_remove_scene
