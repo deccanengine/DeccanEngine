@@ -30,7 +30,6 @@ int deccan_init(const char *title, int32_t width, int32_t height) {
     }
 
     global_engine.is_running = true;
-    global_engine.is_first_frame = true;
     global_engine.required_fps = 60.0f;
     global_engine.scenes = NULL;
     
@@ -42,6 +41,8 @@ int deccan_init(const char *title, int32_t width, int32_t height) {
 
 void deccan_quit() {
     global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->at_end();
+
+    stbds_arrfree(global_engine.scenes);
 
     SDL_DestroyRenderer(global_engine.renderer);
     SDL_DestroyWindow(global_engine.window);
@@ -80,9 +81,9 @@ void deccan_run(float required_fps) {
         if(fps_avg > 20000) { fps_avg = 0.0f; }
 
         int index = stbds_arrlen(global_engine.scenes)-1;
-        if(global_engine.is_first_frame) {
+        if(global_engine.scenes[index]->is_first_frame) {
             global_engine.scenes[index]->at_begining();
-            global_engine.is_first_frame = false;
+            global_engine.scenes[index]->is_first_frame = false;
         }
         global_engine.scenes[index]->at_step();
         
@@ -104,6 +105,8 @@ deccan_Scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_
     deccan_Scene *scene = malloc(sizeof(deccan_Scene));
     
     scene->name = malloc(sizeof(char*)*strlen(name)); strcpy(scene->name, name);
+    scene->is_paused = false;
+    scene->is_first_frame = true;
     scene->at_begining = as;
     scene->at_step = as;
     scene->at_end = ae;
@@ -111,6 +114,31 @@ deccan_Scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_
     return scene;
 }
 
-void deccan_add_scene(deccan_Scene *scene) {
-    stbds_arrput(deccan_get_global_engine()->scenes, scene);
+void deccan_add_scene(deccan_Scene *scene, bool is_replacing) {
+    if(stbds_arrlen(global_engine.scenes) != 0) {
+        if(is_replacing) { stbds_arrpop(global_engine.scenes); }
+        else {
+            global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->is_paused = true;
+        }
+    }
+    stbds_arrput(global_engine.scenes, scene);
+}
+
+void deccan_remove_scene(deccan_Scene *scene) {
+    if(stbds_arrlen(global_engine.scenes) > 1) { 
+        stbds_arrpop(global_engine.scenes);
+        global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->is_paused = false;
+    }
+}
+
+deccan_Scene *deccan_current_scene() {
+    return global_engine.scenes[stbds_arrlen(global_engine.scenes)-1];
+}
+
+void deccan_pause_scene(bool pause) {
+    global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->is_paused = pause;
+}
+
+bool deccan_is_scene_paused() {
+    return global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->is_paused;
 }

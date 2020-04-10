@@ -7,6 +7,10 @@
 
 typedef struct {
     char *name;
+
+    bool is_paused;
+    bool is_first_frame;
+
     state_func_ptr(at_begining);
     state_func_ptr(at_step);
     state_func_ptr(at_end);
@@ -18,7 +22,6 @@ typedef struct deccan_Info {
     SDL_Event event;
 
     bool is_running;
-    bool is_first_frame;
 
     float required_fps;
 
@@ -34,4 +37,9 @@ void deccan_quit();
 void deccan_run(float required_fps);
 
 deccan_Scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae));
-void deccan_add_scene(deccan_Scene *scene);
+void deccan_add_scene(deccan_Scene *scene, bool is_replacing);
+void deccan_remove_scene();
+
+deccan_Scene *deccan_current_scene();
+void deccan_pause_scene(bool pause);
+bool deccan_is_scene_paused();

@@ -37,7 +37,7 @@ void end() {
 
 int main(int argc, char **argv) {
     if(init("Test", 640, 320)) {
-        add_scene(new_scene("scene0", begin, step, end));
+        add_scene(new_scene("scene0", begin, step, end), false);
         run(120.0f);
     }
     atexit(quit);

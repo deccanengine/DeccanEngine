@@ -31,6 +31,10 @@
     #define run deccan_run
     #define new_scene deccan_new_scene
     #define add_scene deccan_add_scene
+    #define remove_scene deccan_remove_scene
+    #define current_scene deccan_current_scene
+    #define pause_scene deccan_pause_scene
+    #define is_scene_paused deccan_is_scene_paused
     #define input_get_key deccan_input_get_key
     #define input_get_mouse_button deccan_input_get_mouse_button
     #define input_get_mouse_pos deccan_input_get_mouse_pos
