@@ -8,3 +8,4 @@ This list is only for immediate features and fixes and not long for term feature
 - Implement true stack system for scene management
 - Fix the occassional weird behaviours of scenes
 - Improve timers
+- Make a real error handling and warning system

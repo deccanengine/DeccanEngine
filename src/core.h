@@ -17,16 +17,26 @@ typedef struct {
 } deccan_Scene;
 
 typedef struct deccan_Info {
+    /* Core engine */
     SDL_Window *window;
     SDL_Renderer *renderer;
-    SDL_Event event;
-
     bool is_running;
 
+    /* Settings */
     float required_fps;
 
+    /* Input system */
+    SDL_Event event;
     uint8_t *key_states;
+
+    /* Scene manager */
     deccan_Scene **scenes;
+
+    /* Asset manager */
+    struct {
+        char *key;
+        SDL_Texture *value;
+    } *textures;
 } deccan_Info;
 
 void deccan_set_global_engine(deccan_Info *engine);

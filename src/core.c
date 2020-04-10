@@ -12,8 +12,14 @@ deccan_Info *deccan_get_global_engine() {
 }
 
 int deccan_init(const char *title, int32_t width, int32_t height) {
-    if(SDL_Init(SDL_INIT_VIDEO) != 0) {
-        deccan_error("Could not initialize SDL", sdlerr);
+    int flags = SDL_INIT_VIDEO;
+    if(SDL_Init(flags) != 0) {
+        deccan_error("Could not initialize SDL2", sdlerr);
+    }
+
+    int image_flags = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF;
+    if(!IMG_Init(image_flags) & !image_flags) {
+        deccan_error("Could not initialize SDL2_image", imgerr);
     }
 
     if(TTF_Init() != 0) {
@@ -31,8 +37,10 @@ int deccan_init(const char *title, int32_t width, int32_t height) {
 
     global_engine.is_running = true;
     global_engine.required_fps = 60.0f;
+
     global_engine.scenes = NULL;
-    
+    global_engine.textures = NULL;
+
     memcpy(_prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
     memcpy(_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
@@ -81,7 +89,7 @@ void deccan_run(float required_fps) {
         if(fps_avg > 20000) { fps_avg = 0.0f; }
 
         int index = stbds_arrlen(global_engine.scenes)-1;
-        if(global_engine.scenes[index]->is_first_frame) {
+        if(global_engine.scenes[index]->is_first_frame == true) {
             global_engine.scenes[index]->at_begining();
             global_engine.scenes[index]->is_first_frame = false;
         }
@@ -107,7 +115,7 @@ deccan_Scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_
     scene->name = malloc(sizeof(char*)*strlen(name)); strcpy(scene->name, name);
     scene->is_paused = false;
     scene->is_first_frame = true;
-    scene->at_begining = as;
+    scene->at_begining = ab;
     scene->at_step = as;
     scene->at_end = ae;
 

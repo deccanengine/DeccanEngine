@@ -7,6 +7,7 @@
 #include "src/core.h"
 #include "src/renderer.h"
 #include "src/input.h"
+#include "src/asset.h"
 
 #include "src/utils/log.h"
 #include "src/utils/timer.h"
@@ -40,6 +41,8 @@
     #define input_get_mouse_pos deccan_input_get_mouse_pos
     #define renderer_clear deccan_renderer_clear
     #define renderer_set_color deccan_renderer_set_color
+    #define asset_load_texture deccan_asset_load_texture
+    #define asset_get_texture deccan_asset_get_texture
     #define timer_init deccan_timer_init
     #define timer_start deccan_timer_start
     #define timer_stop deccan_timer_stop

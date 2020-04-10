@@ -3,11 +3,12 @@
 
 void begin() {
     /* Start here */
+    asset_load_texture("arrow", "arrow0.png");
 }
 
 int x = 100, y = 100;
 
-void step() {    
+void step() {
     renderer_clear((Color){255, 255, 255, 255});
 
     /* Start here */
@@ -28,6 +29,11 @@ void step() {
         renderer_set_color(black);
     }
     SDL_RenderFillRect(get_global_engine()->renderer, &(SDL_Rect){x, y, 50, 50});
+    
+    int w, h;
+    SDL_Texture *tex = asset_get_texture("arrow");
+    SDL_QueryTexture(tex, NULL, NULL, &w, &h);
+    SDL_RenderCopy(get_global_engine()->renderer, tex, NULL, &(SDL_Rect){x, y, w, h});
 #endif
 }
 
