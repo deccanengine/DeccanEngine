@@ -28,32 +28,9 @@
     #define key deccan_key
     #define button deccan_button
 
-    #define set_global_engine deccan_set_global_engine
-    #define get_global_engine deccan_get_global_engine
-    #define init deccan_init
-    #define quit deccan_quit
-    #define run deccan_run
-    #define set_mode deccan_set_mode
-    #define set_fullscreen deccan_set_fullscreen
-    #define set_framerate_limit deccan_set_framerate_limit
-    #define get_fullscreen_status deccan_get_fullscreen_status
-    #define get_framerate_limit deccan_get_framerate_limit
-    #define new_scene deccan_new_scene
-    #define add_scene deccan_add_scene
-    #define remove_scene deccan_remove_scene
-    #define current_scene deccan_current_scene
-    #define pause_scene deccan_pause_scene
-    #define is_scene_paused deccan_is_scene_paused
-    #define input_get_key deccan_input_get_key
-    #define input_get_mouse_button deccan_input_get_mouse_button
-    #define input_get_mouse_pos deccan_input_get_mouse_pos
-    #define renderer_clear deccan_renderer_clear
-    #define renderer_set_color deccan_renderer_set_color
-    #define asset_load_texture deccan_asset_load_texture
-    #define asset_get_texture deccan_asset_get_texture
-    #define timer_start deccan_timer_start
-    #define timer_stop deccan_timer_stop
-    #define timer_pause deccan_timer_pause
-    #define timer_get_time deccan_timer_get_time
-    #define timer_get_time_ms deccan_timer_get_time_ms
+    #define Core deccan_Core
+    #define Scenes deccan_Scenes
+    #define Renderer deccan_Renderer
+    #define Input deccan_Input
+    #define Asset deccan_Asset
 #endif

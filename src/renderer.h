@@ -17,5 +17,15 @@ static deccan_Color
     magenta= {255,   0, 255, 255}, orange    = {255, 165,   0, 255}, 
     violet = {238, 130, 238, 255}, fuchsia   = {255,   0, 255, 255};
 
-void deccan_renderer_clear(deccan_Color color);
-void deccan_renderer_set_color(deccan_Color color);
+void _priv_Renderer_clear(deccan_Color color);
+void _priv_Renderer_set_color(deccan_Color color);
+
+typedef struct _priv_Renderer {
+    void (*clear)(deccan_Color color);
+    void (*set_color)(deccan_Color color);
+} _priv_Renderer;
+
+static _priv_Renderer deccan_Renderer = {
+    _priv_Renderer_clear,
+    _priv_Renderer_set_color
+};

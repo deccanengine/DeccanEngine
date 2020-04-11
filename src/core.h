@@ -40,24 +40,72 @@ typedef struct deccan_Info {
     } *textures;
 } deccan_Info;
 
-void deccan_set_global_engine(deccan_Info *engine);
-deccan_Info *deccan_get_global_engine();
+void _priv_Core_set_global_engine(deccan_Info *engine);
+deccan_Info *_priv_Core_get_global_engine();
 
-int  deccan_init(const char *title, int32_t width, int32_t height);
-void deccan_quit();
-void deccan_run(float fps);
+int  _priv_Core_init(const char *title, int32_t width, int32_t height);
+void _priv_Core_quit();
+void _priv_Core_run(float fps);
 
-void deccan_set_mode(int32_t width, int32_t height);
-void deccan_set_fullscreen();
-void deccan_set_framerate_limit(float fps);
+void _priv_Core_set_mode(int32_t width, int32_t height);
+void _priv_Core_set_fullscreen();
+void _priv_Core_set_framerate_limit(float fps);
 
-bool deccan_get_fullscreen_status();
-float deccan_get_framerate_limit();
+bool _priv_Core_get_fullscreen_status();
+float _priv_Core_get_framerate_limit();
 
-deccan_Scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae));
-void deccan_add_scene(deccan_Scene *scene, bool is_replacing);
-void deccan_remove_scene();
+typedef struct _priv_Core {
+    void (*set_global_engine)(deccan_Info *engine);
+    deccan_Info* (*get_global_engine)();
 
-deccan_Scene *deccan_current_scene();
-void deccan_pause_scene(bool pause);
-bool deccan_is_scene_paused();
+    int  (*init)(const char *title, int32_t width, int32_t height);
+    void (*quit)();
+    void (*run)(float fps);
+
+    void (*set_mode)(int32_t width, int32_t height);
+    void (*set_fullscreen)();
+    void (*set_framerate_limit)(float fps);
+
+    bool  (*get_fullscreen_status)();
+    float (*get_framerate_limit)();
+} _priv_Core;
+
+static _priv_Core deccan_Core = {
+    _priv_Core_set_global_engine, 
+    _priv_Core_get_global_engine,
+    _priv_Core_init,
+    _priv_Core_quit,
+    _priv_Core_run,
+    _priv_Core_set_mode,
+    _priv_Core_set_fullscreen,
+    _priv_Core_set_framerate_limit,
+    _priv_Core_get_fullscreen_status,
+    _priv_Core_get_framerate_limit
+};
+
+deccan_Scene *_priv_Scene_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae));
+void _priv_Scene_add_scene(deccan_Scene *scene, bool is_replacing);
+void _priv_Scene_remove_scene();
+
+deccan_Scene *_priv_Scene_current_scene();
+void _priv_Scene_pause_scene(bool pause);
+bool _priv_Scene_is_scene_paused();
+
+typedef struct _priv_Scene {
+    deccan_Scene *(*new_scene)(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae));
+    void (*add_scene)(deccan_Scene *scene, bool is_replacing);
+    void (*remove_scene)();
+
+    deccan_Scene *(*current_scene)();
+    void (*pause_scene)(bool pause);
+    bool (*is_scene_paused)();
+} _priv_Scene;
+
+static _priv_Scene deccan_Scenes = {
+    _priv_Scene_new_scene,
+    _priv_Scene_add_scene,
+    _priv_Scene_remove_scene,
+    _priv_Scene_current_scene,
+    _priv_Scene_pause_scene,
+    _priv_Scene_is_scene_paused
+};

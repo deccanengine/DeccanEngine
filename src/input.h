@@ -4,6 +4,7 @@
 
 uint8_t _key_states[SDL_NUM_SCANCODES], _prev_keys[SDL_NUM_SCANCODES];
 
+/* Key Codes */
 typedef struct _key_code_list {
     int unknown, 
         
@@ -55,6 +56,7 @@ static _key_code_list deccan_key = {
     82
 };
 
+/* Button Codes */
 typedef struct _button_code_list {
     int left, middle, right, x1, x2; 
 } _button_code_list;
@@ -63,6 +65,7 @@ static _button_code_list deccan_button = {
     1, 2, 3, 4, 5
 };
 
+/* Functions and Structs */
 typedef struct {
     bool is_pressed;
     bool is_released;
@@ -78,6 +81,17 @@ typedef struct {
     int32_t x, y;
 } deccan_MousePos;
 
-deccan_KeyState deccan_input_get_key(int key_code);
-deccan_MouseState deccan_input_get_mouse_button(int button_code);
-deccan_MousePos deccan_input_get_mouse_pos();
+deccan_KeyState _priv_Input_get_key(int key_code);
+deccan_MouseState _priv_Input_get_mouse_button(int button_code);
+deccan_MousePos _priv_Input_get_mouse_pos();
+
+typedef struct _priv_Input {
+    deccan_KeyState (*get_key)(int key_code);
+    deccan_MouseState (*get_mouse_button)(int button_code);
+    deccan_MousePos (*get_mouse_pos)();
+} _priv_Input;
+
+static _priv_Input deccan_Input = {
+    _priv_Input_get_key, _priv_Input_get_mouse_button, _priv_Input_get_mouse_pos
+};
+

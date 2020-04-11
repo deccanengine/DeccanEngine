@@ -1,6 +1,6 @@
 #include "asset.h"
 
-void deccan_asset_load_texture(const char *name, const char *path) {
+void _priv_Asset_load_texture(const char *name, const char *path) {
     SDL_Surface *img;
     SDL_Texture *tex;
 
@@ -9,18 +9,18 @@ void deccan_asset_load_texture(const char *name, const char *path) {
         deccan_error("Cannot load image", path, ": ", imgerr);
     }
 
-    tex = SDL_CreateTextureFromSurface(deccan_get_global_engine()->renderer, img);
+    tex = SDL_CreateTextureFromSurface(deccan_Core.get_global_engine()->renderer, img);
     SDL_FreeSurface(img);
 
     if(tex == NULL) {
         deccan_error("Cannot create texture", name, ": ", sdlerr);
     }
 
-    stbds_shput(deccan_get_global_engine()->textures, name, tex);
+    stbds_shput(deccan_Core.get_global_engine()->textures, name, tex);
 }
 
-SDL_Texture *deccan_asset_get_texture(const char *name) {
-    deccan_Info *info = deccan_get_global_engine();
+SDL_Texture *_priv_Asset_get_texture(const char *name) {
+    deccan_Info *info = deccan_Core.get_global_engine();
     for(int i=0; i<stbds_shlen(info->textures); i++) {
         if(!strcmp(name, info->textures[i].key)) {
             return info->textures[i].value;

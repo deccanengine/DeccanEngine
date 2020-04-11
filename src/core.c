@@ -3,15 +3,15 @@
 
 deccan_Info global_engine;
 
-void deccan_set_global_engine(deccan_Info *engine) {
+void _priv_Core_set_global_engine(deccan_Info *engine) {
     global_engine = *engine;
 }
 
-deccan_Info *deccan_get_global_engine() {
+deccan_Info *_priv_Core_get_global_engine() {
     return &global_engine;
 }
 
-int deccan_init(const char *title, int32_t width, int32_t height) {
+int _priv_Core_init(const char *title, int32_t width, int32_t height) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
         deccan_error("Could not initialize SDL2", sdlerr);
@@ -47,7 +47,7 @@ int deccan_init(const char *title, int32_t width, int32_t height) {
     return 1;
 }
 
-void deccan_quit() {
+void _priv_Core_quit() {
     stbds_arrfree(global_engine.scenes);
 
     SDL_DestroyRenderer(global_engine.renderer);
@@ -56,7 +56,7 @@ void deccan_quit() {
     SDL_Quit();
 }
 
-void deccan_run(float fps) {
+void _priv_Core_run(float fps) {
     int frames = 0;
     float fps_avg;
 
@@ -102,31 +102,31 @@ void deccan_run(float fps) {
 		}
     }
     global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->at_end();
-    deccan_quit();
+    _priv_Core_quit();
 }
 
-void deccan_set_mode(int32_t width, int32_t height) {
+void _priv_Core_set_mode(int32_t width, int32_t height) {
     SDL_SetWindowSize(global_engine.window, width, height);
 }
 
-void deccan_set_fullscreen() {
+void _priv_Core_set_fullscreen() {
     SDL_SetWindowFullscreen(global_engine.window, global_engine.is_fullscreen ? 1 : 0);
     global_engine.is_fullscreen = !global_engine.is_fullscreen;
 }
 
-void deccan_set_framerate_limit(float fps){
+void _priv_Core_set_framerate_limit(float fps){
     global_engine.required_fps = fps;
 }
 
-bool deccan_get_fullscreen_status() {
+bool _priv_Core_get_fullscreen_status() {
     return global_engine.is_fullscreen;
 }
 
-float deccan_get_framerate_limit() {
+float _priv_Core_get_framerate_limit() {
     return global_engine.required_fps;
 }
 
-deccan_Scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {
+deccan_Scene *_priv_Scene_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {
     deccan_Scene *scene = malloc(sizeof(deccan_Scene));
     
     scene->name = malloc(sizeof(char*)*strlen(name)); strcpy(scene->name, name);
@@ -139,7 +139,7 @@ deccan_Scene *deccan_new_scene(const char *name, state_func_ptr(ab), state_func_
     return scene;
 }
 
-void deccan_add_scene(deccan_Scene *scene, bool is_replacing) {
+void _priv_Scene_add_scene(deccan_Scene *scene, bool is_replacing) {
     if(stbds_arrlen(global_engine.scenes) != 0) {
         if(is_replacing) { stbds_arrpop(global_engine.scenes); }
         else {
@@ -149,21 +149,21 @@ void deccan_add_scene(deccan_Scene *scene, bool is_replacing) {
     stbds_arrput(global_engine.scenes, scene);
 }
 
-void deccan_remove_scene(deccan_Scene *scene) {
+void _priv_Scene_remove_scene(deccan_Scene *scene) {
     if(stbds_arrlen(global_engine.scenes) > 1) { 
         stbds_arrpop(global_engine.scenes);
         global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->is_paused = false;
     }
 }
 
-deccan_Scene *deccan_current_scene() {
+deccan_Scene *_priv_Scene_current_scene() {
     return global_engine.scenes[stbds_arrlen(global_engine.scenes)-1];
 }
 
-void deccan_pause_scene(bool pause) {
+void _priv_Scene_pause_scene(bool pause) {
     global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->is_paused = pause;
 }
 
-bool deccan_is_scene_paused() {
+bool _priv_Scene_is_scene_paused() {
     return global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->is_paused;
 }
