@@ -13,14 +13,14 @@ void step() {
 
     /* Start here */
 #ifdef DECCAN_DEBUG
-    if(input_get_key(SDL_SCANCODE_UP).is_held){ y-=1; }
-    else if(input_get_key(SDL_SCANCODE_DOWN).is_held){ y+=1; }
-    else if(input_get_key(SDL_SCANCODE_LEFT).is_held){ x-=1; }
-    else if(input_get_key(SDL_SCANCODE_RIGHT).is_held){ x+=1; }
+    if(input_get_key(key.w).is_held){ y-=1; }
+    else if(input_get_key(key.s).is_held){ y+=1; }
+    else if(input_get_key(key.a).is_held){ x-=1; }
+    else if(input_get_key(key.d).is_held){ x+=1; }
     
     MousePos pos = input_get_mouse_pos();
     if(pos.x > x && pos.x < x+50 && pos.y > y && pos.y < y+50) {
-        if(input_get_mouse_button(SDL_BUTTON_LEFT).is_down) {
+        if(input_get_mouse_button(button.left).is_down) {
             renderer_set_color((Color){0, 255, 0, 255});
         }
         else { renderer_set_color((Color){0, 180, 0, 255}); }

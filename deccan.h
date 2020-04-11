@@ -25,6 +25,9 @@
     #define Color deccan_Color
     #define Timer deccan_Timer 
 
+    #define key deccan_key
+    #define button deccan_button
+
     #define set_global_engine deccan_set_global_engine
     #define get_global_engine deccan_get_global_engine
     #define init deccan_init
