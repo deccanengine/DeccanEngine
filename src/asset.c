@@ -6,14 +6,14 @@ void _priv_Asset_load_texture(const char *name, const char *path) {
 
     img = IMG_Load(path);
     if(img == NULL) {
-        Deccan_error("Cannot load image", path, ": ", imgerr);
+        Deccan_Log.error("Cannot load image", path, ": ", imgerr);
     }
 
     tex = SDL_CreateTextureFromSurface(Deccan_Core.get_global_engine()->renderer, img);
     SDL_FreeSurface(img);
 
     if(tex == NULL) {
-        Deccan_error("Cannot create texture", name, ": ", sdlerr);
+        Deccan_Log.error("Cannot create texture", name, ": ", sdlerr);
     }
 
     stbds_shput(Deccan_Core.get_global_engine()->textures, name, tex);

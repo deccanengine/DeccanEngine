@@ -1,20 +1,20 @@
 #include "timer.h"
 
-void Deccan_timer_start(Deccan_Timer *timer) {
+void _priv_timer_start(Deccan_Timer *timer) {
     timer->start_ticks = SDL_GetTicks();
     timer->paused_ticks = 0;
     timer->is_running = true;
     timer->is_paused = false;
 }
 
-void Deccan_timer_stop(Deccan_Timer *timer) {
+void _priv_timer_stop(Deccan_Timer *timer) {
     timer->start_ticks = 0;
     timer->paused_ticks = 0;
     timer->is_running = false;
     timer->is_paused = false;
 }
 
-void Deccan_timer_pause(Deccan_Timer *timer) {
+void _priv_timer_pause(Deccan_Timer *timer) {
     if(timer->is_running && timer->is_paused) {
         timer->is_paused = true;
         
@@ -24,7 +24,7 @@ void Deccan_timer_pause(Deccan_Timer *timer) {
     }
 }
 
-float Deccan_timer_get_time_ms(Deccan_Timer *timer) {
+float _priv_timer_get_time_ms(Deccan_Timer *timer) {
     float time = 0.0f;
 
     if(timer->is_running) {
@@ -35,6 +35,6 @@ float Deccan_timer_get_time_ms(Deccan_Timer *timer) {
     return time;
 }
 
-float Deccan_timer_get_time(Deccan_Timer *timer) {
-    return Deccan_timer_get_time_ms(timer)/1000.0f;
+float _priv_timer_get_time(Deccan_Timer *timer) {
+    return _priv_timer_get_time_ms(timer)/1000.0f;
 }
