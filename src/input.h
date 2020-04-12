@@ -8,6 +8,7 @@
 #pragma once
 #include "config.h"
 #include "core.h"
+#include "utils/vector.h"
 
 uint8_t _key_states[SDL_NUM_SCANCODES], _prev_keys[SDL_NUM_SCANCODES];
 
@@ -84,18 +85,14 @@ typedef struct {
     bool is_up;
 } Deccan_MouseState;
 
-typedef struct {
-    int32_t x, y;
-} Deccan_MousePos;
-
 Deccan_KeyState _priv_Input_get_key(int key_code);
 Deccan_MouseState _priv_Input_get_mouse_button(int button_code);
-Deccan_MousePos _priv_Input_get_mouse_pos();
+Deccan_Vector2i _priv_Input_get_mouse_pos();
 
 typedef struct _priv_Input {
     Deccan_KeyState (*get_key)(int key_code);
     Deccan_MouseState (*get_mouse_button)(int button_code);
-    Deccan_MousePos (*get_mouse_pos)();
+    Deccan_Vector2i (*get_mouse_pos)();
 } _priv_Input;
 
 static _priv_Input Deccan_Input = {

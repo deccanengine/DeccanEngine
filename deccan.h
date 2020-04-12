@@ -15,6 +15,7 @@
 
 #include "src/utils/log.h"
 #include "src/utils/timer.h"
+#include "src/utils/vector.h"
 
 #ifdef using_namespace_Deccan
     #define DECCAN_SHORT_NAMES
@@ -28,6 +29,9 @@
     #define MousePos Deccan_MousePos
     #define Color Deccan_Color
     #define Timer Deccan_Timer 
+    #define Vector2i Deccan_Vector2i
+    #define Vector2u Deccan_Vector2u
+    #define Vector2f Deccan_Vector2f
 
     #define Core Deccan_Core
     #define Scenes Deccan_Scenes

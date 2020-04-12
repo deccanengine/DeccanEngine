@@ -126,6 +126,12 @@ void _priv_Core_set_framerate_limit(float fps){
     global_engine.required_fps = fps;
 }
 
+Deccan_Vector2i _priv_Core_get_mode() {
+    Deccan_Vector2i size;
+    SDL_GetWindowSize(global_engine.window, &size.x, &size.y);
+    return size;
+}
+
 bool _priv_Core_get_fullscreen_status() {
     return global_engine.is_fullscreen;
 }

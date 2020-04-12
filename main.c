@@ -17,7 +17,7 @@ void step() {
     else if(Input.get_key(Key.a).is_held){ x-=1; }
     else if(Input.get_key(Key.d).is_held){ x+=1; }
     
-    MousePos pos = Input.get_mouse_pos();
+    Vector2i pos = Input.get_mouse_pos();
     if(pos.x > x && pos.x < x+50 && pos.y > y && pos.y < y+50) {
         if(Input.get_mouse_button(Button.left).is_down) {
             Renderer.set_color((Color){0, 255, 0, 255});

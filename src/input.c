@@ -38,8 +38,8 @@ Deccan_MouseState _priv_Input_get_mouse_button(int button_code) {
     return button;
 }
 
-Deccan_MousePos _priv_Input_get_mouse_pos() {
-    Deccan_MousePos pos;
+Deccan_Vector2i _priv_Input_get_mouse_pos() {
+    Deccan_Vector2i pos;
     SDL_GetMouseState(&pos.x, &pos.y);
     return pos;
 }
