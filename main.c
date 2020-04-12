@@ -12,7 +12,6 @@ void step() {
     Renderer.clear((Color){255, 255, 255, 255});
 
     /* Start here */
-#ifdef DECCAN_DEBUG
     if(Input.get_key(key.w).is_held){ y-=1; }
     else if(Input.get_key(key.s).is_held){ y+=1; }
     else if(Input.get_key(key.a).is_held){ x-=1; }
@@ -34,7 +33,6 @@ void step() {
     SDL_Texture *tex = Asset.get_texture("arrow");
     SDL_QueryTexture(tex, NULL, NULL, &w, &h);
     SDL_RenderCopy(Core.get_global_engine()->renderer, tex, NULL, &(SDL_Rect){x, y, w, h});
-#endif
 }
 
 void end() {

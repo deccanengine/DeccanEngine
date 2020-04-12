@@ -1,7 +1,4 @@
 #pragma once
-
-#define DECCAN_DEBUG
-
 #include "src/config.h"
 
 #include "src/core.h"
@@ -25,12 +22,11 @@
     #define Color Deccan_Color
     #define Timer Deccan_Timer 
 
-    #define key Deccan_Key
-    #define button Deccan_Button
-
     #define Core Deccan_Core
     #define Scenes Deccan_Scenes
     #define Renderer Deccan_Renderer
+    #define Key Deccan_Key
+    #define Button Deccan_Button
     #define Input Deccan_Input
     #define Asset Deccan_Asset
 #endif

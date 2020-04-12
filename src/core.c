@@ -3,6 +3,7 @@
 
 Deccan_Info global_engine;
 
+/* Core */
 void _priv_Core_set_global_engine(Deccan_Info *engine) {
     global_engine = *engine;
 }
@@ -126,6 +127,7 @@ float _priv_Core_get_framerate_limit() {
     return global_engine.required_fps;
 }
 
+/* Scene Management */
 Deccan_Scene *_priv_Scene_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {
     Deccan_Scene *scene = malloc(sizeof(Deccan_Scene));
     
