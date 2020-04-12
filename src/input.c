@@ -27,6 +27,7 @@ Deccan_KeyState _priv_Input_get_key(int key_code) {
     return key;
 }
 
+/* Partially broken: To be fixed: button up part */
 Deccan_MouseState _priv_Input_get_mouse_button(int button_code) {
     Deccan_MouseState button = {false, false};
 
@@ -43,3 +44,29 @@ Deccan_Vector2i _priv_Input_get_mouse_pos() {
     SDL_GetMouseState(&pos.x, &pos.y);
     return pos;
 }
+
+bool _priv_Input_key_pressed(int key_code) {
+    return _key_states[key_code] && !_prev_keys[key_code];
+}
+
+bool _priv_Input_key_released(int key_code) {
+    return !_key_states[key_code] && _prev_keys[key_code];
+}
+
+bool _priv_Input_key_held(int key_code) {
+    return _key_states[key_code];
+}
+
+bool _priv_Input_button_down(int button_code) {
+    Deccan_Info *engine = Deccan_Core.get_global_engine();
+    return engine->event.type == SDL_MOUSEBUTTONDOWN &&
+           engine->event.button.button == button_code;
+}
+
+/* Broken: To be fixed */
+bool _priv_Input_button_up(int button_code) {
+    Deccan_Info *engine = Deccan_Core.get_global_engine();
+    return engine->event.type != SDL_MOUSEBUTTONDOWN &&
+           engine->event.button.button != button_code;
+}
+

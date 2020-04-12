@@ -12,14 +12,14 @@ void step() {
     Renderer.clear((Color){255, 255, 255, 255});
 
     /* Start here */
-    if(Input.get_key(Key.w).is_held){ y-=1; }
-    else if(Input.get_key(Key.s).is_held){ y+=1; }
-    else if(Input.get_key(Key.a).is_held){ x-=1; }
-    else if(Input.get_key(Key.d).is_held){ x+=1; }
+    if(Input.key_held(Key.w)){ y-=1; }
+    else if(Input.key_held(Key.s)){ y+=1; }
+    else if(Input.key_held(Key.a)){ x-=1; }
+    else if(Input.key_held(Key.d)){ x+=1; }
     
     Vector2i pos = Input.get_mouse_pos();
     if(pos.x > x && pos.x < x+50 && pos.y > y && pos.y < y+50) {
-        if(Input.get_mouse_button(Button.left).is_down) {
+        if(Input.button_down(Button.left)) {
             Renderer.set_color((Color){0, 255, 0, 255});
         }
         else { Renderer.set_color((Color){0, 180, 0, 255}); }

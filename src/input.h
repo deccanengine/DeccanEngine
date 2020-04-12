@@ -89,13 +89,30 @@ Deccan_KeyState _priv_Input_get_key(int key_code);
 Deccan_MouseState _priv_Input_get_mouse_button(int button_code);
 Deccan_Vector2i _priv_Input_get_mouse_pos();
 
+bool _priv_Input_key_pressed(int key_code);
+bool _priv_Input_key_released(int key_code);
+bool _priv_Input_key_held(int key_code);
+bool _priv_Input_button_down(int button_code);
+bool _priv_Input_button_up(int button_code);
+
 typedef struct _priv_Input {
     Deccan_KeyState (*get_key)(int key_code);
     Deccan_MouseState (*get_mouse_button)(int button_code);
     Deccan_Vector2i (*get_mouse_pos)();
+    bool (*key_pressed)(int key_code);
+    bool (*key_released)(int key_code);
+    bool (*key_held)(int key_code);
+    bool (*button_down)(int button_code);
+    bool (*button_up)(int button_code);
 } _priv_Input;
 
 static _priv_Input Deccan_Input = {
-    _priv_Input_get_key, _priv_Input_get_mouse_button, _priv_Input_get_mouse_pos
+    _priv_Input_get_key, 
+    _priv_Input_get_mouse_button, 
+    _priv_Input_get_mouse_pos,
+    _priv_Input_key_pressed,
+    _priv_Input_key_released,
+    _priv_Input_key_held,
+    _priv_Input_button_down,
+    _priv_Input_button_up
 };
-
