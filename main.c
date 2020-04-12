@@ -9,7 +9,7 @@ void begin() {
 int x = 100, y = 100;
 
 void step() {
-    Renderer.clear((Color){255, 255, 255, 255});
+    Renderer.clear(ColorList.white);
 
     /* Start here */
     if(Input.key_held(Key.w)){ y-=1; }
@@ -20,12 +20,12 @@ void step() {
     Vector2i pos = Input.get_mouse_pos();
     if(pos.x > x && pos.x < x+50 && pos.y > y && pos.y < y+50) {
         if(Input.button_down(Button.left)) {
-            Renderer.set_color((Color){0, 255, 0, 255});
+            Renderer.set_color(ColorList.green);
         }
-        else { Renderer.set_color((Color){0, 180, 0, 255}); }
+        else { Renderer.set_color(ColorList.dark_green); }
     }
     else {
-        Renderer.set_color(black);
+        Renderer.set_color(ColorList.black);
     }
     SDL_RenderFillRect(Core.get_global_engine()->renderer, &(SDL_Rect){x, y, 50, 50});
     

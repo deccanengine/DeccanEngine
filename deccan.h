@@ -36,6 +36,7 @@
     #define Core Deccan_Core
     #define Scenes Deccan_Scenes
     #define Renderer Deccan_Renderer
+    #define ColorList Deccan_ColorList
     #define Key Deccan_Key
     #define Button Deccan_Button
     #define Input Deccan_Input
