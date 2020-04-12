@@ -1,7 +1,7 @@
 #include "input.h"
 
-deccan_KeyState _priv_Input_get_key(int key_code) {
-    deccan_KeyState key;
+Deccan_KeyState _priv_Input_get_key(int key_code) {
+    Deccan_KeyState key;
 
     if(_key_states[key_code]) { 
         if(!_prev_keys[key_code]) { key.is_pressed = true; }
@@ -20,19 +20,19 @@ deccan_KeyState _priv_Input_get_key(int key_code) {
     return key;
 }
 
-deccan_MouseState _priv_Input_get_mouse_button(int button_code) {
-    deccan_MouseState button = {false, false};
+Deccan_MouseState _priv_Input_get_mouse_button(int button_code) {
+    Deccan_MouseState button = {false, false};
 
-    if(deccan_Core.get_global_engine()->event.type == SDL_MOUSEBUTTONDOWN) {
-        if(deccan_Core.get_global_engine()->event.button.button == button_code) { button.is_down = true; }
+    if(Deccan_Core.get_global_engine()->event.type == SDL_MOUSEBUTTONDOWN) {
+        if(Deccan_Core.get_global_engine()->event.button.button == button_code) { button.is_down = true; }
         else { button.is_up = true; }
     }
 
     return button;
 }
 
-deccan_MousePos _priv_Input_get_mouse_pos() {
-    deccan_MousePos pos;
+Deccan_MousePos _priv_Input_get_mouse_pos() {
+    Deccan_MousePos pos;
     SDL_GetMouseState(&pos.x, &pos.y);
     return pos;
 }

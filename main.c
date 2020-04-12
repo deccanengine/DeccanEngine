@@ -1,4 +1,4 @@
-#define using_namespace_deccan
+#define using_namespace_Deccan
 #include "deccan.h"
 
 void begin() {

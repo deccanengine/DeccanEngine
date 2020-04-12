@@ -10,7 +10,7 @@ typedef struct _priv_Asset {
     SDL_Texture* (*get_texture)(const char *name);
 } _priv_Asset;
 
-static _priv_Asset deccan_Asset = {
+static _priv_Asset Deccan_Asset = {
     _priv_Asset_load_texture,
     _priv_Asset_get_texture
 };

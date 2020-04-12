@@ -12,25 +12,25 @@
 #include "src/utils/log.h"
 #include "src/utils/timer.h"
 
-#ifdef using_namespace_deccan
+#ifdef using_namespace_Deccan
     #define DECCAN_SHORT_NAMES
 #endif
 
 #ifdef DECCAN_SHORT_NAMES 
-    #define Info deccan_Info
-    #define Scene deccan_Scene
-    #define KeyState deccan_KeyState
-    #define MouseState deccan_MouseState
-    #define MousePos deccan_MousePos
-    #define Color deccan_Color
-    #define Timer deccan_Timer 
+    #define Info Deccan_Info
+    #define Scene Deccan_Scene
+    #define KeyState Deccan_KeyState
+    #define MouseState Deccan_MouseState
+    #define MousePos Deccan_MousePos
+    #define Color Deccan_Color
+    #define Timer Deccan_Timer 
 
-    #define key deccan_key
-    #define button deccan_button
+    #define key Deccan_Key
+    #define button Deccan_Button
 
-    #define Core deccan_Core
-    #define Scenes deccan_Scenes
-    #define Renderer deccan_Renderer
-    #define Input deccan_Input
-    #define Asset deccan_Asset
+    #define Core Deccan_Core
+    #define Scenes Deccan_Scenes
+    #define Renderer Deccan_Renderer
+    #define Input Deccan_Input
+    #define Asset Deccan_Asset
 #endif

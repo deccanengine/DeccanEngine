@@ -1,38 +1,38 @@
 #define STB_DS_IMPLEMENTATION
 #include "core.h"
 
-deccan_Info global_engine;
+Deccan_Info global_engine;
 
-void _priv_Core_set_global_engine(deccan_Info *engine) {
+void _priv_Core_set_global_engine(Deccan_Info *engine) {
     global_engine = *engine;
 }
 
-deccan_Info *_priv_Core_get_global_engine() {
+Deccan_Info *_priv_Core_get_global_engine() {
     return &global_engine;
 }
 
 int _priv_Core_init(const char *title, int32_t width, int32_t height) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
-        deccan_error("Could not initialize SDL2", sdlerr);
+        Deccan_error("Could not initialize SDL2", sdlerr);
     }
 
     int image_flags = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF;
     if(!IMG_Init(image_flags) & !image_flags) {
-        deccan_error("Could not initialize SDL2_image", imgerr);
+        Deccan_error("Could not initialize SDL2_image", imgerr);
     }
 
     if(TTF_Init() != 0) {
-        deccan_error("Could not initialize SDL2_ttf", ttferr);
+        Deccan_error("Could not initialize SDL2_ttf", ttferr);
     }
 
     int properties = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
     if((global_engine.window = SDL_CreateWindow(title, 0, 0, width, height, properties)) == NULL) {
-        deccan_error("Could not create window", sdlerr);
+        Deccan_error("Could not create window", sdlerr);
     }
 
     if((global_engine.renderer = SDL_CreateRenderer(global_engine.window, -1, SDL_RENDERER_ACCELERATED)) == NULL) {
-        deccan_error("Could not create renderer", sdlerr);
+        Deccan_error("Could not create renderer", sdlerr);
     }
 
     global_engine.is_running = true;
@@ -62,10 +62,10 @@ void _priv_Core_run(float fps) {
 
     global_engine.required_fps = fps;
 
-    deccan_Timer fps_timer, frm_timer;
-    deccan_timer_start(&fps_timer);
+    Deccan_Timer fps_timer, frm_timer;
+    Deccan_timer_start(&fps_timer);
     while(global_engine.is_running) {
-        deccan_timer_start(&frm_timer);
+        Deccan_timer_start(&frm_timer);
 
         SDL_PollEvent(&global_engine.event);
         switch(global_engine.event.type) {
@@ -80,7 +80,7 @@ void _priv_Core_run(float fps) {
         memcpy(_prev_keys, _key_states, sizeof(uint8_t)*SDL_NUM_SCANCODES);
         memcpy(_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
-        fps_avg = frames/deccan_timer_get_time(&fps_timer);
+        fps_avg = frames/Deccan_timer_get_time(&fps_timer);
         if(fps_avg > 20000) { fps_avg = 0.0f; }
 
         int index = stbds_arrlen(global_engine.scenes)-1;
@@ -94,11 +94,11 @@ void _priv_Core_run(float fps) {
 
         frames++;
         
-        int frm_ticks = deccan_timer_get_time_ms(&frm_timer);
+        int frm_ticks = Deccan_timer_get_time_ms(&frm_timer);
 		int ticks_per_frame = 1000/global_engine.required_fps;
 
 		if(frm_ticks < ticks_per_frame) {
-            deccan_delay(ticks_per_frame - frm_ticks);
+            Deccan_delay(ticks_per_frame - frm_ticks);
 		}
     }
     global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->at_end();
@@ -126,8 +126,8 @@ float _priv_Core_get_framerate_limit() {
     return global_engine.required_fps;
 }
 
-deccan_Scene *_priv_Scene_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {
-    deccan_Scene *scene = malloc(sizeof(deccan_Scene));
+Deccan_Scene *_priv_Scene_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {
+    Deccan_Scene *scene = malloc(sizeof(Deccan_Scene));
     
     scene->name = malloc(sizeof(char*)*strlen(name)); strcpy(scene->name, name);
     scene->is_paused = false;
@@ -139,7 +139,7 @@ deccan_Scene *_priv_Scene_new_scene(const char *name, state_func_ptr(ab), state_
     return scene;
 }
 
-void _priv_Scene_add_scene(deccan_Scene *scene, bool is_replacing) {
+void _priv_Scene_add_scene(Deccan_Scene *scene, bool is_replacing) {
     if(stbds_arrlen(global_engine.scenes) != 0) {
         if(is_replacing) { stbds_arrpop(global_engine.scenes); }
         else {
@@ -149,14 +149,14 @@ void _priv_Scene_add_scene(deccan_Scene *scene, bool is_replacing) {
     stbds_arrput(global_engine.scenes, scene);
 }
 
-void _priv_Scene_remove_scene(deccan_Scene *scene) {
+void _priv_Scene_remove_scene(Deccan_Scene *scene) {
     if(stbds_arrlen(global_engine.scenes) > 1) { 
         stbds_arrpop(global_engine.scenes);
         global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->is_paused = false;
     }
 }
 
-deccan_Scene *_priv_Scene_current_scene() {
+Deccan_Scene *_priv_Scene_current_scene() {
     return global_engine.scenes[stbds_arrlen(global_engine.scenes)-1];
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-static void deccan_error(const char *str, ...) {
+static void Deccan_error(const char *str, ...) {
     va_list args;
     printf("Fatal Error: %s: ", str);
     va_start(args, str);

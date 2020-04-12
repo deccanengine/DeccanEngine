@@ -34,7 +34,7 @@ typedef struct _key_code_list {
         up;
 } _key_code_list;
 
-static _key_code_list deccan_key = { 
+static _key_code_list Deccan_Key = { 
      0, 
      4,  5,  6,  7,  8,  9,
     10, 11, 12, 13, 14, 15,
@@ -61,7 +61,7 @@ typedef struct _button_code_list {
     int left, middle, right, x1, x2; 
 } _button_code_list;
 
-static _button_code_list deccan_button = {
+static _button_code_list Deccan_Button = {
     1, 2, 3, 4, 5
 };
 
@@ -70,28 +70,28 @@ typedef struct {
     bool is_pressed;
     bool is_released;
     bool is_held;
-} deccan_KeyState;
+} Deccan_KeyState;
 
 typedef struct {
     bool is_down;
     bool is_up;
-} deccan_MouseState;
+} Deccan_MouseState;
 
 typedef struct {
     int32_t x, y;
-} deccan_MousePos;
+} Deccan_MousePos;
 
-deccan_KeyState _priv_Input_get_key(int key_code);
-deccan_MouseState _priv_Input_get_mouse_button(int button_code);
-deccan_MousePos _priv_Input_get_mouse_pos();
+Deccan_KeyState _priv_Input_get_key(int key_code);
+Deccan_MouseState _priv_Input_get_mouse_button(int button_code);
+Deccan_MousePos _priv_Input_get_mouse_pos();
 
 typedef struct _priv_Input {
-    deccan_KeyState (*get_key)(int key_code);
-    deccan_MouseState (*get_mouse_button)(int button_code);
-    deccan_MousePos (*get_mouse_pos)();
+    Deccan_KeyState (*get_key)(int key_code);
+    Deccan_MouseState (*get_mouse_button)(int button_code);
+    Deccan_MousePos (*get_mouse_pos)();
 } _priv_Input;
 
-static _priv_Input deccan_Input = {
+static _priv_Input Deccan_Input = {
     _priv_Input_get_key, _priv_Input_get_mouse_button, _priv_Input_get_mouse_pos
 };
 
