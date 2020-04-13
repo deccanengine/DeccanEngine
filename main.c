@@ -28,7 +28,8 @@ void step() {
     else {
         col = ColorList.black;
     }
-    Renderer.draw_rect((SDL_Rect){x, y, 50, 50}, true, col);
+    Renderer.draw_rect((Rect){x, y, 50, 50}, true, col);
+    Renderer.draw_circle((Vector3i){x+100, y+100, 50}, true, col);
 
     /*
     int w, h;

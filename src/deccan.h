@@ -13,6 +13,7 @@
 #include "core/asset.h"
 
 #include "renderer/renderer.h"
+#include "renderer/color.h"
 
 #include "utils/log.h"
 #include "utils/timer.h"
@@ -28,18 +29,23 @@
     #define KeyState Deccan_KeyState
     #define MouseState Deccan_MouseState
     #define MousePos Deccan_MousePos
+    
     #define Color Deccan_Color
+    #define Rect Deccan_Rect
+    
     #define Timer Deccan_Timer 
     #define Vector2i Deccan_Vector2i
     #define Vector2u Deccan_Vector2u
     #define Vector2f Deccan_Vector2f
+    #define Vector3i Deccan_Vector3i
 
     #define Core Deccan_Core
     #define Scenes Deccan_Scenes
-    #define Renderer Deccan_Renderer
-    #define ColorList Deccan_ColorList
     #define Key Deccan_Key
     #define Button Deccan_Button
     #define Input Deccan_Input
     #define Asset Deccan_Asset
+
+    #define Renderer Deccan_Renderer
+    #define ColorList Deccan_ColorList
 #endif
