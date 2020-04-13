@@ -36,12 +36,19 @@ static _priv_ColorList Deccan_ColorList = {
 void _priv_Renderer_clear(Deccan_Color color);
 void _priv_Renderer_set_color(Deccan_Color color);
 
+void _priv_Renderer_draw_point(Deccan_Vector2i pos, Deccan_Color color);
+void _priv_Renderer_draw_rect(SDL_Rect rect, bool fill, Deccan_Color color);
+
 typedef struct _priv_Renderer {
     void (*clear)(Deccan_Color color);
     void (*set_color)(Deccan_Color color);
+    void (*draw_point)(Deccan_Vector2i pos, Deccan_Color color);
+    void (*draw_rect)(SDL_Rect rect, bool fill, Deccan_Color color);
 } _priv_Renderer;
 
 static _priv_Renderer Deccan_Renderer = {
     _priv_Renderer_clear,
-    _priv_Renderer_set_color
+    _priv_Renderer_set_color,
+    _priv_Renderer_draw_point,
+    _priv_Renderer_draw_rect
 };
