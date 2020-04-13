@@ -75,3 +75,16 @@ void _priv_Renderer_draw_circle(Deccan_Vector3i circle, bool fill, Deccan_Color 
 
 	//return true;    
 }
+
+void _priv_Renderer_draw_texture(Deccan_Vector2i pos, SDL_Texture *texture) {
+    SDL_Rect rect = { pos.x, pos.y, 0, 0 };
+    SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+    SDL_RenderCopy(Deccan_Core.get_global_engine()->renderer, texture, NULL, &rect);
+}
+
+void _priv_Renderer_draw_scaled_texture(Deccan_Vector2i pos, Deccan_Vector2f scale, SDL_Texture *texture) {
+    int32_t width, height;
+    SDL_QueryTexture(texture, NULL, NULL, &width, &height);
+    SDL_RenderCopy(Deccan_Core.get_global_engine()->renderer, 
+                   texture, NULL, &(SDL_Rect){pos.x, pos.y, width*scale.x, height*scale.y}); 
+} 

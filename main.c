@@ -3,7 +3,7 @@
 
 void begin() {
     /* Start here */
-    //Asset.load_texture("arrow", "arrow0.png");
+    Asset.load_texture("arrow", "arrow0.png");
 }
 
 int x = 100, y = 100;
@@ -30,13 +30,7 @@ void step() {
     }
     Renderer.draw_rect((Rect){x, y, 50, 50}, true, col);
     Renderer.draw_circle((Vector3i){x+100, y+100, 50}, true, col);
-
-    /*
-    int w, h;
-    SDL_Texture *tex = Asset.get_texture("arrow");
-    SDL_QueryTexture(tex, NULL, NULL, &w, &h);
-    SDL_RenderCopy(Core.get_global_engine()->renderer, tex, NULL, &(SDL_Rect){x, y, w, h});
-    */
+    Renderer.draw_texture((Vector2i){200, 200}, Asset.get_texture("arrow"));
 }
 
 void end() {

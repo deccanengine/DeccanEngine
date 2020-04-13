@@ -23,6 +23,9 @@ void _priv_Renderer_draw_line(Deccan_Vector2i start, Deccan_Vector2i end, Deccan
 void _priv_Renderer_draw_line2(int32_t x1, int32_t y1, int32_t x2, int32_t y2, Deccan_Color color);
 void _priv_Renderer_draw_rect(Deccan_Rect rect, bool fill, Deccan_Color color);
 void _priv_Renderer_draw_circle(Deccan_Vector3i circle, bool fill, Deccan_Color color);
+/* May be temporary */
+void _priv_Renderer_draw_texture(Deccan_Vector2i pos, SDL_Texture *texture);
+void _priv_Renderer_draw_scaled_texture(Deccan_Vector2i pos, Deccan_Vector2f scale, SDL_Texture *texture);
 
 typedef struct _priv_Renderer {
     void (*clear)(Deccan_Color color);
@@ -33,6 +36,8 @@ typedef struct _priv_Renderer {
     void (*draw_line2)(int32_t x1, int32_t y1, int32_t x2, int32_t y2, Deccan_Color color);
     void (*draw_rect)(Deccan_Rect rect, bool fill, Deccan_Color color);
     void (*draw_circle)(Deccan_Vector3i circle, bool fill, Deccan_Color color);
+    void (*draw_texture)(Deccan_Vector2i pos, SDL_Texture *texture);
+    void (*draw_scaled_texture)(Deccan_Vector2i pos, Deccan_Vector2f scale, SDL_Texture *texture);
 } _priv_Renderer;
 
 static _priv_Renderer Deccan_Renderer = {
@@ -43,5 +48,7 @@ static _priv_Renderer Deccan_Renderer = {
     _priv_Renderer_draw_line,
     _priv_Renderer_draw_line2,
     _priv_Renderer_draw_rect,
-    _priv_Renderer_draw_circle
+    _priv_Renderer_draw_circle,
+    _priv_Renderer_draw_texture,
+    _priv_Renderer_draw_scaled_texture
 };
