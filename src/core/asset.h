@@ -6,7 +6,7 @@
  */
 
 #pragma once
-#include "config.h"
+#include "../config.h"
 #include "core.h"
 
 void _priv_Asset_load_texture(const char *name, const char *path);

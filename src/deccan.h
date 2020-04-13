@@ -6,16 +6,17 @@
  */
 
 #pragma once
-#include "src/config.h"
+#include "config.h"
 
-#include "src/core.h"
-#include "src/renderer.h"
-#include "src/input.h"
-#include "src/asset.h"
+#include "core/core.h"
+#include "core/input.h"
+#include "core/asset.h"
 
-#include "src/utils/log.h"
-#include "src/utils/timer.h"
-#include "src/utils/vector.h"
+#include "renderer/renderer.h"
+
+#include "utils/log.h"
+#include "utils/timer.h"
+#include "utils/vector.h"
 
 #ifdef using_namespace_Deccan
     #define DECCAN_SHORT_NAMES

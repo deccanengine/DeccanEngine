@@ -1,5 +1,5 @@
 #define using_namespace_Deccan
-#include "deccan.h"
+#include "src/deccan.h"
 
 void begin() {
     /* Start here */

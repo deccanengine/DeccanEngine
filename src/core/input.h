@@ -6,9 +6,9 @@
  */
 
 #pragma once
-#include "config.h"
+#include "../config.h"
 #include "core.h"
-#include "utils/vector.h"
+#include "../utils/vector.h"
 
 uint8_t _key_states[SDL_NUM_SCANCODES], _prev_keys[SDL_NUM_SCANCODES];
 

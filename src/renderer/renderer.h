@@ -6,8 +6,8 @@
  */
 
 #pragma once
-#include "config.h"
-#include "core.h"
+#include "../config.h"
+#include "../core/core.h"
 
 typedef struct {
     uint r, g, b, a;

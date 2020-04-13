@@ -7,11 +7,11 @@
 
 #pragma once
 
-#include "config.h"
+#include "../config.h"
 #include "input.h"
-#include "utils/log.h"
-#include "utils/timer.h"
-#include "utils/vector.h"
+#include "../utils/log.h"
+#include "../utils/timer.h"
+#include "../utils/vector.h"
 
 typedef struct {
     char *name;
