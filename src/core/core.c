@@ -94,9 +94,17 @@ void _priv_Core_run(float fps) {
         int index = stbds_arrlen(global_engine.scenes)-1;
         if(global_engine.scenes[index]->is_first_frame == true) {
             global_engine.scenes[index]->at_begining();
+            for(int i=0; i<stbds_arrlen(global_engine.scenes[index]->objects); i++) {
+                Deccan_GameObject *obj = global_engine.scenes[index]->objects[i];
+                obj->at_beginning(obj);
+            }
             global_engine.scenes[index]->is_first_frame = false;
         }
         global_engine.scenes[index]->at_step();
+        for(int i=0; i<stbds_arrlen(global_engine.scenes[index]->objects); i++) {
+            Deccan_GameObject *obj = global_engine.scenes[index]->objects[i];
+            obj->at_step(obj);
+        }
         
         SDL_RenderPresent(global_engine.renderer);
 
@@ -138,47 +146,4 @@ bool _priv_Core_get_fullscreen_status() {
 
 float _priv_Core_get_framerate_limit() {
     return global_engine.required_fps;
-}
-
-/* Scene Management */
-Deccan_Scene *_priv_Scene_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {
-    Deccan_Scene *scene = malloc(sizeof(Deccan_Scene));
-    
-    scene->name = malloc(sizeof(char*)*strlen(name)); strcpy(scene->name, name);
-    scene->is_paused = false;
-    scene->is_first_frame = true;
-    scene->at_begining = ab;
-    scene->at_step = as;
-    scene->at_end = ae;
-
-    return scene;
-}
-
-void _priv_Scene_add_scene(Deccan_Scene *scene, bool is_replacing) {
-    if(stbds_arrlen(global_engine.scenes) != 0) {
-        if(is_replacing) { stbds_arrpop(global_engine.scenes); }
-        else {
-            global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->is_paused = true;
-        }
-    }
-    stbds_arrput(global_engine.scenes, scene);
-}
-
-void _priv_Scene_remove_scene(Deccan_Scene *scene) {
-    if(stbds_arrlen(global_engine.scenes) > 1) { 
-        stbds_arrpop(global_engine.scenes);
-        global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->is_paused = false;
-    }
-}
-
-Deccan_Scene *_priv_Scene_current_scene() {
-    return global_engine.scenes[stbds_arrlen(global_engine.scenes)-1];
-}
-
-void _priv_Scene_pause_scene(bool pause) {
-    global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->is_paused = pause;
-}
-
-bool _priv_Scene_is_scene_paused() {
-    return global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->is_paused;
 }

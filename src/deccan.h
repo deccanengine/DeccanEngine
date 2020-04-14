@@ -11,6 +11,8 @@
 #include "core/core.h"
 #include "core/input.h"
 #include "core/asset.h"
+#include "core/scene.h"
+#include "core/object.h"
 
 #include "renderer/renderer.h"
 #include "renderer/color.h"
@@ -26,6 +28,7 @@
 #ifdef DECCAN_SHORT_NAMES 
     #define Info Deccan_Info
     #define Scene Deccan_Scene
+    #define GameObject Deccan_GameObject
     #define KeyState Deccan_KeyState
     #define MouseState Deccan_MouseState
     #define MousePos Deccan_MousePos
@@ -41,6 +44,7 @@
 
     #define Core Deccan_Core
     #define Scenes Deccan_Scenes
+    #define Object Deccan_Object
     #define Key Deccan_Key
     #define Button Deccan_Button
     #define Input Deccan_Input
