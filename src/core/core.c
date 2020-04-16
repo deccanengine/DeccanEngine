@@ -109,6 +109,12 @@ void _priv_Core_run(float fps) {
             Deccan_GameObject *obj = scene->objects[i];
             obj->at_step(obj);
         }
+
+        scene->at_render();
+        for(int i=0; i<scene->object_count; i++) {
+            Deccan_GameObject *obj = scene->objects[i];
+            obj->at_render(obj);
+        }
         
         SDL_RenderPresent(global_engine.renderer);
 

@@ -9,26 +9,27 @@
 #include "../config.h"
 #include "scene.h"
 
+#define obj_func(x) void (*x)(Deccan_GameObject *object)
+
 typedef struct Deccan_GameObject Deccan_GameObject;
 typedef struct Deccan_GameObject {
     char *name, *type;
     int32_t x, y;
     bool dead, hidden;
 
-    void (*at_beginning)(Deccan_GameObject *object);
-    void (*at_step)(Deccan_GameObject *object);
-    void (*at_end)(Deccan_GameObject *object);
+    obj_func(at_beginning);
+    obj_func(at_step);
+    obj_func(at_render);
+    obj_func(at_end);
 } Deccan_GameObject;
 
-Deccan_GameObject *_priv_Object_new_object(const char *name, const char *type, void (*ab)(Deccan_GameObject *object), 
-    void (*as)(Deccan_GameObject *object), void (*ae)(Deccan_GameObject *object));
+Deccan_GameObject *_priv_Object_new_object(const char *name, const char *type, obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
 void _priv_Object_instantiate_object(Deccan_GameObject *object);
 
 #ifdef __STDC__
 
     typedef struct _priv_Object {
-        Deccan_GameObject *(*new_object)(const char *name, const char *type, void (*ab)(Deccan_GameObject *object), 
-            void (*as)(Deccan_GameObject *object), void (*ae)(Deccan_GameObject *object));
+        Deccan_GameObject *(*new_object)(const char *name, const char *type, obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
         void (*instantiate_object)(Deccan_GameObject *object);
     } _priv_Object;
 
@@ -40,3 +41,5 @@ void _priv_Object_instantiate_object(Deccan_GameObject *object);
 #elif __cplusplus
 
 #endif
+
+#undef obj_func

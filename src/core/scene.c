@@ -7,7 +7,9 @@
 
 #include "scene.h"
 
-Deccan_Scene *_priv_Scene_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {
+#define void_func(x) void (*x)(void)
+
+Deccan_Scene *_priv_Scene_new_scene(const char *name, void_func(ab), void_func(as), void_func(ar), void_func(ae)) {
     Deccan_Scene *scene = malloc(sizeof(Deccan_Scene));
     
     scene->name = malloc(sizeof(char*)*strlen(name)); strcpy(scene->name, name);
@@ -17,10 +19,13 @@ Deccan_Scene *_priv_Scene_new_scene(const char *name, state_func_ptr(ab), state_
     scene->object_count = 0;
     scene->at_begining = ab;
     scene->at_step = as;
+    scene->at_render = ar;
     scene->at_end = ae;
 
     return scene;
 }
+
+#undef void_func
 
 void _priv_Scene_add_scene(Deccan_Scene *scene, bool is_replacing) {
     Deccan_Info *engine = Deccan_Core.get_global_engine();

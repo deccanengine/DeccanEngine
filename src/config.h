@@ -23,5 +23,3 @@
 #define sdlerr SDL_GetError()
 #define imgerr IMG_GetError()
 #define ttferr TTF_GetError()
-
-#define state_func_ptr(x) void(*x)(void)
