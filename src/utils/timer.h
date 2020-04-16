@@ -8,34 +8,33 @@
 #pragma once
 #include "../config.h"
 
-typedef struct {
+typedef struct Deccan_Timer Deccan_Timer;
+typedef struct Deccan_Timer {
     float start_ticks, paused_ticks;
     bool is_running, is_paused;
+
+    void (*start)(Deccan_Timer *timer);
+    void (*stop) (Deccan_Timer *timer);
+    void (*pause)(Deccan_Timer *timer);
+    float (*get_time)(Deccan_Timer *timer);
+    float (*get_time_ms)(Deccan_Timer *timer);
 } Deccan_Timer;
 
+void _priv_Timer_start(Deccan_Timer *timer);
+void _priv_Timer_stop(Deccan_Timer *timer);
+void _priv_Timer_pause(Deccan_Timer *timer);
+float _priv_Timer_get_time(Deccan_Timer *timer);
+float _priv_Timer_get_time_ms(Deccan_Timer *timer);
 
-static inline void _priv_delay(int32_t ms) { SDL_Delay(ms); }
-
-void _priv_timer_start(Deccan_Timer *timer);
-void _priv_timer_stop(Deccan_Timer *timer);
-void _priv_timer_pause(Deccan_Timer *timer);
-float _priv_timer_get_time(Deccan_Timer *timer);
-float _priv_timer_get_time_ms(Deccan_Timer *timer);
+static inline void _priv_Clock_delay(int32_t ms) { SDL_Delay(ms); }
+Deccan_Timer *_priv_Clock_new_timer();
 
 typedef struct _priv_Clock {
     void (*delay)(int32_t ms);
-    void (*timer_start)(Deccan_Timer *timer);
-    void (*timer_stop)(Deccan_Timer *timer);
-    void (*timer_pause)(Deccan_Timer *timer);
-    float (*timer_get_time)(Deccan_Timer *timer);
-    float (*timer_get_time_ms)(Deccan_Timer *timer);
+    Deccan_Timer *(*new_timer)();
 } _priv_Clock;
 
 static _priv_Clock Deccan_Clock = {
-    _priv_delay,
-    _priv_timer_start,
-    _priv_timer_stop,
-    _priv_timer_pause,
-    _priv_timer_get_time,
-    _priv_timer_get_time_ms
+    _priv_Clock_delay,
+    _priv_Clock_new_timer
 };

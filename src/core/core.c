@@ -70,10 +70,11 @@ void _priv_Core_run(float fps) {
 
     global_engine.required_fps = fps;
 
-    Deccan_Timer fps_timer, frm_timer;
-    Deccan_Clock.timer_start(&fps_timer);
+    Deccan_Timer fps_timer = *Deccan_Clock.new_timer();
+    Deccan_Timer frm_timer = *Deccan_Clock.new_timer();
+    fps_timer.start(&fps_timer);
     while(global_engine.is_running) {
-        Deccan_Clock.timer_start(&frm_timer);
+        frm_timer.start(&frm_timer);
 
         SDL_PollEvent(&global_engine.event);
         switch(global_engine.event.type) {
@@ -88,7 +89,7 @@ void _priv_Core_run(float fps) {
         memcpy(_prev_keys, _key_states, sizeof(uint8_t)*SDL_NUM_SCANCODES);
         memcpy(_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
-        fps_avg = frames/Deccan_Clock.timer_get_time(&fps_timer);
+        fps_avg = frames/fps_timer.get_time(&fps_timer);
         if(fps_avg > 20000) { fps_avg = 0.0f; }
 
         int index = stbds_arrlen(global_engine.scenes)-1;
@@ -110,7 +111,7 @@ void _priv_Core_run(float fps) {
 
         frames++;
         
-        int frm_ticks = Deccan_Clock.timer_get_time_ms(&frm_timer);
+        int frm_ticks = frm_timer.get_time_ms(&frm_timer);
 		int ticks_per_frame = 1000/global_engine.required_fps;
 
 		if(frm_ticks < ticks_per_frame) {
