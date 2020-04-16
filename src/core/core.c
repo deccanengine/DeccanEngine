@@ -22,29 +22,29 @@ Deccan_Info *_priv_Core_get_global_engine() {
 int _priv_Core_init(const char *title, int32_t width, int32_t height) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
-        Deccan_Log.error("Could not initialize SDL2", sdlerr);
+        Deccan_Log.error("Could not initialize SDL2", SDL_GetError());
     }
 
     int image_flags = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF;
     if(!IMG_Init(image_flags) & !image_flags) {
-        Deccan_Log.error("Could not initialize SDL2_image", imgerr);
+        Deccan_Log.error("Could not initialize SDL2_image", IMG_GetError());
     }
 
     if(TTF_Init() != 0) {
-        Deccan_Log.error("Could not initialize SDL2_ttf", ttferr);
+        Deccan_Log.error("Could not initialize SDL2_ttf", TTF_GetError());
     }
 
     int properties = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
     if((global_engine.window = SDL_CreateWindow(title, 0, 0, width, height, properties)) == NULL) {
-        Deccan_Log.error("Could not create window", sdlerr);
+        Deccan_Log.error("Could not create window", SDL_GetError());
     }
 
     if((global_engine.renderer = SDL_CreateRenderer(global_engine.window, -1, SDL_RENDERER_ACCELERATED)) == NULL) {
-        Deccan_Log.error("Could not create renderer", sdlerr);
+        Deccan_Log.error("Could not create renderer", SDL_GetError());
     }
 
     global_engine.is_running = true;
-    global_engine.required_fps = 60.0f;
+    global_engine.fps_req = 60.0f;
 
     global_engine.scenes = NULL;
     global_engine.scene_count = 0;
@@ -68,9 +68,8 @@ void _priv_Core_quit() {
 
 void _priv_Core_run(float fps) {
     int frames = 0;
-    float fps_avg;
 
-    global_engine.required_fps = fps;
+    global_engine.fps_req = fps;
 
     Deccan_Timer fps_timer = *Deccan_Clock.new_timer();
     Deccan_Timer frm_timer = *Deccan_Clock.new_timer();
@@ -91,8 +90,8 @@ void _priv_Core_run(float fps) {
         memcpy(_prev_keys, _key_states, sizeof(uint8_t)*SDL_NUM_SCANCODES);
         memcpy(_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
-        fps_avg = frames/fps_timer.get_time(&fps_timer);
-        if(fps_avg > 20000) { fps_avg = 0.0f; }
+        global_engine.fps_avg = frames/fps_timer.get_time(&fps_timer);
+        if(global_engine.fps_avg > 20000) { global_engine.fps_avg = 0.0f; }
 
         int index = global_engine.scene_count-1;
         Deccan_Scene *scene = global_engine.scenes[index];
@@ -121,15 +120,24 @@ void _priv_Core_run(float fps) {
         frames++;
         
         int frm_ticks = frm_timer.get_time_ms(&frm_timer);
-		int ticks_per_frame = 1000/global_engine.required_fps;
+		int ticks_per_frame = 1000/global_engine.fps_req;
 
 		if(frm_ticks < ticks_per_frame) {
             Deccan_Clock.delay(ticks_per_frame - frm_ticks);
 		}
-        printf("fps: %f\n", fps_avg);
     }
-    global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->at_end();
+    Deccan_Scene *scene = global_engine.scenes[global_engine.scene_count-1];
+    scene->at_end();
+    for(int i=0; i<scene->object_count; i++) {
+        Deccan_GameObject *obj = scene->objects[i];
+        obj->at_end(obj);
+    }
     Deccan_Core.quit();
+}
+
+/* Core Settings Setters */
+void _priv_Core_set_title(const char *name) {
+    SDL_SetWindowTitle(global_engine.window, name);
 }
 
 void _priv_Core_set_mode(int32_t width, int32_t height) {
@@ -142,7 +150,12 @@ void _priv_Core_set_fullscreen() {
 }
 
 void _priv_Core_set_framerate_limit(float fps){
-    global_engine.required_fps = fps;
+    global_engine.fps_req = fps;
+}
+
+/* Core Settings Getters */
+const char *_priv_Core_get_title() {
+    return SDL_GetWindowTitle(global_engine.window);
 }
 
 Deccan_Vector2i _priv_Core_get_mode() {
@@ -156,5 +169,9 @@ bool _priv_Core_get_fullscreen_status() {
 }
 
 float _priv_Core_get_framerate_limit() {
-    return global_engine.required_fps;
+    return global_engine.fps_req;
+}
+
+float _priv_Core_get_average_framerate() {
+    return global_engine.fps_avg;
 }

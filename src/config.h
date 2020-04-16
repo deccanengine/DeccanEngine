@@ -19,7 +19,3 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "../depends/stb_ds.h"
-
-#define sdlerr SDL_GetError()
-#define imgerr IMG_GetError()
-#define ttferr TTF_GetError()
