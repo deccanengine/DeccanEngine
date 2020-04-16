@@ -22,7 +22,7 @@ Deccan_GameObject *_priv_Object_new_object(
 }
 
 void _priv_Object_instantiate_object(Deccan_GameObject *object) {
-    //if(Deccan_Scenes.current_scene()->objects != NULL) {
-        stbds_arrput(Deccan_Scenes.current_scene()->objects, object);
-    //}
+    Deccan_Scene *scene = Deccan_Scenes.current_scene(); 
+    stbds_arrput(scene->objects, object);
+    scene->object_count++;
 }

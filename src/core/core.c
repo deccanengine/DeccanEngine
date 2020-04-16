@@ -47,6 +47,8 @@ int _priv_Core_init(const char *title, int32_t width, int32_t height) {
     global_engine.required_fps = 60.0f;
 
     global_engine.scenes = NULL;
+    global_engine.scene_count = 0;
+
     global_engine.textures = NULL;
 
     memcpy(_prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
@@ -92,18 +94,19 @@ void _priv_Core_run(float fps) {
         fps_avg = frames/fps_timer.get_time(&fps_timer);
         if(fps_avg > 20000) { fps_avg = 0.0f; }
 
-        int index = stbds_arrlen(global_engine.scenes)-1;
-        if(global_engine.scenes[index]->is_first_frame == true) {
-            global_engine.scenes[index]->at_begining();
-            for(int i=0; i<stbds_arrlen(global_engine.scenes[index]->objects); i++) {
-                Deccan_GameObject *obj = global_engine.scenes[index]->objects[i];
+        int index = global_engine.scene_count-1;
+        Deccan_Scene *scene = global_engine.scenes[index];
+        if(scene->is_first_frame == true) {
+            scene->at_begining();
+            for(int i=0; i<scene->object_count; i++) {
+                Deccan_GameObject *obj = scene->objects[i];
                 obj->at_beginning(obj);
             }
-            global_engine.scenes[index]->is_first_frame = false;
+            scene->is_first_frame = false;
         }
-        global_engine.scenes[index]->at_step();
-        for(int i=0; i<stbds_arrlen(global_engine.scenes[index]->objects); i++) {
-            Deccan_GameObject *obj = global_engine.scenes[index]->objects[i];
+        scene->at_step();
+        for(int i=0; i<scene->object_count; i++) {
+            Deccan_GameObject *obj = scene->objects[i];
             obj->at_step(obj);
         }
         
@@ -117,9 +120,10 @@ void _priv_Core_run(float fps) {
 		if(frm_ticks < ticks_per_frame) {
             Deccan_Clock.delay(ticks_per_frame - frm_ticks);
 		}
+        printf("fps: %f\n", fps_avg);
     }
     global_engine.scenes[stbds_arrlen(global_engine.scenes)-1]->at_end();
-    _priv_Core_quit();
+    Deccan_Core.quit();
 }
 
 void _priv_Core_set_mode(int32_t width, int32_t height) {

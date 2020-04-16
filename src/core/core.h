@@ -22,6 +22,7 @@ typedef struct Deccan_Scene {
     bool is_first_frame;
 
     Deccan_GameObject **objects;
+    int object_count;
 
     state_func_ptr(at_begining);
     state_func_ptr(at_step);
@@ -44,6 +45,7 @@ typedef struct Deccan_Info {
 
     /* Scene manager */
     Deccan_Scene **scenes;
+    int scene_count;
 
     /* Asset manager */
     struct {

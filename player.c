@@ -6,10 +6,12 @@ void _player_begin(GameObject *this) {
 }
 
 void _player_step(GameObject *this) {
-    if(Input.key_held(Key.w)){ this->y-=1; }
-    else if(Input.key_held(Key.s)){ this->y+=1; }
-    else if(Input.key_held(Key.a)){ this->x-=1; }
-    else if(Input.key_held(Key.d)){ this->x+=1; }
+    int mod = 5;
+
+    if(Input.key_held(Key.w)){ this->y -= mod; }
+    else if(Input.key_held(Key.s)){ this->y += mod; }
+    else if(Input.key_held(Key.a)){ this->x -= mod; }
+    else if(Input.key_held(Key.d)){ this->x += mod; }
     
     Color col;
     Vector2i pos = Input.get_mouse_pos();

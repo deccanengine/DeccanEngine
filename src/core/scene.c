@@ -14,6 +14,7 @@ Deccan_Scene *_priv_Scene_new_scene(const char *name, state_func_ptr(ab), state_
     scene->is_paused = false;
     scene->is_first_frame = true;
     scene->objects = NULL;
+    scene->object_count = 0;
     scene->at_begining = ab;
     scene->at_step = as;
     scene->at_end = ae;
@@ -22,30 +23,34 @@ Deccan_Scene *_priv_Scene_new_scene(const char *name, state_func_ptr(ab), state_
 }
 
 void _priv_Scene_add_scene(Deccan_Scene *scene, bool is_replacing) {
-    if(stbds_arrlen(Deccan_Core.get_global_engine()->scenes) != 0) {
-        if(is_replacing) { stbds_arrpop(Deccan_Core.get_global_engine()->scenes); }
-        else {
-            Deccan_Core.get_global_engine()->scenes[stbds_arrlen(Deccan_Core.get_global_engine()->scenes)-1]->is_paused = true;
-        }
+    Deccan_Info *engine = Deccan_Core.get_global_engine();
+    if(engine->scene_count != 0) {
+        if(is_replacing) { stbds_arrpop(engine->scenes); engine->scene_count--; }
+        else { engine->scenes[engine->scene_count-1]->is_paused = true; }
     }
-    stbds_arrput(Deccan_Core.get_global_engine()->scenes, scene);
+    stbds_arrput(engine->scenes, scene);
+    engine->scene_count++;
 }
 
 void _priv_Scene_remove_scene(Deccan_Scene *scene) {
-    if(stbds_arrlen(Deccan_Core.get_global_engine()->scenes) > 1) { 
-        stbds_arrpop(Deccan_Core.get_global_engine()->scenes);
-        Deccan_Core.get_global_engine()->scenes[stbds_arrlen(Deccan_Core.get_global_engine()->scenes)-1]->is_paused = false;
+    Deccan_Info *engine = Deccan_Core.get_global_engine();
+    if(engine->scene_count > 1) { 
+        stbds_arrpop(engine->scenes);
+        engine->scenes[engine->scene_count-1]->is_paused = false;
     }
 }
 
 Deccan_Scene *_priv_Scene_current_scene() {
-    return Deccan_Core.get_global_engine()->scenes[stbds_arrlen(Deccan_Core.get_global_engine()->scenes)-1];
+    Deccan_Info *engine = Deccan_Core.get_global_engine();
+    return engine->scenes[engine->scene_count-1];
 }
 
 void _priv_Scene_pause_scene(bool pause) {
-    Deccan_Core.get_global_engine()->scenes[stbds_arrlen(Deccan_Core.get_global_engine()->scenes)-1]->is_paused = pause;
+    Deccan_Info *engine = Deccan_Core.get_global_engine();
+    engine->scenes[engine->scene_count-1]->is_paused = pause;
 }
 
 bool _priv_Scene_is_scene_paused() {
-    return Deccan_Core.get_global_engine()->scenes[stbds_arrlen(Deccan_Core.get_global_engine()->scenes)-1]->is_paused;
+    Deccan_Info *engine = Deccan_Core.get_global_engine();
+    return engine->scenes[engine->scene_count-1]->is_paused;
 }

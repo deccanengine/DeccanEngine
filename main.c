@@ -12,7 +12,6 @@ void step() {
     Renderer.clear(ColorList.white);
 
     /* Start here */
-    //player.at_step(&player);
 }
 
 void end() {
