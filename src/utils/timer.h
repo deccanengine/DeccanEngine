@@ -29,6 +29,8 @@ float _priv_Timer_get_time_ms(Deccan_Timer *timer);
 static inline void _priv_Clock_delay(int32_t ms) { SDL_Delay(ms); }
 Deccan_Timer *_priv_Clock_new_timer();
 
+#ifdef __STDC__
+
 typedef struct _priv_Clock {
     void (*delay)(int32_t ms);
     Deccan_Timer *(*new_timer)();
@@ -38,3 +40,7 @@ static _priv_Clock Deccan_Clock = {
     _priv_Clock_delay,
     _priv_Clock_new_timer
 };
+
+#elif __cplusplus
+
+#endif

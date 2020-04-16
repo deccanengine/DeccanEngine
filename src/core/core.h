@@ -67,33 +67,39 @@ Deccan_Vector2i _priv_Core_get_mode();
 bool _priv_Core_get_fullscreen_status();
 float _priv_Core_get_framerate_limit();
 
-typedef struct _priv_Core {
-    void (*set_global_engine)(Deccan_Info *engine);
-    Deccan_Info* (*get_global_engine)();
+#ifdef __STDC__
 
-    int  (*init)(const char *title, int32_t width, int32_t height);
-    void (*quit)();
-    void (*run)(float fps);
+    typedef struct _priv_Core {
+        void (*set_global_engine)(Deccan_Info *engine);
+        Deccan_Info* (*get_global_engine)();
 
-    void (*set_mode)(int32_t width, int32_t height);
-    void (*set_fullscreen)();
-    void (*set_framerate_limit)(float fps);
+        int  (*init)(const char *title, int32_t width, int32_t height);
+        void (*quit)();
+        void (*run)(float fps);
 
-    Deccan_Vector2i (*get_mode)();
-    bool  (*get_fullscreen_status)();
-    float (*get_framerate_limit)();
-} _priv_Core;
+        void (*set_mode)(int32_t width, int32_t height);
+        void (*set_fullscreen)();
+        void (*set_framerate_limit)(float fps);
 
-static _priv_Core Deccan_Core = {
-    _priv_Core_set_global_engine, 
-    _priv_Core_get_global_engine,
-    _priv_Core_init,
-    _priv_Core_quit,
-    _priv_Core_run,
-    _priv_Core_set_mode,
-    _priv_Core_set_fullscreen,
-    _priv_Core_set_framerate_limit,
-    _priv_Core_get_mode,
-    _priv_Core_get_fullscreen_status,
-    _priv_Core_get_framerate_limit
-};
+        Deccan_Vector2i (*get_mode)();
+        bool  (*get_fullscreen_status)();
+        float (*get_framerate_limit)();
+    } _priv_Core;
+
+    static _priv_Core Deccan_Core = {
+        _priv_Core_set_global_engine, 
+        _priv_Core_get_global_engine,
+        _priv_Core_init,
+        _priv_Core_quit,
+        _priv_Core_run,
+        _priv_Core_set_mode,
+        _priv_Core_set_fullscreen,
+        _priv_Core_set_framerate_limit,
+        _priv_Core_get_mode,
+        _priv_Core_get_fullscreen_status,
+        _priv_Core_get_framerate_limit
+    };
+
+#elif __cplusplus
+
+#endif

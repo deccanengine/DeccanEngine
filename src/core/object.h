@@ -1,3 +1,10 @@
+/* Deccan Game Engine - C11 2D SDL Game Engine.
+ * Copyright 2020 Ayush Bardhan Tripathy
+ *
+ * This software is licensed under MIT License.
+ * See LICENSE.md included with this package for more info.
+ */
+
 #pragma once
 #include "../config.h"
 #include "scene.h"
@@ -17,13 +24,19 @@ Deccan_GameObject *_priv_Object_new_object(const char *name, const char *type, v
     void (*as)(Deccan_GameObject *object), void (*ae)(Deccan_GameObject *object));
 void _priv_Object_instantiate_object(Deccan_GameObject *object);
 
-typedef struct _priv_Object {
-    Deccan_GameObject *(*new_object)(const char *name, const char *type, void (*ab)(Deccan_GameObject *object), 
-        void (*as)(Deccan_GameObject *object), void (*ae)(Deccan_GameObject *object));
-    void (*instantiate_object)(Deccan_GameObject *object);
-} _priv_Object;
+#ifdef __STDC__
 
-static _priv_Object Deccan_Object = { 
-    _priv_Object_new_object,
-    _priv_Object_instantiate_object 
-};
+    typedef struct _priv_Object {
+        Deccan_GameObject *(*new_object)(const char *name, const char *type, void (*ab)(Deccan_GameObject *object), 
+            void (*as)(Deccan_GameObject *object), void (*ae)(Deccan_GameObject *object));
+        void (*instantiate_object)(Deccan_GameObject *object);
+    } _priv_Object;
+
+    static _priv_Object Deccan_Object = { 
+        _priv_Object_new_object,
+        _priv_Object_instantiate_object 
+    };
+
+#elif __cplusplus
+
+#endif

@@ -17,8 +17,14 @@ static void _priv_error(const char *str, ...) {
     exit(-1);
 }
 
+#ifdef __STDC__
+
 typedef struct _priv_Log {
     void (*error)(const char *str, ...);
 } _priv_Log;
 
 static _priv_Log Deccan_Log = { _priv_error };
+
+#elif __cplusplus
+
+#endif

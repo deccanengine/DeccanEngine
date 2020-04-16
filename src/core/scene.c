@@ -1,3 +1,10 @@
+/* Deccan Game Engine - C11 2D SDL Game Engine.
+ * Copyright 2020 Ayush Bardhan Tripathy
+ *
+ * This software is licensed under MIT License.
+ * See LICENSE.md included with this package for more info.
+ */
+
 #include "scene.h"
 
 Deccan_Scene *_priv_Scene_new_scene(const char *name, state_func_ptr(ab), state_func_ptr(as), state_func_ptr(ae)) {

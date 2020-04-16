@@ -1,4 +1,4 @@
-#define using_namespace_Deccan
+#define DECCAN_SHORT_NAMES
 #include "src/deccan.h"
 #include "player.h"
 
