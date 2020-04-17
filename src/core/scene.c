@@ -10,9 +10,9 @@
 #define void_func(x) void (*x)(void)
 
 Deccan_Scene *_priv_Scene_new_scene(const char *name, void_func(ab), void_func(as), void_func(ar), void_func(ae)) {
-    Deccan_Scene *scene = malloc(sizeof(Deccan_Scene));
+    Deccan_Scene *scene = New(Deccan_Scene, 1);
     
-    scene->name = malloc(sizeof(char*)*strlen(name)); strcpy(scene->name, name);
+    scene->name = NewString(name);
     scene->is_paused = false;
     scene->is_first_frame = true;
     scene->objects = NULL;

@@ -12,9 +12,9 @@
 Deccan_GameObject *_priv_Object_new_object(
     const char *name, const char *type, 
     obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae)) {
-    Deccan_GameObject *obj = malloc(sizeof(Deccan_GameObject));
-    obj->name = malloc(sizeof(char*)*strlen(name)); strcpy(obj->name, name);
-    obj->type = malloc(sizeof(char*)*strlen(type)); strcpy(obj->type, type);
+    Deccan_GameObject *obj = New(Deccan_GameObject, 1);
+    obj->name = NewString(name);
+    obj->type = NewString(type);
     obj->at_beginning = ab;
     obj->at_step = as;
     obj->at_render = ar;

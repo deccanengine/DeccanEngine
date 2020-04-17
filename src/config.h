@@ -19,3 +19,10 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "../depends/stb_ds.h"
+
+#define New(type,size) (type*)malloc(sizeof(type)*size);
+static inline char *NewString(const char *source) {
+    char *string = New(char, strlen(source));
+    strcpy(string, source);
+    return string;
+}
