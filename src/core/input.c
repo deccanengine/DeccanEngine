@@ -27,13 +27,12 @@ Deccan_KeyState _priv_Input_get_key(int key_code) {
     return key;
 }
 
-/* Partially broken: To be fixed: button up part */
 Deccan_MouseState _priv_Input_get_mouse_button(int button_code) {
     Deccan_MouseState button = {false, false};
 
-    if(Deccan_Core.get_global_engine()->event.type == SDL_MOUSEBUTTONDOWN) {
-        if(Deccan_Core.get_global_engine()->event.button.button == button_code) { button.is_down = true; }
-        else { button.is_up = true; }
+    if(Deccan_Core.get_global_engine()->event.button.button == button_code) {
+        if(Deccan_Core.get_global_engine()->event.type == SDL_MOUSEBUTTONDOWN) { button.is_down = true; }
+        else if(Deccan_Core.get_global_engine()->event.type == SDL_MOUSEBUTTONUP) { button.is_up = true; }
     }
 
     return button;
@@ -63,10 +62,9 @@ bool _priv_Input_button_down(int button_code) {
            engine->event.button.button == button_code;
 }
 
-/* Broken: To be fixed */
 bool _priv_Input_button_up(int button_code) {
     Deccan_Info *engine = Deccan_Core.get_global_engine();
-    return engine->event.type != SDL_MOUSEBUTTONDOWN &&
-           engine->event.button.button != button_code;
+    return engine->event.type == SDL_MOUSEBUTTONUP &&
+           engine->event.button.button == button_code;
 }
 

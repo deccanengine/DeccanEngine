@@ -1,6 +1,9 @@
 #include "player.h"
 
+bool selected = false;
+
 Color col;
+Vector2i offset;
 
 void _player_begin(GameObject *this) {
     this->x = 100;
@@ -17,13 +20,19 @@ void _player_step(GameObject *this) {
     
     Vector2i pos = Input.get_mouse_pos();
     if(pos.x > this->x && pos.x < this->x+50 && pos.y > this->y && pos.y < this->y+50) {
+        col = ColorList.dark_green;
         if(Input.button_down(Button.left)) {
-            col = ColorList.green;
+            col = ColorList.green; selected = true;
+            offset.x = pos.x - this->x;
+            offset.y = pos.y - this->y;
         }
-        else { col = ColorList.dark_green; }
+        else if(Input.button_up(Button.left)) { selected = false; }
     }
-    else {
-        col = ColorList.black;
+    else { col = ColorList.black; }
+    
+    if(selected) {
+        this->x = pos.x - offset.x;
+        this->y = pos.y - offset.y;
     }
 }
 
