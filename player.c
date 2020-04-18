@@ -8,7 +8,7 @@ Vector2i offset;
 void _player_begin(GameObject *this) {
     this->position.x = 100;
     this->position.y = 100;
-    this->collider = Collision.new_rect_collider((Rect){this->position.x, this->position.y, 50, 50});
+    this->collider = Collision.new_rect_collider((PosRect){0, 0, 50, 50});
 }
 
 void _player_step(GameObject *this) {
@@ -20,28 +20,22 @@ void _player_step(GameObject *this) {
     else if(Input.key_held(Key.d)){ this->position.x += mod; }
     
     Vector2i pos = Input.get_mouse_pos();
-    /*
-    if(pos.x > this->position.x && pos.x < this->position.x+50 && 
-       pos.y > this->position.y && pos.y < this->position.y+50) {
-        col = ColorList.dark_green;
+    
+    if(Collision.test_vec(this, pos)) { 
+        col = ColorList.fuchsia;
         if(Input.button_down(Button.left)) {
-            col = ColorList.green; selected = true;
+            selected = true;
             offset.x = pos.x - this->position.x;
             offset.y = pos.y - this->position.y;
         }
         else if(Input.button_up(Button.left)) { selected = false; }
     }
     else { col = ColorList.black; }
-    */
-    if(Collision.check_rect_vec(this->collider.rect, pos)) { col = ColorList.fuchsia; }
-    else { col = ColorList.black; }
     
     if(selected) {
         this->position.x = pos.x - offset.x;
         this->position.y = pos.y - offset.y;
     }
-
-    this->collider.rect = (Rect){ this->position.x, this->position.y, 50, 50 };
 }
 
 void _player_render(GameObject *this) {

@@ -8,7 +8,7 @@
 #pragma once
 #include "../config.h"
 #include "../core/core.h"
-#include "../logic/rect.h"
+#include "../physics/rect.h"
 #include "color.h"
 
 void _priv_Renderer_clear(Deccan_Color color);

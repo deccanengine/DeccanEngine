@@ -17,6 +17,10 @@
 #include "renderer/renderer.h"
 #include "renderer/color.h"
 
+#include "physics/rect.h"
+#include "physics/collider.h"
+#include "physics/collision.h"
+
 #include "utils/log.h"
 #include "utils/timer.h"
 #include "utils/vector.h"
@@ -34,6 +38,7 @@
 
         #define Collider Deccan_Collider
         #define Rect Deccan_Rect
+        #define PosRect Deccan_PosRect
 
         #define Timer Deccan_Timer 
         #define Vector2i Deccan_Vector2i

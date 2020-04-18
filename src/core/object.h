@@ -8,7 +8,7 @@
 #pragma once
 #include "../config.h"
 #include "scene.h"
-#include "../logic/collision.h"
+#include "../physics/collider.h"
 #include "../utils/vector.h"
 
 #define obj_func(x) void (*x)(Deccan_GameObject *object)
