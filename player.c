@@ -8,7 +8,8 @@ Vector2i offset;
 void _player_begin(GameObject *this) {
     this->position.x = 100;
     this->position.y = 100;
-    this->collider = Collision.new_circle_collider((Circle){0, 0, 50});
+    this->collider = Collision.new_rect_collider((PosRect){0, 0, 50, 50});
+    //this->collider = Collision.new_circle_collider((Circle){0, 0, 50});
 }
 
 void _player_step(GameObject *this) {
@@ -42,8 +43,8 @@ void _player_step(GameObject *this) {
 }
 
 void _player_render(GameObject *this) {
-    //Renderer.draw_rect((Rect){this->position.x, this->position.y, 50, 50}, true, col);
-    Renderer.draw_circle((Circle){this->position.x, this->position.y, 50}, true, col);
+    Renderer.draw_rect((Rect){this->position.x, this->position.y, 50, 50}, true, col);
+    //Renderer.draw_circle((Circle){this->position.x, this->position.y, 50}, true, col);
 }
 
 void _player_end(GameObject *this) { }

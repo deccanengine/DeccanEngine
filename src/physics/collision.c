@@ -39,7 +39,7 @@ bool _priv_Collision_test_vec_from(Deccan_GameObject *obj, Deccan_Vector2i vec) 
             int32_t y = obj->position.y + obj->collider.circle.y;
             int32_t r = obj->collider.circle.radius;
             
-            double distance = ((x-vec.x)*(x-vec.x)) + ((y-vec.y)*(y-vec.y));
+            int64_t distance = ((x-vec.x)*(x-vec.x)) + ((y-vec.y)*(y-vec.y));
             if(distance < r*r) { return true; }
         }
         default: { return false; }
@@ -72,7 +72,7 @@ bool _priv_Collision_test_object_from(Deccan_GameObject *obj1, Deccan_GameObject
                 int32_t y2 = obj2->position.y + obj2->collider.circle.y;
                 int32_t r2 = obj2->collider.circle.radius;
 
-                double distance = ((x1-x2)*(x1-x2)) + ((y1-y2)*(y1-y2));
+                int64_t distance = ((x1-x2)*(x1-x2)) + ((y1-y2)*(y1-y2));
                 if(distance < (r1+r2)*(r1+r2)) { return true; }
             }
         }
@@ -81,7 +81,28 @@ bool _priv_Collision_test_object_from(Deccan_GameObject *obj1, Deccan_GameObject
     /* Remaining cases */
     if(type1 == Deccan_ColliderType_Vec && type2 == Deccan_ColliderType_Rect) { }
     else if(type1 == Deccan_ColliderType_Circle && type2 == Deccan_ColliderType_Vec) { }
-    else if(type1 == Deccan_ColliderType_Rect && type2 == Deccan_ColliderType_Circle) { }
+    else if(type1 == Deccan_ColliderType_Rect && type2 == Deccan_ColliderType_Circle) { 
+        int32_t cx, cy;
+
+        int32_t x1 = obj1->position.x + obj1->collider.rect.x1;
+        int32_t y1 = obj1->position.y + obj1->collider.rect.y1;
+        int32_t w  = obj1->collider.rect.x2;
+        int32_t h  = obj1->collider.rect.y2;
+
+        int32_t x2 = obj2->position.x + obj2->collider.circle.x;
+        int32_t y2 = obj2->position.y + obj2->collider.circle.y;
+
+        if(x2 < x1) { cx = x1; }
+        else if(x2 > x1 + w) { cx = x1 + w; }
+        else { cx = x2; }
+
+        if(y2 < y1) { cy = y1; }
+        else if(y2 > y1 + h) { cy = y1 + h; }
+        else { cy = y2; }
+
+        int64_t distance = ((cx-x2)*(cx-x2)) + ((cy-y2)*(cy-y2));
+        if(distance < (obj2->collider.circle.radius*obj2->collider.circle.radius)) { return true; }
+    }
 
     return false;
 }
