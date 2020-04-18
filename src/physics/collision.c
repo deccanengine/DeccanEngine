@@ -21,7 +21,7 @@ Deccan_Collider _priv_Collision_new_circle_collider(Deccan_Circle circle) {
     return coll;
 }
 
-bool _priv_Collision_test_vec(Deccan_GameObject *obj, Deccan_Vector2i vec) {
+bool _priv_Collision_test_vec_from(Deccan_GameObject *obj, Deccan_Vector2i vec) {
     switch(obj->collider.type) {
         case Deccan_ColliderType_Vec : {
             return obj->collider.vec.x == vec.x && obj->collider.vec.y == vec.y;
@@ -43,10 +43,9 @@ bool _priv_Collision_test_vec(Deccan_GameObject *obj, Deccan_Vector2i vec) {
         }
         default: { return false; }
     }
-    return false;
 }
 
-bool _priv_Collision_test_object(Deccan_GameObject *obj1, Deccan_GameObject *obj2) {
+bool _priv_Collision_test_object_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2) {
     /* Possible cases where v = vector, r = rect and c = circle
         v <-> v      r <-> r      c <-> c
         v <-> r      c <-> v      r <-> c 
@@ -59,16 +58,29 @@ bool _priv_Collision_test_object(Deccan_GameObject *obj1, Deccan_GameObject *obj
     if(type1 == type2) {
         switch(type1) {
             case Deccan_ColliderType_Vec: {
-                return obj1->collider.vec.x == obj2->collider.vec.x &&
-                       obj1->collider.vec.y == obj2->collider.vec.y;
+                return obj1->position.x+obj1->collider.vec.x == obj2->position.x+obj2->collider.vec.x &&
+                       obj1->position.y+obj1->collider.vec.y == obj2->position.y+obj2->collider.vec.y;
             }
             case Deccan_ColliderType_Rect: { /* To do */ }
-            case Deccan_ColliderType_Circle: { /* To do */}
+            case Deccan_ColliderType_Circle: {
+                int32_t x1 = obj1->position.x + obj1->collider.circle.x;
+                int32_t y1 = obj1->position.y + obj1->collider.circle.y;
+                int32_t r1 = obj1->collider.circle.radius;
+                
+                int32_t x2 = obj2->position.x + obj2->collider.circle.x;
+                int32_t y2 = obj2->position.y + obj2->collider.circle.y;
+                int32_t r2 = obj2->collider.circle.radius;
+
+                double distance = ((x1-x2)*(x1-x2)) + ((y1-y2)*(y1-y2));
+                if(distance > (r1-r2)*(r1-r2)) { return true; }
+            }
         }
     }
 
     /* Remaining cases */
-    if(type1 == Deccan_ColliderType_Vec && type2 == Deccan_ColliderType_Vec) { }
+    if(type1 == Deccan_ColliderType_Vec && type2 == Deccan_ColliderType_Rect) { }
     else if(type1 == Deccan_ColliderType_Circle && type2 == Deccan_ColliderType_Vec) { }
     else if(type1 == Deccan_ColliderType_Rect && type2 == Deccan_ColliderType_Circle) { }
+
+    return false;
 }
