@@ -29,3 +29,13 @@ void _priv_Object_instantiate_object(Deccan_GameObject *object) {
     stbds_arrput(scene->objects, object);
     scene->object_count++;
 }
+
+Deccan_GameObject *_priv_Object_get_object(const char *name) {
+    Deccan_Scene *scene = Deccan_Scenes.current_scene();
+    for(int i=0; i<scene->object_count; i++) {
+        if(!strcmp(scene->objects[i]->info.name, name)) {
+            return scene->objects[i];
+        }
+    }
+    return NULL;
+}

@@ -17,6 +17,7 @@ Deccan_Collider _priv_Collision_new_circle_collider(Deccan_Circle circle);
 
 bool _priv_Collision_test_vec_from(Deccan_GameObject *obj, Deccan_Vector2i vec);
 bool _priv_Collision_test_object_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2);
+bool _priv_Collision_test_object(const char *name1, const char *name2);
 
 #ifdef __STDC__
     typedef struct _priv_Collision {
@@ -25,6 +26,7 @@ bool _priv_Collision_test_object_from(Deccan_GameObject *obj1, Deccan_GameObject
         
         bool (*test_vec_from)(Deccan_GameObject *obj, Deccan_Vector2i vec);
         bool (*test_object_from)(Deccan_GameObject *obj1, Deccan_GameObject *obj2);
+        bool (*test_object)(const char *name1, const char *name2);
     } _priv_Collision;
 
     static _priv_Collision Deccan_Collision = { 
@@ -32,7 +34,8 @@ bool _priv_Collision_test_object_from(Deccan_GameObject *obj1, Deccan_GameObject
         _priv_Collision_new_circle_collider,
 
         _priv_Collision_test_vec_from,
-        _priv_Collision_test_object_from
+        _priv_Collision_test_object_from,
+        _priv_Collision_test_object
     };
 #elif __cplusplus
 

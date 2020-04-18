@@ -37,9 +37,10 @@ bool _priv_Collision_test_vec_from(Deccan_GameObject *obj, Deccan_Vector2i vec) 
         case Deccan_ColliderType_Circle: {
             int32_t x = obj->position.x + obj->collider.circle.x;
             int32_t y = obj->position.y + obj->collider.circle.y;
+            int32_t r = obj->collider.circle.radius;
             
-            double distance = sqrt(((x-vec.x)*(x-vec.x)) + ((y-vec.y)*(y-vec.y)));
-            if(distance < obj->collider.circle.radius) { return true; }
+            double distance = ((x-vec.x)*(x-vec.x)) + ((y-vec.y)*(y-vec.y));
+            if(distance < r*r) { return true; }
         }
         default: { return false; }
     }
@@ -72,7 +73,7 @@ bool _priv_Collision_test_object_from(Deccan_GameObject *obj1, Deccan_GameObject
                 int32_t r2 = obj2->collider.circle.radius;
 
                 double distance = ((x1-x2)*(x1-x2)) + ((y1-y2)*(y1-y2));
-                if(distance > (r1-r2)*(r1-r2)) { return true; }
+                if(distance < (r1+r2)*(r1+r2)) { return true; }
             }
         }
     }
@@ -83,4 +84,11 @@ bool _priv_Collision_test_object_from(Deccan_GameObject *obj1, Deccan_GameObject
     else if(type1 == Deccan_ColliderType_Rect && type2 == Deccan_ColliderType_Circle) { }
 
     return false;
+}
+
+bool _priv_Collision_test_object(const char *name1, const char *name2) {
+    Deccan_GameObject *obj1 = Deccan_Object.get_object(name1);
+    Deccan_GameObject *obj2 = Deccan_Object.get_object(name2);
+    
+    return Deccan_Collision.test_object_from(obj1, obj2);
 }

@@ -29,17 +29,20 @@ typedef struct Deccan_GameObject {
 
 Deccan_GameObject *_priv_Object_new_object(const char *name, const char *type, obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
 void _priv_Object_instantiate_object(Deccan_GameObject *object);
+Deccan_GameObject *_priv_Object_get_object(const char *name);
 
 #ifdef __STDC__
 
     typedef struct _priv_Object {
         Deccan_GameObject *(*new_object)(const char *name, const char *type, obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
         void (*instantiate_object)(Deccan_GameObject *object);
+        Deccan_GameObject *(*get_object)(const char *name);
     } _priv_Object;
 
     static _priv_Object Deccan_Object = { 
         _priv_Object_new_object,
-        _priv_Object_instantiate_object 
+        _priv_Object_instantiate_object,
+        _priv_Object_get_object
     };
 
 #elif __cplusplus

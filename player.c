@@ -2,7 +2,7 @@
 
 bool selected = false;
 
-Color col;
+Color col, col2;
 Vector2i offset;
 
 void _player_begin(GameObject *this) {
@@ -36,6 +36,9 @@ void _player_step(GameObject *this) {
         this->position.x = pos.x - offset.x;
         this->position.y = pos.y - offset.y;
     }
+
+    if(Collision.test_object("main player", "circle")) { col2 = ColorList.green; } 
+    else { col2 = ColorList.blue; }
 }
 
 void _player_render(GameObject *this) {
@@ -54,7 +57,7 @@ void _none_begin(GameObject *this) {
 void _none_step(GameObject *this) { }
 
 void _none_render(GameObject *this) { 
-    Renderer.draw_circle((Circle){this->position.x, this->position.y, 50}, true, ColorList.blue); 
+    Renderer.draw_circle((Circle){this->position.x, this->position.y, 50}, true, col2); 
 }
 
 void _none_end(GameObject *this) { }
