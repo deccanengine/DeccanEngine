@@ -14,3 +14,7 @@ typedef struct Deccan_Rect {
 typedef struct Deccan_PosRect {
     int32_t x1, y1, x2, y2;
 } Deccan_PosRect;
+
+typedef struct Deccan_Circle {
+    int32_t x, y, radius;
+} Deccan_Circle;

@@ -42,13 +42,13 @@ void _priv_Renderer_draw_rect(Deccan_Rect rect, bool fill, Deccan_Color color) {
     else { SDL_RenderDrawRect(Deccan_Core.get_global_engine()->renderer, &(SDL_Rect){rect.x, rect.y, rect.w, rect.h}); }
 }
 
-void _priv_Renderer_draw_circle(Deccan_Vector3i circle, bool fill, Deccan_Color color) {
+void _priv_Renderer_draw_circle(Deccan_Circle circle, bool fill, Deccan_Color color) {
     int x = circle.x;
     int y = circle.y;
-    int radius = circle.z;
+    int radius = circle.radius;
     
     int x0 = 0;
-	int y0 = circle.z;
+	int y0 = circle.radius;
 	int d = 3 - 2 * radius;
 	//if (!radius) return false;
 
