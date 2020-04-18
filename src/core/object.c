@@ -13,8 +13,8 @@ Deccan_GameObject *_priv_Object_new_object(
     const char *name, const char *type, 
     obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae)) {
     Deccan_GameObject *obj = New(Deccan_GameObject, 1);
-    obj->name = NewString(name);
-    obj->type = NewString(type);
+    obj->info.name = NewString(name);
+    obj->info.type = NewString(type);
     obj->at_beginning = ab;
     obj->at_step = as;
     obj->at_render = ar;

@@ -8,14 +8,18 @@
 #pragma once
 #include "../config.h"
 #include "scene.h"
+#include "../logic/collision.h"
+#include "../utils/vector.h"
 
 #define obj_func(x) void (*x)(Deccan_GameObject *object)
 
 typedef struct Deccan_GameObject Deccan_GameObject;
 typedef struct Deccan_GameObject {
-    char *name, *type;
-    int32_t x, y;
-    bool dead, hidden;
+    struct { char *name, *type; } info;     /* Basic information about the object */ 
+    Deccan_Vector2i position;               /* Positional info of the object */
+    Deccan_Vector2f transform;              /* Transformation info */
+    struct { bool dead, hidden; } status;   /* Status */
+    Deccan_Collider collider;
 
     obj_func(at_beginning);
     obj_func(at_step);

@@ -8,11 +8,8 @@
 #pragma once
 #include "../config.h"
 #include "../core/core.h"
+#include "../logic/rect.h"
 #include "color.h"
-
-typedef struct {
-    int32_t x, y, w, h;
-} Deccan_Rect;
 
 void _priv_Renderer_clear(Deccan_Color color);
 void _priv_Renderer_set_color(Deccan_Color color);

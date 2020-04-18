@@ -31,8 +31,10 @@
         #define MousePos Deccan_MousePos
         
         #define Color Deccan_Color
+
+        #define Collider Deccan_Collider
         #define Rect Deccan_Rect
-        
+
         #define Timer Deccan_Timer 
         #define Vector2i Deccan_Vector2i
         #define Vector2u Deccan_Vector2u
@@ -49,6 +51,8 @@
 
         #define Renderer Deccan_Renderer
         #define ColorList Deccan_ColorList
+
+        #define Collision Deccan_Collision
     #endif
 #elif __cplusplus
 
