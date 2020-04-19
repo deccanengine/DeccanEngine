@@ -8,6 +8,7 @@
 #pragma once
 #include "../config.h"
 #include "scene.h"
+#include "../renderer/color.h"
 #include "../physics/collider.h"
 #include "../utils/vector.h"
 
@@ -19,7 +20,10 @@ typedef struct Deccan_GameObject {
     Deccan_Vector2i position;               /* Positional info of the object */
     Deccan_Vector2f transform;              /* Transformation info */
     struct { bool dead, hidden; } status;   /* Status */
-    Deccan_Collider collider;
+    Deccan_Collider collider;               /* Collider info */
+    union {
+        struct { Deccan_Color color; };     /* Color value for shape rendering */
+    };
 
     obj_func(at_beginning);
     obj_func(at_step);

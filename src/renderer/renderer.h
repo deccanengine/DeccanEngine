@@ -13,6 +13,7 @@
 
 void _priv_Renderer_clear(Deccan_Color color);
 void _priv_Renderer_set_color(Deccan_Color color);
+void _priv_Renderer_set_texture_colour(Deccan_Texture *texture, Deccan_Color color);
 
 void _priv_Renderer_draw_point(Deccan_Vector2i pos, Deccan_Color color);
 void _priv_Renderer_draw_point2(int32_t x, int32_t y, Deccan_Color color);
@@ -21,14 +22,16 @@ void _priv_Renderer_draw_line2(int32_t x1, int32_t y1, int32_t x2, int32_t y2, D
 void _priv_Renderer_draw_rect(Deccan_Rect rect, bool fill, Deccan_Color color);
 void _priv_Renderer_draw_circle(Deccan_Circle circle, bool fill, Deccan_Color color);
 /* May be temporary */
-void _priv_Renderer_draw_texture(Deccan_Vector2i pos, SDL_Texture *texture);
-void _priv_Renderer_draw_scaled_texture(Deccan_Vector2i pos, Deccan_Vector2f scale, SDL_Texture *texture);
+void _priv_Renderer_draw_texture(Deccan_Vector2i pos, Deccan_Texture *texture);
+void _priv_Renderer_draw_scaled_texture(Deccan_Vector2i pos, Deccan_Vector2f scale, Deccan_Texture *texture);
 
 #ifdef __STDC__
 
     typedef struct _priv_Renderer {
         void (*clear)(Deccan_Color color);
         void (*set_color)(Deccan_Color color);
+        void (*set_texture_colour)(Deccan_Texture *texture, Deccan_Color color);
+
         void (*draw_point)(Deccan_Vector2i pos, Deccan_Color color);
         void (*draw_point2)(int32_t x, int32_t y, Deccan_Color color);
         void (*draw_line)(Deccan_Vector2i start, Deccan_Vector2i end, Deccan_Color color);
@@ -42,6 +45,8 @@ void _priv_Renderer_draw_scaled_texture(Deccan_Vector2i pos, Deccan_Vector2f sca
     static _priv_Renderer Deccan_Renderer = {
         _priv_Renderer_clear,
         _priv_Renderer_set_color,
+        _priv_Renderer_set_texture_colour,
+
         _priv_Renderer_draw_point,
         _priv_Renderer_draw_point2,
         _priv_Renderer_draw_line,

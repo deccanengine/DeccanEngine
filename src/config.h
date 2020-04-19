@@ -21,6 +21,8 @@
 
 #include "../depends/stb_ds.h"
 
+typedef SDL_Texture Deccan_Texture;
+
 #define New(type,size) (type*)malloc(sizeof(type)*size);
 static inline char *NewString(const char *source) {
     char *string = New(char, strlen(source));
