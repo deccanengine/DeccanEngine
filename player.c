@@ -38,7 +38,7 @@ void _player_step(GameObject *this) {
         this->position.y = pos.y - offset.y;
     }
 
-    if(Collision.test_object("main player", "circle")) { col2 = ColorList.green; } 
+    if(Collision.test("main player", "circle")) { col2 = ColorList.green; } 
     else { col2 = ColorList.blue; }
 }
 
@@ -52,13 +52,13 @@ void _player_end(GameObject *this) { }
 void _none_begin(GameObject *this) {
     this->position.x = 300;
     this->position.y = 100;
-    this->collider = Collision.new_circle_collider((Circle){0, 0, 50});
+    this->collider = Collision.new_rect_collider((PosRect){0, 0, 50, 50});
 }
 
 void _none_step(GameObject *this) { }
 
 void _none_render(GameObject *this) { 
-    Renderer.draw_circle((Circle){this->position.x, this->position.y, 50}, true, col2); 
+    Renderer.draw_rect((Rect){this->position.x, this->position.y, 50, 50}, true, col2); 
 }
 
 void _none_end(GameObject *this) { }
