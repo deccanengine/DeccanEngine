@@ -39,3 +39,12 @@ Deccan_GameObject *_priv_Object_get_object(const char *name) {
     }
     return NULL;
 }
+
+void _priv_Object_get_object_of_type(const char *name, void(*func)(Deccan_GameObject *obj)) {
+    Deccan_Scene *scene = Deccan_Scenes.current_scene();
+    for(int i=0; i<scene->object_count; i++) {
+        if(!strcmp(scene->objects[i]->info.type, name)) {
+            func(scene->objects[i]);
+        }
+    }
+}
