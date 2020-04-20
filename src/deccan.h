@@ -16,6 +16,7 @@
 
 #include "renderer/renderer.h"
 #include "renderer/color.h"
+#include "renderer/camera.h"
 
 #include "physics/shape.h"
 #include "physics/collider.h"
@@ -57,6 +58,7 @@
 
         #define Renderer Deccan_Renderer
         #define ColorList Deccan_ColorList
+        #define Camera Deccan_Camera
 
         #define Collision Deccan_Collision
     #endif

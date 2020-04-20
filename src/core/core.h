@@ -58,6 +58,9 @@ typedef struct Deccan_Info {
         char *key;
         SDL_Texture *value;
     } *textures;
+
+    /* Renderer */
+    Deccan_Vector2i camera;
 } Deccan_Info;
 
 void _priv_Core_set_global_engine(Deccan_Info *engine);
