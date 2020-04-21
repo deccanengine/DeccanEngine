@@ -6,10 +6,11 @@
  */
 
 #include "scene.h"
+#include "core.h"
 
 #define void_func(x) void (*x)(void)
 
-Deccan_Scene *_priv_Scene_new_scene(const char *name, void_func(ab), void_func(as), void_func(ar), void_func(ae)) {
+Deccan_Scene *_priv_Scene_new_scene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae)) {
     Deccan_Scene *scene = New(Deccan_Scene, 1);
     
     scene->name = NewString(name);
@@ -17,7 +18,7 @@ Deccan_Scene *_priv_Scene_new_scene(const char *name, void_func(ab), void_func(a
     scene->is_first_frame = true;
     scene->objects = NULL;
     scene->object_count = 0;
-    scene->at_begining = ab;
+    scene->at_first_frame = af;
     scene->at_step = as;
     scene->at_render = ar;
     scene->at_end = ae;

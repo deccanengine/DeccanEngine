@@ -6,16 +6,18 @@
  */
 
 #include "object.h"
+#include "scene.h"
 
 #define obj_func(x) void (*x)(Deccan_GameObject *object)
 
 Deccan_GameObject *_priv_Object_new_object(
     const char *name, const char *type, 
-    obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae)) {
+    obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae)) {
     Deccan_GameObject *obj = New(Deccan_GameObject, 1);
     obj->info.name = NewString(name);
     obj->info.type = NewString(type);
-    obj->first_frame = true;
+    obj->is_beginning = true;
+    obj->at_first_frame = af;
     obj->at_beginning = ab;
     obj->at_step = as;
     obj->at_render = ar;

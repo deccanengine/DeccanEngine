@@ -9,14 +9,14 @@
 
 Deccan_Collider _priv_Collision_new_rect_collider(Deccan_PosRect rect) {
     Deccan_Collider coll;
-    coll.type = Deccan_ColliderType_Rect;
+    coll.type = ColliderRect;
     coll.rect = rect;
     return coll;
 }
 
 Deccan_Collider _priv_Collision_new_circle_collider(Deccan_Circle circle) {
     Deccan_Collider coll;
-    coll.type = Deccan_ColliderType_Circle;
+    coll.type = ColliderCircle;
     coll.circle = circle;
     return coll;
 }

@@ -7,7 +7,6 @@
 
 #pragma once
 #include "../config.h"
-#include "scene.h"
 #include "../renderer/color.h"
 #include "../physics/collider.h"
 #include "../utils/vector.h"
@@ -25,22 +24,24 @@ typedef struct Deccan_GameObject {
         struct { Deccan_Color color; };     /* Color value for shape rendering */
     };
 
-    bool first_frame;
+    bool is_beginning;
+    obj_func(at_first_frame);
     obj_func(at_beginning);
     obj_func(at_step);
     obj_func(at_render);
     obj_func(at_end);
 } Deccan_GameObject;
 
-Deccan_GameObject *_priv_Object_new_object(const char *name, const char *type, obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
+Deccan_GameObject *_priv_Object_new_object(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
 void _priv_Object_instantiate_object(Deccan_GameObject *object);
 Deccan_GameObject *_priv_Object_get_object(const char *name);
 void _priv_Object_get_object_of_type(const char *name, void(*func)(Deccan_GameObject *obj));
 
-#ifdef __STDC__
+static inline void NULL_OBJFUNC(Deccan_GameObject *obj) { }
 
+#ifdef __STDC__
     typedef struct _priv_Object {
-        Deccan_GameObject *(*new_object)(const char *name, const char *type, obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
+        Deccan_GameObject *(*new_object)(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
         void (*instantiate_object)(Deccan_GameObject *object);
         Deccan_GameObject *(*get_object)(const char *name);
         void (*get_object_of_type)(const char *name, void(*func)(Deccan_GameObject *obj));

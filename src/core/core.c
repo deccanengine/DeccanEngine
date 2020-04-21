@@ -69,6 +69,7 @@ void _priv_Core_quit() {
 void _priv_Core_run(float fps) {
     int frames = 0;
 
+    // To do: FPS limit or VSync 
     global_engine.fps_req = fps;
 
     Deccan_Timer fps_timer = *Deccan_Clock.new_timer();
@@ -77,45 +78,59 @@ void _priv_Core_run(float fps) {
     while(global_engine.is_running) {
         frm_timer.start(&frm_timer);
 
+        /* Handle some events */
         SDL_PollEvent(&global_engine.event);
         switch(global_engine.event.type) {
             case SDL_QUIT: { global_engine.is_running = false; break; }
             case SDL_KEYDOWN: {
+                /* Close on Escape Key */
+                // To do: make it toggleable
                 if(global_engine.event.key.keysym.sym == SDLK_ESCAPE) { 
                     global_engine.is_running = false; break;
                 }
             }
         }
         
+        /* Get and set current and key states*/
         memcpy(_prev_keys, _key_states, sizeof(uint8_t)*SDL_NUM_SCANCODES);
         memcpy(_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
+        /* Calculate FPS */
         global_engine.fps_avg = frames/fps_timer.get_time(&fps_timer);
         if(global_engine.fps_avg > 20000) { global_engine.fps_avg = 0.0f; }
 
-        int index = global_engine.scene_count-1;
-        Deccan_Scene *scene = global_engine.scenes[index];
+        /* Process Scene(s) and GameObject(s) */
+        int index = global_engine.scene_count-1;        /* Current Scene index */
+        Deccan_Scene *scene = global_engine.scenes[index];  /* Current scene */
+        /* First frame of the scene. Same as at_beginning for scene */
         if(scene->is_first_frame == true) {
-            scene->at_begining();
-            /*
+            scene->at_first_frame();
+            scene->is_first_frame = false;
+
+            /* First frame of objects */
             for(int i=0; i<scene->object_count; i++) {
                 Deccan_GameObject *obj = scene->objects[i];
-                obj->at_beginning(obj);
+                obj->at_first_frame(obj);
             }
-            */
-            scene->is_first_frame = false;
         }
 
+        /* at_beginning of objects */
+        for(int i=0; i<scene->object_count; i++) {
+            Deccan_GameObject *obj = scene->objects[i];
+            if(obj->is_beginning) {
+                obj->at_beginning(obj);
+                obj->is_beginning = false;
+            }
+        }
+
+        /* at_step of scenes and objects */
         scene->at_step();
         for(int i=0; i<scene->object_count; i++) {
             Deccan_GameObject *obj = scene->objects[i];
-            if(obj->first_frame) {
-                obj->at_beginning(obj);
-                obj->first_frame = false;
-            }
             obj->at_step(obj);
         }
 
+        /* at_render of scenes and objects */
         scene->at_render();
         for(int i=0; i<scene->object_count; i++) {
             Deccan_GameObject *obj = scene->objects[i];
@@ -126,19 +141,23 @@ void _priv_Core_run(float fps) {
 
         frames++;
         
-        int frm_ticks = frm_timer.get_time_ms(&frm_timer);
-		int ticks_per_frame = 1000/global_engine.fps_req;
+        /* Limit FPS */
+        int frm_ticks = frm_timer.get_time_ms(&frm_timer);  /* Current ticks per frame */
+		int ticks_per_frame = 1000/global_engine.fps_req;   /* Required ticks per frame */
 
 		if(frm_ticks < ticks_per_frame) {
             Deccan_Clock.delay(ticks_per_frame - frm_ticks);
 		}
     }
+    
+    /* at_end of scenes and objects */
     Deccan_Scene *scene = global_engine.scenes[global_engine.scene_count-1];
     scene->at_end();
     for(int i=0; i<scene->object_count; i++) {
         Deccan_GameObject *obj = scene->objects[i];
         obj->at_end(obj);
     }
+    
     Deccan_Core.quit();
 }
 

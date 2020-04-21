@@ -8,31 +8,12 @@
 #pragma once
 
 #include "../config.h"
+#include "scene.h"
 #include "input.h"
 #include "object.h"
 #include "../utils/log.h"
 #include "../utils/timer.h"
 #include "../utils/vector.h"
-
-#define void_func(x) void (*x)(void)
-
-typedef struct Deccan_GameObject Deccan_GameObject;
-typedef struct Deccan_Scene {
-    char *name;
-
-    bool is_paused;
-    bool is_first_frame;
-
-    Deccan_GameObject **objects;
-    int object_count;
-
-    void_func(at_begining);
-    void_func(at_step);
-    void_func(at_render);
-    void_func(at_end);
-} Deccan_Scene;
-
-#undef void_func
 
 typedef struct Deccan_Info {
     /* Core engine */

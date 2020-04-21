@@ -7,7 +7,7 @@ Timer timer;
 void begin() {
     /* Start here */
     //Asset.load_texture("arrow", "arrow0.png");
-    Object.instantiate_object(Object.new_object("main player", "player", _player_begin, _player_step, _player_render, _player_end));
+    Object.instantiate_object(Object.new_object("main player", "player", NULL_OBJFUNC, _player_begin, _player_step, _player_render, _player_end));
     timer = *Deccan_Clock.new_timer(&timer);
 }
 
@@ -20,7 +20,7 @@ void render() {
 
     /* Start here */
     if(Input.key_released(Key.space) && timer.get_time_ms(&timer) > 200) {
-        GameObject *s = Object.new_object("circle", "static", _none_begin, _none_step, _none_render, _none_end);
+        GameObject *s = Object.new_object("circle", "static", NULL_OBJFUNC, _none_begin, _none_step, _none_render, _none_end);
         s->position.x = Object.get_object("main player")->position.x + 10;
         s->position.y = Object.get_object("main player")->position.y + 10;
         Object.instantiate_object(s);

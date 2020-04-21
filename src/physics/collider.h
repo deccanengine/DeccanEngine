@@ -11,9 +11,9 @@
 #include "../utils/vector.h"
 
 enum {
-    Deccan_ColliderType_Vec,
-    Deccan_ColliderType_Rect,
-    Deccan_ColliderType_Circle
+    ColliderVec,
+    ColliderRect,
+    ColliderCircle
 };
 
 typedef struct Deccan_Collider {
