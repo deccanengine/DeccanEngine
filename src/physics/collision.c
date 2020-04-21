@@ -226,6 +226,7 @@ bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2)
 bool _priv_Collision_test(const char *name1, const char *name2) {
     Deccan_GameObject *obj1 = Deccan_Object.get_object(name1);
     Deccan_GameObject *obj2 = Deccan_Object.get_object(name2);
-    
-    return Deccan_Collision.test_from(obj1, obj2);
+
+    if(obj1 == NULL || obj2 == NULL) { return false; }
+    else { return Deccan_Collision.test_from(obj1, obj2); }
 }

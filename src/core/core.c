@@ -97,15 +97,22 @@ void _priv_Core_run(float fps) {
         Deccan_Scene *scene = global_engine.scenes[index];
         if(scene->is_first_frame == true) {
             scene->at_begining();
+            /*
             for(int i=0; i<scene->object_count; i++) {
                 Deccan_GameObject *obj = scene->objects[i];
                 obj->at_beginning(obj);
             }
+            */
             scene->is_first_frame = false;
         }
+
         scene->at_step();
         for(int i=0; i<scene->object_count; i++) {
             Deccan_GameObject *obj = scene->objects[i];
+            if(obj->first_frame) {
+                obj->at_beginning(obj);
+                obj->first_frame = false;
+            }
             obj->at_step(obj);
         }
 

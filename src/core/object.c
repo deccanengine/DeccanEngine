@@ -15,6 +15,7 @@ Deccan_GameObject *_priv_Object_new_object(
     Deccan_GameObject *obj = New(Deccan_GameObject, 1);
     obj->info.name = NewString(name);
     obj->info.type = NewString(type);
+    obj->first_frame = true;
     obj->at_beginning = ab;
     obj->at_step = as;
     obj->at_render = ar;

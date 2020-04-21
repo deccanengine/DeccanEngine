@@ -25,6 +25,7 @@ typedef struct Deccan_GameObject {
         struct { Deccan_Color color; };     /* Color value for shape rendering */
     };
 
+    bool first_frame;
     obj_func(at_beginning);
     obj_func(at_step);
     obj_func(at_render);
