@@ -46,12 +46,13 @@ float _priv_Timer_get_time(Deccan_Timer *timer) {
     return _priv_Timer_get_time_ms(timer)/1000.0f;
 }
 
-Deccan_Timer *_priv_Clock_new_timer() {
-    Deccan_Timer *timer = New(Deccan_Timer, 1);
-    timer->start = _priv_Timer_start;
-    timer->stop  = _priv_Timer_stop;
-    timer->pause = _priv_Timer_pause;
-    timer->get_time = _priv_Timer_get_time;
-    timer->get_time_ms = _priv_Timer_get_time_ms;
+Deccan_Timer _priv_Clock_new_timer() {
+    Deccan_Timer timer;
+    timer.start = _priv_Timer_start;
+    timer.stop  = _priv_Timer_stop;
+    timer.pause = _priv_Timer_pause;
+    timer.reset = _priv_Timer_start; /* reset and start are same */
+    timer.get_time = _priv_Timer_get_time;
+    timer.get_time_ms = _priv_Timer_get_time_ms;
     return timer;
 }

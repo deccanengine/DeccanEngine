@@ -23,10 +23,10 @@ Deccan_Collider _priv_Collision_new_circle_collider(Deccan_Circle circle) {
 
 bool _priv_Collision_test_vec_from(Deccan_GameObject *obj, Deccan_Vector2i vec) {
     switch(obj->collider.type) {
-        case Deccan_ColliderType_Vec : {
+        case ColliderVec : {
             return obj->collider.vec.x == vec.x && obj->collider.vec.y == vec.y;
         }
-        case Deccan_ColliderType_Rect: {
+        case ColliderRect: {
             int32_t x1 = obj->position.x + obj->collider.rect.x1;
             int32_t y1 = obj->position.y + obj->collider.rect.y1;
             int32_t x2 = obj->position.x + obj->collider.rect.x2;
@@ -34,7 +34,7 @@ bool _priv_Collision_test_vec_from(Deccan_GameObject *obj, Deccan_Vector2i vec) 
 
             return vec.x > x1 && vec.x < x2 && vec.y > y1 && vec.y < y2;
         }
-        case Deccan_ColliderType_Circle: {
+        case ColliderCircle: {
             int32_t x = obj->position.x + obj->collider.circle.x;
             int32_t y = obj->position.y + obj->collider.circle.y;
             int32_t r = obj->collider.circle.radius;
@@ -59,7 +59,7 @@ bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2)
     if(type1 == type2) {
         switch(type1) {
             /* Point collision i.e. v<->v */
-            case Deccan_ColliderType_Vec: {
+            case ColliderVec: {
                 return obj1->position.x + obj1->collider.vec.x == 
                        obj2->position.x + obj2->collider.vec.x &&
                        obj1->position.y + obj1->collider.vec.y == 
@@ -67,7 +67,7 @@ bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2)
             }
 
             /* AABB collision i.e. r<->r */
-            case Deccan_ColliderType_Rect: { 
+            case ColliderRect: { 
                 int32_t x11 = obj1->position.x + obj1->collider.rect.x1;
                 int32_t x12 = obj1->position.x + obj1->collider.rect.x2;
                 int32_t y11 = obj1->position.y + obj1->collider.rect.y1;
@@ -82,7 +82,7 @@ bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2)
             }
 
             /* Circle collision i.e. c<->c */
-            case Deccan_ColliderType_Circle: {
+            case ColliderCircle: {
                 int32_t x1 = obj1->position.x + obj1->collider.circle.x;
                 int32_t y1 = obj1->position.y + obj1->collider.circle.y;
                 int32_t r1 = obj1->collider.circle.radius;
@@ -98,8 +98,8 @@ bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2)
     }
 
     /* Remaining cases */
-    bool case_1 = (type1 == Deccan_ColliderType_Vec && type2 == Deccan_ColliderType_Rect);
-    bool case_2 = (type1 == Deccan_ColliderType_Rect && type2 == Deccan_ColliderType_Vec);
+    bool case_1 = (type1 == ColliderVec && type2 == ColliderRect);
+    bool case_2 = (type1 == ColliderRect && type2 == ColliderVec);
 
     /* v<->r */
     if(case_1 || case_2) {
@@ -134,8 +134,8 @@ bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2)
         return v1 > x1 && v1 < x2 && v2 > y1 && v2 < y2;    /* Exit */
     }
 
-    bool case_3 = (type1 == Deccan_ColliderType_Circle && type2 == Deccan_ColliderType_Vec);
-    bool case_4 = (type1 == Deccan_ColliderType_Vec && type2 == Deccan_ColliderType_Circle);
+    bool case_3 = (type1 == ColliderCircle && type2 == ColliderVec);
+    bool case_4 = (type1 == ColliderVec && type2 == ColliderCircle);
 
     /* c <-> v */
     if(case_3 || case_4) {
@@ -170,8 +170,8 @@ bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2)
         return distance < r*r;   /* Exit */
     }
 
-    bool case_5 = (type1 == Deccan_ColliderType_Rect && type2 == Deccan_ColliderType_Circle);
-    bool case_6 = (type1 == Deccan_ColliderType_Circle && type2 == Deccan_ColliderType_Rect);
+    bool case_5 = (type1 == ColliderRect && type2 == ColliderCircle);
+    bool case_6 = (type1 == ColliderCircle && type2 == ColliderRect);
     
     /* r <-> c */
     if(case_5 || case_6) {

@@ -16,24 +16,25 @@ typedef struct Deccan_Timer {
     void (*start)(Deccan_Timer *timer);
     void (*stop) (Deccan_Timer *timer);
     void (*pause)(Deccan_Timer *timer);
+    void (*reset)(Deccan_Timer *timer);
     float (*get_time)(Deccan_Timer *timer);
     float (*get_time_ms)(Deccan_Timer *timer);
 } Deccan_Timer;
 
 void _priv_Timer_start(Deccan_Timer *timer);
-void _priv_Timer_stop(Deccan_Timer *timer);
+void _priv_Timer_stop (Deccan_Timer *timer);
 void _priv_Timer_pause(Deccan_Timer *timer);
 float _priv_Timer_get_time(Deccan_Timer *timer);
 float _priv_Timer_get_time_ms(Deccan_Timer *timer);
 
 static inline void _priv_Clock_delay(int32_t ms) { SDL_Delay(ms); }
-Deccan_Timer *_priv_Clock_new_timer();
+Deccan_Timer _priv_Clock_new_timer();
 
 #ifdef __STDC__
 
 typedef struct _priv_Clock {
     void (*delay)(int32_t ms);
-    Deccan_Timer *(*new_timer)();
+    Deccan_Timer (*new_timer)();
 } _priv_Clock;
 
 static _priv_Clock Deccan_Clock = {

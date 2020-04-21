@@ -72,8 +72,8 @@ void _priv_Core_run(float fps) {
     // To do: FPS limit or VSync 
     global_engine.fps_req = fps;
 
-    Deccan_Timer fps_timer = *Deccan_Clock.new_timer();
-    Deccan_Timer frm_timer = *Deccan_Clock.new_timer();
+    Deccan_Timer fps_timer = Deccan_Clock.new_timer();
+    Deccan_Timer frm_timer = Deccan_Clock.new_timer();
     fps_timer.start(&fps_timer);
     while(global_engine.is_running) {
         frm_timer.start(&frm_timer);
