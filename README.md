@@ -1,5 +1,6 @@
 # Deccan Game Engine
-Cross-platform 2D Game Engine written in C11. Powered by SDL2.
+Cross-platform 2D Game Engine written in C11. Powered by SDL2.  
+[Discord](https://discord.gg/bNwnxwn)  
 
 ## Features so far
 - Lightweight and simple framework design
@@ -16,10 +17,7 @@ The dependencies are: SDL2, SDL2_image, SDL2_ttf and stb_ds.h(Included)
 
 For Linux, run the build.sh Bash script which compiles the engine with main.c example file.
 
-For Windows, download and install MinGW and use the command to compile with main.c example:
-```
-gcc -g -o bin/test /main.c /src/core/input.c /src/core/asset.c /src/core/core.c /src/renderer/renderer.c /src/utils/timer.c -I/usr/include/SDL2 -D_REENTRANT -lSDL2_ttf -lSDL2_image -lSDL2 -lgdi32 -winmm
-```
+For Windows, download and install MinGW and compile with main.c example. You can refer to build.sh for linking info.
 Make sure that the path of gcc is added to %PATH%
 
 ## License
