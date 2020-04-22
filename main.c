@@ -46,21 +46,18 @@ void render() {
         Vector2i mode = Core.get_mode();
         mode.x += 40;
         mode.y += 40; 
-        Core.set_mode(mode.x, mode.y);
+        Core.set_mode(mode);
     }
     else if(Input.key_released(Key.right)) {
         Vector2i mode = Core.get_mode();
         mode.x -= mode.x > 40 ? 40 : 0;
         mode.y -= mode.y > 40 ? 40 : 0; 
-        Core.set_mode(mode.x, mode.y);
+        Core.set_mode(mode);
     }
     
     if(Input.key_released(Key.v)) {
         Core.set_vsync_status(false);
     }
-
-    Color rencol = Renderer.get_color();
-    printf("color: %d %d %d %d\n", rencol.r, rencol.g, rencol.b, rencol.a);
 }
 
 void end() {
@@ -68,7 +65,7 @@ void end() {
 }
 
 int main(int argc, char **argv) {
-    if(Core.init("Test", 640, 320)) {
+    if(Core.init("Test", (Vector2i){640, 320})) {
         Scenes.add_scene(Scenes.new_scene("scene0", begin, step, render, end), false);
         Core.run(120.0f);
     }

@@ -61,6 +61,8 @@
         #define Camera Deccan_Camera
 
         #define Collision Deccan_Collision
+
+        #define Clock Deccan_Clock
     #endif
 #elif __cplusplus
 

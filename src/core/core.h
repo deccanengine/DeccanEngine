@@ -48,12 +48,12 @@ typedef struct Deccan_Info {
 void _priv_Core_set_global_engine(Deccan_Info *engine);
 Deccan_Info *_priv_Core_get_global_engine();
 
-int  _priv_Core_init(const char *title, int32_t width, int32_t height);
+int  _priv_Core_init(const char *title, Deccan_Vector2i mode);
 void _priv_Core_quit();
 void _priv_Core_run(float fps);
 
 void _priv_Core_set_title(const char *name);
-void _priv_Core_set_mode(int32_t width, int32_t height);
+void _priv_Core_set_mode(Deccan_Vector2i mode);
 void _priv_Core_set_fullscreen();
 void _priv_Core_set_vsync_status(bool vsync);
 void _priv_Core_set_framerate_limit(float fps);
@@ -71,12 +71,12 @@ float _priv_Core_get_average_framerate();
         void (*set_global_engine)(Deccan_Info *engine);
         Deccan_Info* (*get_global_engine)();
 
-        int  (*init)(const char *title, int32_t width, int32_t height);
+        int  (*init)(const char *title, Deccan_Vector2i mode);
         void (*quit)();
         void (*run)(float fps);
 
         void (*set_title)(const char *name);
-        void (*set_mode)(int32_t width, int32_t height);
+        void (*set_mode)(Deccan_Vector2i mode);
         void (*set_fullscreen)();
         void (*set_vsync_status)(bool vsync);
         void (*set_framerate_limit)(float fps);

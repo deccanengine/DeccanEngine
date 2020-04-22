@@ -19,7 +19,7 @@ Deccan_Info *_priv_Core_get_global_engine() {
     return &global_engine;
 }
 
-int _priv_Core_init(const char *title, int32_t width, int32_t height) {
+int _priv_Core_init(const char *title, Deccan_Vector2i mode) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
         Deccan_Log.error("Could not initialize SDL2", SDL_GetError());
@@ -35,7 +35,7 @@ int _priv_Core_init(const char *title, int32_t width, int32_t height) {
     }
 
     int window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-    if((global_engine.window = SDL_CreateWindow(title, 0, 0, width, height, window_flags)) == NULL) {
+    if((global_engine.window = SDL_CreateWindow(title, 0, 0, mode.x, mode.y, window_flags)) == NULL) {
         Deccan_Log.error("Could not create window", SDL_GetError());
     }
 
@@ -180,8 +180,8 @@ void _priv_Core_set_title(const char *name) {
     SDL_SetWindowTitle(global_engine.window, name);
 }
 
-void _priv_Core_set_mode(int32_t width, int32_t height) {
-    SDL_SetWindowSize(global_engine.window, width, height);
+void _priv_Core_set_mode(Deccan_Vector2i mode) {
+    SDL_SetWindowSize(global_engine.window, mode.x, mode.y);
 }
 
 void _priv_Core_set_fullscreen() {
