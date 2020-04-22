@@ -12,6 +12,10 @@ void action(GameObject *this) {
 void _player_begin(GameObject *this) {
     this->position.x = 100;
     this->position.y = 100;
+
+    this->size.x = 50;
+    this->size.y = 50;
+
     this->collider = Collision.new_rect_collider((PosRect){0, 0, 50, 50});
     //this->collider = Collision.new_circle_collider((Circle){0, 0, 50});
 }
@@ -25,9 +29,8 @@ void _player_step(GameObject *this) {
     else if(Input.key_held(Key.d)){ this->position.x += mod; }
 
     /* Center the camera on player */
-    Vector2i mode = Core.get_mode();
-    Camera.set_position((Vector2i){this->position.x + 25 - mode.x/2, this->position.y + 25 - mode.y/2});
-    
+    Camera.center_on(this);
+
     Vector2i pos = Input.get_mouse_pos();
     if(Collision.test_vec_from(this, pos)) { 
         this->color = ColorList.fuchsia;
@@ -49,7 +52,7 @@ void _player_step(GameObject *this) {
 }
 
 void _player_render(GameObject *this) {
-    Renderer.draw_rect((Rect){this->position.x, this->position.y, 50, 50}, true, this->color);
+    Renderer.draw_rect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, true, this->color);
     //Renderer.draw_circle((Circle){this->position.x, this->position.y, 50}, true, this->color);
 }
 

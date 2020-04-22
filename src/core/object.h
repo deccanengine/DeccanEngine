@@ -17,6 +17,7 @@ typedef struct Deccan_GameObject Deccan_GameObject;
 typedef struct Deccan_GameObject {
     struct { char *name, *type; } info;     /* Basic information about the object */ 
     Deccan_Vector2i position;               /* Positional info of the object */
+    Deccan_Vector2i size;                   /* Size of the rect bounding the object */
     Deccan_Vector2f transform;              /* Transformation info */
     struct { bool dead, hidden; } status;   /* Status */
     Deccan_Collider collider;               /* Collider info */
