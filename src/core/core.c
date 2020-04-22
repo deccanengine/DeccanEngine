@@ -34,17 +34,19 @@ int _priv_Core_init(const char *title, int32_t width, int32_t height) {
         Deccan_Log.error("Could not initialize SDL2_ttf", TTF_GetError());
     }
 
-    int properties = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-    if((global_engine.window = SDL_CreateWindow(title, 0, 0, width, height, properties)) == NULL) {
+    int window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+    if((global_engine.window = SDL_CreateWindow(title, 0, 0, width, height, window_flags)) == NULL) {
         Deccan_Log.error("Could not create window", SDL_GetError());
     }
 
-    if((global_engine.renderer = SDL_CreateRenderer(global_engine.window, -1, SDL_RENDERER_ACCELERATED)) == NULL) {
+    int render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+    if((global_engine.renderer = SDL_CreateRenderer(global_engine.window, -1, render_flags)) == NULL) {
         Deccan_Log.error("Could not create renderer", SDL_GetError());
     }
 
     global_engine.is_running = true;
-    global_engine.fps_req = 60.0f;
+    global_engine.vsync_enabled = false;
+    global_engine.fps_req = 60.0f;      /* Fallback FPS limit if vsync is disabled somwhere and new limit is not set */
 
     global_engine.scenes = NULL;
     global_engine.scene_count = 0;
@@ -67,16 +69,24 @@ void _priv_Core_quit() {
 }
 
 void _priv_Core_run(float fps) {
-    int frames = 0;
-
-    // To do: FPS limit or VSync 
-    global_engine.fps_req = fps;
-
+    int frames = 0;         /* Total frames passed */
     Deccan_Timer fps_timer = Deccan_Clock.new_timer();
     Deccan_Timer frm_timer = Deccan_Clock.new_timer();
-    fps_timer.start(&fps_timer);
+
+    fps_timer.start(&fps_timer);    /* To calculate FPS */
+
+    /* If no FPS limit is set then enable VSync*/
+    if(fps <= 0.0f) { Deccan_Core.set_vsync_status(true); }
+    else { Deccan_Core.set_vsync_status(false); }
+    
+    /* Set FPS limit if VSync is not enabled */
+    /* There is no gurantee than VSync is enabled by set_vsync_status().
+     * Hence, it is separated. 
+     */
+    if(!global_engine.vsync_enabled) { global_engine.fps_req = fps; }
+
     while(global_engine.is_running) {
-        frm_timer.start(&frm_timer);
+        if(!global_engine.vsync_enabled) { frm_timer.start(&frm_timer); }
 
         /* Handle some events */
         SDL_PollEvent(&global_engine.event);
@@ -142,12 +152,16 @@ void _priv_Core_run(float fps) {
         frames++;
         
         /* Limit FPS */
-        int frm_ticks = frm_timer.get_time_ms(&frm_timer);  /* Current ticks per frame */
-		int ticks_per_frame = 1000/global_engine.fps_req;   /* Required ticks per frame */
+        if(!global_engine.vsync_enabled && global_engine.fps_req > 0.0f) {
+            if(!frm_timer.is_running) { continue; }
 
-		if(frm_ticks < ticks_per_frame) {
-            Deccan_Clock.delay(ticks_per_frame - frm_ticks);
-		}
+            int frm_ticks = frm_timer.get_time_ms(&frm_timer);  /* Current ticks per frame */
+            int ticks_per_frame = 1000/global_engine.fps_req;   /* Required ticks per frame */
+
+            if(frm_ticks < ticks_per_frame) {
+                Deccan_Clock.delay(ticks_per_frame - frm_ticks);
+            }
+        }
     }
     
     /* at_end of scenes and objects */
@@ -175,6 +189,11 @@ void _priv_Core_set_fullscreen() {
     global_engine.is_fullscreen = !global_engine.is_fullscreen;
 }
 
+void _priv_Core_set_vsync_status(bool vsync) {
+    SDL_GL_SetSwapInterval((int)vsync);
+    global_engine.vsync_enabled = SDL_GL_GetSwapInterval();
+}
+
 void _priv_Core_set_framerate_limit(float fps){
     global_engine.fps_req = fps;
 }
@@ -192,6 +211,10 @@ Deccan_Vector2i _priv_Core_get_mode() {
 
 bool _priv_Core_get_fullscreen_status() {
     return global_engine.is_fullscreen;
+}
+
+bool _priv_Core_get_vsync_status() {
+    return global_engine.vsync_enabled = SDL_GL_GetSwapInterval();
 }
 
 float _priv_Core_get_framerate_limit() {

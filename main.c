@@ -29,6 +29,9 @@ void render() {
         timer.reset(&timer);
     }
     
+    if(Input.key_released(Key.v)) {
+        Core.set_vsync_status(false);
+    }
 }
 
 void end() {
