@@ -29,9 +29,38 @@ void render() {
         timer.reset(&timer);
     }
     
+    if(Input.key_released(Key.up)) {
+        Vector2f size = Renderer.get_pixel_size();
+        size.x += 0.1f;
+        size.y += 0.1f; 
+        Renderer.set_pixel_size(size);
+    }
+    else if(Input.key_released(Key.down)) {
+        Vector2f size = Renderer.get_pixel_size();
+        size.x -= size.x ? 0.1f : 0.0f; 
+        size.y -= size.y ? 0.1f : 0.0f;
+        Renderer.set_pixel_size(size);
+    }
+
+    if(Input.key_released(Key.left)) {
+        Vector2i mode = Core.get_mode();
+        mode.x += 40;
+        mode.y += 40; 
+        Core.set_mode(mode.x, mode.y);
+    }
+    else if(Input.key_released(Key.right)) {
+        Vector2i mode = Core.get_mode();
+        mode.x -= mode.x > 40 ? 40 : 0;
+        mode.y -= mode.y > 40 ? 40 : 0; 
+        Core.set_mode(mode.x, mode.y);
+    }
+    
     if(Input.key_released(Key.v)) {
         Core.set_vsync_status(false);
     }
+
+    Color rencol = Renderer.get_color();
+    printf("color: %d %d %d %d\n", rencol.r, rencol.g, rencol.b, rencol.a);
 }
 
 void end() {

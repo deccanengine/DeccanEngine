@@ -8,7 +8,7 @@
 #pragma once
 
 typedef struct {
-    uint r, g, b, a;
+    uint8_t r, g, b, a;
 } Deccan_Color;
 
 typedef struct _priv_ColorList {
