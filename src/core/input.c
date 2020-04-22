@@ -9,15 +9,16 @@
 
 Deccan_KeyState _priv_Input_get_key(int key_code) {
     Deccan_KeyState key;
+    Deccan_Info *engine = Deccan_Core.get_global_engine();
 
-    if(_key_states[key_code]) { 
-        if(!_prev_keys[key_code]) { key.is_pressed = true; }
+    if(engine->curr_keys[key_code]) { 
+        if(!engine->prev_keys[key_code]) { key.is_pressed = true; }
         else { key.is_pressed = false; }
         key.is_held = true; 
         key.is_released = false;
     }
     else {
-        if(_prev_keys[key_code]) { key.is_released = true; }
+        if(engine->prev_keys[key_code]) { key.is_released = true; }
         else { key.is_released = false; }
         
         key.is_held = false;
@@ -29,10 +30,11 @@ Deccan_KeyState _priv_Input_get_key(int key_code) {
 
 Deccan_MouseState _priv_Input_get_mouse_button(int button_code) {
     Deccan_MouseState button = {false, false};
+    Deccan_Info *engine = Deccan_Core.get_global_engine();
 
-    if(Deccan_Core.get_global_engine()->event.button.button == button_code) {
-        if(Deccan_Core.get_global_engine()->event.type == SDL_MOUSEBUTTONDOWN) { button.is_down = true; }
-        else if(Deccan_Core.get_global_engine()->event.type == SDL_MOUSEBUTTONUP) { button.is_up = true; }
+    if(engine->event.button.button == button_code) {
+        if(engine->event.type == SDL_MOUSEBUTTONDOWN) { button.is_down = true; }
+        else if(engine->event.type == SDL_MOUSEBUTTONUP) { button.is_up = true; }
     }
 
     return button;
@@ -44,16 +46,28 @@ Deccan_Vector2i _priv_Input_get_mouse_pos() {
     return pos;
 }
 
+Deccan_Vector2i _priv_Input_get_relative_mouse_pos() {
+    Deccan_Vector2i pos;
+    Deccan_Vector2i cam = Deccan_Core.get_global_engine()->camera; 
+    
+    SDL_GetMouseState(&pos.x, &pos.y);
+    pos.x += cam.x;
+    pos.y += cam.y;
+    return pos;
+}
+
 bool _priv_Input_key_pressed(int key_code) {
-    return _key_states[key_code] && !_prev_keys[key_code];
+    Deccan_Info *engine = Deccan_Core.get_global_engine();
+    return engine->curr_keys[key_code] && !engine->prev_keys[key_code];
 }
 
 bool _priv_Input_key_released(int key_code) {
-    return !_key_states[key_code] && _prev_keys[key_code];
+    Deccan_Info *engine = Deccan_Core.get_global_engine();
+    return !engine->curr_keys[key_code] && engine->prev_keys[key_code];
 }
 
 bool _priv_Input_key_held(int key_code) {
-    return _key_states[key_code];
+    return Deccan_Core.get_global_engine()->curr_keys[key_code];
 }
 
 bool _priv_Input_button_down(int button_code) {

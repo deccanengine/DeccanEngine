@@ -10,8 +10,6 @@
 #include "core.h"
 #include "../utils/vector.h"
 
-uint8_t _key_states[SDL_NUM_SCANCODES], _prev_keys[SDL_NUM_SCANCODES];
-
 /* Key Codes */
 typedef struct _key_code_list {
     int unknown, 
@@ -88,6 +86,7 @@ typedef struct {
 Deccan_KeyState _priv_Input_get_key(int key_code);
 Deccan_MouseState _priv_Input_get_mouse_button(int button_code);
 Deccan_Vector2i _priv_Input_get_mouse_pos();
+Deccan_Vector2i _priv_Input_get_relative_mouse_pos();
 
 bool _priv_Input_key_pressed(int key_code);
 bool _priv_Input_key_released(int key_code);
@@ -101,6 +100,8 @@ bool _priv_Input_button_up(int button_code);
         Deccan_KeyState (*get_key)(int key_code);
         Deccan_MouseState (*get_mouse_button)(int button_code);
         Deccan_Vector2i (*get_mouse_pos)();
+        Deccan_Vector2i (*get_relative_mouse_pos)();
+
         bool (*key_pressed)(int key_code);
         bool (*key_released)(int key_code);
         bool (*key_held)(int key_code);
@@ -112,6 +113,8 @@ bool _priv_Input_button_up(int button_code);
         _priv_Input_get_key, 
         _priv_Input_get_mouse_button, 
         _priv_Input_get_mouse_pos,
+        _priv_Input_get_relative_mouse_pos,
+
         _priv_Input_key_pressed,
         _priv_Input_key_released,
         _priv_Input_key_held,

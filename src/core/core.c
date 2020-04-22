@@ -53,8 +53,8 @@ int _priv_Core_init(const char *title, Deccan_Vector2i mode) {
 
     global_engine.textures = NULL;
 
-    memcpy(_prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
-    memcpy(_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(global_engine.prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(global_engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
     return 1;
 }
@@ -102,8 +102,8 @@ void _priv_Core_run(float fps) {
         }
         
         /* Get and set current and key states*/
-        memcpy(_prev_keys, _key_states, sizeof(uint8_t)*SDL_NUM_SCANCODES);
-        memcpy(_key_states, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+        memcpy(global_engine.prev_keys, global_engine.curr_keys, sizeof(uint8_t)*SDL_NUM_SCANCODES);
+        memcpy(global_engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
         /* Calculate FPS */
         global_engine.fps_avg = frames/fps_timer.get_time(&fps_timer);

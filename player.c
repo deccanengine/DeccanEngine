@@ -31,7 +31,7 @@ void _player_step(GameObject *this) {
     /* Center the camera on player */
     Camera.center_on(this);
 
-    Vector2i pos = Input.get_mouse_pos();
+    Vector2i pos = Input.get_relative_mouse_pos();
     if(Collision.test_vec_from(this, pos)) { 
         this->color = ColorList.fuchsia;
         if(Input.button_down(Button.left)) {

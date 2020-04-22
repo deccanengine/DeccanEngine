@@ -29,7 +29,8 @@ typedef struct Deccan_Info {
 
     /* Input system */
     SDL_Event event;
-    uint8_t *key_states;
+    uint8_t curr_keys [SDL_NUM_SCANCODES];
+    uint8_t prev_keys [SDL_NUM_SCANCODES];
 
     /* Scene manager */
     Deccan_Scene **scenes;
