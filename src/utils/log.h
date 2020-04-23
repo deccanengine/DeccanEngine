@@ -7,23 +7,39 @@
 
 #pragma once
 
-static void _priv_error(const char *str, ...) {
+FILE *logfile;
+
+static void _priv_Log_error(const char *str, ...) {
     va_list args;
-    printf("Fatal Error: %s: ", str);
+    printf("Fatal Error: ");
     va_start(args, str);
-    printf("%s", va_arg(args, char*));
+    vprintf(str, args);
     va_end(args);
     printf("\n");
     exit(-1);
 }
 
+static void _priv_Log_report(const char *str, ...) {
+#ifdef DECCAN_REPORTS_ENABLED
+    va_list args;
+    va_start(args, str);
+    vfprintf(logfile, str, args);
+    va_end(args);
+    fprintf(logfile, "\n");
+#endif
+}
+
 #ifdef __STDC__
 
 typedef struct _priv_Log {
-    void (*error)(const char *str, ...);
+    void (*error) (const char *str, ...);
+    void (*report)(const char *str, ...);
 } _priv_Log;
 
-static _priv_Log Deccan_Log = { _priv_error };
+static _priv_Log Deccan_Log = { 
+    _priv_Log_error, 
+    _priv_Log_report 
+};
 
 #elif __cplusplus
 

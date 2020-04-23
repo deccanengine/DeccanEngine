@@ -63,6 +63,7 @@
         #define Collision Deccan_Collision
 
         #define Clock Deccan_Clock
+        #define Log Deccan_Log
     #endif
 #elif __cplusplus
 

@@ -22,26 +22,31 @@ Deccan_Info *_priv_Core_get_global_engine() {
 int _priv_Core_init(const char *title, Deccan_Vector2i mode) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
-        Deccan_Log.error("Could not initialize SDL2", SDL_GetError());
+        Deccan_Log.error("Could not initialize SDL2: %s", SDL_GetError());
     }
 
     int image_flags = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF;
     if(!IMG_Init(image_flags) & !image_flags) {
-        Deccan_Log.error("Could not initialize SDL2_image", IMG_GetError());
+        Deccan_Log.error("Could not initialize SDL2_image: %s", IMG_GetError());
     }
 
     if(TTF_Init() != 0) {
-        Deccan_Log.error("Could not initialize SDL2_ttf", TTF_GetError());
+        Deccan_Log.error("Could not initialize SDL2_ttf: %s", TTF_GetError());
     }
 
     int window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
     if((global_engine.window = SDL_CreateWindow(title, 0, 0, mode.x, mode.y, window_flags)) == NULL) {
-        Deccan_Log.error("Could not create window", SDL_GetError());
+        Deccan_Log.error("Could not create window: %s", SDL_GetError());
     }
 
     int render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     if((global_engine.renderer = SDL_CreateRenderer(global_engine.window, -1, render_flags)) == NULL) {
-        Deccan_Log.error("Could not create renderer", SDL_GetError());
+        Deccan_Log.error("Could not create renderer: %s", SDL_GetError());
+    }
+
+    logfile = fopen("report.log", "w");
+    if(logfile == NULL) {
+        Deccan_Log.error("Could not create/open log file");
     }
 
     global_engine.is_running = true;
