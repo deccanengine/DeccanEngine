@@ -87,6 +87,8 @@ Deccan_KeyState _priv_Input_get_key(int key_code);
 Deccan_MouseState _priv_Input_get_mouse_button(int button_code);
 Deccan_Vector2i _priv_Input_get_mouse_pos();
 Deccan_Vector2i _priv_Input_get_relative_mouse_pos();
+int _priv_Input_mouse_scroll_horizontal();
+int _priv_Input_mouse_scroll_vertical();
 
 bool _priv_Input_key_pressed(int key_code);
 bool _priv_Input_key_released(int key_code);
@@ -101,6 +103,8 @@ bool _priv_Input_button_up(int button_code);
         Deccan_MouseState (*get_mouse_button)(int button_code);
         Deccan_Vector2i (*get_mouse_pos)();
         Deccan_Vector2i (*get_relative_mouse_pos)();
+        int (*mouse_scroll_horizontal)();
+        int (*mouse_scroll_vertical)();
 
         bool (*key_pressed)(int key_code);
         bool (*key_released)(int key_code);
@@ -114,6 +118,8 @@ bool _priv_Input_button_up(int button_code);
         _priv_Input_get_mouse_button, 
         _priv_Input_get_mouse_pos,
         _priv_Input_get_relative_mouse_pos,
+        _priv_Input_mouse_scroll_horizontal,
+        _priv_Input_mouse_scroll_vertical,
 
         _priv_Input_key_pressed,
         _priv_Input_key_released,

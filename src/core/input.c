@@ -56,6 +56,24 @@ Deccan_Vector2i _priv_Input_get_relative_mouse_pos() {
     return pos;
 }
 
+int _priv_Input_mouse_scroll_horizontal() {
+    Deccan_Info *engine = Deccan_Core.get_global_engine();
+    if(engine->event.type == SDL_MOUSEWHEEL) {
+        if(engine->event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) { return engine->event.wheel.x; }
+        else { return -engine->event.wheel.x; }
+    }
+    return 0;
+}
+
+int _priv_Input_mouse_scroll_vertical() {
+    Deccan_Info *engine = Deccan_Core.get_global_engine();
+    if(engine->event.type == SDL_MOUSEWHEEL) {
+        if(engine->event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) { return engine->event.wheel.y; }
+        else { return -engine->event.wheel.y ;}
+    }
+    else { return 0; }
+}
+
 bool _priv_Input_key_pressed(int key_code) {
     Deccan_Info *engine = Deccan_Core.get_global_engine();
     return engine->curr_keys[key_code] && !engine->prev_keys[key_code];
@@ -81,4 +99,3 @@ bool _priv_Input_button_up(int button_code) {
     return engine->event.type == SDL_MOUSEBUTTONUP &&
            engine->event.button.button == button_code;
 }
-

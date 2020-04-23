@@ -18,6 +18,7 @@ void _player_begin(GameObject *this) {
 
     this->collider = Collision.new_rect_collider((PosRect){0, 0, 50, 50});
     //this->collider = Collision.new_circle_collider((Circle){0, 0, 50});
+    this->color = ColorList.blue;
 }
 
 void _player_step(GameObject *this) {
@@ -41,7 +42,9 @@ void _player_step(GameObject *this) {
         }
         else if(Input.button_up(Button.left)) { selected = false; }
     }
-    else { this->color = ColorList.blue; }
+    
+    /* Modify the color on mouse wheel */
+    this->color.g += 10 * Input.mouse_scroll_vertical();
     
     if(selected) {
         this->position.x = pos.x - offset.x;

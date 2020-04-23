@@ -149,6 +149,10 @@ void _priv_Core_run(float fps) {
         
         SDL_RenderPresent(global_engine.renderer);
 
+        /* Prevent mouse wheel scroll input spam */
+        global_engine.event.wheel.x = 0;
+        global_engine.event.wheel.y = 0;
+
         frames++;
         
         /* Limit FPS */
