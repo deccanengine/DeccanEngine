@@ -33,7 +33,7 @@ void _player_step(GameObject *this) {
     Camera.center_on(this);
 
     Vector2i pos = Input.get_relative_mouse_pos();
-    if(Collision.test_vec_from(this, pos)) { 
+    if(Collision.test_vec_from(this, &pos)) { 
         this->color = ColorList.fuchsia;
         if(Input.button_down(Button.left)) {
             selected = true;
@@ -62,13 +62,13 @@ void _player_render(GameObject *this) {
 void _player_end(GameObject *this) { }
 
 void _none_begin(GameObject *this) {
-    this->collider = Collision.new_rect_collider((PosRect){0, 0, 40, 40});
+    this->collider = Collision.new_circle_collider((Circle){0, 0, 40});
 }
 
 void _none_step(GameObject *this) { }
 
 void _none_render(GameObject *this) {
-    Renderer.draw_rect((Rect){this->position.x, this->position.y, 40, 40}, true, ColorList.red); 
+    Renderer.draw_circle((Circle){this->position.x, this->position.y, 40}, true, ColorList.red); 
 }
 
 void _none_end(GameObject *this) { }

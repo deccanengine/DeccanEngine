@@ -21,29 +21,44 @@ Deccan_Collider _priv_Collision_new_circle_collider(Deccan_Circle circle) {
     return coll;
 }
 
-bool _priv_Collision_test_vec_from(Deccan_GameObject *obj, Deccan_Vector2i vec) {
-    switch(obj->collider.type) {
-        case ColliderVec : {
-            return obj->collider.vec.x == vec.x && obj->collider.vec.y == vec.y;
-        }
-        case ColliderRect: {
-            int32_t x1 = obj->position.x + obj->collider.rect.x1;
-            int32_t y1 = obj->position.y + obj->collider.rect.y1;
-            int32_t x2 = obj->position.x + obj->collider.rect.x2;
-            int32_t y2 = obj->position.y + obj->collider.rect.y2;
+bool _priv_Collision_test_vec_vec_from(Deccan_Vector2i *v1, Deccan_Vector2i *v2) {
+    return v1->x == v2->x && v1->y == v2->y;
+}
 
-            return vec.x > x1 && vec.x < x2 && vec.y > y1 && vec.y < y2;
-        }
-        case ColliderCircle: {
-            int32_t x = obj->position.x + obj->collider.circle.x;
-            int32_t y = obj->position.y + obj->collider.circle.y;
-            int32_t r = obj->collider.circle.radius;
-            
-            int64_t distance = ((x-vec.x)*(x-vec.x)) + ((y-vec.y)*(y-vec.y));
-            if(distance < r*r) { return true; }
-        }
-        default: { return false; }
-    }
+bool _priv_Collision_test_rect_rect_from(Deccan_PosRect *r1, Deccan_PosRect *r2) {
+    return r1->x1 < r2->x2 && r1->x2 > r2->x1 && r1->y1 < r2->y2 && r1->y2 > r2->y1;
+}
+
+bool _priv_Collision_test_circle_circle_from(Deccan_Circle *c1, Deccan_Circle *c2) {
+    int64_t distance = ((c1->x-c2->x)*(c1->x-c2->x)) + ((c1->y-c2->y)*(c1->y-c2->y));
+    return distance < (c1->radius+c2->radius)*(c1->radius+c2->radius);
+}
+
+bool _priv_Collision_test_vec_rect_from(Deccan_Vector2i *vec, Deccan_PosRect *rect) {
+    return vec->x > rect->x1 && vec->x < rect->x2 && vec->y > rect->y1 && vec->y < rect->y2;
+}
+
+bool _priv_Collision_test_circle_vec_from(Deccan_Circle *circle, Deccan_Vector2i *vec) {
+    int64_t distance = ((circle->x-vec->x)*(circle->x-vec->x)) + ((circle->y-vec->y)*(circle->y-vec->y));
+    return distance < circle->radius*circle->radius;
+}
+
+
+bool _priv_Collision_test_rect_circle_from(Deccan_PosRect *rect, Deccan_Circle *circle) {
+    int32_t cx, cy;     /* Closest X and Y of rect */
+    
+    /* Find the abscissa of nearest point to the abscissa center of circle */
+    if(circle->x < rect->x1) { cx = rect->x1; }
+    else if(circle->x > rect->x2) { cx = rect->x2; }
+    else { cx = circle->x; }       /* Special case: the x coord of rect is same as x coord of center */
+
+    /* Find the ordinate of nearest point to the ordinate center of circle */
+    if(circle->y < rect->y1) { cy = rect->y1; }
+    else if(circle->y > rect->y2) { cy = rect->y2; }
+    else { cy = circle->y; }       /* Special case: the y coord of rect is same as y coord of center */
+
+    int64_t distance = ((cx-circle->x)*(cx-circle->x)) + ((cy-circle->y)*(cy-circle->y));
+    return distance < circle->radius*circle->radius;
 }
 
 bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2) {
@@ -60,39 +75,28 @@ bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2)
         switch(type1) {
             /* Point collision i.e. v<->v */
             case ColliderVec: {
-                return obj1->position.x + obj1->collider.vec.x == 
-                       obj2->position.x + obj2->collider.vec.x &&
-                       obj1->position.y + obj1->collider.vec.y == 
-                       obj2->position.y + obj2->collider.vec.y;     /* Exit */
+                Deccan_Vector2i v1 = {obj1->position.x + obj1->collider.vec.x, obj1->position.y + obj1->collider.vec.y}; 
+                Deccan_Vector2i v2 = {obj2->position.x + obj2->collider.vec.x, obj2->position.y + obj2->collider.vec.y}; 
+                
+                return _priv_Collision_test_vec_vec_from(&v1, &v2);    /* Exit */
             }
 
             /* AABB collision i.e. r<->r */
             case ColliderRect: { 
-                int32_t x11 = obj1->position.x + obj1->collider.rect.x1;
-                int32_t x12 = obj1->position.x + obj1->collider.rect.x2;
-                int32_t y11 = obj1->position.y + obj1->collider.rect.y1;
-                int32_t y12 = obj1->position.y + obj1->collider.rect.y2;
+                Deccan_PosRect r1 = {obj1->position.x + obj1->collider.rect.x1, obj1->position.y + obj1->collider.rect.y1,
+                                     obj1->position.x + obj1->collider.rect.x2, obj1->position.y + obj1->collider.rect.y2};
+                Deccan_PosRect r2 = {obj2->position.x + obj2->collider.rect.x1, obj2->position.y + obj2->collider.rect.y1,
+                                     obj2->position.x + obj2->collider.rect.x2, obj2->position.y + obj2->collider.rect.y2};
 
-                int32_t x21 = obj2->position.x + obj2->collider.rect.x1;
-                int32_t x22 = obj2->position.x + obj2->collider.rect.x2;
-                int32_t y21 = obj2->position.y + obj2->collider.rect.y1;
-                int32_t y22 = obj2->position.y + obj2->collider.rect.y2;
-
-                return x11 < x22 && x12 > x21 && y11 < y22 && y12 > y21;    /* Exit */
+                return _priv_Collision_test_rect_rect_from(&r1, &r2);    /* Exit */
             }
 
             /* Circle collision i.e. c<->c */
             case ColliderCircle: {
-                int32_t x1 = obj1->position.x + obj1->collider.circle.x;
-                int32_t y1 = obj1->position.y + obj1->collider.circle.y;
-                int32_t r1 = obj1->collider.circle.radius;
-                
-                int32_t x2 = obj2->position.x + obj2->collider.circle.x;
-                int32_t y2 = obj2->position.y + obj2->collider.circle.y;
-                int32_t r2 = obj2->collider.circle.radius;
+                Deccan_Circle c1 = {obj1->position.x + obj1->collider.circle.x, obj1->position.y + obj1->collider.circle.y, obj1->collider.circle.radius};
+                Deccan_Circle c2 = {obj2->position.x + obj2->collider.circle.x, obj2->position.y + obj2->collider.circle.y, obj2->collider.circle.radius};
 
-                int64_t distance = ((x1-x2)*(x1-x2)) + ((y1-y2)*(y1-y2));
-                return distance < (r1+r2)*(r1+r2);  /* Exit */
+                return _priv_Collision_test_circle_circle_from(&c1, &c2);  /* Exit */
             }
         }
     }
@@ -103,35 +107,23 @@ bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2)
 
     /* v<->r */
     if(case_1 || case_2) {
-        int32_t v1, v2;
-        int32_t x1, y1, x2, y2;
+        Deccan_Vector2i vec;
+        Deccan_PosRect  rect;
 
         /* v & r */
         if(case_1) {
-            /* Vector dimensions */
-            v1 = obj1->position.x + obj1->collider.vec.x;
-            v2 = obj1->position.y + obj1->collider.vec.y;
-
-            /* Rect dimensions */
-            x1 = obj2->position.x + obj2->collider.rect.x1;
-            y1 = obj2->position.y + obj2->collider.rect.y1;
-            x2 = obj2->position.x + obj2->collider.rect.x2;
-            y2 = obj2->position.y + obj2->collider.rect.y2;
+            vec  = (Deccan_Vector2i){obj1->position.x + obj1->collider.vec.x,   obj1->position.y + obj1->collider.vec.y};
+            rect = (Deccan_PosRect) {obj2->position.x + obj2->collider.rect.x1, obj2->position.y + obj2->collider.rect.y1,
+                                     obj2->position.x + obj2->collider.rect.x2, obj2->position.y + obj2->collider.rect.y2};
         }
-        /* r & v */
+        /* r & v   */
         else {
-            /* Vector dimensions */
-            v1 = obj2->position.x + obj2->collider.vec.x;
-            v2 = obj2->position.y + obj2->collider.vec.y;
-
-            /* Rect dimensions */
-            x1 = obj1->position.x + obj1->collider.rect.x1;
-            y1 = obj1->position.y + obj1->collider.rect.y1;
-            x2 = obj1->position.x + obj1->collider.rect.x2;
-            y2 = obj1->position.y + obj1->collider.rect.y2;
+            vec  = (Deccan_Vector2i){obj2->position.x + obj2->collider.vec.x,   obj2->position.y + obj2->collider.vec.y};
+            rect = (Deccan_PosRect) {obj1->position.x + obj1->collider.rect.x1, obj1->position.y + obj1->collider.rect.y1,
+                                     obj1->position.x + obj1->collider.rect.x2, obj1->position.y + obj1->collider.rect.y2};
         }
 
-        return v1 > x1 && v1 < x2 && v2 > y1 && v2 < y2;    /* Exit */
+        return _priv_Collision_test_vec_rect_from(&vec, &rect);    /* Exit */
     }
 
     bool case_3 = (type1 == ColliderCircle && type2 == ColliderVec);
@@ -139,35 +131,21 @@ bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2)
 
     /* c <-> v */
     if(case_3 || case_4) {
-        int64_t distance;
-        int32_t v1, v2;
-        int32_t x, y, r;
+        Deccan_Circle   circle;
+        Deccan_Vector2i vec;
 
         /* c & v */
         if(case_3) {
-            /* Vector dimensions */
-            v1 = obj2->position.x + obj2->collider.vec.x;
-            v2 = obj2->position.y + obj2->collider.vec.y;
-
-            /* Circle dimensions */
-            x = obj1->position.x + obj1->collider.circle.x;
-            y = obj1->position.y + obj1->collider.circle.y;
-            r = obj1->collider.circle.radius;
+            vec    = (Deccan_Vector2i){obj2->position.x + obj2->collider.vec.x, obj2->position.y + obj2->collider.vec.y};
+            circle = (Deccan_Circle)  {obj1->position.x + obj1->collider.circle.x, obj1->position.y + obj1->collider.circle.y, obj1->collider.circle.radius};
         }
         /* v & c */
         else {
-            /* Vector dimensions */
-            v1 = obj1->position.x + obj1->collider.vec.x;
-            v2 = obj1->position.y + obj1->collider.vec.y;
-
-            /* Circle dimensions */
-            x = obj2->position.x + obj2->collider.circle.x;
-            y = obj2->position.y + obj2->collider.circle.y;
-            r = obj2->collider.circle.radius;
+            vec    = (Deccan_Vector2i){obj1->position.x + obj1->collider.vec.x, obj1->position.y + obj1->collider.vec.y};
+            circle = (Deccan_Circle)  {obj2->position.x + obj2->collider.circle.x, obj2->position.y + obj2->collider.circle.y, obj2->collider.circle.radius};
         }
             
-        distance = ((x-v1)*(x-v1)) + ((y-v2)*(y-v2));
-        return distance < r*r;   /* Exit */
+        return _priv_Collision_test_circle_vec_from(&circle, &vec);   /* Exit */
     }
 
     bool case_5 = (type1 == ColliderRect && type2 == ColliderCircle);
@@ -175,52 +153,39 @@ bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2)
     
     /* r <-> c */
     if(case_5 || case_6) {
-        int64_t distance;
-        int32_t cx, cy;
-        int32_t x1, y1, w, h, x2, y2, r;
+        Deccan_PosRect rect;
+        Deccan_Circle  circle;
 
         /* r & c */
         if(case_5) {
-            /* Rect dimensions */
-            x1 = obj1->position.x + obj1->collider.rect.x1;
-            y1 = obj1->position.y + obj1->collider.rect.y1;
-            w  = obj1->collider.rect.x2;
-            h  = obj1->collider.rect.y2;
-
-            /* Circle dimensions */
-            x2 = obj2->position.x + obj2->collider.circle.x;
-            y2 = obj2->position.y + obj2->collider.circle.y;
-            r  = obj2->collider.circle.radius; 
+            rect   = (Deccan_PosRect){obj1->position.x + obj1->collider.rect.x1, obj1->position.y + obj1->collider.rect.y1,
+                                      obj1->position.x + obj1->collider.rect.x2, obj1->position.y + obj1->collider.rect.y2};
+            circle = (Deccan_Circle) {obj2->position.x + obj2->collider.circle.x, obj2->position.y + obj2->collider.circle.y,
+                                      obj2->collider.circle.radius};
         }
         /* c & r */
         else {
-            /* Rect dimensions */
-            x1 = obj2->position.x + obj2->collider.rect.x1;
-            y1 = obj2->position.y + obj2->collider.rect.y1;
-            w  = obj2->collider.rect.x2;
-            h  = obj2->collider.rect.y2;
-
-            /* Circle dimensions */
-            x2 = obj1->position.x + obj1->collider.circle.x;
-            y2 = obj1->position.y + obj1->collider.circle.y;
-            r  = obj1->collider.circle.radius; 
+            rect   = (Deccan_PosRect){obj2->position.x + obj2->collider.rect.x1, obj2->position.y + obj2->collider.rect.y1,
+                                      obj2->position.x + obj2->collider.rect.x2, obj2->position.y + obj2->collider.rect.y2};
+            circle = (Deccan_Circle) {obj1->position.x + obj1->collider.circle.x, obj1->position.y + obj1->collider.circle.y,
+                                      obj1->collider.circle.radius};
         }
 
-        /* Find the abscissa of nearest point to the abscissa center of circle */
-        if(x2 < x1) { cx = x1; }
-        else if(x2 > x1 + w) { cx = x1 + w; }
-        else { cx = x2; }       /* Special case: the x coord of rect is same as x coord of center */
-
-        /* Find the ordinate of nearest point to the ordinate center of circle */
-        if(y2 < y1) { cy = y1; }
-        else if(y2 > y1 + h) { cy = y1 + h; }
-        else { cy = y2; }       /* Special case: the y coord of rect is same as y coord of center */
-
-        distance = ((cx-x2)*(cx-x2)) + ((cy-y2)*(cy-y2));
-        return distance < r*r;  /* Exit */
+        return _priv_Collision_test_rect_circle_from(&rect, &circle);   /* Exit */
     }
 
     return false;
+}
+
+bool _priv_Collision_test_vec_from(Deccan_GameObject *obj, Deccan_Vector2i *vec) {
+    switch(obj->collider.type) {
+        /* To do more. Done this one now just for mouse hovering */
+        case ColliderRect: {
+            Deccan_PosRect rect = {obj->position.x + obj->collider.rect.x1, obj->position.y + obj->collider.rect.y1,
+                                   obj->position.x + obj->collider.rect.x2, obj->position.y + obj->collider.rect.y2};
+            return _priv_Collision_test_vec_rect_from(vec, &rect);
+        }
+    }
 }
 
 bool _priv_Collision_test(const char *name1, const char *name2) {
