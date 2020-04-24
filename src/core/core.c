@@ -8,7 +8,6 @@
 #define STB_DS_IMPLEMENTATION
 #include "core.h"
 
-FILE *DE_logfile;
 Deccan_Info global_engine;
 
 /* Core */
@@ -50,6 +49,7 @@ int _priv_Core_init(const char *title, Deccan_Vector2i mode) {
         DE_error("Could not create/open log file");
     }
 
+    global_engine.win_mode = mode;
     global_engine.is_running = true;
     global_engine.vsync_enabled = false;
     global_engine.fps_req = 60.0f;      /* Fallback FPS limit if vsync is disabled somwhere and new limit is not set */
@@ -173,7 +173,6 @@ void _priv_Core_run(float fps) {
                 Deccan_Clock.delay(ticks_per_frame - frm_ticks);
             }
         }
-        printf("fps: %f\n", global_engine.fps_avg);
     }
     
     /* at_end of scenes and objects */
@@ -193,32 +192,31 @@ void _priv_Core_set_title(const char *name) {
 }
 
 void _priv_Core_set_mode(Deccan_Vector2i mode) {
-    // Fix fullscreen
-    SDL_SetWindowSize(global_engine.window, mode.x, mode.y);
+    if(global_engine.is_fullscreen) {
+        SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN, mode.x, mode.y, 0, 0};
+        if(SDL_SetWindowDisplayMode(global_engine.window, &disp) > 0) {
+            DE_report("Cannot set fullscreen window mode: %s", SDL_GetError());
+        }
+        SDL_MaximizeWindow(global_engine.window);
+    }
+    else { SDL_SetWindowSize(global_engine.window, mode.x, mode.y); }
+    global_engine.win_mode = mode;
 }
 
 void _priv_Core_set_fullscreen() {
-    // Fix fullscreen
-    SDL_SetWindowFullscreen(global_engine.window, global_engine.is_fullscreen ? 1 : 0);
+    SDL_SetWindowFullscreen(global_engine.window, global_engine.is_fullscreen ? 0 : 1);
     global_engine.is_fullscreen = !global_engine.is_fullscreen;
 }
 
 void _priv_Core_set_vsync_status(bool vsync) {
     // ??: Adaptive vsync
-    /*
-    SDL_GL_SetSwapInterval((int)vsync);
-    global_engine.vsync_enabled = SDL_GL_GetSwapInterval();
-    */
-    // To be fixed
-    if(SDL_GL_SetSwapInterval((int)vsync) == -1) {
+    if(SDL_GL_SetSwapInterval(vsync ? -1 : 0) == -1) {
         DE_report("VSync is not supported: %s", SDL_GetError());
-        global_engine.vsync_enabled = false;
     }
-    else { 
-        printf("Enabled: %d\n", SDL_GL_GetSwapInterval());
-        global_engine.vsync_enabled = false;/*true;*/ 
-    }
-    
+
+    int status = SDL_GL_GetSwapInterval();
+    if(status == 0) { global_engine.vsync_enabled = false; }
+    else { global_engine.vsync_enabled = true; }
 }
 
 void _priv_Core_set_framerate_limit(float fps){
@@ -231,9 +229,7 @@ const char *_priv_Core_get_title() {
 }
 
 Deccan_Vector2i _priv_Core_get_mode() {
-    Deccan_Vector2i size;
-    SDL_GetWindowSize(global_engine.window, &size.x, &size.y);
-    return size;
+    return global_engine.win_mode;
 }
 
 bool _priv_Core_get_fullscreen_status() {

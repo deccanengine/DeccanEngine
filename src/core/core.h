@@ -14,6 +14,10 @@
 #include "../utils/timer.h"
 #include "../utils/vector.h"
 
+#ifdef DECCAN_REPORTS_ENABLED
+FILE *DE_logfile;
+#endif
+
 typedef struct Deccan_Info {
     /* Core engine */
     SDL_Window *window;
@@ -21,6 +25,7 @@ typedef struct Deccan_Info {
     bool is_running;
 
     /* Settings */
+    Deccan_Vector2i win_mode;
     bool is_fullscreen;
     bool vsync_enabled;
     float fps_req;

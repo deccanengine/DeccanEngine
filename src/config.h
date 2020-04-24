@@ -42,13 +42,14 @@ static void DE_error(const char *str, ...) {
     exit(-1);
 }
 
+#define DECCAN_REPORTS_ENABLED
+
 #ifdef DECCAN_REPORTS_ENABLED
 extern FILE *DE_logfile;
 #endif
 
 static void DE_report(const char *str, ...) {
 #ifdef DECCAN_REPORTS_ENABLED
-    // Broken
     va_list args;
     
     va_start(args, str);
