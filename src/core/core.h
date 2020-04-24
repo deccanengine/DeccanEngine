@@ -11,11 +11,8 @@
 #include "scene.h"
 #include "input.h"
 #include "object.h"
-#include "../utils/log.h"
 #include "../utils/timer.h"
 #include "../utils/vector.h"
-
-extern FILE *logfile;
 
 typedef struct Deccan_Info {
     /* Core engine */

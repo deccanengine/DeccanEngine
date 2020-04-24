@@ -14,10 +14,10 @@ Deccan_GameObject *_priv_Object_new_object(
     const char *name, const char *type, 
     obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae)) {
     
-    Deccan_GameObject *obj = New(Deccan_GameObject, 1);
+    Deccan_GameObject *obj = DE_new(Deccan_GameObject, 1);
     
-    obj->info.name = NewString(name);
-    obj->info.type = NewString(type);
+    obj->info.name = DE_newstring(name);
+    obj->info.type = DE_newstring(type);
     obj->is_beginning = true;
     obj->at_first_frame = af;
     obj->at_beginning = ab;
@@ -32,7 +32,10 @@ Deccan_GameObject *_priv_Object_new_object(
 
 void _priv_Object_instantiate_object(Deccan_GameObject *object) {
     Deccan_Scene *scene = Deccan_Scenes.current_scene(); 
-    stbds_arrput(scene->objects, object);
+    if(object == NULL) { return; }
+    if(stbds_arrput(scene->objects, object) != object) {
+        DE_report("Cannot instantiate object: %s", object->info.name); return;
+    }
     scene->object_count++;
 }
 
@@ -43,7 +46,7 @@ Deccan_GameObject *_priv_Object_get_object(const char *name) {
             return scene->objects[i];
         }
     }
-    Deccan_Log.report("GameObject not found: %s", name);
+    DE_report("GameObject not found: %s", name);
 }
 
 void _priv_Object_get_object_of_type(const char *name, void(*func)(Deccan_GameObject *obj)) {

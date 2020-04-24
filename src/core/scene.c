@@ -11,9 +11,9 @@
 #define void_func(x) void (*x)(void)
 
 Deccan_Scene *_priv_Scene_new_scene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae)) {
-    Deccan_Scene *scene = New(Deccan_Scene, 1);
+    Deccan_Scene *scene = DE_new(Deccan_Scene, 1);
     
-    scene->name = NewString(name);
+    scene->name = DE_newstring(name);
     scene->is_paused = false;
     scene->is_first_frame = true;
     scene->objects = NULL;
@@ -30,15 +30,22 @@ Deccan_Scene *_priv_Scene_new_scene(const char *name, void_func(af), void_func(a
 
 void _priv_Scene_add_scene(Deccan_Scene *scene, bool is_replacing) {
     Deccan_Info *engine = Deccan_Core.get_global_engine();
+    
+    if(scene == NULL) { DE_report("Invalid scene data"); return; }
+
     if(engine->scene_count != 0) {
         if(is_replacing) { stbds_arrpop(engine->scenes); engine->scene_count--; }
         else { engine->scenes[engine->scene_count-1]->is_paused = true; }
     }
-    stbds_arrput(engine->scenes, scene);
+    
+    if(stbds_arrput(engine->scenes, scene) != scene) {
+        DE_report("Cannot add scene: %s\n", scene->name);
+        return;
+    }
     engine->scene_count++;
 }
 
-void _priv_Scene_remove_scene(Deccan_Scene *scene) {
+void _priv_Scene_remove_scene() {
     Deccan_Info *engine = Deccan_Core.get_global_engine();
     if(engine->scene_count > 1) { 
         stbds_arrpop(engine->scenes);

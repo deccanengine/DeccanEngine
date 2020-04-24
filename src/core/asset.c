@@ -13,14 +13,14 @@ void _priv_Asset_load_texture(const char *name, const char *path) {
 
     img = IMG_Load(path);
     if(img == NULL) {
-        Deccan_Log.report("Cannot load image: %s: %s", path, IMG_GetError());
+        DE_report("Cannot load image: %s: %s", path, IMG_GetError());
     }
 
     tex = SDL_CreateTextureFromSurface(Deccan_Core.get_global_engine()->renderer, img);
     SDL_FreeSurface(img);
 
     if(tex == NULL) {
-        Deccan_Log.report("Cannot create texture: %s: %s", name, SDL_GetError());
+        DE_report("Cannot create texture: %s: %s", name, SDL_GetError());
     }
 
     stbds_shput(Deccan_Core.get_global_engine()->textures, name, tex);
@@ -33,5 +33,5 @@ SDL_Texture *_priv_Asset_get_texture(const char *name) {
             return info->textures[i].value;
         }
     }
-    Deccan_Log.report("Texture not found: %s", name);
+    DE_report("Texture not found: %s", name);
 }

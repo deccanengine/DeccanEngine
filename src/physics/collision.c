@@ -66,6 +66,9 @@ bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2)
         v <-> v      r <-> r      c <-> c
         v <-> r      c <-> v      r <-> c 
     */
+    if(obj1 == NULL || obj2 == NULL) {
+        DE_report("Invalid object(s) passed to collision system");
+    }
     
     int type1 = obj1->collider.type;
     int type2 = obj2->collider.type;
@@ -178,6 +181,10 @@ bool _priv_Collision_test_from(Deccan_GameObject *obj1, Deccan_GameObject *obj2)
 }
 
 bool _priv_Collision_test_vec_from(Deccan_GameObject *obj, Deccan_Vector2i *vec) {
+    if(obj == NULL) {
+        DE_report("Invalid object passed to collision system");
+    }
+
     switch(obj->collider.type) {
         /* To do more. Done this one now just for mouse hovering */
         case ColliderRect: {
@@ -191,7 +198,5 @@ bool _priv_Collision_test_vec_from(Deccan_GameObject *obj, Deccan_Vector2i *vec)
 bool _priv_Collision_test(const char *name1, const char *name2) {
     Deccan_GameObject *obj1 = Deccan_Object.get_object(name1);
     Deccan_GameObject *obj2 = Deccan_Object.get_object(name2);
-
-    if(obj1 == NULL || obj2 == NULL) { return false; }
-    else { return Deccan_Collision.test_from(obj1, obj2); }
+    return Deccan_Collision.test_from(obj1, obj2);
 }

@@ -17,6 +17,10 @@ void _priv_Camera_set_position(Deccan_Vector2i pos) {
 }
 
 void _priv_Camera_center_on(Deccan_GameObject *obj) {
+    if(obj == NULL) {
+        DE_report("Invalid object used with camera"); return;
+    }
+
     Deccan_Vector2i mode = Deccan_Core.get_mode();
     int32_t x = obj->position.x + obj->size.x/2 - mode.x/2; 
     int32_t y = obj->position.y + obj->size.y/2 - mode.y/2;

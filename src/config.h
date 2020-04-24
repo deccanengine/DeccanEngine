@@ -23,9 +23,38 @@
 
 typedef SDL_Texture Deccan_Texture;
 
-#define New(type,size) (type*)malloc(sizeof(type)*size);
-static inline char *NewString(const char *source) {
-    char *string = New(char, strlen(source));
+#define DE_new(type,size) (type*)malloc(sizeof(type)*size);
+static inline char *DE_newstring(const char *source) {
+    char *string = DE_new(char, strlen(source));
     strcpy(string, source);
     return string;
+}
+
+static void DE_error(const char *str, ...) {
+    printf("Fatal Error: ");
+    
+    va_list args;
+    va_start(args, str);
+    vprintf(str, args);
+    va_end(args);
+    
+    printf("\n");
+    exit(-1);
+}
+
+#ifdef DECCAN_REPORTS_ENABLED
+extern FILE *DE_logfile;
+#endif
+
+static void DE_report(const char *str, ...) {
+#ifdef DECCAN_REPORTS_ENABLED
+    // Broken
+    va_list args;
+    
+    va_start(args, str);
+    vfprintf(DE_logfile, str, args);
+    va_end(args);
+    
+    fprintf(DE_logfile, "\n");
+#endif
 }

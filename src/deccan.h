@@ -22,7 +22,6 @@
 #include "physics/collider.h"
 #include "physics/collision.h"
 
-#include "utils/log.h"
 #include "utils/timer.h"
 #include "utils/vector.h"
 
@@ -63,7 +62,6 @@
         #define Collision Deccan_Collision
 
         #define Clock Deccan_Clock
-        #define Log Deccan_Log
     #endif
 #elif __cplusplus
 
