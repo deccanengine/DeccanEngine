@@ -34,14 +34,38 @@ int _priv_Core_init(const char *title, Deccan_Vector2i mode) {
         DE_error("Could not initialize SDL2_ttf: %s", TTF_GetError());
     }
 
+    /* GL Attributes: OpenGL 2.1 with hardware acceleration */
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+
+    /* Create window */
     int window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
     if((global_engine.window = SDL_CreateWindow(title, 0, 0, mode.x, mode.y, window_flags)) == NULL) {
         DE_error("Could not create window: %s", SDL_GetError());
     }
 
+    /* Set the renderer to OpenGL */
+    if(SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl") != SDL_TRUE) {
+        DE_error("OpenGL cannot be enabled");
+    }
+
+    /* Create renderer */
     int render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     if((global_engine.renderer = SDL_CreateRenderer(global_engine.window, -1, render_flags)) == NULL) {
         DE_error("Could not create renderer: %s", SDL_GetError());
+    }
+
+    int GL_major, GL_minor;
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &GL_major);
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &GL_minor);
+    if(GL_major < 2 || (GL_major == 2 && GL_minor < 1)) {
+        DE_error("OpenGL 2.1 support needed at minimum. Consider upgrading your hardware");
+    }
+
+    /* Enable alpha blending */
+    if(SDL_SetRenderDrawBlendMode(global_engine.renderer, SDL_BLENDMODE_BLEND) > 0) {
+        DE_error("Alpha blending cannot be enabled: %s", SDL_GetError());
     }
 
     DE_logfile = fopen("report.log", "w");
