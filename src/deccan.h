@@ -15,6 +15,8 @@
 #include "core/object.h"
 
 #include "renderer/renderer.h"
+#include "renderer/draw.h"
+#include "renderer/renderapi.h"
 #include "renderer/color.h"
 #include "renderer/camera.h"
 

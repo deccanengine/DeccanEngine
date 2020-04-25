@@ -19,6 +19,8 @@ void _player_begin(GameObject *this) {
     this->collider = Collision.new_rect_collider((PosRect){0, 0, 50, 50});
     //this->collider = Collision.new_circle_collider((Circle){0, 0, 50});
     this->color = ColorList.blue;
+
+    Asset.load_texture("arrow0", "arrow0.png");
 }
 
 void _player_step(GameObject *this) {
@@ -55,8 +57,9 @@ void _player_step(GameObject *this) {
 }
 
 void _player_render(GameObject *this) {
-    Renderer.draw_rect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, true, this->color);
+    Renderer.draw_filled_rect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
     //Renderer.draw_circle((Circle){this->position.x, this->position.y, 50}, true, this->color);
+    Renderer.texture_draw_with_scale((Vector2i){this->position.x, this->position.y}, (Vector2f){2.0f, 2.0f}, Asset.get_texture("arrow0"));
 }
 
 void _player_end(GameObject *this) { }
@@ -68,7 +71,7 @@ void _none_begin(GameObject *this) {
 void _none_step(GameObject *this) { }
 
 void _none_render(GameObject *this) {
-    Renderer.draw_circle((Circle){this->position.x, this->position.y, 40}, true, ColorList.red); 
+    Renderer.draw_filled_circle((Circle){this->position.x, this->position.y, 40}, ColorList.red); 
 }
 
 void _none_end(GameObject *this) { }
