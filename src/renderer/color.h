@@ -11,15 +11,15 @@ typedef struct {
     uint8_t r, g, b, a;
 } Deccan_Color;
 
-typedef struct _priv_ColorList {
+typedef struct DE_ColorList {
     Deccan_Color blank, 
     white, black, grey, dark_grey,
     red, dark_red, green, dark_green,
     blue, dark_blue, yellow, cyan,
     magenta, orange, violet, fuchsia;
-} _priv_ColorList;
+} DE_ColorList;
 
-static _priv_ColorList Deccan_ColorList = {
+static DE_ColorList Deccan_ColorList = {
     {  0,   0,   0,   0},
     {255, 255, 255, 255}, {  0,   0,   0, 255},
     {192, 192, 192, 255}, {128, 128, 128, 255},

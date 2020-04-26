@@ -11,12 +11,12 @@
 #define DWC_FUNCREF f
 
 void DE_draw_with_color(void (*DE_dwc_drawcall)(SDL_Renderer *renderer, Deccan_Vector2i camera), Deccan_Color color) {
-    _priv_Renderer_set_color(color);
-    Deccan_Info *engine = Deccan_Core.get_global_engine(); 
+    DE_Renderer_set_color(color);
+    Deccan_Info *engine = DE_Core_get_global_engine(); 
     DE_dwc_drawcall(engine->renderer, engine->camera);
 }
 
-void _priv_Renderer_draw_point(Deccan_Vector2i pos, Deccan_Color color) {
+void DE_Renderer_draw_point(Deccan_Vector2i pos, Deccan_Color color) {
     DE_draw_with_color(({
         DWC_FUNC {
             SDL_RenderDrawPoint(renderer, pos.x - camera.x, pos.y - camera.y);
@@ -24,7 +24,7 @@ void _priv_Renderer_draw_point(Deccan_Vector2i pos, Deccan_Color color) {
     }), color);
 }
 
-void _priv_Renderer_draw_line(Deccan_Vector2i start, Deccan_Vector2i end, Deccan_Color color) {
+void DE_Renderer_draw_line(Deccan_Vector2i start, Deccan_Vector2i end, Deccan_Color color) {
     DE_draw_with_color(({
         DWC_FUNC { 
             SDL_RenderDrawLine(renderer, start.x - camera.x, start.y - camera.y, end.x - camera.x, end.y - camera.y);
@@ -32,7 +32,7 @@ void _priv_Renderer_draw_line(Deccan_Vector2i start, Deccan_Vector2i end, Deccan
     }), color);
 }
 
-void _priv_Renderer_draw_rect(Deccan_Rect rect, Deccan_Color color) {
+void DE_Renderer_draw_rect(Deccan_Rect rect, Deccan_Color color) {
     DE_draw_with_color(({
         DWC_FUNC { 
             SDL_Rect sr = {rect.x - camera.x, rect.y - camera.y, rect.w, rect.h};
@@ -41,7 +41,7 @@ void _priv_Renderer_draw_rect(Deccan_Rect rect, Deccan_Color color) {
     }), color);
 }
 
-void _priv_Renderer_draw_filled_rect(Deccan_Rect rect, Deccan_Color color) {
+void DE_Renderer_draw_filled_rect(Deccan_Rect rect, Deccan_Color color) {
     DE_draw_with_color(({
         DWC_FUNC { 
             SDL_Rect sr = {rect.x - camera.x, rect.y - camera.y, rect.w, rect.h};
@@ -50,7 +50,7 @@ void _priv_Renderer_draw_filled_rect(Deccan_Rect rect, Deccan_Color color) {
     }), color); 
 }
 
-void _priv_Renderer_draw_circle(Deccan_Circle circle, Deccan_Color color) {
+void DE_Renderer_draw_circle(Deccan_Circle circle, Deccan_Color color) {
     if(!circle.radius) { return; }
 
     DE_draw_with_color(({
@@ -82,7 +82,7 @@ void _priv_Renderer_draw_circle(Deccan_Circle circle, Deccan_Color color) {
     }), color);    
 }
 
-void _priv_Renderer_draw_filled_circle(Deccan_Circle circle, Deccan_Color color) {
+void DE_Renderer_draw_filled_circle(Deccan_Circle circle, Deccan_Color color) {
     if(!circle.radius) { return; }
 
     DE_draw_with_color(({

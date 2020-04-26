@@ -50,29 +50,29 @@ typedef struct Deccan_Info {
     Deccan_Vector2i camera;
 } Deccan_Info;
 
-void _priv_Core_set_global_engine(Deccan_Info *engine);
-Deccan_Info *_priv_Core_get_global_engine();
+void DE_Core_set_global_engine(Deccan_Info *engine);
+Deccan_Info *DE_Core_get_global_engine();
 
-int  _priv_Core_init(const char *title, Deccan_Vector2i mode);
-void _priv_Core_quit();
-void _priv_Core_run(float fps);
+int  DE_Core_init(const char *title, Deccan_Vector2i mode);
+void DE_Core_quit();
+void DE_Core_run(float fps);
 
-void _priv_Core_set_title(const char *name);
-void _priv_Core_set_mode(Deccan_Vector2i mode);
-void _priv_Core_set_fullscreen();
-void _priv_Core_set_vsync_status(bool vsync);
-void _priv_Core_set_framerate_limit(float fps);
+void DE_Core_set_title(const char *name);
+void DE_Core_set_mode(Deccan_Vector2i mode);
+void DE_Core_set_fullscreen();
+void DE_Core_set_vsync_status(bool vsync);
+void DE_Core_set_framerate_limit(float fps);
 
-const char *_priv_Core_get_title();
-Deccan_Vector2i _priv_Core_get_mode();
-bool _priv_Core_get_fullscreen_status();
-bool _priv_Core_get_vsync_status();
-float _priv_Core_get_framerate_limit();
-float _priv_Core_get_average_framerate();
+const char *DE_Core_get_title();
+Deccan_Vector2i DE_Core_get_mode();
+bool DE_Core_get_fullscreen_status();
+bool DE_Core_get_vsync_status();
+float DE_Core_get_framerate_limit();
+float DE_Core_get_average_framerate();
 
 #ifdef __STDC__
 
-    typedef struct _priv_Core {
+    typedef struct DE_Core {
         void (*set_global_engine)(Deccan_Info *engine);
         Deccan_Info* (*get_global_engine)();
 
@@ -92,28 +92,28 @@ float _priv_Core_get_average_framerate();
         bool  (*get_vsync_status)();
         float (*get_framerate_limit)();
         float (*get_average_framerate)();
-    } _priv_Core;
+    } DE_Core;
 
-    static _priv_Core Deccan_Core = {
-        _priv_Core_set_global_engine, 
-        _priv_Core_get_global_engine,
+    static DE_Core Deccan_Core = {
+        DE_Core_set_global_engine, 
+        DE_Core_get_global_engine,
         
-        _priv_Core_init,
-        _priv_Core_quit,
-        _priv_Core_run,
+        DE_Core_init,
+        DE_Core_quit,
+        DE_Core_run,
         
-        _priv_Core_set_title,
-        _priv_Core_set_mode,
-        _priv_Core_set_fullscreen,
-        _priv_Core_set_vsync_status,
-        _priv_Core_set_framerate_limit,
+        DE_Core_set_title,
+        DE_Core_set_mode,
+        DE_Core_set_fullscreen,
+        DE_Core_set_vsync_status,
+        DE_Core_set_framerate_limit,
 
-        _priv_Core_get_title,
-        _priv_Core_get_mode,
-        _priv_Core_get_fullscreen_status,
-        _priv_Core_get_vsync_status,
-        _priv_Core_get_framerate_limit,
-        _priv_Core_get_average_framerate
+        DE_Core_get_title,
+        DE_Core_get_mode,
+        DE_Core_get_fullscreen_status,
+        DE_Core_get_vsync_status,
+        DE_Core_get_framerate_limit,
+        DE_Core_get_average_framerate
     };
 
 #elif __cplusplus

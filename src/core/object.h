@@ -33,26 +33,26 @@ typedef struct Deccan_GameObject {
     obj_func(at_end);
 } Deccan_GameObject;
 
-Deccan_GameObject *_priv_Object_new_object(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
-void _priv_Object_instantiate_object(Deccan_GameObject *object);
-Deccan_GameObject *_priv_Object_get_object(const char *name);
-void _priv_Object_get_object_of_type(const char *name, void(*func)(Deccan_GameObject *obj));
+Deccan_GameObject *DE_Object_new_object(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
+void DE_Object_instantiate_object(Deccan_GameObject *object);
+Deccan_GameObject *DE_Object_get_object(const char *name);
+void DE_Object_get_object_of_type(const char *name, void(*func)(Deccan_GameObject *obj));
 
 static inline void NULL_OBJFUNC(Deccan_GameObject *obj) { }
 
 #ifdef __STDC__
-    typedef struct _priv_Object {
+    typedef struct DE_Object {
         Deccan_GameObject *(*new_object)(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
         void (*instantiate_object)(Deccan_GameObject *object);
         Deccan_GameObject *(*get_object)(const char *name);
         void (*get_object_of_type)(const char *name, void(*func)(Deccan_GameObject *obj));
-    } _priv_Object;
+    } DE_Object;
 
-    static _priv_Object Deccan_Object = { 
-        _priv_Object_new_object,
-        _priv_Object_instantiate_object,
-        _priv_Object_get_object,
-        _priv_Object_get_object_of_type
+    static DE_Object Deccan_Object = { 
+        DE_Object_new_object,
+        DE_Object_instantiate_object,
+        DE_Object_get_object,
+        DE_Object_get_object_of_type
     };
 
 #elif __cplusplus

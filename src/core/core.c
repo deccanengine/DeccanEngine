@@ -11,15 +11,15 @@
 Deccan_Info global_engine;
 
 /* Core */
-void _priv_Core_set_global_engine(Deccan_Info *engine) {
+void DE_Core_set_global_engine(Deccan_Info *engine) {
     global_engine = *engine;
 }
 
-Deccan_Info *_priv_Core_get_global_engine() {
+Deccan_Info *DE_Core_get_global_engine() {
     return &global_engine;
 }
 
-int _priv_Core_init(const char *title, Deccan_Vector2i mode) {
+int DE_Core_init(const char *title, Deccan_Vector2i mode) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
         DE_error("Could not initialize SDL2: %s", SDL_GetError());
@@ -89,7 +89,7 @@ int _priv_Core_init(const char *title, Deccan_Vector2i mode) {
     return 1;
 }
 
-void _priv_Core_quit() {
+void DE_Core_quit() {
     stbds_arrfree(global_engine.scenes);
 
     SDL_DestroyRenderer(global_engine.renderer);
@@ -98,7 +98,7 @@ void _priv_Core_quit() {
     SDL_Quit();
 }
 
-void _priv_Core_run(float fps) {
+void DE_Core_run(float fps) {
     int frames = 0;         /* Total frames passed */
     Deccan_Timer fps_timer = Deccan_Clock.new_timer();
     Deccan_Timer frm_timer = Deccan_Clock.new_timer();
@@ -211,11 +211,11 @@ void _priv_Core_run(float fps) {
 }
 
 /* Core Settings Setters */
-void _priv_Core_set_title(const char *name) {
+void DE_Core_set_title(const char *name) {
     SDL_SetWindowTitle(global_engine.window, name);
 }
 
-void _priv_Core_set_mode(Deccan_Vector2i mode) {
+void DE_Core_set_mode(Deccan_Vector2i mode) {
     if(global_engine.is_fullscreen) {
         SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN, mode.x, mode.y, 0, 0};
         if(SDL_SetWindowDisplayMode(global_engine.window, &disp) > 0) {
@@ -227,12 +227,12 @@ void _priv_Core_set_mode(Deccan_Vector2i mode) {
     global_engine.win_mode = mode;
 }
 
-void _priv_Core_set_fullscreen() {
+void DE_Core_set_fullscreen() {
     SDL_SetWindowFullscreen(global_engine.window, global_engine.is_fullscreen ? 0 : 1);
     global_engine.is_fullscreen = !global_engine.is_fullscreen;
 }
 
-void _priv_Core_set_vsync_status(bool vsync) {
+void DE_Core_set_vsync_status(bool vsync) {
     // ??: Adaptive vsync
     if(SDL_GL_SetSwapInterval(vsync ? -1 : 0) == -1) {
         DE_report("VSync is not supported: %s", SDL_GetError());
@@ -243,31 +243,31 @@ void _priv_Core_set_vsync_status(bool vsync) {
     else { global_engine.vsync_enabled = true; }
 }
 
-void _priv_Core_set_framerate_limit(float fps){
+void DE_Core_set_framerate_limit(float fps){
     global_engine.fps_req = fps;
 }
 
 /* Core Settings Getters */
-const char *_priv_Core_get_title() {
+const char *DE_Core_get_title() {
     return SDL_GetWindowTitle(global_engine.window);
 }
 
-Deccan_Vector2i _priv_Core_get_mode() {
+Deccan_Vector2i DE_Core_get_mode() {
     return global_engine.win_mode;
 }
 
-bool _priv_Core_get_fullscreen_status() {
+bool DE_Core_get_fullscreen_status() {
     return global_engine.is_fullscreen;
 }
 
-bool _priv_Core_get_vsync_status() {
+bool DE_Core_get_vsync_status() {
     return global_engine.vsync_enabled;
 }
 
-float _priv_Core_get_framerate_limit() {
+float DE_Core_get_framerate_limit() {
     return global_engine.fps_req;
 }
 
-float _priv_Core_get_average_framerate() {
+float DE_Core_get_average_framerate() {
     return global_engine.fps_avg;
 }

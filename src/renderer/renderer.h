@@ -11,10 +11,10 @@
 #include "../physics/shape.h"
 #include "color.h"
 
-void _priv_Renderer_clear(Deccan_Color color);
+void DE_Renderer_clear(Deccan_Color color);
 
-void _priv_Renderer_set_color(Deccan_Color color);
-void _priv_Renderer_set_pixel_size(Deccan_Vector2f size);
+void DE_Renderer_set_color(Deccan_Color color);
+void DE_Renderer_set_pixel_size(Deccan_Vector2f size);
 
-Deccan_Color _priv_Renderer_get_color();
-Deccan_Vector2f _priv_Renderer_get_pixel_size();
+Deccan_Color DE_Renderer_get_color();
+Deccan_Vector2f DE_Renderer_get_pixel_size();

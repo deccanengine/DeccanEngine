@@ -7,27 +7,27 @@
 
 #include "renderer.h"
 
-void _priv_Renderer_clear(Deccan_Color color) {
-    _priv_Renderer_set_color(color);
-    SDL_RenderClear(Deccan_Core.get_global_engine()->renderer);
+void DE_Renderer_clear(Deccan_Color color) {
+    DE_Renderer_set_color(color);
+    SDL_RenderClear(DE_Core_get_global_engine()->renderer);
 }
 
-void _priv_Renderer_set_color(Deccan_Color color) {
-    SDL_SetRenderDrawColor(Deccan_Core.get_global_engine()->renderer, color.r, color.g, color.b, color.a);
+void DE_Renderer_set_color(Deccan_Color color) {
+    SDL_SetRenderDrawColor(DE_Core_get_global_engine()->renderer, color.r, color.g, color.b, color.a);
 }
 
-void _priv_Renderer_set_pixel_size(Deccan_Vector2f size) {
-    SDL_RenderSetScale(Deccan_Core.get_global_engine()->renderer, size.x, size.y);
+void DE_Renderer_set_pixel_size(Deccan_Vector2f size) {
+    SDL_RenderSetScale(DE_Core_get_global_engine()->renderer, size.x, size.y);
 }
 
-Deccan_Color _priv_Renderer_get_color() {
+Deccan_Color DE_Renderer_get_color() {
     Deccan_Color color;
-    SDL_GetRenderDrawColor(Deccan_Core.get_global_engine()->renderer, &color.r, &color.g, &color.b, &color.a);
+    SDL_GetRenderDrawColor(DE_Core_get_global_engine()->renderer, &color.r, &color.g, &color.b, &color.a);
     return color;
 }
 
-Deccan_Vector2f _priv_Renderer_get_pixel_size() {
+Deccan_Vector2f DE_Renderer_get_pixel_size() {
     Deccan_Vector2f size;
-    SDL_RenderGetScale(Deccan_Core.get_global_engine()->renderer, &size.x, &size.y);
+    SDL_RenderGetScale(DE_Core_get_global_engine()->renderer, &size.x, &size.y);
     return size;
 }

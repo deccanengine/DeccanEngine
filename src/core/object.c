@@ -10,7 +10,7 @@
 
 #define obj_func(x) void (*x)(Deccan_GameObject *object)
 
-Deccan_GameObject *_priv_Object_new_object(
+Deccan_GameObject *DE_Object_new_object(
     const char *name, const char *type, 
     obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae)) {
     
@@ -30,8 +30,8 @@ Deccan_GameObject *_priv_Object_new_object(
 
 #undef obj_func
 
-void _priv_Object_instantiate_object(Deccan_GameObject *object) {
-    Deccan_Scene *scene = Deccan_Scenes.current_scene(); 
+void DE_Object_instantiate_object(Deccan_GameObject *object) {
+    Deccan_Scene *scene = DE_Scenes_current_scene(); 
     if(object == NULL) { return; }
     if(stbds_arrput(scene->objects, object) != object) {
         DE_report("Cannot instantiate object: %s", object->info.name); return;
@@ -39,8 +39,8 @@ void _priv_Object_instantiate_object(Deccan_GameObject *object) {
     scene->object_count++;
 }
 
-Deccan_GameObject *_priv_Object_get_object(const char *name) {
-    Deccan_Scene *scene = Deccan_Scenes.current_scene();
+Deccan_GameObject *DE_Object_get_object(const char *name) {
+    Deccan_Scene *scene = DE_Scenes_current_scene();
     for(int i=0; i<scene->object_count; i++) {
         if(!strcmp(scene->objects[i]->info.name, name)) {
             return scene->objects[i];
@@ -49,8 +49,8 @@ Deccan_GameObject *_priv_Object_get_object(const char *name) {
     DE_report("GameObject not found: %s", name);
 }
 
-void _priv_Object_get_object_of_type(const char *name, void(*func)(Deccan_GameObject *obj)) {
-    Deccan_Scene *scene = Deccan_Scenes.current_scene();
+void DE_Object_get_object_of_type(const char *name, void(*func)(Deccan_GameObject *obj)) {
+    Deccan_Scene *scene = DE_Scenes_current_scene();
     for(int i=0; i<scene->object_count; i++) {
         if(!strcmp(scene->objects[i]->info.type, name)) {
             func(scene->objects[i]);

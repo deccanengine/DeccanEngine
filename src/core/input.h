@@ -83,22 +83,22 @@ typedef struct {
     bool is_up;
 } Deccan_MouseState;
 
-Deccan_KeyState _priv_Input_get_key(int key_code);
-Deccan_MouseState _priv_Input_get_mouse_button(int button_code);
-Deccan_Vector2i _priv_Input_get_mouse_pos();
-Deccan_Vector2i _priv_Input_get_relative_mouse_pos();
-int _priv_Input_mouse_scroll_horizontal();
-int _priv_Input_mouse_scroll_vertical();
+Deccan_KeyState DE_Input_get_key(int key_code);
+Deccan_MouseState DE_Input_get_mouse_button(int button_code);
+Deccan_Vector2i DE_Input_get_mouse_pos();
+Deccan_Vector2i DE_Input_get_relative_mouse_pos();
+int DE_Input_mouse_scroll_horizontal();
+int DE_Input_mouse_scroll_vertical();
 
-bool _priv_Input_key_pressed(int key_code);
-bool _priv_Input_key_released(int key_code);
-bool _priv_Input_key_held(int key_code);
-bool _priv_Input_button_down(int button_code);
-bool _priv_Input_button_up(int button_code);
+bool DE_Input_key_pressed(int key_code);
+bool DE_Input_key_released(int key_code);
+bool DE_Input_key_held(int key_code);
+bool DE_Input_button_down(int button_code);
+bool DE_Input_button_up(int button_code);
 
 #ifdef __STDC__
 
-    typedef struct _priv_Input {
+    typedef struct DE_Input {
         Deccan_KeyState (*get_key)(int key_code);
         Deccan_MouseState (*get_mouse_button)(int button_code);
         Deccan_Vector2i (*get_mouse_pos)();
@@ -111,21 +111,21 @@ bool _priv_Input_button_up(int button_code);
         bool (*key_held)(int key_code);
         bool (*button_down)(int button_code);
         bool (*button_up)(int button_code);
-    } _priv_Input;
+    } DE_Input;
 
-    static _priv_Input Deccan_Input = {
-        _priv_Input_get_key, 
-        _priv_Input_get_mouse_button, 
-        _priv_Input_get_mouse_pos,
-        _priv_Input_get_relative_mouse_pos,
-        _priv_Input_mouse_scroll_horizontal,
-        _priv_Input_mouse_scroll_vertical,
+    static DE_Input Deccan_Input = {
+        DE_Input_get_key, 
+        DE_Input_get_mouse_button, 
+        DE_Input_get_mouse_pos,
+        DE_Input_get_relative_mouse_pos,
+        DE_Input_mouse_scroll_horizontal,
+        DE_Input_mouse_scroll_vertical,
 
-        _priv_Input_key_pressed,
-        _priv_Input_key_released,
-        _priv_Input_key_held,
-        _priv_Input_button_down,
-        _priv_Input_button_up
+        DE_Input_key_pressed,
+        DE_Input_key_released,
+        DE_Input_key_held,
+        DE_Input_button_down,
+        DE_Input_button_up
     };
 
 #elif __cplusplus

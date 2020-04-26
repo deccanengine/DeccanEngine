@@ -21,25 +21,25 @@ typedef struct Deccan_Timer {
     float (*get_time_ms)(Deccan_Timer *timer);
 } Deccan_Timer;
 
-void _priv_Timer_start(Deccan_Timer *timer);
-void _priv_Timer_stop (Deccan_Timer *timer);
-void _priv_Timer_pause(Deccan_Timer *timer);
-float _priv_Timer_get_time(Deccan_Timer *timer);
-float _priv_Timer_get_time_ms(Deccan_Timer *timer);
+void DE_Timer_start(Deccan_Timer *timer);
+void DE_Timer_stop (Deccan_Timer *timer);
+void DE_Timer_pause(Deccan_Timer *timer);
+float DE_Timer_get_time(Deccan_Timer *timer);
+float DE_Timer_get_time_ms(Deccan_Timer *timer);
 
-static inline void _priv_Clock_delay(int32_t ms) { SDL_Delay(ms); }
-Deccan_Timer _priv_Clock_new_timer();
+static inline void DE_Clock_delay(int32_t ms) { SDL_Delay(ms); }
+Deccan_Timer DE_Clock_new_timer();
 
 #ifdef __STDC__
 
-typedef struct _priv_Clock {
+typedef struct DE_Clock {
     void (*delay)(int32_t ms);
     Deccan_Timer (*new_timer)();
-} _priv_Clock;
+} DE_Clock;
 
-static _priv_Clock Deccan_Clock = {
-    _priv_Clock_delay,
-    _priv_Clock_new_timer
+static DE_Clock Deccan_Clock = {
+    DE_Clock_delay,
+    DE_Clock_new_timer
 };
 
 #elif __cplusplus

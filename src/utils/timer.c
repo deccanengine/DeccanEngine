@@ -7,21 +7,21 @@
 
 #include "timer.h"
 
-void _priv_Timer_start(Deccan_Timer *timer) {
+void DE_Timer_start(Deccan_Timer *timer) {
     timer->start_ticks = SDL_GetTicks();
     timer->paused_ticks = 0;
     timer->is_running = true;
     timer->is_paused = false;
 }
 
-void _priv_Timer_stop(Deccan_Timer *timer) {
+void DE_Timer_stop(Deccan_Timer *timer) {
     timer->start_ticks = 0;
     timer->paused_ticks = 0;
     timer->is_running = false;
     timer->is_paused = false;
 }
 
-void _priv_Timer_pause(Deccan_Timer *timer) {
+void DE_Timer_pause(Deccan_Timer *timer) {
     if(timer->is_running && timer->is_paused) {
         timer->is_paused = true;
         
@@ -31,7 +31,7 @@ void _priv_Timer_pause(Deccan_Timer *timer) {
     }
 }
 
-float _priv_Timer_get_time_ms(Deccan_Timer *timer) {
+float DE_Timer_get_time_ms(Deccan_Timer *timer) {
     float time = 0.0f;
 
     if(timer->is_running) {
@@ -42,17 +42,17 @@ float _priv_Timer_get_time_ms(Deccan_Timer *timer) {
     return time;
 }
 
-float _priv_Timer_get_time(Deccan_Timer *timer) {
-    return _priv_Timer_get_time_ms(timer)/1000.0f;
+float DE_Timer_get_time(Deccan_Timer *timer) {
+    return DE_Timer_get_time_ms(timer)/1000.0f;
 }
 
-Deccan_Timer _priv_Clock_new_timer() {
+Deccan_Timer DE_Clock_new_timer() {
     Deccan_Timer timer;
-    timer.start = _priv_Timer_start;
-    timer.stop  = _priv_Timer_stop;
-    timer.pause = _priv_Timer_pause;
-    timer.reset = _priv_Timer_start; /* reset and start are same */
-    timer.get_time = _priv_Timer_get_time;
-    timer.get_time_ms = _priv_Timer_get_time_ms;
+    timer.start = DE_Timer_start;
+    timer.stop  = DE_Timer_stop;
+    timer.pause = DE_Timer_pause;
+    timer.reset = DE_Timer_start; /* reset and start are same */
+    timer.get_time = DE_Timer_get_time;
+    timer.get_time_ms = DE_Timer_get_time_ms;
     return timer;
 }

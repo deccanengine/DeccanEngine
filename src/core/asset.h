@@ -9,19 +9,19 @@
 #include "../config.h"
 #include "core.h"
 
-void _priv_Asset_load_texture(const char *name, const char *path);
-SDL_Texture *_priv_Asset_get_texture(const char *name);
+void DE_Asset_load_texture(const char *name, const char *path);
+SDL_Texture *DE_Asset_get_texture(const char *name);
 
 #ifdef __STDC__
 
-    typedef struct _priv_Asset {
+    typedef struct DE_Asset {
         void (*load_texture)(const char *name, const char *path);
         SDL_Texture* (*get_texture)(const char *name);
-    } _priv_Asset;
+    } DE_Asset;
 
-    static _priv_Asset Deccan_Asset = {
-        _priv_Asset_load_texture,
-        _priv_Asset_get_texture
+    static DE_Asset Deccan_Asset = {
+        DE_Asset_load_texture,
+        DE_Asset_get_texture
     };
 
 #elif __cplusplus

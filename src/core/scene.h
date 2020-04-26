@@ -26,17 +26,17 @@ typedef struct Deccan_Scene {
     void_func(at_end);
 } Deccan_Scene;
 
-Deccan_Scene *_priv_Scene_new_scene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae));
-void _priv_Scene_add_scene(Deccan_Scene *scene, bool is_replacing);
-void _priv_Scene_remove_scene();
+Deccan_Scene *DE_Scenes_new_scene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae));
+void DE_Scenes_add_scene(Deccan_Scene *scene, bool is_replacing);
+void DE_Scenes_remove_scene();
 
-Deccan_Scene *_priv_Scene_current_scene();
-void _priv_Scene_pause_scene(bool pause);
-bool _priv_Scene_is_scene_paused();
+Deccan_Scene *DE_Scenes_current_scene();
+void DE_Scenes_pause_scene(bool pause);
+bool DE_Scenes_is_scene_paused();
 
 #ifdef __STDC__
 
-    typedef struct _priv_Scenes {
+    typedef struct DE_Scenes {
         Deccan_Scene *(*new_scene)(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae));
         void (*add_scene)(Deccan_Scene *scene, bool is_replacing);
         void (*remove_scene)();
@@ -44,15 +44,15 @@ bool _priv_Scene_is_scene_paused();
         Deccan_Scene *(*current_scene)();
         void (*pause_scene)(bool pause);
         bool (*is_scene_paused)();
-    } _priv_Scenes;
+    } DE_Scenes;
 
-    static _priv_Scenes Deccan_Scenes = {
-        _priv_Scene_new_scene,
-        _priv_Scene_add_scene,
-        _priv_Scene_remove_scene,
-        _priv_Scene_current_scene,
-        _priv_Scene_pause_scene,
-        _priv_Scene_is_scene_paused
+    static DE_Scenes Deccan_Scenes = {
+        DE_Scenes_new_scene,
+        DE_Scenes_add_scene,
+        DE_Scenes_remove_scene,
+        DE_Scenes_current_scene,
+        DE_Scenes_pause_scene,
+        DE_Scenes_is_scene_paused
     };
 
 #elif __cplusplus
