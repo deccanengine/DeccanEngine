@@ -12,18 +12,6 @@
 #include "../core/object.h"
 #include "../utils/vector.h"
 
-void DE_Camera_move(Deccan_Vector2i pos);
-void DE_Camera_set_position(Deccan_Vector2i pos);
-void DE_Camera_center_on(Deccan_GameObject *obj);
-
-typedef struct DE_Camera {
-    void (*move)(Deccan_Vector2i pos);
-    void (*set_position)(Deccan_Vector2i pos);
-    void (*center_on)(Deccan_GameObject *obj);
-} DE_Camera;
-
-static DE_Camera Deccan_Camera = {
-    DE_Camera_move,
-    DE_Camera_set_position,
-    DE_Camera_center_on
-};
+void DE_Camera_move(DE_Vector2i pos);
+void DE_Camera_set_position(DE_Vector2i pos);
+void DE_Camera_center_on(DE_GameObject *obj);

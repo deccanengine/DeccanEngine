@@ -7,14 +7,14 @@
 
 #pragma once
 
-typedef struct Deccan_Rect {
+typedef struct DE_Rect {
     int32_t x, y, w, h;
-} Deccan_Rect;
+} DE_Rect;
 
-typedef struct Deccan_PosRect {
+typedef struct DE_PosRect {
     int32_t x1, y1, x2, y2;
-} Deccan_PosRect;
+} DE_PosRect;
 
-typedef struct Deccan_Circle {
+typedef struct DE_Circle {
     int32_t x, y, radius;
-} Deccan_Circle;
+} DE_Circle;

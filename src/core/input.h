@@ -40,7 +40,7 @@ typedef struct _key_code_list {
         up;
 } _key_code_list;
 
-static _key_code_list Deccan_Key = { 
+static _key_code_list DE_Key = { 
      0, 
      4,  5,  6,  7,  8,  9,
     10, 11, 12, 13, 14, 15,
@@ -67,7 +67,7 @@ typedef struct _button_code_list {
     int left, middle, right, x1, x2; 
 } _button_code_list;
 
-static _button_code_list Deccan_Button = {
+static _button_code_list DE_Button = {
     1, 2, 3, 4, 5
 };
 
@@ -76,17 +76,17 @@ typedef struct {
     bool is_pressed;
     bool is_released;
     bool is_held;
-} Deccan_KeyState;
+} DE_KeyState;
 
 typedef struct {
     bool is_down;
     bool is_up;
-} Deccan_MouseState;
+} DE_MouseState;
 
-Deccan_KeyState DE_Input_get_key(int key_code);
-Deccan_MouseState DE_Input_get_mouse_button(int button_code);
-Deccan_Vector2i DE_Input_get_mouse_pos();
-Deccan_Vector2i DE_Input_get_relative_mouse_pos();
+DE_KeyState DE_Input_get_key(int key_code);
+DE_MouseState DE_Input_get_mouse_button(int button_code);
+DE_Vector2i DE_Input_get_mouse_pos();
+DE_Vector2i DE_Input_get_relative_mouse_pos();
 int DE_Input_mouse_scroll_horizontal();
 int DE_Input_mouse_scroll_vertical();
 
@@ -95,39 +95,3 @@ bool DE_Input_key_released(int key_code);
 bool DE_Input_key_held(int key_code);
 bool DE_Input_button_down(int button_code);
 bool DE_Input_button_up(int button_code);
-
-#ifdef __STDC__
-
-    typedef struct DE_Input {
-        Deccan_KeyState (*get_key)(int key_code);
-        Deccan_MouseState (*get_mouse_button)(int button_code);
-        Deccan_Vector2i (*get_mouse_pos)();
-        Deccan_Vector2i (*get_relative_mouse_pos)();
-        int (*mouse_scroll_horizontal)();
-        int (*mouse_scroll_vertical)();
-
-        bool (*key_pressed)(int key_code);
-        bool (*key_released)(int key_code);
-        bool (*key_held)(int key_code);
-        bool (*button_down)(int button_code);
-        bool (*button_up)(int button_code);
-    } DE_Input;
-
-    static DE_Input Deccan_Input = {
-        DE_Input_get_key, 
-        DE_Input_get_mouse_button, 
-        DE_Input_get_mouse_pos,
-        DE_Input_get_relative_mouse_pos,
-        DE_Input_mouse_scroll_horizontal,
-        DE_Input_mouse_scroll_vertical,
-
-        DE_Input_key_pressed,
-        DE_Input_key_released,
-        DE_Input_key_held,
-        DE_Input_button_down,
-        DE_Input_button_up
-    };
-
-#elif __cplusplus
-
-#endif

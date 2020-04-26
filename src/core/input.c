@@ -7,9 +7,9 @@
 
 #include "input.h"
 
-Deccan_KeyState DE_Input_get_key(int key_code) {
-    Deccan_KeyState key;
-    Deccan_Info *engine = DE_Core_get_global_engine();
+DE_KeyState DE_Input_get_key(int key_code) {
+    DE_KeyState key;
+    DE_Info *engine = DE_Core_get_global_engine();
 
     if(engine->curr_keys[key_code]) { 
         if(!engine->prev_keys[key_code]) { key.is_pressed = true; }
@@ -28,9 +28,9 @@ Deccan_KeyState DE_Input_get_key(int key_code) {
     return key;
 }
 
-Deccan_MouseState DE_Input_get_mouse_button(int button_code) {
-    Deccan_MouseState button = {false, false};
-    Deccan_Info *engine = DE_Core_get_global_engine();
+DE_MouseState DE_Input_get_mouse_button(int button_code) {
+    DE_MouseState button = {false, false};
+    DE_Info *engine = DE_Core_get_global_engine();
 
     if(engine->event.button.button == button_code) {
         if(engine->event.type == SDL_MOUSEBUTTONDOWN) { button.is_down = true; }
@@ -40,15 +40,15 @@ Deccan_MouseState DE_Input_get_mouse_button(int button_code) {
     return button;
 }
 
-Deccan_Vector2i DE_Input_get_mouse_pos() {
-    Deccan_Vector2i pos;
+DE_Vector2i DE_Input_get_mouse_pos() {
+    DE_Vector2i pos;
     SDL_GetMouseState(&pos.x, &pos.y);
     return pos;
 }
 
-Deccan_Vector2i DE_Input_get_relative_mouse_pos() {
-    Deccan_Vector2i pos;
-    Deccan_Vector2i cam = DE_Core_get_global_engine()->camera; 
+DE_Vector2i DE_Input_get_relative_mouse_pos() {
+    DE_Vector2i pos;
+    DE_Vector2i cam = DE_Core_get_global_engine()->camera; 
     
     SDL_GetMouseState(&pos.x, &pos.y);
     pos.x += cam.x;
@@ -57,7 +57,7 @@ Deccan_Vector2i DE_Input_get_relative_mouse_pos() {
 }
 
 int DE_Input_mouse_scroll_horizontal() {
-    Deccan_Info *engine = DE_Core_get_global_engine();
+    DE_Info *engine = DE_Core_get_global_engine();
     if(engine->event.type == SDL_MOUSEWHEEL) {
         if(engine->event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) { return engine->event.wheel.x; }
         else { return -engine->event.wheel.x; }
@@ -66,7 +66,7 @@ int DE_Input_mouse_scroll_horizontal() {
 }
 
 int DE_Input_mouse_scroll_vertical() {
-    Deccan_Info *engine = DE_Core_get_global_engine();
+    DE_Info *engine = DE_Core_get_global_engine();
     if(engine->event.type == SDL_MOUSEWHEEL) {
         if(engine->event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) { return engine->event.wheel.y; }
         else { return -engine->event.wheel.y ;}
@@ -75,27 +75,27 @@ int DE_Input_mouse_scroll_vertical() {
 }
 
 bool DE_Input_key_pressed(int key_code) {
-    Deccan_Info *engine = DE_Core_get_global_engine();
+    DE_Info *engine = DE_Core_get_global_engine();
     return engine->curr_keys[key_code] && !engine->prev_keys[key_code];
 }
 
 bool DE_Input_key_released(int key_code) {
-    Deccan_Info *engine = DE_Core_get_global_engine();
+    DE_Info *engine = DE_Core_get_global_engine();
     return !engine->curr_keys[key_code] && engine->prev_keys[key_code];
 }
 
 bool DE_Input_key_held(int key_code) {
-    return Deccan_Core.get_global_engine()->curr_keys[key_code];
+    return DE_Core_get_global_engine()->curr_keys[key_code];
 }
 
 bool DE_Input_button_down(int button_code) {
-    Deccan_Info *engine = DE_Core_get_global_engine();
+    DE_Info *engine = DE_Core_get_global_engine();
     return engine->event.type == SDL_MOUSEBUTTONDOWN &&
            engine->event.button.button == button_code;
 }
 
 bool DE_Input_button_up(int button_code) {
-    Deccan_Info *engine = DE_Core_get_global_engine();
+    DE_Info *engine = DE_Core_get_global_engine();
     return engine->event.type == SDL_MOUSEBUTTONUP &&
            engine->event.button.button == button_code;
 }

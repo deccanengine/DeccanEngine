@@ -8,40 +8,24 @@
 #pragma once
 #include "../config.h"
 
-typedef struct Deccan_Timer Deccan_Timer;
-typedef struct Deccan_Timer {
+typedef struct DE_Timer DE_Timer;
+typedef struct DE_Timer {
     float start_ticks, paused_ticks;
     bool is_running, is_paused;
 
-    void (*start)(Deccan_Timer *timer);
-    void (*stop) (Deccan_Timer *timer);
-    void (*pause)(Deccan_Timer *timer);
-    void (*reset)(Deccan_Timer *timer);
-    float (*get_time)(Deccan_Timer *timer);
-    float (*get_time_ms)(Deccan_Timer *timer);
-} Deccan_Timer;
+    void (*start)(DE_Timer *timer);
+    void (*stop) (DE_Timer *timer);
+    void (*pause)(DE_Timer *timer);
+    void (*reset)(DE_Timer *timer);
+    float (*get_time)(DE_Timer *timer);
+    float (*get_time_ms)(DE_Timer *timer);
+} DE_Timer;
 
-void DE_Timer_start(Deccan_Timer *timer);
-void DE_Timer_stop (Deccan_Timer *timer);
-void DE_Timer_pause(Deccan_Timer *timer);
-float DE_Timer_get_time(Deccan_Timer *timer);
-float DE_Timer_get_time_ms(Deccan_Timer *timer);
+void DE_Timer_start(DE_Timer *timer);
+void DE_Timer_stop (DE_Timer *timer);
+void DE_Timer_pause(DE_Timer *timer);
+float DE_Timer_get_time(DE_Timer *timer);
+float DE_Timer_get_time_ms(DE_Timer *timer);
 
 static inline void DE_Clock_delay(int32_t ms) { SDL_Delay(ms); }
-Deccan_Timer DE_Clock_new_timer();
-
-#ifdef __STDC__
-
-typedef struct DE_Clock {
-    void (*delay)(int32_t ms);
-    Deccan_Timer (*new_timer)();
-} DE_Clock;
-
-static DE_Clock Deccan_Clock = {
-    DE_Clock_delay,
-    DE_Clock_new_timer
-};
-
-#elif __cplusplus
-
-#endif
+DE_Timer DE_Clock_new_timer();

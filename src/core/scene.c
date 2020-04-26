@@ -10,8 +10,8 @@
 
 #define void_func(x) void (*x)(void)
 
-Deccan_Scene *DE_Scenes_new_scene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae)) {
-    Deccan_Scene *scene = DE_new(Deccan_Scene, 1);
+DE_Scene *DE_Scenes_new_scene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae)) {
+    DE_Scene *scene = DE_new(DE_Scene, 1);
     
     scene->name = DE_newstring(name);
     scene->is_paused = false;
@@ -28,8 +28,8 @@ Deccan_Scene *DE_Scenes_new_scene(const char *name, void_func(af), void_func(as)
 
 #undef void_func
 
-void DE_Scenes_add_scene(Deccan_Scene *scene, bool is_replacing) {
-    Deccan_Info *engine = DE_Core_get_global_engine();
+void DE_Scenes_add_scene(DE_Scene *scene, bool is_replacing) {
+    DE_Info *engine = DE_Core_get_global_engine();
     
     if(scene == NULL) { DE_report("Invalid scene data"); return; }
 
@@ -46,24 +46,24 @@ void DE_Scenes_add_scene(Deccan_Scene *scene, bool is_replacing) {
 }
 
 void DE_Scenes_remove_scene() {
-    Deccan_Info *engine = DE_Core_get_global_engine();
+    DE_Info *engine = DE_Core_get_global_engine();
     if(engine->scene_count > 1) { 
         stbds_arrpop(engine->scenes);
         engine->scenes[engine->scene_count-1]->is_paused = false;
     }
 }
 
-Deccan_Scene *DE_Scenes_current_scene() {
-    Deccan_Info *engine = DE_Core_get_global_engine();
+DE_Scene *DE_Scenes_current_scene() {
+    DE_Info *engine = DE_Core_get_global_engine();
     return engine->scenes[engine->scene_count-1];
 }
 
 void DE_Scenes_pause_scene(bool pause) {
-    Deccan_Info *engine = DE_Core_get_global_engine();
+    DE_Info *engine = DE_Core_get_global_engine();
     engine->scenes[engine->scene_count-1]->is_paused = pause;
 }
 
 bool DE_Scenes_is_scene_paused() {
-    Deccan_Info *engine = DE_Core_get_global_engine();
+    DE_Info *engine = DE_Core_get_global_engine();
     return engine->scenes[engine->scene_count-1]->is_paused;
 }

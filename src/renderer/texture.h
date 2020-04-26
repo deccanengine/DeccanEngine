@@ -9,6 +9,6 @@
 #include "../config.h"
 #include "renderer.h"
 
-void DE_Renderer_texture_set_color(Deccan_Texture *texture, Deccan_Color color);
-void DE_Renderer_texture_draw(Deccan_Vector2i pos, Deccan_Texture *texture);
-void DE_Renderer_texture_draw_with_scale(Deccan_Vector2i pos, Deccan_Vector2f scale, Deccan_Texture *texture);
+void DE_Renderer_texture_set_color(DE_Texture *texture, DE_Color color);
+void DE_Renderer_texture_draw(DE_Vector2i pos, DE_Texture *texture);
+void DE_Renderer_texture_draw_with_scale(DE_Vector2i pos, DE_Vector2f scale, DE_Texture *texture);

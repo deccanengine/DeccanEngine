@@ -8,18 +8,18 @@
 #define STB_DS_IMPLEMENTATION
 #include "core.h"
 
-Deccan_Info global_engine;
+DE_Info global_engine;
 
 /* Core */
-void DE_Core_set_global_engine(Deccan_Info *engine) {
+void DE_Core_set_global_engine(DE_Info *engine) {
     global_engine = *engine;
 }
 
-Deccan_Info *DE_Core_get_global_engine() {
+DE_Info *DE_Core_get_global_engine() {
     return &global_engine;
 }
 
-int DE_Core_init(const char *title, Deccan_Vector2i mode) {
+int DE_Core_init(const char *title, DE_Vector2i mode) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
         DE_error("Could not initialize SDL2: %s", SDL_GetError());
@@ -100,14 +100,14 @@ void DE_Core_quit() {
 
 void DE_Core_run(float fps) {
     int frames = 0;         /* Total frames passed */
-    Deccan_Timer fps_timer = Deccan_Clock.new_timer();
-    Deccan_Timer frm_timer = Deccan_Clock.new_timer();
+    DE_Timer fps_timer = DE_Clock_new_timer();
+    DE_Timer frm_timer = DE_Clock_new_timer();
 
     fps_timer.start(&fps_timer);    /* To calculate FPS */
 
     /* If no FPS limit is set then enable VSync*/
-    if(fps <= 0.0f) { Deccan_Core.set_vsync_status(true); }
-    else { Deccan_Core.set_vsync_status(false); }
+    if(fps <= 0.0f) { DE_Core_set_vsync_status(true); }
+    else { DE_Core_set_vsync_status(false); }
     
     /* Set FPS limit if VSync is not enabled */
     /* There is no gurantee than VSync is enabled by set_vsync_status().
@@ -142,7 +142,7 @@ void DE_Core_run(float fps) {
 
         /* Process Scene(s) and GameObject(s) */
         int index = global_engine.scene_count-1;        /* Current Scene index */
-        Deccan_Scene *scene = global_engine.scenes[index];  /* Current scene */
+        DE_Scene *scene = global_engine.scenes[index];  /* Current scene */
         /* First frame of the scene. Same as at_beginning for scene */
         if(scene->is_first_frame == true) {
             scene->at_first_frame();
@@ -150,14 +150,14 @@ void DE_Core_run(float fps) {
 
             /* First frame of objects */
             for(int i=0; i<scene->object_count; i++) {
-                Deccan_GameObject *obj = scene->objects[i];
+                DE_GameObject *obj = scene->objects[i];
                 obj->at_first_frame(obj);
             }
         }
 
         /* at_beginning of objects */
         for(int i=0; i<scene->object_count; i++) {
-            Deccan_GameObject *obj = scene->objects[i];
+            DE_GameObject *obj = scene->objects[i];
             if(obj->is_beginning) {
                 obj->at_beginning(obj);
                 obj->is_beginning = false;
@@ -167,14 +167,14 @@ void DE_Core_run(float fps) {
         /* at_step of scenes and objects */
         scene->at_step();
         for(int i=0; i<scene->object_count; i++) {
-            Deccan_GameObject *obj = scene->objects[i];
+            DE_GameObject *obj = scene->objects[i];
             obj->at_step(obj);
         }
 
         /* at_render of scenes and objects */
         scene->at_render();
         for(int i=0; i<scene->object_count; i++) {
-            Deccan_GameObject *obj = scene->objects[i];
+            DE_GameObject *obj = scene->objects[i];
             obj->at_render(obj);
         }
         
@@ -194,20 +194,20 @@ void DE_Core_run(float fps) {
             int ticks_per_frame = 1000/global_engine.fps_req;   /* Required ticks per frame */
 
             if(frm_ticks < ticks_per_frame) {
-                Deccan_Clock.delay(ticks_per_frame - frm_ticks);
+                DE_Clock_delay(ticks_per_frame - frm_ticks);
             }
         }
     }
     
     /* at_end of scenes and objects */
-    Deccan_Scene *scene = global_engine.scenes[global_engine.scene_count-1];
+    DE_Scene *scene = global_engine.scenes[global_engine.scene_count-1];
     scene->at_end();
     for(int i=0; i<scene->object_count; i++) {
-        Deccan_GameObject *obj = scene->objects[i];
+        DE_GameObject *obj = scene->objects[i];
         obj->at_end(obj);
     }
     
-    Deccan_Core.quit();
+    DE_Core_quit();
 }
 
 /* Core Settings Setters */
@@ -215,7 +215,7 @@ void DE_Core_set_title(const char *name) {
     SDL_SetWindowTitle(global_engine.window, name);
 }
 
-void DE_Core_set_mode(Deccan_Vector2i mode) {
+void DE_Core_set_mode(DE_Vector2i mode) {
     if(global_engine.is_fullscreen) {
         SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN, mode.x, mode.y, 0, 0};
         if(SDL_SetWindowDisplayMode(global_engine.window, &disp) > 0) {
@@ -252,7 +252,7 @@ const char *DE_Core_get_title() {
     return SDL_GetWindowTitle(global_engine.window);
 }
 
-Deccan_Vector2i DE_Core_get_mode() {
+DE_Vector2i DE_Core_get_mode() {
     return global_engine.win_mode;
 }
 

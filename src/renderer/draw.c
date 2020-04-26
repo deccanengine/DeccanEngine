@@ -7,16 +7,16 @@
 
 #include "draw.h"
 
-#define DWC_FUNC void f(SDL_Renderer *renderer, Deccan_Vector2i camera)
+#define DWC_FUNC void f(SDL_Renderer *renderer, DE_Vector2i camera)
 #define DWC_FUNCREF f
 
-void DE_draw_with_color(void (*DE_dwc_drawcall)(SDL_Renderer *renderer, Deccan_Vector2i camera), Deccan_Color color) {
+void DE_draw_with_color(void (*DE_dwc_drawcall)(SDL_Renderer *renderer, DE_Vector2i camera), DE_Color color) {
     DE_Renderer_set_color(color);
-    Deccan_Info *engine = DE_Core_get_global_engine(); 
+    DE_Info *engine = DE_Core_get_global_engine(); 
     DE_dwc_drawcall(engine->renderer, engine->camera);
 }
 
-void DE_Renderer_draw_point(Deccan_Vector2i pos, Deccan_Color color) {
+void DE_Renderer_draw_point(DE_Vector2i pos, DE_Color color) {
     DE_draw_with_color(({
         DWC_FUNC {
             SDL_RenderDrawPoint(renderer, pos.x - camera.x, pos.y - camera.y);
@@ -24,7 +24,7 @@ void DE_Renderer_draw_point(Deccan_Vector2i pos, Deccan_Color color) {
     }), color);
 }
 
-void DE_Renderer_draw_line(Deccan_Vector2i start, Deccan_Vector2i end, Deccan_Color color) {
+void DE_Renderer_draw_line(DE_Vector2i start, DE_Vector2i end, DE_Color color) {
     DE_draw_with_color(({
         DWC_FUNC { 
             SDL_RenderDrawLine(renderer, start.x - camera.x, start.y - camera.y, end.x - camera.x, end.y - camera.y);
@@ -32,7 +32,7 @@ void DE_Renderer_draw_line(Deccan_Vector2i start, Deccan_Vector2i end, Deccan_Co
     }), color);
 }
 
-void DE_Renderer_draw_rect(Deccan_Rect rect, Deccan_Color color) {
+void DE_Renderer_draw_rect(DE_Rect rect, DE_Color color) {
     DE_draw_with_color(({
         DWC_FUNC { 
             SDL_Rect sr = {rect.x - camera.x, rect.y - camera.y, rect.w, rect.h};
@@ -41,7 +41,7 @@ void DE_Renderer_draw_rect(Deccan_Rect rect, Deccan_Color color) {
     }), color);
 }
 
-void DE_Renderer_draw_filled_rect(Deccan_Rect rect, Deccan_Color color) {
+void DE_Renderer_draw_filled_rect(DE_Rect rect, DE_Color color) {
     DE_draw_with_color(({
         DWC_FUNC { 
             SDL_Rect sr = {rect.x - camera.x, rect.y - camera.y, rect.w, rect.h};
@@ -50,7 +50,7 @@ void DE_Renderer_draw_filled_rect(Deccan_Rect rect, Deccan_Color color) {
     }), color); 
 }
 
-void DE_Renderer_draw_circle(Deccan_Circle circle, Deccan_Color color) {
+void DE_Renderer_draw_circle(DE_Circle circle, DE_Color color) {
     if(!circle.radius) { return; }
 
     DE_draw_with_color(({
@@ -82,7 +82,7 @@ void DE_Renderer_draw_circle(Deccan_Circle circle, Deccan_Color color) {
     }), color);    
 }
 
-void DE_Renderer_draw_filled_circle(Deccan_Circle circle, Deccan_Color color) {
+void DE_Renderer_draw_filled_circle(DE_Circle circle, DE_Color color) {
     if(!circle.radius) { return; }
 
     DE_draw_with_color(({

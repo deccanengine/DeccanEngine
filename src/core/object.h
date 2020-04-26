@@ -11,18 +11,18 @@
 #include "../physics/collider.h"
 #include "../utils/vector.h"
 
-#define obj_func(x) void (*x)(Deccan_GameObject *object)
+#define obj_func(x) void (*x)(DE_GameObject *object)
 
-typedef struct Deccan_GameObject Deccan_GameObject;
-typedef struct Deccan_GameObject {
+typedef struct DE_GameObject DE_GameObject;
+typedef struct DE_GameObject {
     struct { char *name, *type; } info;     /* Basic information about the object */ 
-    Deccan_Vector2i position;               /* Positional info of the object */
-    Deccan_Vector2i size;                   /* Size of the rect bounding the object */
-    Deccan_Vector2f transform;              /* Transformation info */
+    DE_Vector2i position;               /* Positional info of the object */
+    DE_Vector2i size;                   /* Size of the rect bounding the object */
+    DE_Vector2f transform;              /* Transformation info */
     struct { bool dead, hidden; } status;   /* Status */
-    Deccan_Collider collider;               /* Collider info */
+    DE_Collider collider;               /* Collider info */
     union {
-        struct { Deccan_Color color; };     /* Color value for shape rendering */
+        struct { DE_Color color; };     /* Color value for shape rendering */
     };
 
     bool is_beginning;
@@ -31,32 +31,13 @@ typedef struct Deccan_GameObject {
     obj_func(at_step);
     obj_func(at_render);
     obj_func(at_end);
-} Deccan_GameObject;
+} DE_GameObject;
 
-Deccan_GameObject *DE_Object_new_object(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
-void DE_Object_instantiate_object(Deccan_GameObject *object);
-Deccan_GameObject *DE_Object_get_object(const char *name);
-void DE_Object_get_object_of_type(const char *name, void(*func)(Deccan_GameObject *obj));
+DE_GameObject *DE_Object_new_object(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
+void DE_Object_instantiate_object(DE_GameObject *object);
+DE_GameObject *DE_Object_get_object(const char *name);
+void DE_Object_get_object_of_type(const char *name, void(*func)(DE_GameObject *obj));
 
-static inline void NULL_OBJFUNC(Deccan_GameObject *obj) { }
-
-#ifdef __STDC__
-    typedef struct DE_Object {
-        Deccan_GameObject *(*new_object)(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
-        void (*instantiate_object)(Deccan_GameObject *object);
-        Deccan_GameObject *(*get_object)(const char *name);
-        void (*get_object_of_type)(const char *name, void(*func)(Deccan_GameObject *obj));
-    } DE_Object;
-
-    static DE_Object Deccan_Object = { 
-        DE_Object_new_object,
-        DE_Object_instantiate_object,
-        DE_Object_get_object,
-        DE_Object_get_object_of_type
-    };
-
-#elif __cplusplus
-
-#endif
+static inline void NULL_OBJFUNC(DE_GameObject *obj) { }
 
 #undef obj_func

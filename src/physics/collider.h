@@ -16,11 +16,11 @@ enum {
     ColliderCircle
 };
 
-typedef struct Deccan_Collider {
+typedef struct DE_Collider {
     int type;
     union {
-        struct { Deccan_Vector2i vec;  };
-        struct { Deccan_PosRect rect;  };
-        struct { Deccan_Circle circle; };
+        struct { DE_Vector2i vec;  };
+        struct { DE_PosRect rect;  };
+        struct { DE_Circle circle; };
     };
-} Deccan_Collider;
+} DE_Collider;
