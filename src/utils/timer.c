@@ -48,11 +48,11 @@ float DE_Timer_get_time(DE_Timer *timer) {
 
 DE_Timer DE_Clock_new_timer() {
     DE_Timer timer;
-    timer.start = DE_Timer_start;
-    timer.stop  = DE_Timer_stop;
-    timer.pause = DE_Timer_pause;
-    timer.reset = DE_Timer_start; /* reset and start are same */
-    timer.get_time = DE_Timer_get_time;
-    timer.get_time_ms = DE_Timer_get_time_ms;
+    timer.Start = DE_Timer_start;
+    timer.Stop  = DE_Timer_stop;
+    timer.Pause = DE_Timer_pause;
+    timer.Reset = DE_Timer_start; /* reset and start are same */
+    timer.GetTime = DE_Timer_get_time;
+    timer.GetTimeMS = DE_Timer_get_time_ms;
     return timer;
 }

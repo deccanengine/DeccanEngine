@@ -13,12 +13,12 @@ typedef struct DE_Timer {
     float start_ticks, paused_ticks;
     bool is_running, is_paused;
 
-    void (*start)(DE_Timer *timer);
-    void (*stop) (DE_Timer *timer);
-    void (*pause)(DE_Timer *timer);
-    void (*reset)(DE_Timer *timer);
-    float (*get_time)(DE_Timer *timer);
-    float (*get_time_ms)(DE_Timer *timer);
+    void (*Start)(DE_Timer *timer);
+    void (*Stop) (DE_Timer *timer);
+    void (*Pause)(DE_Timer *timer);
+    void (*Reset)(DE_Timer *timer);
+    float (*GetTime)(DE_Timer *timer);
+    float (*GetTimeMS)(DE_Timer *timer);
 } DE_Timer;
 
 void DE_Timer_start(DE_Timer *timer);

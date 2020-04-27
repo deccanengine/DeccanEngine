@@ -103,7 +103,7 @@ void DE_Core_run(float fps) {
     DE_Timer fps_timer = DE_Clock_new_timer();
     DE_Timer frm_timer = DE_Clock_new_timer();
 
-    fps_timer.start(&fps_timer);    /* To calculate FPS */
+    fps_timer.Start(&fps_timer);    /* To calculate FPS */
 
     /* If no FPS limit is set then enable VSync*/
     if(fps <= 0.0f) { DE_Core_set_vsync_status(true); }
@@ -116,7 +116,7 @@ void DE_Core_run(float fps) {
     if(!global_engine.vsync_enabled) { global_engine.fps_req = fps; }
 
     while(global_engine.is_running) {
-        if(!global_engine.vsync_enabled) { frm_timer.start(&frm_timer); }
+        if(!global_engine.vsync_enabled) { frm_timer.Start(&frm_timer); }
 
         /* Handle some events */
         if(SDL_PollEvent(&global_engine.event)) {
@@ -137,7 +137,7 @@ void DE_Core_run(float fps) {
         memcpy(global_engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
         /* Calculate FPS */
-        global_engine.fps_avg = frames/fps_timer.get_time(&fps_timer);
+        global_engine.fps_avg = frames/fps_timer.GetTime(&fps_timer);
         if(global_engine.fps_avg > 20000) { global_engine.fps_avg = 0.0f; }
 
         /* Process Scene(s) and GameObject(s) */
@@ -190,7 +190,7 @@ void DE_Core_run(float fps) {
         if(!global_engine.vsync_enabled && global_engine.fps_req > 0.0f) {
             if(!frm_timer.is_running) { continue; }
 
-            int frm_ticks = frm_timer.get_time_ms(&frm_timer);  /* Current ticks per frame */
+            int frm_ticks = frm_timer.GetTimeMS(&frm_timer);  /* Current ticks per frame */
             int ticks_per_frame = 1000/global_engine.fps_req;   /* Required ticks per frame */
 
             if(frm_ticks < ticks_per_frame) {
