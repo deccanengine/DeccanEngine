@@ -57,7 +57,7 @@ void _player_step(GameObject *this) {
 }
 
 void _player_render(GameObject *this) {
-    Renderer.DrawFilledRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
+    Renderer.DrawRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
     //Renderer.draw_circle((Circle){this->position.x, this->position.y, 50}, true, this->color);
     Renderer.TextureDrawWithScale((Vector2i){this->position.x, this->position.y}, (Vector2f){2.0f, 2.0f}, Asset.GetTexture("arrow0"));
 }
@@ -65,13 +65,13 @@ void _player_render(GameObject *this) {
 void _player_end(GameObject *this) { }
 
 void _none_begin(GameObject *this) {
-    this->collider = Collision.NewCircleCollider((Circle){0, 0, 40});
+    this->collider = Collision.NewRectCollider((PosRect){0, 0, 40, 40});
 }
 
 void _none_step(GameObject *this) { }
 
 void _none_render(GameObject *this) {
-    Renderer.DrawFilledCircle((Circle){this->position.x, this->position.y, 40}, ColorList.red); 
+    Renderer.DrawRect((Rect){this->position.x, this->position.y, 40, 40}, ColorList.red); 
 }
 
 void _none_end(GameObject *this) { }
