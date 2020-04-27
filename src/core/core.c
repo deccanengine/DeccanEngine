@@ -64,9 +64,9 @@ int DE_Core_init(const char *title, DE_Vector2i mode) {
     }
 
     /* Enable alpha blending */
-    if(SDL_SetRenderDrawBlendMode(global_engine.renderer, SDL_BLENDMODE_BLEND) > 0) {
+    /*if(SDL_SetRenderDrawBlendMode(global_engine.renderer, SDL_BLENDMODE_BLEND) > 0) {
         DE_error("Alpha blending cannot be enabled: %s", SDL_GetError());
-    }
+    }*/
 
     DE_logfile = fopen("report.log", "w");
     if(DE_logfile == NULL) {

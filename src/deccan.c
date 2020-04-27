@@ -91,6 +91,7 @@ struct DE_Renderer Deccan_Renderer = {
     DE_Renderer_draw_point,
     DE_Renderer_draw_line,
     DE_Renderer_draw_rect,
+    DE_Renderer_draw_rect_ext,
     DE_Renderer_draw_filled_rect,
     DE_Renderer_draw_circle,
     DE_Renderer_draw_filled_circle,

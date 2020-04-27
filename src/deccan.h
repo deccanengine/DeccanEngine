@@ -139,6 +139,7 @@ NAMESPACE(Renderer) {
     INTERFACE(void, DrawPoint, DE_Vector2i pos, DE_Color color);
     INTERFACE(void, DrawLine, DE_Vector2i start, DE_Vector2i end, DE_Color color);
     INTERFACE(void, DrawRect, DE_Rect rect, DE_Color color);
+    INTERFACE(void, DrawRectExt, DE_Rect rect, DE_Color color, float angle);
     INTERFACE(void, DrawFilledRect, DE_Rect rect, DE_Color color);
     INTERFACE(void, DrawCircle, DE_Circle circle, DE_Color color);
     INTERFACE(void, DrawFilledCircle, DE_Circle circle, DE_Color color);

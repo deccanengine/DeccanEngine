@@ -17,6 +17,7 @@ void DE_Renderer_draw_point2(int32_t x, int32_t y, DE_Color color);
 void DE_Renderer_draw_line(DE_Vector2i start, DE_Vector2i end, DE_Color color);
 void DE_Renderer_draw_line2(int32_t x1, int32_t y1, int32_t x2, int32_t y2, DE_Color color);
 void DE_Renderer_draw_rect(DE_Rect rect, DE_Color color);
+void DE_Renderer_draw_rect_ext(DE_Rect rect, DE_Color color, float angle);
 void DE_Renderer_draw_filled_rect(DE_Rect rect, DE_Color color);
 void DE_Renderer_draw_circle(DE_Circle circle, DE_Color color);
 void DE_Renderer_draw_filled_circle(DE_Circle circle, DE_Color color);
