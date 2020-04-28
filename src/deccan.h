@@ -130,11 +130,15 @@ NAMESPACE(Camera) {
 NAMESPACE(Renderer) {
     INTERFACE(void, Clear, DE_Color color);
 
+    INTERFACE(void, SetTarget, DE_Texture *target);
     INTERFACE(void, SetColor, DE_Color color);
     INTERFACE(void, SetPixelSize, DE_Vector2f size);
+    INTERFACE(void, SetBlendMode, int blend_mode);
 
+    INTERFACE(DE_Texture*, GetTarget,);
     INTERFACE(DE_Color, GetColor,);
     INTERFACE(DE_Vector2f, GetPixelSize,);
+    INTERFACE(DE_BlendMode, GetBlendMode,);
 
     INTERFACE(void, DrawPoint, DE_Vector2i pos, DE_Color color);
     INTERFACE(void, DrawLine, DE_Vector2i start, DE_Vector2i end, DE_Color color);

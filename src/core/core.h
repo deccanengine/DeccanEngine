@@ -22,6 +22,7 @@ typedef struct DE_Info {
     /* Core engine */
     SDL_Window *window;
     SDL_Renderer *renderer;
+    DE_Texture *target;
     bool is_running;
 
     /* Settings */

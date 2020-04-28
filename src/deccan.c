@@ -82,11 +82,15 @@ struct DE_Camera Deccan_Camera = {
 struct DE_Renderer Deccan_Renderer = {
     DE_Renderer_clear,
 
+    DE_Renderer_set_target,
     DE_Renderer_set_color,
     DE_Renderer_set_pixel_size,
+    DE_Renderer_set_blend_mode,
 
+    DE_Renderer_get_target,
     DE_Renderer_get_color,
     DE_Renderer_get_pixel_size,
+    DE_Renderer_get_blend_mode,
 
     DE_Renderer_draw_point,
     DE_Renderer_draw_line,

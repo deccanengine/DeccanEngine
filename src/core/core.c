@@ -78,8 +78,10 @@ int DE_Core_init(const char *title, DE_Vector2i mode) {
         DE_error("Could not create/open log file");
     }
 
-    global_engine.win_mode = mode;
+    global_engine.target = SDL_GetRenderTarget(global_engine.renderer);
     global_engine.is_running = true;
+
+    global_engine.win_mode = mode;
     global_engine.vsync_enabled = false;
     global_engine.fps_req = 60.0f;      /* Fallback FPS limit if vsync is disabled somwhere and new limit is not set */
 
