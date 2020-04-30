@@ -25,7 +25,7 @@ void _player_begin(GameObject *this) {
     Asset.LoadTexture("arrow0", "arrow0.png");
 
     Vector2i mode = Core.GetMode();
-    tar = SDL_CreateTexture(Core.GetGlobalEngine()->renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
+    //tar = SDL_CreateTexture(Core.GetGlobalEngine()->renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
 }
 
 void _player_step(GameObject *this) {
@@ -62,21 +62,24 @@ void _player_step(GameObject *this) {
 }
 
 void _player_render(GameObject *this) {
-    Renderer.SetTarget(tar);
+    Renderer.DrawRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
+    
+    /*Renderer.SetTarget(tar);
     Renderer.Clear(ColorList.white);
 
     Renderer.SetBlendMode(BlendMode_Alpha);
 
     Renderer.DrawRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
-    //Renderer.draw_circle((Circle){this->position.x, this->position.y, 50}, true, this->color);
+    Renderer.draw_circle((Circle){this->position.x, this->position.y, 50}, true, this->color);
     Renderer.TextureDrawWithScale((Vector2i){this->position.x, this->position.y}, (Vector2f){2.0f, 2.0f}, Asset.GetTexture("arrow0"));
 
     Renderer.SetTarget(NULL);
     Info *engine = Core.GetGlobalEngine();
     
-    SDL_RenderCopyEx(engine->renderer, tar, NULL, NULL, 67, NULL, 0);
+    SDL_RenderCopyEx(engine->renderer, tar, NULL, NULL, 0, NULL, 0);
 
     Renderer.SetBlendMode(BlendMode_None);
+    */
 }
 
 void _player_end(GameObject *this) { }

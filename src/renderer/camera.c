@@ -22,7 +22,9 @@ void DE_Camera_center_on(DE_GameObject *obj) {
     }
 
     DE_Vector2i mode = DE_Core_get_mode();
-    int32_t x = obj->position.x + obj->size.x/2 - mode.x/2; 
-    int32_t y = obj->position.y + obj->size.y/2 - mode.y/2;
+    DE_Vector2f pixel = DE_Renderer_get_pixel_size();
+
+    int32_t x = (obj->position.x) + (obj->size.x)/2 - (mode.x/pixel.x)/2; 
+    int32_t y = (obj->position.y) + (obj->size.y)/2 - (mode.y/pixel.y)/2;
     DE_Camera_set_position((DE_Vector2i){x, y});
 }
