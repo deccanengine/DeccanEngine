@@ -75,8 +75,13 @@ struct DE_Collision Deccan_Collision = {
 
 struct DE_Camera Deccan_Camera = {
     DE_Camera_move,
+    DE_Camera_center_on,
+
     DE_Camera_set_position,
-    DE_Camera_center_on
+    DE_Camera_set_bounds,
+
+    DE_Camera_get_position,
+    DE_Camera_get_bounds
 };
 
 struct DE_Renderer Deccan_Renderer = {

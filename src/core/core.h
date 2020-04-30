@@ -11,6 +11,7 @@
 #include "scene.h"
 #include "input.h"
 #include "object.h"
+#include "../physics/shape.h"
 #include "../utils/timer.h"
 #include "../utils/vector.h"
 
@@ -49,6 +50,7 @@ typedef struct DE_Info {
 
     /* Renderer */
     DE_Vector2i camera;
+    DE_PosRect  camera_bounds;
 } DE_Info;
 
 void DE_Core_set_global_engine(DE_Info *engine);

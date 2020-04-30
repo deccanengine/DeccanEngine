@@ -90,6 +90,8 @@ int DE_Core_init(const char *title, DE_Vector2i mode) {
 
     global_engine.textures = NULL;
 
+    global_engine.camera_bounds = (DE_PosRect){-1, -1, -1, -1};
+
     memcpy(global_engine.prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
     memcpy(global_engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 

@@ -123,8 +123,13 @@ NAMESPACE(Collision) {
 
 NAMESPACE(Camera) {
     INTERFACE(void, Move, DE_Vector2i pos);
-    INTERFACE(void, SetPosition, DE_Vector2i pos);
     INTERFACE(void, CenterOn, DE_GameObject *obj);
+
+    INTERFACE(void, SetPosition, DE_Vector2i pos);
+    INTERFACE(void, SetBounds, DE_PosRect rect);
+
+    INTERFACE(DE_Vector2i, GetPosition,);
+    INTERFACE(DE_PosRect, GetBounds,);
 };
 
 NAMESPACE(Renderer) {
