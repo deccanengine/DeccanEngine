@@ -24,7 +24,10 @@ struct DE_Core Deccan_Core = {
     DE_Core_get_fullscreen_status,
     DE_Core_get_vsync_status,
     DE_Core_get_framerate_limit,
-    DE_Core_get_average_framerate
+    DE_Core_get_average_framerate,
+
+    DE_Core_send_message,
+    DE_Core_receive_message
 };
 
 struct DE_Input Deccan_Input = {

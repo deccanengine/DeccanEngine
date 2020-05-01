@@ -9,7 +9,16 @@
 #include "../config.h"
 #include "../renderer/color.h"
 #include "../physics/collider.h"
+#include "../utils/message.h"
 #include "../utils/vector.h"
+
+#ifndef DECCAN_OBJ_MSG_LENGTH
+    #define DECCAN_OBJ_MSG_LENGTH 50
+#endif
+
+#ifndef DECCAN_OBJ_MSG_COUNT
+    #define DECCAN_OBJ_MSG_COUNT 100
+#endif
 
 #define obj_func(x) void (*x)(DE_GameObject *object)
 
@@ -24,6 +33,10 @@ typedef struct DE_GameObject {
     union {
         struct { DE_Color color; };     /* Color value for shape rendering */
     };
+
+    DE_MsgBuf msg;
+    void (*SendMessage)(DE_GameObject *obj, const char *msg);
+    bool (*ReceiveMessage)(DE_GameObject *obj, const char *msg);
 
     bool is_beginning;
     obj_func(at_first_frame);

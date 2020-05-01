@@ -12,11 +12,20 @@
 #include "input.h"
 #include "object.h"
 #include "../physics/shape.h"
+#include "../utils/message.h"
 #include "../utils/timer.h"
 #include "../utils/vector.h"
 
 #ifdef DECCAN_REPORTS_ENABLED
 FILE *DE_logfile;
+#endif
+
+#ifndef DECCAN_MSG_LENGTH
+    #define DECCAN_MSG_LENGTH 50
+#endif
+
+#ifndef DECCAN_MSG_COUNT
+    #define DECCAN_MSG_COUNT 100
 #endif
 
 typedef struct DE_Info {
@@ -48,6 +57,9 @@ typedef struct DE_Info {
         SDL_Texture *value;
     } *textures;
 
+    /* Messaging */
+    DE_MsgBuf msg;
+
     /* Renderer */
     DE_Vector2i camera;
     DE_PosRect  camera_bounds;
@@ -72,3 +84,6 @@ bool DE_Core_get_fullscreen_status();
 bool DE_Core_get_vsync_status();
 float DE_Core_get_framerate_limit();
 float DE_Core_get_average_framerate();
+
+void DE_Core_send_message(const char *msg);
+bool DE_Core_receive_message(const char *msg);

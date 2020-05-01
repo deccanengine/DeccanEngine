@@ -8,6 +8,7 @@ DE_Texture *tar;
 void action(GameObject *this) {
     if(Collision.TestFrom(Object.GetObject("main player"), this)) { 
         Object.GetObject("main player")->color = ColorList.green;
+        this->SendMessage(this, "hello");
     }
 }
 
@@ -91,6 +92,9 @@ void _none_begin(GameObject *this) {
 void _none_step(GameObject *this) { }
 
 void _none_render(GameObject *this) {
+    if(this->ReceiveMessage(this, "hello")) {
+        printf("message received\n");
+    }
     Renderer.DrawRect((Rect){this->position.x, this->position.y, 40, 40}, ColorList.red); 
 }
 

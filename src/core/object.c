@@ -8,6 +8,14 @@
 #include "object.h"
 #include "scene.h"
 
+void DE_GameObject_Msg_send(DE_GameObject *obj, const char *msg) {
+    DE_Msg_send(&obj->msg, msg);
+}
+
+bool DE_GameObject_Msg_receive(DE_GameObject *obj, const char *msg) {
+    return DE_Msg_receive(&obj->msg, msg);
+}
+
 #define obj_func(x) void (*x)(DE_GameObject *object)
 
 DE_GameObject *DE_Object_new_object(
@@ -18,6 +26,11 @@ DE_GameObject *DE_Object_new_object(
     
     obj->info.name = DE_newstring(name);
     obj->info.type = DE_newstring(type);
+    
+    DE_Msg_init(&obj->msg, DECCAN_OBJ_MSG_COUNT, DECCAN_OBJ_MSG_LENGTH);
+    obj->SendMessage = DE_GameObject_Msg_send;
+    obj->ReceiveMessage = DE_GameObject_Msg_receive;
+    
     obj->is_beginning = true;
     obj->at_first_frame = af;
     obj->at_beginning = ab;

@@ -24,6 +24,7 @@
 #include "physics/collider.h"
 #include "physics/collision.h"
 
+#include "utils/message.h"
 #include "utils/timer.h"
 #include "utils/vector.h"
 
@@ -64,6 +65,9 @@ NAMESPACE(Core) {
     INTERFACE(bool, GetVsyncStatus,);
     INTERFACE(float, GetFramerateLimit,);
     INTERFACE(float, GetAverageFramerate,);
+
+    INTERFACE(void, SendMessage, const char *msg);
+    INTERFACE(bool, ReceiveMessage, const char *msg);
 };
 
 NAMESPACE(Input) {

@@ -92,6 +92,8 @@ int DE_Core_init(const char *title, DE_Vector2i mode) {
 
     global_engine.camera_bounds = (DE_PosRect){-1, -1, -1, -1};
 
+    DE_Msg_init(&global_engine.msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
+
     memcpy(global_engine.prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
     memcpy(global_engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
@@ -279,4 +281,12 @@ float DE_Core_get_framerate_limit() {
 
 float DE_Core_get_average_framerate() {
     return global_engine.fps_avg;
+}
+
+void DE_Core_send_message(const char *msg) {
+    DE_Msg_send(&global_engine.msg, msg);
+}
+
+bool DE_Core_receive_message(const char *msg) {
+    return DE_Msg_receive(&global_engine.msg, msg);
 }
