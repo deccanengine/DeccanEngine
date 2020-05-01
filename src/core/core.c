@@ -216,8 +216,10 @@ void DE_Core_run(float fps) {
     for(int i=0; i<scene->object_count; i++) {
         DE_GameObject *obj = scene->objects[i];
         obj->at_end(obj);
+        DE_Msg_free(&obj->msg);
     }
     
+    DE_Msg_free(&global_engine.msg);
     DE_Core_quit();
 }
 

@@ -18,3 +18,4 @@ typedef struct DE_MsgBuf {
 void DE_Msg_init(DE_MsgBuf *buf, int msg_count, int msg_length);
 void DE_Msg_send(DE_MsgBuf *buf, const char *msg);
 bool DE_Msg_receive(DE_MsgBuf *buf, const char *msg);
+void DE_Msg_free(DE_MsgBuf *buf);

@@ -8,12 +8,13 @@
 #include "message.h"
 
 void DE_Msg_init(DE_MsgBuf *buf, int msg_count, int msg_length) {
+    // To do: make it totally dynamic
     buf->msg_num = 0;
     buf->msg_count = msg_count;
     buf->msg_length = msg_length;
-    buf->messages = (char**)malloc(sizeof(char*)*msg_count);
+    buf->messages = DE_new(char*, msg_count);
     for(int i=0; i<msg_count; i++) {
-        buf->messages[i] = (char*)malloc(sizeof(char)*msg_length);
+        buf->messages[i] = DE_new(char, msg_length);
         memset(buf->messages[i], '\0', sizeof(char)*msg_length);
     }
 }
@@ -42,4 +43,11 @@ bool DE_Msg_receive(DE_MsgBuf *buf, const char *msg) {
     }
     /* There is no message */
     return false;
+}
+
+void DE_Msg_free(DE_MsgBuf *buf) {
+    for(int i=0; i<buf->msg_count; i++) {
+        free(buf->messages[i]);
+    }
+    free(buf->messages);
 }
