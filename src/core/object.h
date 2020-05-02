@@ -25,8 +25,8 @@
 typedef struct DE_GameObject DE_GameObject;
 typedef struct DE_GameObject {
     struct { char *name, *type; } info;     /* Basic information about the object */ 
-    DE_Vector2i position;               /* Positional info of the object */
-    DE_Vector2i size;                   /* Size of the rect bounding the object */
+    DE_Vector2f position;               /* Positional info of the object */
+    DE_Vector2f size;                   /* Size of the rect bounding the object */
     DE_Vector2f transform;              /* Transformation info */
     struct { bool dead, hidden; } status;   /* Status */
     DE_Collider collider;               /* Collider info */

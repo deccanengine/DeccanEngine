@@ -8,13 +8,13 @@
 #pragma once
 
 typedef struct DE_Rect {
-    int32_t x, y, w, h;
+    float x, y, w, h;
 } DE_Rect;
 
 typedef struct DE_PosRect {
-    int32_t x1, y1, x2, y2;
+    float x1, y1, x2, y2;
 } DE_PosRect;
 
 typedef struct DE_Circle {
-    int32_t x, y, radius;
+    float x, y, radius;
 } DE_Circle;

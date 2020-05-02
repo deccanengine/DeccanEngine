@@ -86,7 +86,7 @@ typedef struct {
 DE_KeyState DE_Input_get_key(int key_code);
 DE_MouseState DE_Input_get_mouse_button(int button_code);
 DE_Vector2i DE_Input_get_mouse_pos();
-DE_Vector2i DE_Input_get_relative_mouse_pos();
+DE_Vector2f DE_Input_get_relative_mouse_pos();
 int DE_Input_mouse_scroll_horizontal();
 int DE_Input_mouse_scroll_vertical();
 

@@ -74,7 +74,7 @@ NAMESPACE(Input) {
     INTERFACE(DE_KeyState, GetKey, int key_code);
     INTERFACE(DE_MouseState, GetMouseButton, int button_code);
     INTERFACE(DE_Vector2i, GetMousePos,);
-    INTERFACE(DE_Vector2i, GetRelativeMousePos,);
+    INTERFACE(DE_Vector2f, GetRelativeMousePos,);
     INTERFACE(int, MouseScrollHorizontal,);
     INTERFACE(int, MouseScrollVertical,);
 
@@ -114,25 +114,25 @@ NAMESPACE(Collision) {
     INTERFACE(DE_Collider, NewRectCollider, DE_PosRect rect);
     INTERFACE(DE_Collider, NewCircleCollider, DE_Circle circle);
 
-    INTERFACE(bool, TestVecVecFrom, DE_Vector2i *v1, DE_Vector2i *v2);
+    INTERFACE(bool, TestVecVecFrom, DE_Vector2f *v1, DE_Vector2f *v2);
     INTERFACE(bool, TestRectRectFrom, DE_PosRect *r1, DE_PosRect *r2);
     INTERFACE(bool, TestCircleCircleFrom, DE_Circle *c1, DE_Circle *c2);
-    INTERFACE(bool, TestVecRectFrom, DE_Vector2i *vec, DE_PosRect *rect);
-    INTERFACE(bool, TestCircleVecFrom, DE_Circle *circle, DE_Vector2i *vec);
+    INTERFACE(bool, TestVecRectFrom, DE_Vector2f *vec, DE_PosRect *rect);
+    INTERFACE(bool, TestCircleVecFrom, DE_Circle *circle, DE_Vector2f *vec);
     INTERFACE(bool, TestRectCircleFrom, DE_PosRect *rect, DE_Circle *circle);
     INTERFACE(bool, TestFrom, DE_GameObject *obj1, DE_GameObject *obj2);
-    INTERFACE(bool, TestVecFrom, DE_GameObject *obj, DE_Vector2i *vec);
+    INTERFACE(bool, TestVecFrom, DE_GameObject *obj, DE_Vector2f *vec);
     INTERFACE(bool, Test, const char *name1, const char *name2);
 };
 
 NAMESPACE(Camera) {
-    INTERFACE(void, Move, DE_Vector2i pos);
+    INTERFACE(void, Move, DE_Vector2f pos);
     INTERFACE(void, CenterOn, DE_GameObject *obj);
 
-    INTERFACE(void, SetPosition, DE_Vector2i pos);
+    INTERFACE(void, SetPosition, DE_Vector2f pos);
     INTERFACE(void, SetBounds, DE_PosRect rect);
 
-    INTERFACE(DE_Vector2i, GetPosition,);
+    INTERFACE(DE_Vector2f, GetPosition,);
     INTERFACE(DE_PosRect, GetBounds,);
 };
 
@@ -149,8 +149,8 @@ NAMESPACE(Renderer) {
     INTERFACE(DE_Vector2f, GetPixelSize,);
     INTERFACE(DE_BlendMode, GetBlendMode,);
 
-    INTERFACE(void, DrawPoint, DE_Vector2i pos, DE_Color color);
-    INTERFACE(void, DrawLine, DE_Vector2i start, DE_Vector2i end, DE_Color color);
+    INTERFACE(void, DrawPoint, DE_Vector2f pos, DE_Color color);
+    INTERFACE(void, DrawLine, DE_Vector2f start, DE_Vector2f end, DE_Color color);
     INTERFACE(void, DrawRect, DE_Rect rect, DE_Color color);
     INTERFACE(void, DrawRectExt, DE_Rect rect, DE_Color color, float angle);
     INTERFACE(void, DrawFilledRect, DE_Rect rect, DE_Color color);
@@ -158,8 +158,8 @@ NAMESPACE(Renderer) {
     INTERFACE(void, DrawFilledCircle, DE_Circle circle, DE_Color color);
 
     INTERFACE(void, TextureSetColor, DE_Texture *texture, DE_Color color);
-    INTERFACE(void, TextureDraw, DE_Vector2i pos, SDL_Texture *texture);
-    INTERFACE(void, TextureDrawWithScale, DE_Vector2i pos, DE_Vector2f scale, SDL_Texture *texture);
+    INTERFACE(void, TextureDraw, DE_Vector2f pos, SDL_Texture *texture);
+    INTERFACE(void, TextureDrawWithScale, DE_Vector2f pos, DE_Vector2f scale, SDL_Texture *texture);
 };
 
 NAMESPACE(Clock) {

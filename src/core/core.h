@@ -61,7 +61,7 @@ typedef struct DE_Info {
     DE_MsgBuf msg;
 
     /* Renderer */
-    DE_Vector2i camera;
+    DE_Vector2f camera;
     DE_PosRect  camera_bounds;
 } DE_Info;
 

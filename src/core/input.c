@@ -46,13 +46,14 @@ DE_Vector2i DE_Input_get_mouse_pos() {
     return pos;
 }
 
-DE_Vector2i DE_Input_get_relative_mouse_pos() {
-    DE_Vector2i pos;
-    DE_Vector2i cam = DE_Core_get_global_engine()->camera; 
+DE_Vector2f DE_Input_get_relative_mouse_pos() {
+    int32_t x, y;
+    DE_Vector2f pos;
+    DE_Vector2f cam = DE_Core_get_global_engine()->camera; 
     
-    SDL_GetMouseState(&pos.x, &pos.y);
-    pos.x += cam.x;
-    pos.y += cam.y;
+    SDL_GetMouseState(&x, &y);
+    pos.x = (float)x + cam.x;
+    pos.y = (float)y + cam.y;
     return pos;
 }
 

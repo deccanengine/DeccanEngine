@@ -40,7 +40,7 @@ void _player_step(GameObject *this) {
     /* Center the camera on player */
     Camera.CenterOn(this);
 
-    Vector2i pos = Input.GetRelativeMousePos();
+    Vector2f pos = Input.GetRelativeMousePos();
     if(Collision.TestVecFrom(this, &pos)) { 
         this->color = ColorList.fuchsia;
         if(Input.ButtonDown(Button.left)) {
@@ -93,7 +93,7 @@ void _none_step(GameObject *this) { }
 
 void _none_render(GameObject *this) {
     if(this->ReceiveMessage(this, "hello")) {
-        printf("message received\n");
+        // do nothing, or!
     }
     Renderer.DrawRect((Rect){this->position.x, this->position.y, 40, 40}, ColorList.red); 
 }

@@ -16,7 +16,7 @@ void DE_Renderer_set_target(DE_Texture *target) {
     DE_Info *engine = DE_Core_get_global_engine(); 
     if(target == NULL) { target = engine->target; }
     if(SDL_SetRenderTarget(engine->renderer, target) != 0) {
-        printf("here?\n");
+        DE_report("Cannot set render target: %s", SDL_GetError());
     }
 }
 

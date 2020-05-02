@@ -18,13 +18,13 @@ SDL_GetRenderDrawBlendMode(engine->renderer, &blend);
 DE_Renderer_set_color(def);                     \
 SDL_SetRenderDrawBlendMode(engine->renderer, blend);
 
-void DE_Renderer_draw_point(DE_Vector2i pos, DE_Color color) {
+void DE_Renderer_draw_point(DE_Vector2f pos, DE_Color color) {
     DE_DRAW_BEGIN;
     SDL_RenderDrawPoint(engine->renderer, pos.x - engine->camera.x, pos.y - engine->camera.y);
     DE_DRAW_END;
 }
 
-void DE_Renderer_draw_line(DE_Vector2i start, DE_Vector2i end, DE_Color color) {
+void DE_Renderer_draw_line(DE_Vector2f start, DE_Vector2f end, DE_Color color) {
     DE_DRAW_BEGIN;
     SDL_RenderDrawLine(engine->renderer, start.x - engine->camera.x, start.y - engine->camera.y, end.x - engine->camera.x, end.y - engine->camera.y);
     DE_DRAW_END;
