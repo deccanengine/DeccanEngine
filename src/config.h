@@ -23,9 +23,6 @@
 
 typedef SDL_Texture DE_Texture;
 
-#define DECCAN_RENDERER_SDL
-#define DECCAN_REPORTS_ENABLED
-
 #define DE_new(type,size) (type*)malloc(sizeof(type)*size);
 static inline char *DE_newstring(const char *source) {
     char *string = DE_new(char, strlen(source));

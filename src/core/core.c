@@ -8,7 +8,7 @@
 #define STB_DS_IMPLEMENTATION
 #include "core.h"
 
-DE_Info engine;
+static DE_Info engine;
 
 /* Core */
 void DE_Core_set_global_engine(DE_Info *eng) {

@@ -8,21 +8,21 @@
 #pragma once
 #include "config.h"
 
+#include "core/asset.h"
 #include "core/core.h"
 #include "core/input.h"
-#include "core/asset.h"
-#include "core/scene.h"
 #include "core/object.h"
-
-#include "renderer/renderer.h"
-#include "renderer/draw.h"
-#include "renderer/color.h"
-#include "renderer/camera.h"
-#include "renderer/texture.h"
+#include "core/scene.h"
 
 #include "physics/shape.h"
 #include "physics/collider.h"
 #include "physics/collision.h"
+
+#include "renderer/camera.h"
+#include "renderer/color.h"
+#include "renderer/draw.h"
+#include "renderer/renderer.h"
+#include "renderer/texture.h"
 
 #include "utils/message.h"
 #include "utils/timer.h"

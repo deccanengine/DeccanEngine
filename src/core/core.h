@@ -92,6 +92,3 @@ float DE_Core_get_average_framerate();
 
 void DE_Core_send_message(const char *msg);
 bool DE_Core_receive_message(const char *msg);
-
-//void DE_error (const char *str, ...);
-//void DE_report(const char *str, ...);
