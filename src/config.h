@@ -33,30 +33,5 @@ static inline char *DE_newstring(const char *source) {
     return string;
 }
 
-static void DE_error(const char *str, ...) {
-    printf("Fatal Error: ");
-    
-    va_list args;
-    va_start(args, str);
-    vprintf(str, args);
-    va_end(args);
-    
-    printf("\n");
-    exit(-1);
-}
-
-#ifdef DECCAN_REPORTS_ENABLED
-extern FILE *DE_logfile;
-#endif
-
-static void DE_report(const char *str, ...) {
-#ifdef DECCAN_REPORTS_ENABLED
-    va_list args;
-    
-    va_start(args, str);
-    vfprintf(DE_logfile, str, args);
-    va_end(args);
-    
-    fprintf(DE_logfile, "\n");
-#endif
-}
+extern void DE_error (const char *str, ...);
+extern void DE_report(const char *str, ...);

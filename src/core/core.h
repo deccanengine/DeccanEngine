@@ -16,10 +16,6 @@
 #include "../utils/timer.h"
 #include "../utils/vector.h"
 
-#ifdef DECCAN_REPORTS_ENABLED
-FILE *DE_logfile;
-#endif
-
 #ifndef DECCAN_MSG_LENGTH
     #define DECCAN_MSG_LENGTH 50
 #endif
@@ -37,6 +33,11 @@ typedef struct DE_Info {
     SDL_GLContext context;
 #endif
     DE_Texture *target;
+#ifdef DECCAN_REPORTS_ENABLED
+    FILE *logfile;
+#endif
+    int gl_major;
+    int gl_minor;
     bool is_running;
 
     /* Settings */
@@ -91,3 +92,6 @@ float DE_Core_get_average_framerate();
 
 void DE_Core_send_message(const char *msg);
 bool DE_Core_receive_message(const char *msg);
+
+//void DE_error (const char *str, ...);
+//void DE_report(const char *str, ...);

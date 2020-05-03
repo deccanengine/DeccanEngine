@@ -4,4 +4,6 @@ This list is only for immediate features and fixes and not long for term feature
 - Expand the asset management system
 - Implement true stack system for scene management
 - Implement dynamic arrays and maps
-- Make a real error handling and warning system
+- Add app name string(also use in log)
+- Fix OpenGL context creation
+- Including source files directly if DECCAN_IMPL is enabled

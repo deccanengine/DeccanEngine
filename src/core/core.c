@@ -8,15 +8,15 @@
 #define STB_DS_IMPLEMENTATION
 #include "core.h"
 
-DE_Info global_engine;
+DE_Info engine;
 
 /* Core */
-void DE_Core_set_global_engine(DE_Info *engine) {
-    global_engine = *engine;
+void DE_Core_set_global_engine(DE_Info *eng) {
+    engine = *eng;
 }
 
 DE_Info *DE_Core_get_global_engine() {
-    return &global_engine;
+    return &engine;
 }
 
 int DE_Core_init(const char *title, DE_Vector2i mode) {
@@ -46,7 +46,7 @@ int DE_Core_init(const char *title, DE_Vector2i mode) {
 
     /* Create window */
     int window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-    if((global_engine.window = SDL_CreateWindow(title, 0, 0, mode.x, mode.y, window_flags)) == NULL) {
+    if((engine.window = SDL_CreateWindow(title, 0, 0, mode.x, mode.y, window_flags)) == NULL) {
         DE_error("Could not create window: %s", SDL_GetError());
     }
 
@@ -55,66 +55,66 @@ int DE_Core_init(const char *title, DE_Vector2i mode) {
     if(SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl") != SDL_TRUE) {
         DE_error("OpenGL cannot be enabled");
     }
-    
+
     /* Create renderer */
     int render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    if((global_engine.renderer = SDL_CreateRenderer(global_engine.window, -1, render_flags)) == NULL) {
+    if((engine.renderer = SDL_CreateRenderer(engine.window, -1, render_flags)) == NULL) {
         DE_error("Could not create renderer: %s", SDL_GetError());
     }
 #else
-    global_engine.context = SDL_GL_CreateContext(global_engine.window);
-    if(global_engine.context == NULL) {
+    engine.context = SDL_GL_CreateContext(engine.window);
+    if(engine.context == NULL) {
         DE_error("Could not create OpenGL Context: %s\n", SDL_GetError());
     }
 #endif
 
-    int GL_major, GL_minor;
-    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &GL_major);
-    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &GL_minor);
-    if(GL_major < 2 || (GL_major == 2 && GL_minor < 1)) {
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &engine.gl_major);
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &engine.gl_minor);
+    if(engine.gl_major < 2 || (engine.gl_major == 2 && engine.gl_minor < 1)) {
         DE_error("OpenGL 2.1 support needed at minimum. Consider upgrading your hardware.");
     }
 
     /* Open the log file */
-    DE_logfile = fopen("report.log", "w");
-    if(DE_logfile == NULL) {
+    engine.logfile = fopen("report.log", "w");
+    if(engine.logfile == NULL) {
         DE_error("Could not create/open log file");
     }
 
 #ifdef DECCAN_RENDERER_SDL
-    global_engine.target = SDL_GetRenderTarget(global_engine.renderer);
+    engine.target = SDL_GetRenderTarget(engine.renderer);
 #else
 
 #endif
-    global_engine.is_running = true;
+    engine.is_running = true;
 
-    global_engine.win_mode = mode;
-    global_engine.vsync_enabled = false;
-    global_engine.fps_req = 60.0f;      /* Fallback FPS limit if vsync is disabled somwhere and new limit is not set */
+    engine.win_mode = mode;
+    engine.vsync_enabled = false;
+    engine.fps_req = 60.0f;      /* Fallback FPS limit if vsync is disabled somwhere and new limit is not set */
 
-    global_engine.scenes = NULL;
-    global_engine.scene_count = 0;
+    engine.scenes = NULL;
+    engine.scene_count = 0;
 
-    global_engine.textures = NULL;
+    engine.textures = NULL;
 
-    global_engine.camera_bounds = (DE_PosRect){-1, -1, -1, -1};
+    engine.camera_bounds = (DE_PosRect){-1, -1, -1, -1};
 
-    DE_Msg_init(&global_engine.msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
+    DE_Msg_init(&engine.msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
 
-    memcpy(global_engine.prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
-    memcpy(global_engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(engine.prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
     return 1;
 }
 
 void DE_Core_quit() {
-    stbds_arrfree(global_engine.scenes);
+    fclose(engine.logfile);
+    stbds_arrfree(engine.scenes);
 #ifdef DECCAN_RENDERER_SDL
-    SDL_DestroyRenderer(global_engine.renderer);
+    SDL_DestroyRenderer(engine.renderer);
 #else
-    SDL_GL_DeleteContext(global_engine.context);
+    SDL_GL_DeleteContext(engine.context);
 #endif
-    SDL_DestroyWindow(global_engine.window);
+    SDL_DestroyWindow(engine.window);
     TTF_Quit();
     SDL_Quit();
 }
@@ -134,36 +134,36 @@ void DE_Core_run(float fps) {
     /* There is no gurantee than VSync is enabled by set_vsync_status().
      * Hence, it is separated. 
      */
-    if(!global_engine.vsync_enabled) { global_engine.fps_req = fps; }
+    if(!engine.vsync_enabled) { engine.fps_req = fps; }
 
-    while(global_engine.is_running) {
-        if(!global_engine.vsync_enabled) { frm_timer.Start(&frm_timer); }
+    while(engine.is_running) {
+        if(!engine.vsync_enabled) { frm_timer.Start(&frm_timer); }
 
         /* Handle some events */
-        if(SDL_PollEvent(&global_engine.event)) {
-            switch(global_engine.event.type) {
-                case SDL_QUIT: { global_engine.is_running = false; break; }
+        if(SDL_PollEvent(&engine.event)) {
+            switch(engine.event.type) {
+                case SDL_QUIT: { engine.is_running = false; break; }
                 case SDL_KEYDOWN: {
                     /* Close on Escape Key */
                     // To do: make it toggleable
-                    if(global_engine.event.key.keysym.sym == SDLK_ESCAPE) { 
-                        global_engine.is_running = false; break;
+                    if(engine.event.key.keysym.sym == SDLK_ESCAPE) { 
+                        engine.is_running = false; break;
                     }
                 }
             }
         }
         
         /* Get and set current and key states*/
-        memcpy(global_engine.prev_keys, global_engine.curr_keys, sizeof(uint8_t)*SDL_NUM_SCANCODES);
-        memcpy(global_engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+        memcpy(engine.prev_keys, engine.curr_keys, sizeof(uint8_t)*SDL_NUM_SCANCODES);
+        memcpy(engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
         /* Calculate FPS */
-        global_engine.fps_avg = frames/fps_timer.GetTime(&fps_timer);
-        if(global_engine.fps_avg > 20000) { global_engine.fps_avg = 0.0f; }
+        engine.fps_avg = frames/fps_timer.GetTime(&fps_timer);
+        if(engine.fps_avg > 20000) { engine.fps_avg = 0.0f; }
 
         /* Process Scene(s) and GameObject(s) */
-        int index = global_engine.scene_count-1;        /* Current Scene index */
-        DE_Scene *scene = global_engine.scenes[index];  /* Current scene */
+        int index = engine.scene_count-1;        /* Current Scene index */
+        DE_Scene *scene = engine.scenes[index];  /* Current scene */
         /* First frame of the scene. Same as at_beginning for scene */
         if(scene->is_first_frame == true) {
             scene->at_first_frame();
@@ -200,23 +200,23 @@ void DE_Core_run(float fps) {
         }
         
 #ifdef DECCAN_RENDERER_SDL
-        SDL_RenderPresent(global_engine.renderer);
+        SDL_RenderPresent(engine.renderer);
 #else
-        SDL_GL_SwapWindow(global_engine.window);
+        SDL_GL_SwapWindow(engine.window);
 #endif
 
         /* Prevent mouse wheel scroll input spam */
-        global_engine.event.wheel.x = 0;
-        global_engine.event.wheel.y = 0;
+        engine.event.wheel.x = 0;
+        engine.event.wheel.y = 0;
 
         frames++;
         
         /* Limit FPS */
-        if(!global_engine.vsync_enabled && global_engine.fps_req > 0.0f) {
+        if(!engine.vsync_enabled && engine.fps_req > 0.0f) {
             if(!frm_timer.is_running) { continue; }
 
             int frm_ticks = frm_timer.GetTimeMS(&frm_timer);  /* Current ticks per frame */
-            int ticks_per_frame = 1000/global_engine.fps_req;   /* Required ticks per frame */
+            int ticks_per_frame = 1000/engine.fps_req;   /* Required ticks per frame */
 
             if(frm_ticks < ticks_per_frame) {
                 DE_Clock_delay(ticks_per_frame - frm_ticks);
@@ -225,7 +225,7 @@ void DE_Core_run(float fps) {
     }
     
     /* at_end of scenes and objects */
-    DE_Scene *scene = global_engine.scenes[global_engine.scene_count-1];
+    DE_Scene *scene = engine.scenes[engine.scene_count-1];
     scene->at_end();
     for(int i=0; i<scene->object_count; i++) {
         DE_GameObject *obj = scene->objects[i];
@@ -233,30 +233,30 @@ void DE_Core_run(float fps) {
         DE_Msg_free(&obj->msg);
     }
     
-    DE_Msg_free(&global_engine.msg);
+    DE_Msg_free(&engine.msg);
     DE_Core_quit();
 }
 
 /* Core Settings Setters */
 void DE_Core_set_title(const char *name) {
-    SDL_SetWindowTitle(global_engine.window, name);
+    SDL_SetWindowTitle(engine.window, name);
 }
 
 void DE_Core_set_mode(DE_Vector2i mode) {
-    if(global_engine.is_fullscreen) {
+    if(engine.is_fullscreen) {
         SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN, mode.x, mode.y, 0, 0};
-        if(SDL_SetWindowDisplayMode(global_engine.window, &disp) > 0) {
+        if(SDL_SetWindowDisplayMode(engine.window, &disp) > 0) {
             DE_report("Cannot set fullscreen window mode: %s", SDL_GetError());
         }
-        SDL_MaximizeWindow(global_engine.window);
+        SDL_MaximizeWindow(engine.window);
     }
-    else { SDL_SetWindowSize(global_engine.window, mode.x, mode.y); }
-    global_engine.win_mode = mode;
+    else { SDL_SetWindowSize(engine.window, mode.x, mode.y); }
+    engine.win_mode = mode;
 }
 
 void DE_Core_set_fullscreen() {
-    SDL_SetWindowFullscreen(global_engine.window, global_engine.is_fullscreen ? 0 : 1);
-    global_engine.is_fullscreen = !global_engine.is_fullscreen;
+    SDL_SetWindowFullscreen(engine.window, engine.is_fullscreen ? 0 : 1);
+    engine.is_fullscreen = !engine.is_fullscreen;
 }
 
 void DE_Core_set_vsync_status(bool vsync) {
@@ -266,43 +266,67 @@ void DE_Core_set_vsync_status(bool vsync) {
     }
 
     int status = SDL_GL_GetSwapInterval();
-    if(status == 0) { global_engine.vsync_enabled = false; }
-    else { global_engine.vsync_enabled = true; }
+    if(status == 0) { engine.vsync_enabled = false; }
+    else { engine.vsync_enabled = true; }
 }
 
 void DE_Core_set_framerate_limit(float fps){
-    global_engine.fps_req = fps;
+    engine.fps_req = fps;
 }
 
 /* Core Settings Getters */
 const char *DE_Core_get_title() {
-    return SDL_GetWindowTitle(global_engine.window);
+    return SDL_GetWindowTitle(engine.window);
 }
 
 DE_Vector2i DE_Core_get_mode() {
-    return global_engine.win_mode;
+    return engine.win_mode;
 }
 
 bool DE_Core_get_fullscreen_status() {
-    return global_engine.is_fullscreen;
+    return engine.is_fullscreen;
 }
 
 bool DE_Core_get_vsync_status() {
-    return global_engine.vsync_enabled;
+    return engine.vsync_enabled;
 }
 
 float DE_Core_get_framerate_limit() {
-    return global_engine.fps_req;
+    return engine.fps_req;
 }
 
 float DE_Core_get_average_framerate() {
-    return global_engine.fps_avg;
+    return engine.fps_avg;
 }
 
 void DE_Core_send_message(const char *msg) {
-    DE_Msg_send(&global_engine.msg, msg);
+    DE_Msg_send(&engine.msg, msg);
 }
 
 bool DE_Core_receive_message(const char *msg) {
-    return DE_Msg_receive(&global_engine.msg, msg);
+    return DE_Msg_receive(&engine.msg, msg);
+}
+
+void DE_error(const char *str, ...) {
+    printf("Fatal Error: ");
+    
+    va_list args;
+    va_start(args, str);
+    vprintf(str, args);
+    va_end(args);
+    
+    printf("\n");
+    exit(-1);
+}
+
+void DE_report(const char *str, ...) {
+#ifdef DECCAN_REPORTS_ENABLED
+    va_list args;
+    
+    va_start(args, str);
+    vfprintf(engine.logfile, str, args);
+    va_end(args);
+    
+    fprintf(engine.logfile, "\n");
+#endif
 }
