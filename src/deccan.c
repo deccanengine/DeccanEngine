@@ -109,8 +109,8 @@ struct DE_Renderer Deccan_Renderer = {
     DE_Renderer_draw_filled_circle,
 
     DE_Renderer_texture_set_color,
-    DE_Renderer_texture_draw,
-    DE_Renderer_texture_draw_with_scale
+    DE_Renderer_texture_blit,
+    DE_Renderer_texture_blit_scaled
 };
 
 struct DE_Clock Deccan_Clock = {

@@ -63,8 +63,13 @@ void _player_step(GameObject *this) {
 }
 
 void _player_render(GameObject *this) {
+    Vector2f pos = Input.GetRelativeMousePos();
+    double angle = atan2(pos.y - this->position.y, pos.x - this->position.x)*180/3.14159;
+
     Renderer.DrawRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
-    
+    Renderer.TextureBlitScaled((Vector2f){this->position.x, this->position.y},
+                               (Vector2f){2.0f, 2.0f},
+                               (angle+90.0f), FlipVertical, Asset.GetTexture("arrow0"));
     /*Renderer.SetTarget(tar);
     Renderer.Clear(ColorList.white);
 
