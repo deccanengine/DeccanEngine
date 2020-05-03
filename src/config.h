@@ -23,6 +23,9 @@
 
 typedef SDL_Texture DE_Texture;
 
+#define DECCAN_RENDERER_SDL
+#define DECCAN_REPORTS_ENABLED
+
 #define DE_new(type,size) (type*)malloc(sizeof(type)*size);
 static inline char *DE_newstring(const char *source) {
     char *string = DE_new(char, strlen(source));
@@ -41,8 +44,6 @@ static void DE_error(const char *str, ...) {
     printf("\n");
     exit(-1);
 }
-
-#define DECCAN_REPORTS_ENABLED
 
 #ifdef DECCAN_REPORTS_ENABLED
 extern FILE *DE_logfile;

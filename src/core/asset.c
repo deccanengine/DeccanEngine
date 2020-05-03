@@ -16,7 +16,11 @@ void DE_Asset_load_texture(const char *name, const char *path) {
         DE_report("Cannot load image: %s: %s", path, IMG_GetError());
     }
 
+#ifdef DECCAN_RENDERER_SDL
     tex = SDL_CreateTextureFromSurface(DE_Core_get_global_engine()->renderer, img);
+#else
+
+#endif
     SDL_FreeSurface(img);
 
     if(tex == NULL) {

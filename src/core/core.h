@@ -31,7 +31,11 @@ FILE *DE_logfile;
 typedef struct DE_Info {
     /* Core engine */
     SDL_Window *window;
+#ifdef DECCAN_RENDERER_SDL
     SDL_Renderer *renderer;
+#else
+    SDL_GLContext context;
+#endif
     DE_Texture *target;
     bool is_running;
 

@@ -50,35 +50,42 @@ int DE_Core_init(const char *title, DE_Vector2i mode) {
         DE_error("Could not create window: %s", SDL_GetError());
     }
 
+#ifdef DECCAN_RENDERER_SDL
     /* Set the renderer to OpenGL */
     if(SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl") != SDL_TRUE) {
         DE_error("OpenGL cannot be enabled");
     }
-
+    
     /* Create renderer */
     int render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     if((global_engine.renderer = SDL_CreateRenderer(global_engine.window, -1, render_flags)) == NULL) {
         DE_error("Could not create renderer: %s", SDL_GetError());
     }
+#else
+    global_engine.context = SDL_GL_CreateContext(global_engine.window);
+    if(global_engine.context == NULL) {
+        DE_error("Could not create OpenGL Context: %s\n", SDL_GetError());
+    }
+#endif
 
     int GL_major, GL_minor;
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &GL_major);
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &GL_minor);
     if(GL_major < 2 || (GL_major == 2 && GL_minor < 1)) {
-        DE_error("OpenGL 2.1 support needed at minimum. Consider upgrading your hardware");
+        DE_error("OpenGL 2.1 support needed at minimum. Consider upgrading your hardware.");
     }
 
-    /* Enable alpha blending */
-    /*if(SDL_SetRenderDrawBlendMode(global_engine.renderer, SDL_BLENDMODE_BLEND) > 0) {
-        DE_error("Alpha blending cannot be enabled: %s", SDL_GetError());
-    }*/
-
+    /* Open the log file */
     DE_logfile = fopen("report.log", "w");
     if(DE_logfile == NULL) {
         DE_error("Could not create/open log file");
     }
 
+#ifdef DECCAN_RENDERER_SDL
     global_engine.target = SDL_GetRenderTarget(global_engine.renderer);
+#else
+
+#endif
     global_engine.is_running = true;
 
     global_engine.win_mode = mode;
@@ -102,8 +109,11 @@ int DE_Core_init(const char *title, DE_Vector2i mode) {
 
 void DE_Core_quit() {
     stbds_arrfree(global_engine.scenes);
-
+#ifdef DECCAN_RENDERER_SDL
     SDL_DestroyRenderer(global_engine.renderer);
+#else
+    SDL_GL_DeleteContext(global_engine.context);
+#endif
     SDL_DestroyWindow(global_engine.window);
     TTF_Quit();
     SDL_Quit();
@@ -189,7 +199,11 @@ void DE_Core_run(float fps) {
             obj->at_render(obj);
         }
         
+#ifdef DECCAN_RENDERER_SDL
         SDL_RenderPresent(global_engine.renderer);
+#else
+        SDL_GL_SwapWindow(global_engine.window);
+#endif
 
         /* Prevent mouse wheel scroll input spam */
         global_engine.event.wheel.x = 0;
