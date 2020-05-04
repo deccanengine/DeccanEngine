@@ -25,19 +25,20 @@
 
 typedef struct DE_GameInfo {
     /* Core engine */
-    SDL_Window *window;
 #ifdef DECCAN_RENDERER_SDL
+    SDL_Window *window;
     SDL_Renderer *renderer;
 #else
-    SDL_GLContext context;
+
 #endif
     DE_Texture *target;
-#ifdef DECCAN_REPORTS_ENABLED
-    FILE *logfile;
-#endif
     int gl_major;
     int gl_minor;
     bool is_running;
+
+#ifdef DECCAN_REPORTS_ENABLED
+    FILE *logfile;
+#endif
 
     /* Settings */
     DE_Vector2i win_mode;

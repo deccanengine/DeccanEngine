@@ -34,6 +34,7 @@ int DE_Core_Init(const char *title, DE_Vector2i mode) {
         DE_error("Could not initialize SDL2_ttf: %s", TTF_GetError());
     }
 
+#ifdef DECCAN_RENDERER_SDL
     /* GL Attributes: OpenGL 2.1 with hardware acceleration */
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
@@ -50,7 +51,6 @@ int DE_Core_Init(const char *title, DE_Vector2i mode) {
         DE_error("Could not create window: %s", SDL_GetError());
     }
 
-#ifdef DECCAN_RENDERER_SDL
     /* Set the renderer to OpenGL */
     if(SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl") != SDL_TRUE) {
         DE_error("OpenGL cannot be enabled");
@@ -62,12 +62,8 @@ int DE_Core_Init(const char *title, DE_Vector2i mode) {
         DE_error("Could not create renderer: %s", SDL_GetError());
     }
 #else
-    engine.context = SDL_GL_CreateContext(engine.window);
-    if(engine.context == NULL) {
-        DE_error("Could not create OpenGL Context: %s\n", SDL_GetError());
-    }
+    
 #endif
-
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &engine.gl_major);
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &engine.gl_minor);
     if(engine.gl_major < 2 || (engine.gl_major == 2 && engine.gl_minor < 1)) {
@@ -111,10 +107,10 @@ void DE_Core_Quit() {
     stbds_arrfree(engine.scenes);
 #ifdef DECCAN_RENDERER_SDL
     SDL_DestroyRenderer(engine.renderer);
+    SDL_DestroyWindow(engine.window);    
 #else
-    SDL_GL_DeleteContext(engine.context);
+    
 #endif
-    SDL_DestroyWindow(engine.window);
     TTF_Quit();
     SDL_Quit();
 }
