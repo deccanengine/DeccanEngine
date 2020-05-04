@@ -8,7 +8,7 @@ void begin() {
     /* Start here */
     //Asset.load_texture("arrow", "arrow0.png");
     Object.InstantiateObject(Object.NewObject("main player", "player", NULL_OBJFUNC, _player_begin, _player_step, _player_render, _player_end));
-    timer = Deccan_Clock.NewTimer();
+    timer = Clock.NewTimer();
     timer.Start(&timer);
 }
 
@@ -66,7 +66,7 @@ void end() {
 
 int main(int argc, char **argv) {
     if(Core.Init("Test", (Vector2i){640, 320})) {
-        Scenes.AddScene(Scenes.NewScene("scene0", begin, step, render, end), false);
+        Scene.AddScene(Scene.NewScene("scene0", begin, step, render, end), false);
         Core.Run(120.0f);
     }
     atexit(Core.Quit);

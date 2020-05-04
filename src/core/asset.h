@@ -9,5 +9,5 @@
 #include "../config.h"
 #include "core.h"
 
-void DE_Asset_load_texture(const char *name, const char *path);
-SDL_Texture *DE_Asset_get_texture(const char *name);
+void DE_Asset_LoadTexture(const char *name, const char *path);
+SDL_Texture *DE_Asset_GetTexture(const char *name);

@@ -7,7 +7,7 @@
 
 #include "message.h"
 
-void DE_Msg_init(DE_MsgBuf *buf, int msg_count, int msg_length) {
+void DE_msg_init(DE_msgbuf *buf, int msg_count, int msg_length) {
     // To do: make it totally dynamic
     buf->msg_num = 0;
     buf->msg_count = msg_count;
@@ -19,7 +19,7 @@ void DE_Msg_init(DE_MsgBuf *buf, int msg_count, int msg_length) {
     }
 }
 
-void DE_Msg_send(DE_MsgBuf *buf, const char *msg) {
+void DE_msg_send(DE_msgbuf *buf, const char *msg) {
     /* Store the message */
     for(int i=0; i<buf->msg_count; i++) {
         if(!strcmp(buf->messages[i], "\0")) {
@@ -33,7 +33,7 @@ void DE_Msg_send(DE_MsgBuf *buf, const char *msg) {
     strncpy(buf->messages[buf->msg_num], msg, buf->msg_length);
 }
 
-bool DE_Msg_receive(DE_MsgBuf *buf, const char *msg) {
+bool DE_msg_receive(DE_msgbuf *buf, const char *msg) {
     /* Find the message */
     for(int i=0; i<buf->msg_count; i++) {
         if(!strcmp(buf->messages[i], msg)) {
@@ -45,7 +45,7 @@ bool DE_Msg_receive(DE_MsgBuf *buf, const char *msg) {
     return false;
 }
 
-void DE_Msg_free(DE_MsgBuf *buf) {
+void DE_msg_free(DE_msgbuf *buf) {
     for(int i=0; i<buf->msg_count; i++) {
         free(buf->messages[i]);
     }

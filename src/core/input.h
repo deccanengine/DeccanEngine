@@ -11,7 +11,7 @@
 #include "../utils/vector.h"
 
 /* Key Codes */
-typedef struct _key_code_list {
+typedef struct DE_KeyList {
     int unknown, 
         
         a, b, c, d, e, f, 
@@ -38,9 +38,9 @@ typedef struct _key_code_list {
         del,         end,        pagedown, 
         right,       left,       down, 
         up;
-} _key_code_list;
+} DE_KeyList;
 
-static _key_code_list DE_Key = { 
+static DE_KeyList Key = { 
      0, 
      4,  5,  6,  7,  8,  9,
     10, 11, 12, 13, 14, 15,
@@ -63,11 +63,11 @@ static _key_code_list DE_Key = {
 };
 
 /* Button Codes */
-typedef struct _button_code_list {
+typedef struct DE_ButtonList {
     int left, middle, right, x1, x2; 
-} _button_code_list;
+} DE_ButtonList;
 
-static _button_code_list DE_Button = {
+static DE_ButtonList Button = {
     1, 2, 3, 4, 5
 };
 
@@ -83,15 +83,15 @@ typedef struct {
     bool is_up;
 } DE_MouseState;
 
-DE_KeyState DE_Input_get_key(int key_code);
-DE_MouseState DE_Input_get_mouse_button(int button_code);
-DE_Vector2i DE_Input_get_mouse_pos();
-DE_Vector2f DE_Input_get_relative_mouse_pos();
-int DE_Input_mouse_scroll_horizontal();
-int DE_Input_mouse_scroll_vertical();
+DE_KeyState DE_Input_GetKey(int key_code);
+DE_MouseState DE_Input_GetMouseButton(int button_code);
+DE_Vector2i DE_Input_GetMousePos();
+DE_Vector2f DE_Input_GetRelativeMousePos();
+int DE_Input_MouseScrollHorizontal();
+int DE_Input_MouseScrollVertical();
 
-bool DE_Input_key_pressed(int key_code);
-bool DE_Input_key_released(int key_code);
-bool DE_Input_key_held(int key_code);
-bool DE_Input_button_down(int button_code);
-bool DE_Input_button_up(int button_code);
+bool DE_Input_KeyPressed(int key_code);
+bool DE_Input_KeyReleased(int key_code);
+bool DE_Input_KeyHeld(int key_code);
+bool DE_Input_ButtonDown(int button_code);
+bool DE_Input_ButtonUp(int button_code);

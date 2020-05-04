@@ -29,25 +29,26 @@
 #include "utils/vector.h"
 
 #ifdef __STDC__
-    #define NAMESPACE(x) struct DE_##x
+    #define NAMESPACE(x) struct DE_Module_##x {
+    #define ENDNAME() };
     #define INTERFACE(t,n,...) t (*n)( __VA_ARGS__); 
-    #define DECLARE(x) extern struct DE_##x Deccan_##x
+    #define DECLARE(x) extern struct DE_Module_##x x
 #elif __cplusplus
-    #define NAMESPACE(x) namespace Deccan::##x
+    #define NAMESPACE(x)
     #define INTERFACE(t,n,...) t n(__VA_ARGS__);
     #define DECLARE(x)
 #else
     #error "Deccan Engine: Unsupported programming language"
 #endif
 
-NAMESPACE(Asset) {
+NAMESPACE(Asset)
     INTERFACE(void, LoadTexture, const char *name, const char *path);
     INTERFACE(DE_Texture*, GetTexture, const char *name);
-};
+ENDNAME()
 
-NAMESPACE(Core) {
-    INTERFACE(void, SetGlobalEngine, DE_Info *engine);
-    INTERFACE(DE_Info*, GetGlobalEngine,);
+NAMESPACE(Core)
+    INTERFACE(void, SetGlobalInfo, DE_GameInfo *engine);
+    INTERFACE(DE_GameInfo*, GetGlobalInfo,);
 
     INTERFACE(int , Init, const char *title, DE_Vector2i mode);
     INTERFACE(void, Quit, void);
@@ -68,9 +69,9 @@ NAMESPACE(Core) {
 
     INTERFACE(void, SendMessage, const char *msg);
     INTERFACE(bool, ReceiveMessage, const char *msg);
-};
+ENDNAME()
 
-NAMESPACE(Input) {
+NAMESPACE(Input)
     INTERFACE(DE_KeyState, GetKey, int key_code);
     INTERFACE(DE_MouseState, GetMouseButton, int button_code);
     INTERFACE(DE_Vector2i, GetMousePos,);
@@ -83,34 +84,34 @@ NAMESPACE(Input) {
     INTERFACE(bool, KeyHeld, int key_code);
     INTERFACE(bool, ButtonDown, int button_code);
     INTERFACE(bool, ButtonUp, int button_code);
-};
+ENDNAME()
 
 #define obj_func(x) void (*x)(DE_GameObject *object)
 
-NAMESPACE(Object) {
+NAMESPACE(Object)
     INTERFACE(DE_GameObject*, NewObject, const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
     INTERFACE(void, InstantiateObject, DE_GameObject *object);
     INTERFACE(DE_GameObject*, GetObject, const char *name);
     INTERFACE(void, GetObjectOfType, const char *name, obj_func(func));
-};
+ENDNAME()
 
 #undef obj_func
 
 #define void_func(x) void (*x)(void)
 
-NAMESPACE(Scenes) {
-    INTERFACE(DE_Scene*, NewScene, const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae));
-    INTERFACE(void, AddScene, DE_Scene *scene, bool is_replacing);
+NAMESPACE(Scene)
+    INTERFACE(DE_GameScene*, NewScene, const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae));
+    INTERFACE(void, AddScene, DE_GameScene *scene, bool is_replacing);
     INTERFACE(void, RemoveScene,);
 
-    INTERFACE(DE_Scene*, CurrentScene,);
+    INTERFACE(DE_GameScene*, CurrentScene,);
     INTERFACE(void, PauseScene, bool pause);
     INTERFACE(bool, IsScenePaused,);
-};
+ENDNAME()
 
 #undef void_func
 
-NAMESPACE(Collision) {
+NAMESPACE(Collision)
     INTERFACE(DE_Collider, NewRectCollider, DE_PosRect rect);
     INTERFACE(DE_Collider, NewCircleCollider, DE_Circle circle);
 
@@ -123,9 +124,9 @@ NAMESPACE(Collision) {
     INTERFACE(bool, TestFrom, DE_GameObject *obj1, DE_GameObject *obj2);
     INTERFACE(bool, TestVecFrom, DE_GameObject *obj, DE_Vector2f *vec);
     INTERFACE(bool, Test, const char *name1, const char *name2);
-};
+ENDNAME()
 
-NAMESPACE(Camera) {
+NAMESPACE(Camera)
     INTERFACE(void, Move, DE_Vector2f pos);
     INTERFACE(void, CenterOn, DE_GameObject *obj);
 
@@ -134,9 +135,9 @@ NAMESPACE(Camera) {
 
     INTERFACE(DE_Vector2f, GetPosition,);
     INTERFACE(DE_PosRect, GetBounds,);
-};
+ENDNAME()
 
-NAMESPACE(Renderer) {
+NAMESPACE(Renderer)
     INTERFACE(void, Clear, DE_Color color);
 
     INTERFACE(void, SetTarget, DE_Texture *target);
@@ -160,57 +161,37 @@ NAMESPACE(Renderer) {
     INTERFACE(void, TextureSetColor, DE_Texture *texture, DE_Color color);
     INTERFACE(void, TextureBlit, DE_Vector2f pos, double angle, int flip, SDL_Texture *texture);
     INTERFACE(void, TextureBlitScaled, DE_Vector2f pos, DE_Vector2f scale, double angle, int flip, SDL_Texture *texture);
-};
+ENDNAME()
 
-NAMESPACE(Clock) {
+NAMESPACE(Clock)
     INTERFACE(void, Delay, int32_t ms);
     INTERFACE(DE_Timer, NewTimer,);
-};
+ENDNAME()
 
 DECLARE(Asset);
 DECLARE(Core);
 DECLARE(Input);
 DECLARE(Object);
-DECLARE(Scenes);
+DECLARE(Scene);
 DECLARE(Collision);
 DECLARE(Camera);
 DECLARE(Renderer);
 DECLARE(Clock);
 
-#ifdef __STDC__
-    #ifdef DECCAN_SHORT_NAMES
-        typedef DE_Info Info;
-        typedef DE_Scene Scene;
-        typedef DE_GameObject GameObject;
-        typedef DE_KeyState KeyState;
-        typedef DE_MouseState MouseState;
-        typedef DE_Color Color;
+typedef DE_GameInfo Info;
+typedef DE_GameScene GameScene;
+typedef DE_GameObject GameObject;
+typedef DE_KeyState KeyState;
+typedef DE_MouseState MouseState;
+typedef DE_Color Color;
 
-        typedef DE_Collider Collider;
-        typedef DE_Rect Rect;
-        typedef DE_PosRect PosRect;
-        typedef DE_Circle Circle;
+typedef DE_Collider Collider;
+typedef DE_Rect Rect;
+typedef DE_PosRect PosRect;
+typedef DE_Circle Circle;
 
-        typedef DE_Timer Timer;
-        typedef DE_Vector2i Vector2i;
-        typedef DE_Vector2u Vector2u;
-        typedef DE_Vector2f Vector2f;
-        typedef DE_Vector3i Vector3i;
-
-        #define Core Deccan_Core
-        #define Scenes Deccan_Scenes
-        #define Object Deccan_Object
-        #define Input Deccan_Input
-        #define Key DE_Key
-        #define Button DE_Button
-        #define Asset Deccan_Asset
-
-        #define Renderer Deccan_Renderer
-        #define ColorList DE_ColorList
-        #define Camera Deccan_Camera
-
-        #define Collision Deccan_Collision
-
-        #define Clock Deccan_Clock
-    #endif
-#endif
+typedef DE_Timer Timer;
+typedef DE_Vector2i Vector2i;
+typedef DE_Vector2u Vector2u;
+typedef DE_Vector2f Vector2f;
+typedef DE_Vector3i Vector3i;

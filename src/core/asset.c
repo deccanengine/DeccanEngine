@@ -7,7 +7,7 @@
 
 #include "asset.h"
 
-void DE_Asset_load_texture(const char *name, const char *path) {
+void DE_Asset_LoadTexture(const char *name, const char *path) {
     SDL_Surface *img;
     SDL_Texture *tex;
 
@@ -17,7 +17,7 @@ void DE_Asset_load_texture(const char *name, const char *path) {
     }
 
 #ifdef DECCAN_RENDERER_SDL
-    tex = SDL_CreateTextureFromSurface(DE_Core_get_global_engine()->renderer, img);
+    tex = SDL_CreateTextureFromSurface(DE_Core_GetGlobalInfo()->renderer, img);
 #else
 
 #endif
@@ -27,11 +27,11 @@ void DE_Asset_load_texture(const char *name, const char *path) {
         DE_report("Cannot create texture: %s: %s", name, SDL_GetError());
     }
 
-    stbds_shput(DE_Core_get_global_engine()->textures, name, tex);
+    stbds_shput(DE_Core_GetGlobalInfo()->textures, name, tex);
 }
 
-SDL_Texture *DE_Asset_get_texture(const char *name) {
-    DE_Info *info = DE_Core_get_global_engine();
+SDL_Texture *DE_Asset_GetTexture(const char *name) {
+    DE_GameInfo *info = DE_Core_GetGlobalInfo();
     for(int i=0; i<stbds_shlen(info->textures); i++) {
         if(!strcmp(name, info->textures[i].key)) {
             return info->textures[i].value;

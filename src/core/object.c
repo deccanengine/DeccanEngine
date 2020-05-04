@@ -8,17 +8,17 @@
 #include "object.h"
 #include "scene.h"
 
-void DE_GameObject_Msg_send(DE_GameObject *obj, const char *msg) {
-    DE_Msg_send(&obj->msg, msg);
+void _msg_send(DE_GameObject *obj, const char *msg) {
+    DE_msg_send(&obj->msg, msg);
 }
 
-bool DE_GameObject_Msg_receive(DE_GameObject *obj, const char *msg) {
-    return DE_Msg_receive(&obj->msg, msg);
+bool _msg_receive(DE_GameObject *obj, const char *msg) {
+    return DE_msg_receive(&obj->msg, msg);
 }
 
 #define obj_func(x) void (*x)(DE_GameObject *object)
 
-DE_GameObject *DE_Object_new_object(
+DE_GameObject *DE_Object_NewObject(
     const char *name, const char *type, 
     obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae)) {
     
@@ -27,9 +27,9 @@ DE_GameObject *DE_Object_new_object(
     obj->info.name = DE_newstring(name);
     obj->info.type = DE_newstring(type);
     
-    DE_Msg_init(&obj->msg, DECCAN_OBJ_MSG_COUNT, DECCAN_OBJ_MSG_LENGTH);
-    obj->SendMessage = DE_GameObject_Msg_send;
-    obj->ReceiveMessage = DE_GameObject_Msg_receive;
+    DE_msg_init(&obj->msg, DECCAN_OBJ_MSG_COUNT, DECCAN_OBJ_MSG_LENGTH);
+    obj->SendMessage = _msg_send;
+    obj->ReceiveMessage = _msg_receive;
     
     obj->is_beginning = true;
     obj->at_first_frame = af;
@@ -43,8 +43,8 @@ DE_GameObject *DE_Object_new_object(
 
 #undef obj_func
 
-void DE_Object_instantiate_object(DE_GameObject *object) {
-    DE_Scene *scene = DE_Scenes_current_scene(); 
+void DE_Object_InstantiateObject(DE_GameObject *object) {
+    DE_GameScene *scene = DE_Scene_CurrentScene(); 
     if(object == NULL) { return; }
     if(stbds_arrput(scene->objects, object) != object) {
         DE_report("Cannot instantiate object: %s", object->info.name); return;
@@ -52,8 +52,8 @@ void DE_Object_instantiate_object(DE_GameObject *object) {
     scene->object_count++;
 }
 
-DE_GameObject *DE_Object_get_object(const char *name) {
-    DE_Scene *scene = DE_Scenes_current_scene();
+DE_GameObject *DE_Object_GetObject(const char *name) {
+    DE_GameScene *scene = DE_Scene_CurrentScene();
     for(int i=0; i<scene->object_count; i++) {
         if(!strcmp(scene->objects[i]->info.name, name)) {
             return scene->objects[i];
@@ -62,8 +62,8 @@ DE_GameObject *DE_Object_get_object(const char *name) {
     DE_report("GameObject not found: %s", name);
 }
 
-void DE_Object_get_object_of_type(const char *name, void(*func)(DE_GameObject *obj)) {
-    DE_Scene *scene = DE_Scenes_current_scene();
+void DE_Object_GetObjectOfType(const char *name, void(*func)(DE_GameObject *obj)) {
+    DE_GameScene *scene = DE_Scene_CurrentScene();
     for(int i=0; i<scene->object_count; i++) {
         if(!strcmp(scene->objects[i]->info.type, name)) {
             func(scene->objects[i]);

@@ -34,7 +34,7 @@ typedef struct DE_GameObject {
         struct { DE_Color color; };     /* Color value for shape rendering */
     };
 
-    DE_MsgBuf msg;
+    DE_msgbuf msg;
     void (*SendMessage)(DE_GameObject *obj, const char *msg);
     bool (*ReceiveMessage)(DE_GameObject *obj, const char *msg);
 
@@ -46,10 +46,10 @@ typedef struct DE_GameObject {
     obj_func(at_end);
 } DE_GameObject;
 
-DE_GameObject *DE_Object_new_object(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
-void DE_Object_instantiate_object(DE_GameObject *object);
-DE_GameObject *DE_Object_get_object(const char *name);
-void DE_Object_get_object_of_type(const char *name, void(*func)(DE_GameObject *obj));
+DE_GameObject *DE_Object_NewObject(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
+void DE_Object_InstantiateObject(DE_GameObject *object);
+DE_GameObject *DE_Object_GetObject(const char *name);
+void DE_Object_GetObjectOfType(const char *name, void(*func)(DE_GameObject *obj));
 
 static inline void NULL_OBJFUNC(DE_GameObject *obj) { }
 

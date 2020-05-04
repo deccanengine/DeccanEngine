@@ -9,7 +9,6 @@
 
 #include "../config.h"
 #include "scene.h"
-#include "input.h"
 #include "object.h"
 #include "../physics/shape.h"
 #include "../utils/message.h"
@@ -24,7 +23,7 @@
     #define DECCAN_MSG_COUNT 100
 #endif
 
-typedef struct DE_Info {
+typedef struct DE_GameInfo {
     /* Core engine */
     SDL_Window *window;
 #ifdef DECCAN_RENDERER_SDL
@@ -53,7 +52,7 @@ typedef struct DE_Info {
     uint8_t prev_keys [SDL_NUM_SCANCODES];
 
     /* Scene manager */
-    DE_Scene **scenes;
+    DE_GameScene **scenes;
     int scene_count;
 
     /* Asset manager */
@@ -63,32 +62,32 @@ typedef struct DE_Info {
     } *textures;
 
     /* Messaging */
-    DE_MsgBuf msg;
+    DE_msgbuf msg;
 
     /* Renderer */
     DE_Vector2f camera;
     DE_PosRect  camera_bounds;
-} DE_Info;
+} DE_GameInfo;
 
-void DE_Core_set_global_engine(DE_Info *engine);
-DE_Info *DE_Core_get_global_engine();
+void DE_Core_SetGlobalInfo(DE_GameInfo *engine);
+DE_GameInfo *DE_Core_GetGlobalInfo();
 
-int  DE_Core_init(const char *title, DE_Vector2i mode);
-void DE_Core_quit();
-void DE_Core_run(float fps);
+int  DE_Core_Init(const char *title, DE_Vector2i mode);
+void DE_Core_Quit();
+void DE_Core_Run(float fps);
 
-void DE_Core_set_title(const char *name);
-void DE_Core_set_mode(DE_Vector2i mode);
-void DE_Core_set_fullscreen();
-void DE_Core_set_vsync_status(bool vsync);
-void DE_Core_set_framerate_limit(float fps);
+void DE_Core_SetTitle(const char *name);
+void DE_Core_SetMode(DE_Vector2i mode);
+void DE_Core_SetFullscreen();
+void DE_Core_SetVsyncStatus(bool vsync);
+void DE_Core_SetFramerateLimit(float fps);
 
-const char *DE_Core_get_title();
-DE_Vector2i DE_Core_get_mode();
-bool DE_Core_get_fullscreen_status();
-bool DE_Core_get_vsync_status();
-float DE_Core_get_framerate_limit();
-float DE_Core_get_average_framerate();
+const char *DE_Core_GetTitle();
+DE_Vector2i DE_Core_GetMode();
+bool DE_Core_GetFullscreenStatus();
+bool DE_Core_GetVsyncStatus();
+float DE_Core_GetFramerateLimit();
+float DE_Core_GetAverageFramerate();
 
-void DE_Core_send_message(const char *msg);
-bool DE_Core_receive_message(const char *msg);
+void DE_Core_SendMessage(const char *msg);
+bool DE_Core_ReceiveMessage(const char *msg);

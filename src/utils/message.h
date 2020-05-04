@@ -8,14 +8,14 @@
 #pragma once
 #include "../config.h"
 
-typedef struct DE_MsgBuf {
+typedef struct DE_msgbuf {
     int msg_count;
     int msg_length;
     int msg_num;
     char **messages;
-} DE_MsgBuf;
+} DE_msgbuf;
 
-void DE_Msg_init(DE_MsgBuf *buf, int msg_count, int msg_length);
-void DE_Msg_send(DE_MsgBuf *buf, const char *msg);
-bool DE_Msg_receive(DE_MsgBuf *buf, const char *msg);
-void DE_Msg_free(DE_MsgBuf *buf);
+void DE_msg_init(DE_msgbuf *buf, int msg_count, int msg_length);
+void DE_msg_send(DE_msgbuf *buf, const char *msg);
+bool DE_msg_receive(DE_msgbuf *buf, const char *msg);
+void DE_msg_free(DE_msgbuf *buf);

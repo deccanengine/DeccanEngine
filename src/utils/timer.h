@@ -21,11 +21,5 @@ typedef struct DE_Timer {
     float (*GetTimeMS)(DE_Timer *timer);
 } DE_Timer;
 
-void DE_Timer_start(DE_Timer *timer);
-void DE_Timer_stop (DE_Timer *timer);
-void DE_Timer_pause(DE_Timer *timer);
-float DE_Timer_get_time(DE_Timer *timer);
-float DE_Timer_get_time_ms(DE_Timer *timer);
-
-static inline void DE_Clock_delay(int32_t ms) { SDL_Delay(ms); }
-DE_Timer DE_Clock_new_timer();
+static inline void DE_Clock_Delay(int32_t ms) { SDL_Delay(ms); }
+DE_Timer DE_Clock_NewTimer();

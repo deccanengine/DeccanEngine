@@ -10,8 +10,8 @@
 
 #define void_func(x) void (*x)(void)
 
-DE_Scene *DE_Scenes_new_scene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae)) {
-    DE_Scene *scene = DE_new(DE_Scene, 1);
+DE_GameScene *DE_Scene_NewScene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae)) {
+    DE_GameScene *scene = DE_new(DE_GameScene, 1);
     
     scene->name = DE_newstring(name);
     scene->is_paused = false;
@@ -28,8 +28,8 @@ DE_Scene *DE_Scenes_new_scene(const char *name, void_func(af), void_func(as), vo
 
 #undef void_func
 
-void DE_Scenes_add_scene(DE_Scene *scene, bool is_replacing) {
-    DE_Info *engine = DE_Core_get_global_engine();
+void DE_Scene_AddScene(DE_GameScene *scene, bool is_replacing) {
+    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
     
     if(scene == NULL) { DE_report("Invalid scene data"); return; }
 
@@ -45,25 +45,25 @@ void DE_Scenes_add_scene(DE_Scene *scene, bool is_replacing) {
     engine->scene_count++;
 }
 
-void DE_Scenes_remove_scene() {
-    DE_Info *engine = DE_Core_get_global_engine();
+void DE_Scene_RemoveScene() {
+    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
     if(engine->scene_count > 1) { 
         stbds_arrpop(engine->scenes);
         engine->scenes[engine->scene_count-1]->is_paused = false;
     }
 }
 
-DE_Scene *DE_Scenes_current_scene() {
-    DE_Info *engine = DE_Core_get_global_engine();
+DE_GameScene *DE_Scene_CurrentScene() {
+    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
     return engine->scenes[engine->scene_count-1];
 }
 
-void DE_Scenes_pause_scene(bool pause) {
-    DE_Info *engine = DE_Core_get_global_engine();
+void DE_Scene_PauseScene(bool pause) {
+    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
     engine->scenes[engine->scene_count-1]->is_paused = pause;
 }
 
-bool DE_Scenes_is_scene_paused() {
-    DE_Info *engine = DE_Core_get_global_engine();
+bool DE_Scene_IsScenePaused() {
+    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
     return engine->scenes[engine->scene_count-1]->is_paused;
 }

@@ -7,7 +7,7 @@
 
 #include "camera.h"
 
-void DE_clamp_vec_rect(DE_Vector2f *pos, DE_PosRect *rect, float *final_x, float *final_y) {
+void _clamp(DE_Vector2f *pos, DE_PosRect *rect, float *final_x, float *final_y) {
     /* Bounds are not set */
     if(rect->x1 == -1) { 
         *final_x = pos->x;
@@ -26,44 +26,44 @@ void DE_clamp_vec_rect(DE_Vector2f *pos, DE_PosRect *rect, float *final_x, float
     else { *final_y = pos->y; }
 }
 
-void DE_Camera_move(DE_Vector2f pos) {
-    DE_Info *engine = DE_Core_get_global_engine();
+void DE_Camera_Move(DE_Vector2f pos) {
+    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
 
-    float x, y;
-    DE_clamp_vec_rect(&pos, &engine->camera_bounds, &x, &y);
+    float x, y; 
+    _clamp(&pos, &engine->camera_bounds, &x, &y);
 
     engine->camera.x += x;
     engine->camera.y += y;
 }
 
-void DE_Camera_center_on(DE_GameObject *obj) {
+void DE_Camera_CenterOn(DE_GameObject *obj) {
     if(obj == NULL) {
         DE_report("Invalid object used with camera"); return;
     }
 
-    DE_Vector2i mode = DE_Core_get_mode();
-    DE_Vector2f pixel = DE_Renderer_get_pixel_size();
+    DE_Vector2i mode = DE_Core_GetMode();
+    DE_Vector2f pixel = DE_Renderer_GetPixelSize();
 
     float x = (obj->position.x) + (obj->size.x)/2 - (mode.x/pixel.x)/2; 
     float y = (obj->position.y) + (obj->size.y)/2 - (mode.y/pixel.y)/2;
 
     DE_Vector2f pos = {x, y};
-    DE_clamp_vec_rect(&pos, &DE_Core_get_global_engine()->camera_bounds, &x, &y);
-    DE_Camera_set_position((DE_Vector2f){x, y});
+    _clamp(&pos, &DE_Core_GetGlobalInfo()->camera_bounds, &x, &y);
+    DE_Camera_SetPosition((DE_Vector2f){x, y});
 }
 
-void DE_Camera_set_position(DE_Vector2f pos) {
-    DE_Core_get_global_engine()->camera = pos;
+void DE_Camera_SetPosition(DE_Vector2f pos) {
+    DE_Core_GetGlobalInfo()->camera = pos;
 }
 
-void DE_Camera_set_bounds(DE_PosRect rect) {
-    DE_Core_get_global_engine()->camera_bounds = rect;
+void DE_Camera_SetBounds(DE_PosRect rect) {
+    DE_Core_GetGlobalInfo()->camera_bounds = rect;
 }
 
-DE_Vector2f DE_Camera_get_position() {
-    return DE_Core_get_global_engine()->camera;
+DE_Vector2f DE_Camera_GetPosition() {
+    return DE_Core_GetGlobalInfo()->camera;
 }
 
-DE_PosRect DE_Camera_get_bounds() {
-    return DE_Core_get_global_engine()->camera_bounds;
+DE_PosRect DE_Camera_GetBounds() {
+    return DE_Core_GetGlobalInfo()->camera_bounds;
 }

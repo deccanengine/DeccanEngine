@@ -11,7 +11,7 @@
 
 #define void_func(x) void (*x)(void)
 
-typedef struct DE_Scene {
+typedef struct DE_GameScene {
     char *name;
 
     bool is_paused;
@@ -24,14 +24,14 @@ typedef struct DE_Scene {
     void_func(at_step);
     void_func(at_render);
     void_func(at_end);
-} DE_Scene;
+} DE_GameScene;
 
-DE_Scene *DE_Scenes_new_scene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae));
-void DE_Scenes_add_scene(DE_Scene *scene, bool is_replacing);
-void DE_Scenes_remove_scene();
+DE_GameScene *DE_Scene_NewScene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae));
+void DE_Scene_AddScene(DE_GameScene *scene, bool is_replacing);
+void DE_Scene_RemoveScene();
 
-DE_Scene *DE_Scenes_current_scene();
-void DE_Scenes_pause_scene(bool pause);
-bool DE_Scenes_is_scene_paused();
+DE_GameScene *DE_Scene_CurrentScene();
+void DE_Scene_PauseScene(bool pause);
+bool DE_Scene_IsScenePaused();
 
 #undef void

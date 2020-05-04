@@ -1,119 +1,119 @@
 #include "deccan.h"
 
-struct DE_Asset Deccan_Asset = {
-    DE_Asset_load_texture,
-    DE_Asset_get_texture
+struct DE_Module_Asset Asset = {
+    DE_Asset_LoadTexture,
+    DE_Asset_GetTexture
 };
 
-struct DE_Core Deccan_Core = {
-    DE_Core_set_global_engine, 
-    DE_Core_get_global_engine,
+struct DE_Module_Core Core = {
+    DE_Core_SetGlobalInfo, 
+    DE_Core_GetGlobalInfo,
     
-    DE_Core_init,
-    DE_Core_quit,
-    DE_Core_run,
+    DE_Core_Init,
+    DE_Core_Quit,
+    DE_Core_Run,
     
-    DE_Core_set_title,
-    DE_Core_set_mode,
-    DE_Core_set_fullscreen,
-    DE_Core_set_vsync_status,
-    DE_Core_set_framerate_limit,
+    DE_Core_SetTitle,
+    DE_Core_SetMode,
+    DE_Core_SetFullscreen,
+    DE_Core_SetVsyncStatus,
+    DE_Core_SetFramerateLimit,
 
-    DE_Core_get_title,
-    DE_Core_get_mode,
-    DE_Core_get_fullscreen_status,
-    DE_Core_get_vsync_status,
-    DE_Core_get_framerate_limit,
-    DE_Core_get_average_framerate,
+    DE_Core_GetTitle,
+    DE_Core_GetMode,
+    DE_Core_GetFullscreenStatus,
+    DE_Core_GetVsyncStatus,
+    DE_Core_GetFramerateLimit,
+    DE_Core_GetAverageFramerate,
 
-    DE_Core_send_message,
-    DE_Core_receive_message
+    DE_Core_SendMessage,
+    DE_Core_ReceiveMessage
 };
 
-struct DE_Input Deccan_Input = {
-    DE_Input_get_key, 
-    DE_Input_get_mouse_button, 
-    DE_Input_get_mouse_pos,
-    DE_Input_get_relative_mouse_pos,
-    DE_Input_mouse_scroll_horizontal,
-    DE_Input_mouse_scroll_vertical,
+struct DE_Module_Input Input = {
+    DE_Input_GetKey, 
+    DE_Input_GetMouseButton, 
+    DE_Input_GetMousePos,
+    DE_Input_GetRelativeMousePos,
+    DE_Input_MouseScrollHorizontal,
+    DE_Input_MouseScrollVertical,
 
-    DE_Input_key_pressed,
-    DE_Input_key_released,
-    DE_Input_key_held,
-    DE_Input_button_down,
-    DE_Input_button_up
+    DE_Input_KeyPressed,
+    DE_Input_KeyReleased,
+    DE_Input_KeyHeld,
+    DE_Input_ButtonDown,
+    DE_Input_ButtonUp
 };
 
-struct DE_Object Deccan_Object = { 
-    DE_Object_new_object,
-    DE_Object_instantiate_object,
-    DE_Object_get_object,
-    DE_Object_get_object_of_type
+struct DE_Module_Object Object = { 
+    DE_Object_NewObject,
+    DE_Object_InstantiateObject,
+    DE_Object_GetObject,
+    DE_Object_GetObjectOfType
 };
 
-struct DE_Scenes Deccan_Scenes = {
-    DE_Scenes_new_scene,
-    DE_Scenes_add_scene,
-    DE_Scenes_remove_scene,
-    DE_Scenes_current_scene,
-    DE_Scenes_pause_scene,
-    DE_Scenes_is_scene_paused
+struct DE_Module_Scene Scene = {
+    DE_Scene_NewScene,
+    DE_Scene_AddScene,
+    DE_Scene_RemoveScene,
+    DE_Scene_CurrentScene,
+    DE_Scene_PauseScene,
+    DE_Scene_IsScenePaused
 };
 
-struct DE_Collision Deccan_Collision = { 
-    DE_Collision_new_rect_collider,
-    DE_Collision_new_circle_collider,
+struct DE_Module_Collision Collision = { 
+    DE_Collision_NewRectCollider,
+    DE_Collision_NewCircleCollider,
 
-    DE_Collision_test_vec_vec_from,
-    DE_Collision_test_rect_rect_from,
-    DE_Collision_test_circle_circle_from,
-    DE_Collision_test_vec_rect_from,
-    DE_Collision_test_circle_vec_from,
-    DE_Collision_test_rect_circle_from,
-    DE_Collision_test_from,
-    DE_Collision_test_vec_from,
-    DE_Collision_test
+    DE_Collision_VecVec,
+    DE_Collision_RectRect,
+    DE_Collision_CircleCircle,
+    DE_Collision_VecRect,
+    DE_Collision_CircleVec,
+    DE_Collision_RectCircle,
+    DE_Collision_ObjectObject,
+    DE_Collision_ObjectVec,
+    DE_Collision_Test
 };
 
-struct DE_Camera Deccan_Camera = {
-    DE_Camera_move,
-    DE_Camera_center_on,
+struct DE_Module_Camera Camera = {
+    DE_Camera_Move,
+    DE_Camera_CenterOn,
 
-    DE_Camera_set_position,
-    DE_Camera_set_bounds,
+    DE_Camera_SetPosition,
+    DE_Camera_SetBounds,
 
-    DE_Camera_get_position,
-    DE_Camera_get_bounds
+    DE_Camera_GetPosition,
+    DE_Camera_GetBounds
 };
 
-struct DE_Renderer Deccan_Renderer = {
-    DE_Renderer_clear,
+struct DE_Module_Renderer Renderer = {
+    DE_Renderer_Clear,
 
-    DE_Renderer_set_target,
-    DE_Renderer_set_color,
-    DE_Renderer_set_pixel_size,
-    DE_Renderer_set_blend_mode,
+    DE_Renderer_SetTarget,
+    DE_Renderer_SetColor,
+    DE_Renderer_SetPixelSize,
+    DE_Renderer_SetBlendMode,
 
-    DE_Renderer_get_target,
-    DE_Renderer_get_color,
-    DE_Renderer_get_pixel_size,
-    DE_Renderer_get_blend_mode,
+    DE_Renderer_GetTarget,
+    DE_Renderer_GetColor,
+    DE_Renderer_GetPixelSize,
+    DE_Renderer_GetBlendMode,
 
-    DE_Renderer_draw_point,
-    DE_Renderer_draw_line,
-    DE_Renderer_draw_rect,
+    DE_Renderer_DrawPoint,
+    DE_Renderer_DrawLine,
+    DE_Renderer_DrawRect,
     DE_Renderer_draw_rect_ext,
-    DE_Renderer_draw_filled_rect,
-    DE_Renderer_draw_circle,
-    DE_Renderer_draw_filled_circle,
+    DE_Renderer_DrawFilledRect,
+    DE_Renderer_DrawCircle,
+    DE_Renderer_DrawFilledCircle,
 
-    DE_Renderer_texture_set_color,
-    DE_Renderer_texture_blit,
-    DE_Renderer_texture_blit_scaled
+    DE_Renderer_TextureSetColor,
+    DE_Renderer_TextureBlit,
+    DE_Renderer_TextureBlitScaled
 };
 
-struct DE_Clock Deccan_Clock = {
-    DE_Clock_delay,
-    DE_Clock_new_timer
+struct DE_Module_Clock Clock = {
+    DE_Clock_Delay,
+    DE_Clock_NewTimer
 };

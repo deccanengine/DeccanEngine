@@ -8,17 +8,17 @@
 #include "draw.h"
 
 #define DE_DRAW_BEGIN()                         \
-DE_Info *engine = DE_Core_get_global_engine();  \
-DE_Color def = DE_Renderer_get_color();         \
+DE_GameInfo *engine = DE_Core_GetGlobalInfo();  \
+DE_Color def = DE_Renderer_GetColor();          \
 SDL_BlendMode blend;                            \
-DE_Renderer_set_color(color);                   \
+DE_Renderer_SetColor(color);                    \
 SDL_GetRenderDrawBlendMode(engine->renderer, &blend);
 
 #define DE_DRAW_END()                           \
-DE_Renderer_set_color(def);                     \
-SDL_SetRenderDrawBlendMode(engine->renderer, blend);
+DE_Renderer_SetColor(def);                      \
+SDL_SetRenderDrawBlendMode(engine->renderer,  blend);
 
-void DE_Renderer_draw_point(DE_Vector2f pos, DE_Color color) {
+void DE_Renderer_DrawPoint(DE_Vector2f pos, DE_Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_RenderDrawPoint(engine->renderer, pos.x - engine->camera.x, pos.y - engine->camera.y);
@@ -28,7 +28,7 @@ void DE_Renderer_draw_point(DE_Vector2f pos, DE_Color color) {
 #endif
 }
 
-void DE_Renderer_draw_line(DE_Vector2f start, DE_Vector2f end, DE_Color color) {
+void DE_Renderer_DrawLine(DE_Vector2f start, DE_Vector2f end, DE_Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_RenderDrawLine(engine->renderer, start.x - engine->camera.x, start.y - engine->camera.y, end.x - engine->camera.x, end.y - engine->camera.y);
@@ -38,7 +38,7 @@ void DE_Renderer_draw_line(DE_Vector2f start, DE_Vector2f end, DE_Color color) {
 #endif
 }
 
-void DE_Renderer_draw_rect(DE_Rect rect, DE_Color color) {
+void DE_Renderer_DrawRect(DE_Rect rect, DE_Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_Rect sr = {rect.x - engine->camera.x, rect.y - engine->camera.y, rect.w, rect.h};
@@ -64,7 +64,7 @@ void DE_Renderer_draw_rect_ext(DE_Rect rect, DE_Color color, float angle) {
     */
 }
 
-void DE_Renderer_draw_filled_rect(DE_Rect rect, DE_Color color) {
+void DE_Renderer_DrawFilledRect(DE_Rect rect, DE_Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_Rect sr = {rect.x - engine->camera.x, rect.y - engine->camera.y, rect.w, rect.h};
@@ -75,7 +75,7 @@ void DE_Renderer_draw_filled_rect(DE_Rect rect, DE_Color color) {
 #endif
 }
 
-void DE_Renderer_draw_circle(DE_Circle circle, DE_Color color) {
+void DE_Renderer_DrawCircle(DE_Circle circle, DE_Color color) {
     if(!circle.radius) { return; }
 
 #ifdef DECCAN_RENDERER_SDL
@@ -109,7 +109,7 @@ void DE_Renderer_draw_circle(DE_Circle circle, DE_Color color) {
 #endif
 }
 
-void DE_Renderer_draw_filled_circle(DE_Circle circle, DE_Color color) {
+void DE_Renderer_DrawFilledCircle(DE_Circle circle, DE_Color color) {
     if(!circle.radius) { return; }
 
 #ifdef DECCAN_RENDERER_SDL

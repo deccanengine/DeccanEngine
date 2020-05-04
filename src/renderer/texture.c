@@ -7,7 +7,7 @@
 
 #include "texture.h"
 
-void DE_Renderer_texture_set_color(DE_Texture *texture, DE_Color color) {
+void DE_Renderer_TextureSetColor(DE_Texture *texture, DE_Color color) {
 #ifdef DECCAN_RENDERER_SDL
     SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
 #else
@@ -15,8 +15,8 @@ void DE_Renderer_texture_set_color(DE_Texture *texture, DE_Color color) {
 #endif
 }
 
-void DE_Renderer_texture_blit(DE_Vector2f pos, double angle, int flip, DE_Texture *texture) {
-    DE_Info *engine = DE_Core_get_global_engine();
+void DE_Renderer_TextureBlit(DE_Vector2f pos, double angle, int flip, DE_Texture *texture) {
+    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
 
 #ifdef DECCAN_RENDERER_SDL
     SDL_Rect rect = {pos.x - engine->camera.x, pos.y - engine->camera.y, 0, 0};
@@ -29,8 +29,8 @@ void DE_Renderer_texture_blit(DE_Vector2f pos, double angle, int flip, DE_Textur
 #endif
 }
 
-void DE_Renderer_texture_blit_scaled(DE_Vector2f pos, DE_Vector2f scale, double angle, int flip, DE_Texture *texture) {
-    DE_Info *engine = DE_Core_get_global_engine();
+void DE_Renderer_TextureBlitScaled(DE_Vector2f pos, DE_Vector2f scale, double angle, int flip, DE_Texture *texture) {
+    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
 
 #ifdef DECCAN_RENDERER_SDL
     SDL_Rect rect = {pos.x - engine->camera.x, pos.y - engine->camera.y, 0, 0};
