@@ -164,13 +164,13 @@ void DE_Core_Run(float fps) {
         DE_GameScene *scene = engine.scenes[index];  /* Current scene */
         /* First frame of the scene. Same as at_beginning for scene */
         if(scene->is_first_frame == true) {
-            scene->at_first_frame();
+            scene->AtFirstFrame();
             scene->is_first_frame = false;
 
             /* First frame of objects */
             for(int i=0; i<scene->object_count; i++) {
                 DE_GameObject *obj = scene->objects[i];
-                obj->at_first_frame(obj);
+                obj->AtFirstFrame(obj);
             }
         }
 
@@ -178,16 +178,16 @@ void DE_Core_Run(float fps) {
         for(int i=0; i<scene->object_count; i++) {
             DE_GameObject *obj = scene->objects[i];
             if(obj->is_beginning) {
-                obj->at_beginning(obj);
+                obj->AtBeginning(obj);
                 obj->is_beginning = false;
             }
         }
 
         /* at_step of scenes and objects */
-        scene->at_step();
+        scene->AtStep();
         for(int i=0; i<scene->object_count; i++) {
             DE_GameObject *obj = scene->objects[i];
-            obj->at_step(obj);
+            obj->AtStep(obj);
         }
 
         
@@ -201,10 +201,10 @@ void DE_Core_Run(float fps) {
         }
 
         /* at_render of scenes and objects */
-        scene->at_render();
+        scene->AtRender();
         for(int i=0; i<scene->object_count; i++) {
             DE_GameObject *obj = scene->objects[i];
-            obj->at_render(obj);
+            obj->AtRender(obj);
         }
         
 #ifdef DECCAN_RENDERER_SDL
@@ -234,10 +234,10 @@ void DE_Core_Run(float fps) {
     
     /* at_end of scenes and objects */
     DE_GameScene *scene = engine.scenes[engine.scene_count-1];
-    scene->at_end();
+    scene->AtEnd();
     for(int i=0; i<scene->object_count; i++) {
         DE_GameObject *obj = scene->objects[i];
-        obj->at_end(obj);
+        obj->AtEnd(obj);
         DE_msg_free(&obj->msg);
     }
     

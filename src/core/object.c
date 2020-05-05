@@ -32,11 +32,11 @@ DE_GameObject *DE_Object_NewObject(
     obj->ReceiveMessage = _msg_receive;
     
     obj->is_beginning = true;
-    obj->at_first_frame = af;
-    obj->at_beginning = ab;
-    obj->at_step = as;
-    obj->at_render = ar;
-    obj->at_end = ae;
+    obj->AtFirstFrame = af;
+    obj->AtBeginning = ab;
+    obj->AtStep = as;
+    obj->AtRender = ar;
+    obj->AtEnd = ae;
 
     return obj;
 }

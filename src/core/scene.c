@@ -15,13 +15,14 @@ DE_GameScene *DE_Scene_NewScene(const char *name, void_func(af), void_func(as), 
     
     scene->name = DE_newstring(name);
     scene->is_paused = false;
-    scene->is_first_frame = true;
     scene->objects = NULL;
     scene->object_count = 0;
-    scene->at_first_frame = af;
-    scene->at_step = as;
-    scene->at_render = ar;
-    scene->at_end = ae;
+    
+    scene->is_first_frame = true;
+    scene->AtFirstFrame = af;
+    scene->AtStep = as;
+    scene->AtRender = ar;
+    scene->AtEnd = ae;
 
     return scene;
 }

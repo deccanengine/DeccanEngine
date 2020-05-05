@@ -39,11 +39,11 @@ typedef struct DE_GameObject {
     bool (*ReceiveMessage)(DE_GameObject *obj, const char *msg);
 
     bool is_beginning;
-    obj_func(at_first_frame);
-    obj_func(at_beginning);
-    obj_func(at_step);
-    obj_func(at_render);
-    obj_func(at_end);
+    obj_func(AtFirstFrame);
+    obj_func(AtBeginning);
+    obj_func(AtStep);
+    obj_func(AtRender);
+    obj_func(AtEnd);
 } DE_GameObject;
 
 DE_GameObject *DE_Object_NewObject(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));

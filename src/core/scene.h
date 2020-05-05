@@ -13,17 +13,16 @@
 
 typedef struct DE_GameScene {
     char *name;
-
     bool is_paused;
     bool is_first_frame;
 
     DE_GameObject **objects;
     int object_count;
 
-    void_func(at_first_frame);
-    void_func(at_step);
-    void_func(at_render);
-    void_func(at_end);
+    void_func(AtFirstFrame);
+    void_func(AtStep);
+    void_func(AtRender);
+    void_func(AtEnd);
 } DE_GameScene;
 
 DE_GameScene *DE_Scene_NewScene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae));
