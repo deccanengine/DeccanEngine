@@ -11,6 +11,7 @@
 #include "scene.h"
 #include "object.h"
 #include "../physics/shape.h"
+#include "../renderer/color.h"
 #include "../utils/message.h"
 #include "../utils/timer.h"
 #include "../utils/vector.h"
@@ -68,6 +69,13 @@ typedef struct DE_GameInfo {
     /* Renderer */
     DE_Vector2f camera;
     DE_PosRect  camera_bounds;
+    struct {
+        int type; 
+        union {
+            DE_Texture *texture;
+            DE_Color color;
+        };
+    } background;
 } DE_GameInfo;
 
 void DE_Core_SetGlobalInfo(DE_GameInfo *engine);

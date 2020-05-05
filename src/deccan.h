@@ -138,8 +138,11 @@ NAMESPACE(Camera)
 ENDNAME()
 
 NAMESPACE(Renderer)
-    INTERFACE(void, Clear, DE_Color color);
+    INTERFACE(void, Clear,);
+    INTERFACE(void, ClearColor, DE_Color color);
 
+    INTERFACE(void, SetBackgroundColor, DE_Color color);
+    INTERFACE(void, SetBackgroundTexture, DE_Texture *texture);
     INTERFACE(void, SetTarget, DE_Texture *target);
     INTERFACE(void, SetColor, DE_Color color);
     INTERFACE(void, SetPixelSize, DE_Vector2f size);

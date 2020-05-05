@@ -23,8 +23,6 @@ void _player_begin(GameObject *this) {
     //this->collider = Collision.new_circle_collider((Circle){0, 0, 50});
     this->color = ColorList.blue;
 
-    Asset.LoadTexture("arrow0", "arrow0.png");
-
     Vector2i mode = Core.GetMode();
     //tar = SDL_CreateTexture(Core.GetGlobalEngine()->renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
 }

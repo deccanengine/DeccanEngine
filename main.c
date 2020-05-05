@@ -10,6 +10,10 @@ void begin() {
     Object.InstantiateObject(Object.NewObject("main player", "player", NULL_OBJFUNC, _player_begin, _player_step, _player_render, _player_end));
     timer = Clock.NewTimer();
     timer.Start(&timer);
+
+    Asset.LoadTexture("arrow0", "arrow0.png");
+
+    Renderer.SetBackgroundColor(ColorList.white);
 }
 
 void step() {
@@ -17,8 +21,6 @@ void step() {
 }
 
 void render() {
-    Renderer.Clear(ColorList.white);
-
     /* Start here */
     if(Input.KeyReleased(Key.space) && timer.GetTimeMS(&timer) > 200) {
         GameObject *s = Object.NewObject("circle", "static", NULL_OBJFUNC, _none_begin, _none_step, _none_render, _none_end);

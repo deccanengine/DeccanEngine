@@ -6,6 +6,7 @@
  */
 
 #include "draw.h"
+#include "../core/core.h"
 
 #define DE_DRAW_BEGIN()                         \
 DE_GameInfo *engine = DE_Core_GetGlobalInfo();  \

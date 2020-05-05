@@ -6,14 +6,32 @@
  */
 
 #include "renderer.h"
+#include "../core/core.h"
 
-void DE_Renderer_Clear(DE_Color color) {
+void DE_Renderer_Clear() {
+    DE_Color blank = {0, 0, 0, 0};
+    DE_Renderer_ClearColor(blank);
+}
+
+void DE_Renderer_ClearColor(DE_Color color) {
     DE_Renderer_SetColor(color);
 #ifdef DECCAN_RENDERER_SDL
     SDL_RenderClear(DE_Core_GetGlobalInfo()->renderer);
 #else
 
 #endif
+}
+
+void DE_Renderer_SetBackgroundColor(DE_Color color) {
+    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
+    engine->background.type = 0;
+    engine->background.color = color;
+}
+
+void DE_Renderer_SetBackgroundTexture(DE_Texture *texture) {
+    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
+    engine->background.type = 1;
+    engine->background.texture = texture;
 }
 
 void DE_Renderer_SetTarget(DE_Texture *target) {

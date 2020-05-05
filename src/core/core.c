@@ -7,6 +7,8 @@
 
 #define STB_DS_IMPLEMENTATION
 #include "core.h"
+#include "../renderer/renderer.h"
+#include "../renderer/texture.h"
 
 static DE_GameInfo engine;
 
@@ -186,6 +188,18 @@ void DE_Core_Run(float fps) {
         for(int i=0; i<scene->object_count; i++) {
             DE_GameObject *obj = scene->objects[i];
             obj->at_step(obj);
+        }
+
+        
+        switch(engine.background.type) {
+            case 0: DE_Renderer_ClearColor(engine.background.color); break;
+            case 1: {
+                // WIP. Do not use
+                DE_Vector2f scale = {100, 15};
+                DE_Renderer_Clear();
+                DE_Renderer_TextureBlitScaled(engine.camera, scale, 0, 0, engine.background.texture); 
+                break;
+            }
         }
 
         /* at_render of scenes and objects */

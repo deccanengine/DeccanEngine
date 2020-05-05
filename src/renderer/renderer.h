@@ -7,9 +7,9 @@
 
 #pragma once
 #include "../config.h"
-#include "../core/core.h"
-#include "../physics/shape.h"
 #include "color.h"
+#include "../physics/shape.h"
+#include "../utils/vector.h"
 
 typedef enum {
     BlendMode_None  = SDL_BLENDMODE_NONE,
@@ -18,8 +18,11 @@ typedef enum {
     BlendMode_Mod   = SDL_BLENDMODE_MOD
 } DE_BlendMode;
 
-void DE_Renderer_Clear(DE_Color color);
+void DE_Renderer_Clear();
+void DE_Renderer_ClearColor(DE_Color color);
 
+void DE_Renderer_SetBackgroundColor(DE_Color color);
+void DE_Renderer_SetBackgroundTexture(DE_Texture *texture);
 void DE_Renderer_SetTarget(DE_Texture *target);
 void DE_Renderer_SetColor(DE_Color color);
 void DE_Renderer_SetPixelSize(DE_Vector2f size);

@@ -6,6 +6,7 @@
  */
 
 #include "texture.h"
+#include "../core/core.h"
 
 void DE_Renderer_TextureSetColor(DE_Texture *texture, DE_Color color) {
     if(texture == NULL) { return; }

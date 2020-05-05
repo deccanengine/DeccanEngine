@@ -89,7 +89,10 @@ struct DE_Module_Camera Camera = {
 
 struct DE_Module_Renderer Renderer = {
     DE_Renderer_Clear,
+    DE_Renderer_ClearColor,
 
+    DE_Renderer_SetBackgroundColor,
+    DE_Renderer_SetBackgroundTexture,
     DE_Renderer_SetTarget,
     DE_Renderer_SetColor,
     DE_Renderer_SetPixelSize,
