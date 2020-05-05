@@ -8,6 +8,7 @@
 #include "texture.h"
 
 void DE_Renderer_TextureSetColor(DE_Texture *texture, DE_Color color) {
+    if(texture == NULL) { return; }
 #ifdef DECCAN_RENDERER_SDL
     SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
 #else
@@ -16,6 +17,7 @@ void DE_Renderer_TextureSetColor(DE_Texture *texture, DE_Color color) {
 }
 
 void DE_Renderer_TextureBlit(DE_Vector2f pos, double angle, int flip, DE_Texture *texture) {
+    if(texture == NULL) { return; }
     DE_GameInfo *engine = DE_Core_GetGlobalInfo();
 
 #ifdef DECCAN_RENDERER_SDL
@@ -30,6 +32,7 @@ void DE_Renderer_TextureBlit(DE_Vector2f pos, double angle, int flip, DE_Texture
 }
 
 void DE_Renderer_TextureBlitScaled(DE_Vector2f pos, DE_Vector2f scale, double angle, int flip, DE_Texture *texture) {
+    if(texture == NULL) { return; }
     DE_GameInfo *engine = DE_Core_GetGlobalInfo();
 
 #ifdef DECCAN_RENDERER_SDL

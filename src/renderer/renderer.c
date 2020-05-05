@@ -56,11 +56,16 @@ void DE_Renderer_SetBlendMode(int blend_mode) {
 }
 
 DE_Texture *DE_Renderer_GetTarget() {
+    DE_Texture *target;
 #ifdef DECCAN_RENDERER_SDL
-    return SDL_GetRenderTarget(DE_Core_GetGlobalInfo()->renderer);
+    target = SDL_GetRenderTarget(DE_Core_GetGlobalInfo()->renderer);
+    if(target == NULL) {
+        DE_error("Render target is NULL");
+    }
 #else
 
 #endif
+    return target;
 }
 
 DE_Color DE_Renderer_GetColor() {

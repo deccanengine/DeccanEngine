@@ -8,7 +8,6 @@
 #include "message.h"
 
 void DE_msg_init(DE_msgbuf *buf, int msg_count, int msg_length) {
-    // To do: make it totally dynamic
     buf->msg_num = 0;
     buf->msg_count = msg_count;
     buf->msg_length = msg_length;
@@ -24,7 +23,7 @@ void DE_msg_send(DE_msgbuf *buf, const char *msg) {
     for(int i=0; i<buf->msg_count; i++) {
         if(!strcmp(buf->messages[i], "\0")) {
             strncpy(buf->messages[i], msg, buf->msg_length);
-            return;
+            buf->msg_num++; return;
         }
     }
 
