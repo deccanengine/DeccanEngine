@@ -112,7 +112,11 @@ struct DE_Module_Renderer Renderer = {
     DE_Renderer_DrawFilledCircle,
 
     DE_Renderer_TextureSetColor,
+
+    DE_Renderer_TextureGetSize,
+
     DE_Renderer_TextureBlit,
+    DE_Renderer_TextureBlitSized,
     DE_Renderer_TextureBlitScaled
 };
 

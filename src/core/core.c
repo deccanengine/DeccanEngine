@@ -194,10 +194,8 @@ void DE_Core_Run(float fps) {
         switch(engine.background.type) {
             case 0: DE_Renderer_ClearColor(engine.background.color); break;
             case 1: {
-                // WIP. Do not use
-                DE_Vector2f scale = {100, 15};
                 DE_Renderer_Clear();
-                DE_Renderer_TextureBlitScaled(engine.camera, scale, 0, 0, engine.background.texture); 
+                DE_Renderer_TextureBlitSized(engine.camera, engine.win_mode, 0, 0, engine.background.texture); 
                 break;
             }
         }

@@ -162,8 +162,12 @@ NAMESPACE(Renderer)
     INTERFACE(void, DrawFilledCircle, DE_Circle circle, DE_Color color);
 
     INTERFACE(void, TextureSetColor, DE_Texture *texture, DE_Color color);
-    INTERFACE(void, TextureBlit, DE_Vector2f pos, double angle, int flip, SDL_Texture *texture);
-    INTERFACE(void, TextureBlitScaled, DE_Vector2f pos, DE_Vector2f scale, double angle, int flip, SDL_Texture *texture);
+
+    INTERFACE(DE_Vector2i, TextureGetSize, DE_Texture *texture);
+
+    INTERFACE(void, TextureBlit, DE_Vector2f pos, double angle, int flip, DE_Texture *texture);
+    INTERFACE(void, TextureBlitSize, DE_Vector2f pos, DE_Vector2i size, double angle, int flip, DE_Texture *texture);
+    INTERFACE(void, TextureBlitScaled, DE_Vector2f pos, DE_Vector2f scale, double angle, int flip, DE_Texture *texture);
 ENDNAME()
 
 NAMESPACE(Clock)

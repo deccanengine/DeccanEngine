@@ -17,6 +17,14 @@ void DE_Renderer_TextureSetColor(DE_Texture *texture, DE_Color color) {
 #endif
 }
 
+DE_Vector2i DE_Renderer_TextureGetSize(DE_Texture *texture) {
+    DE_Vector2i size;
+    if(SDL_QueryTexture(texture, NULL, NULL, &size.x, &size.y) > 0) {
+        DE_report("Cannot get texture size: %s", SDL_GetError());
+    }
+    return size;
+}
+
 void DE_Renderer_TextureBlit(DE_Vector2f pos, double angle, int flip, DE_Texture *texture) {
     if(texture == NULL) { return; }
     DE_GameInfo *engine = DE_Core_GetGlobalInfo();
@@ -27,6 +35,18 @@ void DE_Renderer_TextureBlit(DE_Vector2f pos, double angle, int flip, DE_Texture
         DE_report("Cannot query texture: %s", SDL_GetError());
     }
     SDL_RenderCopyEx(engine->renderer, texture, NULL, &rect, angle, NULL, flip);
+#else
+
+#endif
+}
+
+void DE_Renderer_TextureBlitSized(DE_Vector2f pos, DE_Vector2i size, double angle, int flip, DE_Texture *texture) {
+    if(texture == NULL) { return; }
+    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
+
+#ifdef DECCAN_RENDERER_SDL
+    SDL_Rect rect = {pos.x - engine->camera.x, pos.y - engine->camera.y, size.x, size.y};
+    SDL_RenderCopyEx(engine->renderer, texture, NULL, &rect, angle, NULL, flip); 
 #else
 
 #endif
