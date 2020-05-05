@@ -106,7 +106,6 @@ struct DE_Module_Renderer Renderer = {
     DE_Renderer_DrawPoint,
     DE_Renderer_DrawLine,
     DE_Renderer_DrawRect,
-    DE_Renderer_draw_rect_ext,
     DE_Renderer_DrawFilledRect,
     DE_Renderer_DrawCircle,
     DE_Renderer_DrawFilledCircle,
@@ -116,8 +115,9 @@ struct DE_Module_Renderer Renderer = {
     DE_Renderer_TextureGetSize,
 
     DE_Renderer_TextureBlit,
-    DE_Renderer_TextureBlitSized,
-    DE_Renderer_TextureBlitScaled
+    //DE_Renderer_TextureBlitSized,
+    DE_Renderer_TextureBlitScaled,
+    DE_Renderer_TextureBlitPartial
 };
 
 struct DE_Module_Clock Clock = {

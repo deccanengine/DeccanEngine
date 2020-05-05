@@ -156,7 +156,6 @@ NAMESPACE(Renderer)
     INTERFACE(void, DrawPoint, DE_Vector2f pos, DE_Color color);
     INTERFACE(void, DrawLine, DE_Vector2f start, DE_Vector2f end, DE_Color color);
     INTERFACE(void, DrawRect, DE_Rect rect, DE_Color color);
-    INTERFACE(void, DrawRectExt, DE_Rect rect, DE_Color color, float angle);
     INTERFACE(void, DrawFilledRect, DE_Rect rect, DE_Color color);
     INTERFACE(void, DrawCircle, DE_Circle circle, DE_Color color);
     INTERFACE(void, DrawFilledCircle, DE_Circle circle, DE_Color color);
@@ -165,9 +164,9 @@ NAMESPACE(Renderer)
 
     INTERFACE(DE_Vector2i, TextureGetSize, DE_Texture *texture);
 
-    INTERFACE(void, TextureBlit, DE_Vector2f pos, double angle, int flip, DE_Texture *texture);
-    INTERFACE(void, TextureBlitSize, DE_Vector2f pos, DE_Vector2i size, double angle, int flip, DE_Texture *texture);
-    INTERFACE(void, TextureBlitScaled, DE_Vector2f pos, DE_Vector2f scale, double angle, int flip, DE_Texture *texture);
+    INTERFACE(void, TextureBlit, DE_Rect rect, double angle, int flip, DE_Texture *texture);
+    INTERFACE(void, TextureBlitScaled, DE_Rect rect, DE_Vector2f scale, double angle, int flip, DE_Texture *texture);
+    INTERFACE(void, TextureBlitPartial, DE_Rect rect, DE_Rect dim, double angle, int flip, DE_Texture *texture);
 ENDNAME()
 
 NAMESPACE(Clock)

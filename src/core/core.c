@@ -194,8 +194,9 @@ void DE_Core_Run(float fps) {
         switch(engine.background.type) {
             case 0: DE_Renderer_ClearColor(engine.background.color); break;
             case 1: {
+                DE_Rect rect = {engine.camera.x, engine.camera.y, engine.win_mode.x, engine.win_mode.y};
                 DE_Renderer_Clear();
-                DE_Renderer_TextureBlitSized(engine.camera, engine.win_mode, 0, 0, engine.background.texture); 
+                DE_Renderer_TextureBlit(rect, 0, 0, engine.background.texture); 
                 break;
             }
         }

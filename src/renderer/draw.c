@@ -50,21 +50,6 @@ void DE_Renderer_DrawRect(DE_Rect rect, DE_Color color) {
 #endif
 }
 
-void DE_Renderer_draw_rect_ext(DE_Rect rect, DE_Color color, float angle) {
-    /*
-    DE_draw_with_target(({
-        DWT_FUNC{
-            DE_draw_with_color(({
-                DWC_FUNC { 
-                    SDL_Rect sr = {rect.x - camera.x, rect.y - camera.y, rect.w, rect.h};
-                    SDL_RenderDrawRect(renderer, &sr);
-                } DWC_FUNCREF;
-            }), color);
-        } DWT_FUNCREF;
-    }), angle, NULL, 0);
-    */
-}
-
 void DE_Renderer_DrawFilledRect(DE_Rect rect, DE_Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();

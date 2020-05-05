@@ -15,7 +15,6 @@
 void DE_Renderer_DrawPoint(DE_Vector2f pos, DE_Color color);
 void DE_Renderer_DrawLine(DE_Vector2f start, DE_Vector2f end, DE_Color color);
 void DE_Renderer_DrawRect(DE_Rect rect, DE_Color color);
-void DE_Renderer_draw_rect_ext(DE_Rect rect, DE_Color color, float angle);
 void DE_Renderer_DrawFilledRect(DE_Rect rect, DE_Color color);
 void DE_Renderer_DrawCircle(DE_Circle circle, DE_Color color);
 void DE_Renderer_DrawFilledCircle(DE_Circle circle, DE_Color color);
