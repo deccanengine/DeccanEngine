@@ -98,6 +98,8 @@ struct DE_Module_Renderer Renderer = {
     DE_Renderer_SetPixelSize,
     DE_Renderer_SetBlendMode,
 
+    DE_Renderer_GetBackgroundColor,
+    DE_Renderer_GetBackgroundTexture,
     DE_Renderer_GetTarget,
     DE_Renderer_GetColor,
     DE_Renderer_GetPixelSize,
@@ -115,7 +117,6 @@ struct DE_Module_Renderer Renderer = {
     DE_Renderer_TextureGetSize,
 
     DE_Renderer_TextureBlit,
-    //DE_Renderer_TextureBlitSized,
     DE_Renderer_TextureBlitScaled,
     DE_Renderer_TextureBlitPartial
 };

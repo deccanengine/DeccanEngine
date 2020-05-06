@@ -28,6 +28,8 @@ void DE_Renderer_SetColor(DE_Color color);
 void DE_Renderer_SetPixelSize(DE_Vector2f size);
 void DE_Renderer_SetBlendMode(int blend_mode);
 
+DE_Color DE_Renderer_GetBackgroundColor();
+DE_Texture *DE_Renderer_GetBackgroundTexture();
 DE_Texture *DE_Renderer_GetTarget();
 DE_Color DE_Renderer_GetColor();
 DE_Vector2f DE_Renderer_GetPixelSize();

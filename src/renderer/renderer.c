@@ -8,6 +8,8 @@
 #include "renderer.h"
 #include "../core/core.h"
 
+/* Setters */
+
 void DE_Renderer_Clear() {
     DE_Color blank = {0, 0, 0, 0};
     DE_Renderer_ClearColor(blank);
@@ -71,6 +73,26 @@ void DE_Renderer_SetBlendMode(int blend_mode) {
 #else
 
 #endif
+}
+
+/* Getters */
+
+DE_Color DE_Renderer_GetBackgroundColor() {
+    DE_Color color = {0, 0, 0, 0};
+    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
+    if(engine->background.type == 0) { 
+        color = engine->background.color; 
+    }
+    return color;
+}
+
+DE_Texture *DE_Renderer_GetBackgroundTexture() {
+    DE_Texture *texture = NULL;
+    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
+    if(engine->background.type == 1) { 
+        texture = engine->background.texture; 
+    }
+    return texture;
 }
 
 DE_Texture *DE_Renderer_GetTarget() {

@@ -56,12 +56,15 @@ void DE_Renderer_TextureBlitScaled(DE_Rect rect, DE_Vector2f scale, double angle
 #endif
 }
     
-// Incomplete/broken (WIP).
 void DE_Renderer_TextureBlitPartial(DE_Rect rect, DE_Rect dim, double angle, int flip, DE_Texture *texture) {
     if(texture == NULL) { return; }
     DE_GameInfo *engine = DE_Core_GetGlobalInfo();
 
 #ifdef DECCAN_RENDERER_SDL
+    SDL_Rect src = {
+        dim.x, dim.y, dim.w, dim.h
+    };
+
     SDL_Rect tgt = {
         rect.x - engine->camera.x, 
         rect.y - engine->camera.y, 
@@ -69,13 +72,16 @@ void DE_Renderer_TextureBlitPartial(DE_Rect rect, DE_Rect dim, double angle, int
         rect.h
     };
 
-    if((!tgt.w || !tgt.h) && SDL_QueryTexture(texture, NULL, NULL, &tgt.w, &tgt.h) > 0) {
-        DE_report("Cannot query texture: %s", SDL_GetError());
+    if(!src.w || !src.h) {
+        if(SDL_QueryTexture(texture, NULL, NULL, &src.w, &src.h) > 0) {
+            DE_report("Cannot query texture: %s", SDL_GetError());
+        }
     }
 
-    SDL_Rect src = {
-        dim.x, dim.y, dim.w, dim.h
-    };
+    if(!tgt.w || !tgt.h) {
+        tgt.w = src.w;
+        tgt.h = src.h;
+    }
     
     SDL_RenderCopyEx(engine->renderer, texture, &src, &tgt, angle, NULL, flip);
 #else

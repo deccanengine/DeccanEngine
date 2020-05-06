@@ -148,6 +148,8 @@ NAMESPACE(Renderer)
     INTERFACE(void, SetPixelSize, DE_Vector2f size);
     INTERFACE(void, SetBlendMode, int blend_mode);
 
+    INTERFACE(DE_Color, GetBackgroundColor,);
+    INTERFACE(DE_Texture*, GetBackgroundTexture,);
     INTERFACE(DE_Texture*, GetTarget,);
     INTERFACE(DE_Color, GetColor,);
     INTERFACE(DE_Vector2f, GetPixelSize,);
