@@ -93,6 +93,14 @@ NAMESPACE(Object)
     INTERFACE(void, InstantiateObject, DE_GameObject *object);
     INTERFACE(DE_GameObject*, GetObject, const char *name);
     INTERFACE(void, GetObjectOfType, const char *name, obj_func(func));
+
+    INTERFACE(void, SetAngle, DE_GameObject *obj, double angle);
+
+    INTERFACE(double, GetAngle,);
+
+    INTERFACE(void, Rotate, DE_GameObject *obj, double angle);
+    INTERFACE(void, RotateTowardsObject, DE_GameObject *obj, DE_GameObject *target);
+    INTERFACE(void, RotateTowardsPosition, DE_GameObject *obj, DE_Vector2f pos);
 ENDNAME()
 
 #undef obj_func

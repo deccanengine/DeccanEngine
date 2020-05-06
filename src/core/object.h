@@ -28,6 +28,7 @@ typedef struct DE_GameObject {
     DE_Vector2f position;               /* Positional info of the object */
     DE_Vector2f size;                   /* Size of the rect bounding the object */
     DE_Vector2f transform;              /* Transformation info */
+    double angle;
     struct { bool dead, hidden; } status;   /* Status */
     DE_Collider collider;               /* Collider info */
     union {
@@ -50,6 +51,14 @@ DE_GameObject *DE_Object_NewObject(const char *name, const char *type, obj_func(
 void DE_Object_InstantiateObject(DE_GameObject *object);
 DE_GameObject *DE_Object_GetObject(const char *name);
 void DE_Object_GetObjectOfType(const char *name, void(*func)(DE_GameObject *obj));
+
+void DE_Object_SetAngle(DE_GameObject *obj, double angle);
+
+double DE_Object_GetAngle(DE_GameObject *obj);
+
+void DE_Object_Rotate(DE_GameObject *obj, double angle);
+void DE_Object_RotateTowardsObject(DE_GameObject *obj, DE_GameObject *target);
+void DE_Object_RotateTowardsPosition(DE_GameObject *obj, DE_Vector2f pos);
 
 static inline void NULL_OBJFUNC(DE_GameObject *obj) { }
 

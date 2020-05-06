@@ -27,6 +27,8 @@ DE_GameObject *DE_Object_NewObject(
     obj->info.name = DE_newstring(name);
     obj->info.type = DE_newstring(type);
     
+    obj->angle = 0.0f;
+    
     DE_msg_init(&obj->msg, DECCAN_OBJ_MSG_COUNT, DECCAN_OBJ_MSG_LENGTH);
     obj->SendMessage = _msg_send;
     obj->ReceiveMessage = _msg_receive;
@@ -43,9 +45,12 @@ DE_GameObject *DE_Object_NewObject(
 
 #undef obj_func
 
+#define PTR_NULLCHECK(x) if(x == NULL) { return; }  
+
 void DE_Object_InstantiateObject(DE_GameObject *object) {
+    PTR_NULLCHECK(object);
+    
     DE_GameScene *scene = DE_Scene_CurrentScene(); 
-    if(object == NULL) { return; }
     if(stbds_arrput(scene->objects, object) != object) {
         DE_report("Cannot instantiate object: %s", object->info.name); return;
     }
@@ -69,4 +74,50 @@ void DE_Object_GetObjectOfType(const char *name, void(*func)(DE_GameObject *obj)
             func(scene->objects[i]);
         }
     }
+}
+
+void _clamp_angle(double *angle) {
+_repeat: if(*angle > 360) { *angle -= 360; goto _repeat; }
+    else if(*angle <   0) { *angle += 360; goto _repeat; }
+    else { return; }
+}
+
+/* Setters */
+
+void DE_Object_SetAngle(DE_GameObject *obj, double angle) {
+    PTR_NULLCHECK(obj);
+    
+    _clamp_angle(&angle);
+    obj->angle = angle;
+}
+
+/* Getters */
+
+double DE_Object_GetAngle(DE_GameObject *obj) {
+    PTR_NULLCHECK(obj);
+    
+    _clamp_angle(&obj->angle);
+    return obj->angle;
+}
+
+/* Object rotation functions */
+
+// WIP, need delta time
+void DE_Object_Rotate(DE_GameObject *obj, double angle) {
+    PTR_NULLCHECK(obj);
+
+    obj->angle += angle;
+    _clamp_angle(&obj->angle);
+}
+
+void DE_Object_RotateTowardsObject(DE_GameObject *obj, DE_GameObject *target) {
+    PTR_NULLCHECK(target);
+    DE_Object_Rotate(obj, target->angle);
+}
+
+void DE_Object_RotateTowardsPosition(DE_GameObject *obj, DE_Vector2f pos) {
+    PTR_NULLCHECK(obj);
+
+    obj->angle = atan2(pos.y - obj->position.y, pos.x - obj->position.x);
+    obj->angle = obj->angle * 180.0000 / 3.14159; /* Clamping not needed */
 }

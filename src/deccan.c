@@ -49,7 +49,15 @@ struct DE_Module_Object Object = {
     DE_Object_NewObject,
     DE_Object_InstantiateObject,
     DE_Object_GetObject,
-    DE_Object_GetObjectOfType
+    DE_Object_GetObjectOfType,
+
+    DE_Object_SetAngle,
+
+    DE_Object_GetAngle,
+
+    DE_Object_Rotate,
+    DE_Object_RotateTowardsObject,
+    DE_Object_RotateTowardsPosition
 };
 
 struct DE_Module_Scene Scene = {
