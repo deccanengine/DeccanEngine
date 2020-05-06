@@ -25,6 +25,8 @@ struct DE_Module_Core Core = {
     DE_Core_GetVsyncStatus,
     DE_Core_GetFramerateLimit,
     DE_Core_GetAverageFramerate,
+    DE_Core_GetTotalFrameCount,
+    DE_Core_GetDeltaTime,
 
     DE_Core_SendMessage,
     DE_Core_ReceiveMessage

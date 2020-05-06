@@ -66,6 +66,8 @@ NAMESPACE(Core)
     INTERFACE(bool, GetVsyncStatus,);
     INTERFACE(float, GetFramerateLimit,);
     INTERFACE(float, GetAverageFramerate,);
+    INTERFACE(int32_t, GetTotalFrameCount,);
+    INTERFACE(float, GetDeltaTime,);
 
     INTERFACE(void, SendMessage, const char *msg);
     INTERFACE(bool, ReceiveMessage, const char *msg);

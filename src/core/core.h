@@ -45,8 +45,10 @@ typedef struct DE_GameInfo {
     DE_Vector2i win_mode;
     bool is_fullscreen;
     bool vsync_enabled;
+    int32_t frame_count;
     float fps_req;
     float fps_avg;
+    float delta_time;
 
     /* Input system */
     SDL_Event event;
@@ -97,6 +99,8 @@ bool DE_Core_GetFullscreenStatus();
 bool DE_Core_GetVsyncStatus();
 float DE_Core_GetFramerateLimit();
 float DE_Core_GetAverageFramerate();
+int32_t DE_Core_GetTotalFrameCount();
+float DE_Core_GetDeltaTime();
 
 void DE_Core_SendMessage(const char *msg);
 bool DE_Core_ReceiveMessage(const char *msg);

@@ -118,7 +118,6 @@ void DE_Core_Quit() {
 }
 
 void DE_Core_Run(float fps) {
-    int frames = 0;         /* Total frames passed */
     DE_Timer fps_timer = DE_Clock_NewTimer();
     DE_Timer frm_timer = DE_Clock_NewTimer();
 
@@ -135,7 +134,7 @@ void DE_Core_Run(float fps) {
     if(!engine.vsync_enabled) { engine.fps_req = fps; }
 
     while(engine.is_running) {
-        if(!engine.vsync_enabled) { frm_timer.Start(&frm_timer); }
+        frm_timer.Start(&frm_timer);
 
         /* Handle some events */
         if(SDL_PollEvent(&engine.event)) {
@@ -156,7 +155,7 @@ void DE_Core_Run(float fps) {
         memcpy(engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
         /* Calculate FPS */
-        engine.fps_avg = frames/fps_timer.GetTime(&fps_timer);
+        engine.fps_avg = engine.frame_count/fps_timer.GetTime(&fps_timer);
         if(engine.fps_avg > 20000) { engine.fps_avg = 0.0f; }
 
         /* Process Scene(s) and GameObject(s) */
@@ -218,17 +217,16 @@ void DE_Core_Run(float fps) {
         engine.event.wheel.x = 0;
         engine.event.wheel.y = 0;
 
-        frames++;
-        
+        /* Increment the frame counter */
+        engine.frame_count++;
+        /* Current ticks per frame i.e delta time */
+        engine.delta_time = frm_timer.GetTimeMS(&frm_timer);  
+
         /* Limit FPS */
         if(!engine.vsync_enabled && engine.fps_req > 0.0f) {
-            if(!frm_timer.is_running) { continue; }
-
-            int frm_ticks = frm_timer.GetTimeMS(&frm_timer);  /* Current ticks per frame */
-            int ticks_per_frame = 1000/engine.fps_req;   /* Required ticks per frame */
-
-            if(frm_ticks < ticks_per_frame) {
-                DE_Clock_Delay(ticks_per_frame - frm_ticks);
+            float ticks_per_frame = 1000/engine.fps_req;  /* Required ticks per frame */
+            if(engine.delta_time < ticks_per_frame) {
+                DE_Clock_Delay((int)(ticks_per_frame - engine.delta_time));
             }
         }
     }
@@ -306,6 +304,14 @@ float DE_Core_GetFramerateLimit() {
 
 float DE_Core_GetAverageFramerate() {
     return engine.fps_avg;
+}
+
+int32_t DE_Core_GetTotalFrameCount() {
+    return engine.frame_count;
+}
+
+float DE_Core_GetDeltaTime() {
+    return engine.delta_time;
 }
 
 void DE_Core_SendMessage(const char *msg) {
