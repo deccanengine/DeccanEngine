@@ -59,7 +59,7 @@ void _player_step(GameObject *this) {
 
     Object.GetObjectOfType("static", action);
 
-    Object.RotateTowardsPosition(this, Input.GetRelativeMousePos());
+    Object.RotateTowardsPosition(this, Input.GetRelativeMousePos(), 1);
 }
 
 void _player_render(GameObject *this) {
@@ -99,7 +99,13 @@ void _none_render(GameObject *this) {
     if(this->ReceiveMessage(this, "hello")) {
         // do nothing, or!
     }
-    Renderer.DrawRect((Rect){this->position.x, this->position.y, 40, 40}, ColorList.red); 
+    //Renderer.DrawRect((Rect){this->position.x, this->position.y, 40, 40}, ColorList.red); 
+    /*Object.RotateTowardsObject(this, Object.GetObject("main player"), 1);
+    Renderer.TextureBlitScaled((DE_Rect){this->position.x, this->position.y, 0, 0},
+                               (Vector2f){2.0f, 2.0f},
+                               (this->angle), FlipVertical, Asset.GetTexture("arrow0"));*/
+
+    //printf("angle: %f\n", this->angle);
 }
 
 void _none_end(GameObject *this) { }

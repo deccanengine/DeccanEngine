@@ -56,9 +56,9 @@ void DE_Object_SetAngle(DE_GameObject *obj, double angle);
 
 double DE_Object_GetAngle(DE_GameObject *obj);
 
-void DE_Object_Rotate(DE_GameObject *obj, double angle);
-void DE_Object_RotateTowardsObject(DE_GameObject *obj, DE_GameObject *target);
-void DE_Object_RotateTowardsPosition(DE_GameObject *obj, DE_Vector2f pos);
+void DE_Object_Rotate(DE_GameObject *obj, double angle, int speed);
+void DE_Object_RotateTowardsObject(DE_GameObject *obj, DE_GameObject *target, int speed);
+void DE_Object_RotateTowardsPosition(DE_GameObject *obj, DE_Vector2f pos, int speed);
 
 static inline void NULL_OBJFUNC(DE_GameObject *obj) { }
 

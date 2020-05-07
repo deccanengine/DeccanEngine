@@ -7,6 +7,7 @@
 
 #include "object.h"
 #include "scene.h"
+#include "core.h"
 
 void _msg_send(DE_GameObject *obj, const char *msg) {
     DE_msg_send(&obj->msg, msg);
@@ -77,9 +78,8 @@ void DE_Object_GetObjectOfType(const char *name, void(*func)(DE_GameObject *obj)
 }
 
 void _clamp_angle(double *angle) {
-_repeat: if(*angle > 360) { *angle -= 360; goto _repeat; }
-    else if(*angle <   0) { *angle += 360; goto _repeat; }
-    else { return; }
+    while(*angle > 360) { *angle -= 360; }
+    while(*angle <   0) { *angle += 360; }
 }
 
 /* Setters */
@@ -102,22 +102,56 @@ double DE_Object_GetAngle(DE_GameObject *obj) {
 
 /* Object rotation functions */
 
-// WIP, need delta time
-void DE_Object_Rotate(DE_GameObject *obj, double angle) {
+int _angle_diff(double a1, double a2) {
+    return ((((int)(a1 - a2) % 360) + 180) % 360) - 180;
+}
+
+/* WIP */
+void DE_Object_Rotate(DE_GameObject *obj, double angle, int speed) {
     PTR_NULLCHECK(obj);
 
-    obj->angle += angle;
+    if(speed <= 0) { 
+        obj->angle = angle; 
+        return;
+    }
+
     _clamp_angle(&obj->angle);
+    _clamp_angle(&angle);
+
+    //double doaa = 180.0f - abs(abs(obj->angle - angle) - 180.0f);
+    int doaa = _angle_diff(obj->angle, angle);
+    
+    if(doaa == 0 || doaa == (speed * -1)) { return; }
+    else {
+        bool is_positive = (doaa >= 0);
+        double new_angle = obj->angle + ((is_positive ? -1.0f : 1.0f) * (speed)); //* (DE_Core_GetDeltaTime()));
+    
+        //double dnaa = 180.0f - abs(abs(new_angle - angle) - 180.0f);
+        int dnaa = _angle_diff(new_angle, angle);
+        //printf("angle_diff = %d is_positive = %d\n", dnaa, is_positive);
+
+        if((dnaa >= 0) ^ is_positive) {
+            new_angle = angle;
+        }
+        
+        obj->angle = new_angle;
+    }
 }
 
-void DE_Object_RotateTowardsObject(DE_GameObject *obj, DE_GameObject *target) {
+void DE_Object_RotateTowardsObject(DE_GameObject *obj, DE_GameObject *target, int speed) {
     PTR_NULLCHECK(target);
-    DE_Object_Rotate(obj, target->angle);
+    DE_Object_RotateTowardsPosition(obj, target->position, speed);
 }
 
-void DE_Object_RotateTowardsPosition(DE_GameObject *obj, DE_Vector2f pos) {
+void DE_Object_RotateTowardsPosition(DE_GameObject *obj, DE_Vector2f pos, int speed) {
     PTR_NULLCHECK(obj);
 
-    obj->angle = atan2(pos.y - obj->position.y, pos.x - obj->position.x);
-    obj->angle = obj->angle * 180.0000 / 3.14159; /* Clamping not needed */
+    double angle;
+    angle = atan2(pos.y - obj->position.y, pos.x - obj->position.x);
+    angle = angle * 180.0000 / 3.14159;
+
+    obj->angle = angle;
+    // DE_Object_Rotate(obj, angle, speed);
 }
+
+#undef PTR_NULLCHECK

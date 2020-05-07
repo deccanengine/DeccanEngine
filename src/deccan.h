@@ -100,9 +100,9 @@ NAMESPACE(Object)
 
     INTERFACE(double, GetAngle,);
 
-    INTERFACE(void, Rotate, DE_GameObject *obj, double angle);
-    INTERFACE(void, RotateTowardsObject, DE_GameObject *obj, DE_GameObject *target);
-    INTERFACE(void, RotateTowardsPosition, DE_GameObject *obj, DE_Vector2f pos);
+    INTERFACE(void, Rotate, DE_GameObject *obj, double angle, int speed);
+    INTERFACE(void, RotateTowardsObject, DE_GameObject *obj, DE_GameObject *target, int speed);
+    INTERFACE(void, RotateTowardsPosition, DE_GameObject *obj, DE_Vector2f pos, int speed);
 ENDNAME()
 
 #undef obj_func
