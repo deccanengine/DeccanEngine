@@ -1,5 +1,5 @@
 #define DECCAN_SHORT_NAMES
-#include "src/deccan.h"
+#include <Deccan/Deccan.h>
 #include "player.h"
 
 Timer timer;

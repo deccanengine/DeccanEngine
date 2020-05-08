@@ -1,3 +1,8 @@
 mkdir bin
-gcc -g -o bin/test ../main.c ../player.c ../src/deccan.c ../src/core/input.c ../src/core/asset.c ../src/physics/collision.c ../src/core/object.c ../src/renderer/camera.c ../src/core/core.c ../src/core/scene.c ../src/renderer/draw.c ../src/renderer/texture.c ../src/renderer/font.c ../src/renderer/renderer.c ../src/utils/timer.c ../src/utils/message.c -I/usr/include/SDL2 -D_REENTRANT -DDECCAN_REPORTS_ENABLED -DDECCAN_RENDERER_SDL -lSDL2_ttf -lSDL2_image -lSDL2 -lm
+gcc -g -o bin/test ../main.c ../player.c -I../include/ \
+    ../src/Deccan.c ../src/Core/Input.c ../src/Core/Asset.c \
+    ../src/Physics/Collision.c ../src/Core/Object.c ../src/Renderer/Camera.c ../src/Core/Core.c \
+    ../src/Core/Scene.c ../src/Renderer/Draw.c ../src/Renderer/Texture.c ../src/Renderer/Font.c \
+    ../src/Renderer/Renderer.c ../src/Utils/Timer.c ../src/Utils/Message.c -I/usr/include/SDL2 \
+    -D_REENTRANT -DDECCAN_REPORTS_ENABLED -DDECCAN_RENDERER_SDL -lSDL2_ttf -lSDL2_image -lSDL2 -lm
 ./bin/test
