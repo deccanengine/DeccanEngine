@@ -21,6 +21,7 @@
 #include "renderer/camera.h"
 #include "renderer/color.h"
 #include "renderer/draw.h"
+#include "renderer/font.h"
 #include "renderer/renderer.h"
 #include "renderer/texture.h"
 
@@ -43,7 +44,9 @@
 
 NAMESPACE(Asset)
     INTERFACE(void, LoadTexture, const char *name, const char *path);
+    INTERFACE(void, LoadFont, const char *name, const char *path);
     INTERFACE(DE_Texture*, GetTexture, const char *name);
+    INTERFACE(TTF_Font*, GetFont, const char *name);
 ENDNAME()
 
 NAMESPACE(Core)
@@ -179,6 +182,8 @@ NAMESPACE(Renderer)
     INTERFACE(void, TextureBlit, DE_Rect rect, double angle, int flip, DE_Texture *texture);
     INTERFACE(void, TextureBlitScaled, DE_Rect rect, DE_Vector2f scale, double angle, int flip, DE_Texture *texture);
     INTERFACE(void, TextureBlitPartial, DE_Rect rect, DE_Rect dim, double angle, int flip, DE_Texture *texture);
+
+    INTERFACE(DE_Texture*, FontText, TTF_Font *font, const char *text, DE_Color color);
 ENDNAME()
 
 NAMESPACE(Clock)

@@ -11,3 +11,6 @@
 
 void DE_Asset_LoadTexture(const char *name, const char *path);
 SDL_Texture *DE_Asset_GetTexture(const char *name);
+
+void DE_Asset_LoadFont(const char *name, const char *path);
+TTF_Font *DE_Asset_GetFont(const char *name);

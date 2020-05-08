@@ -30,6 +30,17 @@ void DE_Asset_LoadTexture(const char *name, const char *path) {
     stbds_shput(DE_Core_GetGlobalInfo()->textures, name, tex);
 }
 
+void DE_Asset_LoadFont(const char *name, const char *path) {
+    TTF_Font *font;
+
+    font = TTF_OpenFont(path, 20);
+    if(font == NULL) {
+        DE_report("Cannot load font: %s: %s", path, TTF_GetError());
+    }
+
+    stbds_shput(DE_Core_GetGlobalInfo()->fonts, name, font);
+}
+
 SDL_Texture *DE_Asset_GetTexture(const char *name) {
     DE_GameInfo *info = DE_Core_GetGlobalInfo();
     for(int i=0; i<stbds_shlen(info->textures); i++) {
@@ -38,4 +49,14 @@ SDL_Texture *DE_Asset_GetTexture(const char *name) {
         }
     }
     DE_report("Texture not found: %s", name);
+}
+
+TTF_Font *DE_Asset_GetFont(const char *name) {
+    DE_GameInfo *info = DE_Core_GetGlobalInfo();
+    for(int i=0; i<stbds_shlen(info->fonts); i++) {
+        if(!strcmp(name, info->fonts[i].key)) {
+            return info->fonts[i].value;
+        }
+    }
+    DE_report("Font not found: %s", name);
 }

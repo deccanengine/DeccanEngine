@@ -93,6 +93,7 @@ int DE_Core_Init(const char *title, DE_Vector2i mode) {
     engine.scene_count = 0;
 
     engine.textures = NULL;
+    engine.fonts = NULL;
 
     engine.camera_bounds = (DE_PosRect){-1, -1, -1, -1};
 
@@ -114,6 +115,7 @@ void DE_Core_Quit() {
     
 #endif
     TTF_Quit();
+    IMG_Quit();
     SDL_Quit();
 }
 

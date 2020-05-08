@@ -65,6 +65,11 @@ typedef struct DE_GameInfo {
         SDL_Texture *value;
     } *textures;
 
+    struct {
+        char *key;
+        TTF_Font *value;
+    } *fonts;
+
     /* Messaging */
     DE_msgbuf msg;
 

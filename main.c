@@ -3,17 +3,20 @@
 #include "player.h"
 
 Timer timer;
+DE_Texture *text;
 
 void begin() {
     /* Start here */
-    //Asset.load_texture("arrow", "arrow0.png");
     Object.InstantiateObject(Object.NewObject("main player", "player", NULL_OBJFUNC, _player_begin, _player_step, _player_render, _player_end));
     timer = Clock.NewTimer();
     timer.Start(&timer);
 
     Asset.LoadTexture("arrow0", "arrow0.png");
+    Asset.LoadFont("arial", "arial.ttf");
 
     Renderer.SetBackgroundColor(ColorList.white);
+
+    text = Renderer.FontText(Asset.GetFont("arial"), "hello", ColorList.black);
 }
 
 void step() {
@@ -60,6 +63,8 @@ void render() {
     if(Input.KeyReleased(Key.v)) {
         Core.SetVsyncStatus(false);
     }
+
+    Renderer.TextureBlitScaled((Rect){10, 10, 0, 0}, (Vector2f){1.0f, 1.0f}, 0, 0, text);
 }
 
 void end() {

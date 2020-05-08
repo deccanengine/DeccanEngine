@@ -2,7 +2,9 @@
 
 struct DE_Module_Asset Asset = {
     DE_Asset_LoadTexture,
-    DE_Asset_GetTexture
+    DE_Asset_LoadFont,
+    DE_Asset_GetTexture,
+    DE_Asset_GetFont
 };
 
 struct DE_Module_Core Core = {
@@ -128,7 +130,9 @@ struct DE_Module_Renderer Renderer = {
 
     DE_Renderer_TextureBlit,
     DE_Renderer_TextureBlitScaled,
-    DE_Renderer_TextureBlitPartial
+    DE_Renderer_TextureBlitPartial,
+
+    DE_Renderer_FontText
 };
 
 struct DE_Module_Clock Clock = {
