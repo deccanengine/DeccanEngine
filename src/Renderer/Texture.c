@@ -32,6 +32,7 @@ void Renderer_TextureBlit(Rect rect, double angle, Flip flip, RawTexture *textur
 void Renderer_TextureBlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, RawTexture *texture) {
     if(texture == NULL) { return; }
     GameInfo *engine = Core_GetGlobalInfo();
+    SDL_Renderer *renderer = Renderer_GetRenderer();
 
 #ifdef DECCAN_RENDERER_SDL
     SDL_Rect tgt = {
@@ -50,7 +51,7 @@ void Renderer_TextureBlitScaled(Rect rect, Vector2f scale, double angle, Flip fl
         tgt.h *= scale.y;
     }
     
-    SDL_RenderCopyEx(engine->renderer, texture, NULL, &tgt, angle, NULL, flip);
+    SDL_RenderCopyEx(renderer, texture, NULL, &tgt, angle, NULL, flip);
 #else
 
 #endif
@@ -59,6 +60,7 @@ void Renderer_TextureBlitScaled(Rect rect, Vector2f scale, double angle, Flip fl
 void Renderer_TextureBlitPartial(Rect rect, Rect dim, double angle, Flip flip, RawTexture *texture) {
     if(texture == NULL) { return; }
     GameInfo *engine = Core_GetGlobalInfo();
+    SDL_Renderer *renderer = Renderer_GetRenderer();
 
 #ifdef DECCAN_RENDERER_SDL
     SDL_Rect src = {
@@ -83,7 +85,7 @@ void Renderer_TextureBlitPartial(Rect rect, Rect dim, double angle, Flip flip, R
         tgt.h = src.h;
     }
     
-    SDL_RenderCopyEx(engine->renderer, texture, &src, &tgt, angle, NULL, flip);
+    SDL_RenderCopyEx(renderer, texture, &src, &tgt, angle, NULL, flip);
 #else
 
 #endif

@@ -6,6 +6,10 @@
  */
 
 #include <Deccan/Core.h>
+#include <Deccan/Renderer.h>
+
+static TextureAsset *_asset_textures = NULL;
+static FontAsset *_asset_fonts = NULL;
 
 void Asset_LoadTexture(const char *name, const char *path) {
     SDL_Surface *img;
@@ -17,7 +21,7 @@ void Asset_LoadTexture(const char *name, const char *path) {
     }
 
 #ifdef DECCAN_RENDERER_SDL
-    tex = SDL_CreateTextureFromSurface(Core_GetGlobalInfo()->renderer, img);
+    tex = SDL_CreateTextureFromSurface(Renderer_GetRenderer(), img);
 #else
 
 #endif
@@ -27,7 +31,7 @@ void Asset_LoadTexture(const char *name, const char *path) {
         DE_report("Cannot create texture: %s: %s", name, SDL_GetError());
     }
 
-    stbds_shput(Core_GetGlobalInfo()->textures, name, tex);
+    stbds_shput(_asset_textures, name, tex);
 }
 
 void Asset_LoadFont(const char *name, const char *path) {
@@ -38,14 +42,13 @@ void Asset_LoadFont(const char *name, const char *path) {
         DE_report("Cannot load font: %s: %s", path, TTF_GetError());
     }
 
-    stbds_shput(Core_GetGlobalInfo()->fonts, name, font);
+    stbds_shput(_asset_fonts, name, font);
 }
 
 SDL_Texture *Asset_GetTexture(const char *name) {
-    GameInfo *info = Core_GetGlobalInfo();
-    for(int i=0; i<stbds_shlen(info->textures); i++) {
-        if(!strcmp(name, info->textures[i].key)) {
-            return info->textures[i].value;
+    for(int i=0; i<stbds_shlen(_asset_textures); i++) {
+        if(!strcmp(name, _asset_textures[i].key)) {
+            return _asset_textures[i].value;
         }
     }
     DE_report("Texture not found: %s", name);
@@ -53,9 +56,9 @@ SDL_Texture *Asset_GetTexture(const char *name) {
 
 TTF_Font *Asset_GetFont(const char *name) {
     GameInfo *info = Core_GetGlobalInfo();
-    for(int i=0; i<stbds_shlen(info->fonts); i++) {
-        if(!strcmp(name, info->fonts[i].key)) {
-            return info->fonts[i].value;
+    for(int i=0; i<stbds_shlen(_asset_fonts); i++) {
+        if(!strcmp(name, _asset_fonts[i].key)) {
+            return _asset_fonts[i].value;
         }
     }
     DE_report("Font not found: %s", name);

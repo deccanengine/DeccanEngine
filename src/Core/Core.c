@@ -11,6 +11,30 @@
 
 static GameInfo engine;
 
+#ifdef DECCAN_RENDERER_SDL
+    static SDL_Window *_core_window;
+#else
+
+#endif
+
+int _core_gl_major;
+int _core_gl_minor;
+bool _core_is_running;
+
+Vector2i _core_win_mode;
+bool _core_is_fullscreen;
+bool _core_vsync_enabled;
+int32_t _core_frame_count;
+float _core_fps_req;
+float _core_fps_avg;
+float _core_delta_time;
+
+msgbuf _core_msg;
+
+#ifdef DECCAN_REPORTS_ENABLED
+    FILE *_core_logfile;
+#endif
+
 /* Core */
 void Core_SetGlobalInfo(GameInfo *info) {
     engine = *info;
@@ -48,7 +72,7 @@ int Core_Init(const char *title, Vector2i mode) {
 
     /* Create window */
     int window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-    if((engine.window = SDL_CreateWindow(title, 0, 0, mode.x, mode.y, window_flags)) == NULL) {
+    if((_core_window = SDL_CreateWindow(title, 0, 0, mode.x, mode.y, window_flags)) == NULL) {
         DE_error("Could not create window: %s", SDL_GetError());
     }
 
@@ -58,45 +82,34 @@ int Core_Init(const char *title, Vector2i mode) {
     }
 
     /* Create renderer */
-    int render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    if((engine.renderer = SDL_CreateRenderer(engine.window, -1, render_flags)) == NULL) {
-        DE_error("Could not create renderer: %s", SDL_GetError());
-    }
+    Renderer_Init(_core_window);
 #else
     
 #endif
-    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &engine.gl_major);
-    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &engine.gl_minor);
-    if(engine.gl_major < 2 || (engine.gl_major == 2 && engine.gl_minor < 1)) {
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &_core_gl_major);
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &_core_gl_minor);
+    if(_core_gl_major < 2 || (_core_gl_major == 2 && _core_gl_minor < 1)) {
         DE_error("OpenGL 2.1 support needed at minimum. Consider upgrading your hardware.");
     }
 
     /* Open the log file */
-    engine.logfile = fopen("report.log", "w");
-    if(engine.logfile == NULL) {
+    _core_logfile = fopen("report.log", "w");
+    if(_core_logfile == NULL) {
         DE_error("Could not create/open log file");
     }
 
-#ifdef DECCAN_RENDERER_SDL
-    engine.target = SDL_GetRenderTarget(engine.renderer);
-#else
+    _core_is_running = true;
 
-#endif
-    engine.is_running = true;
-
-    engine.win_mode = mode;
-    engine.vsync_enabled = false;
-    engine.fps_req = 60.0f;      /* Fallback FPS limit if vsync is disabled somwhere and new limit is not set */
+    _core_win_mode = mode;
+    _core_vsync_enabled = false;
+    _core_fps_req = 60.0f;      /* Fallback FPS limit if vsync is disabled somwhere and new limit is not set */
 
     engine.scenes = NULL;
     engine.scene_count = 0;
 
-    engine.textures = NULL;
-    engine.fonts = NULL;
-
     engine.camera_bounds = (PosRect){-1, -1, -1, -1};
 
-    msg_init(&engine.msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
+    msg_init(&_core_msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
 
     memcpy(engine.prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
     memcpy(engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
@@ -105,11 +118,11 @@ int Core_Init(const char *title, Vector2i mode) {
 }
 
 void Core_Quit() {
-    fclose(engine.logfile);
+    fclose(_core_logfile);
     stbds_arrfree(engine.scenes);
 #ifdef DECCAN_RENDERER_SDL
-    SDL_DestroyRenderer(engine.renderer);
-    SDL_DestroyWindow(engine.window);    
+    Renderer_Quit();
+    SDL_DestroyWindow(_core_window);    
 #else
     
 #endif
@@ -132,20 +145,20 @@ void Core_Run(float fps) {
     /* There is no gurantee than VSync is enabled by set_vsync_status().
      * Hence, it is separated. 
      */
-    if(!engine.vsync_enabled) { engine.fps_req = fps; }
+    if(!_core_vsync_enabled) { _core_fps_req = fps; }
 
-    while(engine.is_running) {
+    while(_core_is_running) {
         frm_timer.Start(&frm_timer);
 
         /* Handle some events */
         if(SDL_PollEvent(&engine.event)) {
             switch(engine.event.type) {
-                case SDL_QUIT: { engine.is_running = false; break; }
+                case SDL_QUIT: { _core_is_running = false; break; }
                 case SDL_KEYDOWN: {
                     /* Close on Escape Key */
                     // To do: make it toggleable
                     if(engine.event.key.keysym.sym == SDLK_ESCAPE) { 
-                        engine.is_running = false; break;
+                        _core_is_running = false; break;
                     }
                 }
             }
@@ -156,8 +169,8 @@ void Core_Run(float fps) {
         memcpy(engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 
         /* Calculate FPS */
-        engine.fps_avg = engine.frame_count/fps_timer.GetTime(&fps_timer);
-        if(engine.fps_avg > 20000) { engine.fps_avg = 0.0f; }
+        _core_fps_avg = _core_frame_count/fps_timer.GetTime(&fps_timer);
+        if(_core_fps_avg > 20000) { _core_fps_avg = 0.0f; }
 
         /* Process Scene(s) and GameObject(s) */
         int index = engine.scene_count-1;        /* Current Scene index */
@@ -191,15 +204,7 @@ void Core_Run(float fps) {
         }
 
         
-        switch(engine.background.type) {
-            case 0: Renderer_ClearColor(engine.background.color); break;
-            case 1: {
-                Rect rect = {engine.camera.x, engine.camera.y, engine.win_mode.x, engine.win_mode.y};
-                Renderer_Clear();
-                Renderer_TextureBlit(rect, 0, 0, engine.background.texture); 
-                break;
-            }
-        }
+        Renderer_Background();
 
         /* at_render of scenes and objects */
         scene->AtRender();
@@ -209,9 +214,9 @@ void Core_Run(float fps) {
         }
         
 #ifdef DECCAN_RENDERER_SDL
-        SDL_RenderPresent(engine.renderer);
+        Renderer_Present();
 #else
-        SDL_GL_SwapWindow(engine.window);
+
 #endif
 
         /* Prevent mouse wheel scroll input spam */
@@ -219,15 +224,15 @@ void Core_Run(float fps) {
         engine.event.wheel.y = 0;
 
         /* Increment the frame counter */
-        engine.frame_count++;
+        _core_frame_count++;
         /* Current ticks per frame i.e delta time */
-        engine.delta_time = frm_timer.GetTimeMS(&frm_timer);  
+        _core_delta_time = frm_timer.GetTimeMS(&frm_timer);  
 
         /* Limit FPS */
-        if(!engine.vsync_enabled && engine.fps_req > 0.0f) {
-            float ticks_per_frame = 1000/engine.fps_req;  /* Required ticks per frame */
-            if(engine.delta_time < ticks_per_frame) {
-                Clock_Delay((int)(ticks_per_frame - engine.delta_time));
+        if(!_core_vsync_enabled && _core_fps_req > 0.0f) {
+            float ticks_per_frame = 1000/_core_fps_req;  /* Required ticks per frame */
+            if(_core_delta_time < ticks_per_frame) {
+                Clock_Delay((int)(ticks_per_frame - _core_delta_time));
             }
         }
     }
@@ -241,30 +246,30 @@ void Core_Run(float fps) {
         msg_free(&obj->msg);
     }
     
-    msg_free(&engine.msg);
+    msg_free(&_core_msg);
     Core_Quit();
 }
 
 /* Core Settings Setters */
 void Core_SetTitle(const char *name) {
-    SDL_SetWindowTitle(engine.window, name);
+    SDL_SetWindowTitle(_core_window, name);
 }
 
 void Core_SetMode(Vector2i mode) {
-    if(engine.is_fullscreen) {
+    if(_core_is_fullscreen) {
         SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN, mode.x, mode.y, 0, 0};
-        if(SDL_SetWindowDisplayMode(engine.window, &disp) > 0) {
+        if(SDL_SetWindowDisplayMode(_core_window, &disp) > 0) {
             DE_report("Cannot set fullscreen window mode: %s", SDL_GetError());
         }
-        SDL_MaximizeWindow(engine.window);
+        SDL_MaximizeWindow(_core_window);
     }
-    else { SDL_SetWindowSize(engine.window, mode.x, mode.y); }
-    engine.win_mode = mode;
+    else { SDL_SetWindowSize(_core_window, mode.x, mode.y); }
+    _core_win_mode = mode;
 }
 
 void Core_SetFullscreen() {
-    SDL_SetWindowFullscreen(engine.window, engine.is_fullscreen ? 0 : 1);
-    engine.is_fullscreen = !engine.is_fullscreen;
+    SDL_SetWindowFullscreen(_core_window, _core_is_fullscreen ? 0 : 1);
+    _core_is_fullscreen = !_core_is_fullscreen;
 }
 
 void Core_SetVsyncStatus(bool vsync) {
@@ -274,53 +279,53 @@ void Core_SetVsyncStatus(bool vsync) {
     }
 
     int status = SDL_GL_GetSwapInterval();
-    if(status == 0) { engine.vsync_enabled = false; }
-    else { engine.vsync_enabled = true; }
+    if(status == 0) { _core_vsync_enabled = false; }
+    else { _core_vsync_enabled = true; }
 }
 
 void Core_SetFramerateLimit(float fps){
-    engine.fps_req = fps;
+    _core_fps_req = fps;
 }
 
 /* Core Settings Getters */
 const char *Core_GetTitle() {
-    return SDL_GetWindowTitle(engine.window);
+    return SDL_GetWindowTitle(_core_window);
 }
 
 Vector2i Core_GetMode() {
-    return engine.win_mode;
+    return _core_win_mode;
 }
 
 bool Core_GetFullscreenStatus() {
-    return engine.is_fullscreen;
+    return _core_is_fullscreen;
 }
 
 bool Core_GetVsyncStatus() {
-    return engine.vsync_enabled;
+    return _core_vsync_enabled;
 }
 
 float Core_GetFramerateLimit() {
-    return engine.fps_req;
+    return _core_fps_req;
 }
 
 float Core_GetAverageFramerate() {
-    return engine.fps_avg;
+    return _core_fps_avg;
 }
 
 int32_t Core_GetTotalFrameCount() {
-    return engine.frame_count;
+    return _core_frame_count;
 }
 
 float Core_GetDeltaTime() {
-    return engine.delta_time;
+    return _core_delta_time;
 }
 
 void Core_SendMessage(const char *msg) {
-    msg_send(&engine.msg, msg);
+    msg_send(&_core_msg, msg);
 }
 
 bool Core_ReceiveMessage(const char *msg) {
-    return msg_receive(&engine.msg, msg);
+    return msg_receive(&_core_msg, msg);
 }
 
 void DE_error(const char *str, ...) {
@@ -340,9 +345,9 @@ void DE_report(const char *str, ...) {
     va_list args;
     
     va_start(args, str);
-    vfprintf(engine.logfile, str, args);
+    vfprintf(_core_logfile, str, args);
     va_end(args);
     
-    fprintf(engine.logfile, "\n");
+    fprintf(_core_logfile, "\n");
 #endif
 }

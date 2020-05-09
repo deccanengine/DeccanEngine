@@ -49,6 +49,11 @@ static ColorList_ ColorList = {
 };
 
 /* Renderer */
+SDL_Renderer *Renderer_GetRenderer();
+void Renderer_Init(SDL_Window *window);
+void Renderer_Quit();
+void Renderer_Present();
+void Renderer_Background();
 void Renderer_Clear();
 void Renderer_ClearColor(Color color);
 void Renderer_SetBackgroundColor(Color color);

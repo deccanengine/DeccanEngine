@@ -23,29 +23,12 @@ typedef Color Color;
 
 typedef struct GameInfo {
     /* Core engine */
-#ifdef DECCAN_RENDERER_SDL
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-#else
+    
 
-#endif
-    RawTexture *target;
-    int gl_major;
-    int gl_minor;
-    bool is_running;
 
-#ifdef DECCAN_REPORTS_ENABLED
-    FILE *logfile;
-#endif
 
     /* Settings */
-    Vector2i win_mode;
-    bool is_fullscreen;
-    bool vsync_enabled;
-    int32_t frame_count;
-    float fps_req;
-    float fps_avg;
-    float delta_time;
+    
 
     /* Input system */
     SDL_Event event;
@@ -56,31 +39,23 @@ typedef struct GameInfo {
     GameScene **scenes;
     int scene_count;
 
-    /* Asset manager */
-    struct {
-        char *key;
-        SDL_Texture *value;
-    } *textures;
-
-    struct {
-        char *key;
-        TTF_Font *value;
-    } *fonts;
-
     /* Messaging */
-    msgbuf msg;
 
     /* Renderer */
     Vector2f camera;
     PosRect  camera_bounds;
-    struct {
-        int type; 
-        union {
-            RawTexture *texture;
-            Color color;
-        };
-    } background;
+    
 } GameInfo;
+
+typedef struct TextureAsset {
+    const char *key;
+    RawTexture *value;
+} TextureAsset;
+
+typedef struct FontAsset {
+    const char *key;
+    TTF_Font *value;
+} FontAsset;
 
 /* Core functions */
 void Core_SetGlobalInfo(GameInfo *engine);
