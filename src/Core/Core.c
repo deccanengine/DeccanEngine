@@ -7,6 +7,7 @@
 
 #define STB_DS_IMPLEMENTATION
 #include <Deccan/Core.h>
+#include <Deccan/Input.h>
 #include <Deccan/Renderer.h>
 
 static GameInfo engine;
@@ -17,22 +18,22 @@ static GameInfo engine;
 
 #endif
 
-int _core_gl_major;
-int _core_gl_minor;
-bool _core_is_running;
+static int _core_gl_major;
+static int _core_gl_minor;
+static bool _core_is_running;
 
-Vector2i _core_win_mode;
-bool _core_is_fullscreen;
-bool _core_vsync_enabled;
-int32_t _core_frame_count;
-float _core_fps_req;
-float _core_fps_avg;
-float _core_delta_time;
+static Vector2i _core_win_mode;
+static bool _core_is_fullscreen;
+static bool _core_vsync_enabled;
+static int32_t _core_frame_count;
+static float _core_fps_req;
+static float _core_fps_avg;
+static float _core_delta_time;
 
-msgbuf _core_msg;
+static msgbuf _core_msg;
 
 #ifdef DECCAN_REPORTS_ENABLED
-    FILE *_core_logfile;
+    static FILE *_core_logfile;
 #endif
 
 /* Core */
@@ -107,12 +108,10 @@ int Core_Init(const char *title, Vector2i mode) {
     engine.scenes = NULL;
     engine.scene_count = 0;
 
-    engine.camera_bounds = (PosRect){-1, -1, -1, -1};
-
     msg_init(&_core_msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
 
-    memcpy(engine.prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
-    memcpy(engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    _camera_init();
+    _input_init();
 
     return 1;
 }
@@ -147,17 +146,19 @@ void Core_Run(float fps) {
      */
     if(!_core_vsync_enabled) { _core_fps_req = fps; }
 
+    SDL_Event *event = _input_get_event();
+
     while(_core_is_running) {
         frm_timer.Start(&frm_timer);
 
         /* Handle some events */
-        if(SDL_PollEvent(&engine.event)) {
-            switch(engine.event.type) {
+        if(SDL_PollEvent(event)) {
+            switch(event->type) {
                 case SDL_QUIT: { _core_is_running = false; break; }
                 case SDL_KEYDOWN: {
                     /* Close on Escape Key */
                     // To do: make it toggleable
-                    if(engine.event.key.keysym.sym == SDLK_ESCAPE) { 
+                    if(event->key.keysym.sym == SDLK_ESCAPE) { 
                         _core_is_running = false; break;
                     }
                 }
@@ -165,8 +166,7 @@ void Core_Run(float fps) {
         }
         
         /* Get and set current and key states*/
-        memcpy(engine.prev_keys, engine.curr_keys, sizeof(uint8_t)*SDL_NUM_SCANCODES);
-        memcpy(engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+        _input_update();
 
         /* Calculate FPS */
         _core_fps_avg = _core_frame_count/fps_timer.GetTime(&fps_timer);
@@ -220,8 +220,8 @@ void Core_Run(float fps) {
 #endif
 
         /* Prevent mouse wheel scroll input spam */
-        engine.event.wheel.x = 0;
-        engine.event.wheel.y = 0;
+        event->wheel.x = 0;
+        event->wheel.y = 0;
 
         /* Increment the frame counter */
         _core_frame_count++;

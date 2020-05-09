@@ -9,7 +9,8 @@
 #include <Deccan/Core.h>
 
 #define DE_DRAW_BEGIN()                          \
-GameInfo *engine = Core_GetGlobalInfo();           \
+GameInfo *engine = Core_GetGlobalInfo();         \
+Vector2f camera = Camera_GetPosition();          \
 SDL_Renderer *renderer = Renderer_GetRenderer(); \
 Color def = Renderer_GetColor();                 \
 SDL_BlendMode blend;                             \
@@ -23,7 +24,7 @@ SDL_SetRenderDrawBlendMode(renderer,  blend);
 void Renderer_DrawPoint(Vector2f pos, Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
-    SDL_RenderDrawPoint(renderer, pos.x - engine->camera.x, pos.y - engine->camera.y);
+    SDL_RenderDrawPoint(renderer, pos.x - camera.x, pos.y - camera.y);
     DE_DRAW_END();
 #else
 
@@ -33,7 +34,7 @@ void Renderer_DrawPoint(Vector2f pos, Color color) {
 void Renderer_DrawLine(Vector2f start, Vector2f end, Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
-    SDL_RenderDrawLine(renderer, start.x - engine->camera.x, start.y - engine->camera.y, end.x - engine->camera.x, end.y - engine->camera.y);
+    SDL_RenderDrawLine(renderer, start.x - camera.x, start.y - camera.y, end.x - camera.x, end.y - camera.y);
     DE_DRAW_END();
 #else
 
@@ -43,7 +44,7 @@ void Renderer_DrawLine(Vector2f start, Vector2f end, Color color) {
 void Renderer_DrawRect(Rect rect, Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
-    SDL_Rect sr = {rect.x - engine->camera.x, rect.y - engine->camera.y, rect.w, rect.h};
+    SDL_Rect sr = {rect.x - camera.x, rect.y - camera.y, rect.w, rect.h};
     SDL_RenderDrawRect(renderer, &sr);
     DE_DRAW_END();
 #else
@@ -54,7 +55,7 @@ void Renderer_DrawRect(Rect rect, Color color) {
 void Renderer_DrawFilledRect(Rect rect, Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
-    SDL_Rect sr = {rect.x - engine->camera.x, rect.y - engine->camera.y, rect.w, rect.h};
+    SDL_Rect sr = {rect.x - camera.x, rect.y - camera.y, rect.w, rect.h};
     SDL_RenderFillRect(renderer, &sr);
     DE_DRAW_END();
 #else
@@ -67,8 +68,8 @@ void Renderer_DrawCircle(Circle circle, Color color) {
 
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
-    int x = circle.x - engine->camera.x;
-    int y = circle.y - engine->camera.y;
+    int x = circle.x - camera.x;
+    int y = circle.y - camera.y;
         
     int x0 = 0;
     int y0 = circle.radius;
@@ -101,8 +102,8 @@ void Renderer_DrawFilledCircle(Circle circle, Color color) {
 
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
-    int x = circle.x - engine->camera.x;
-    int y = circle.y - engine->camera.y;
+    int x = circle.x - camera.x;
+    int y = circle.y - camera.y;
         
     int x0 = 0;
     int y0 = circle.radius;

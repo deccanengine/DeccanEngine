@@ -52,7 +52,8 @@ void Renderer_Background() {
         case 1: {
             Renderer_Clear();
             Vector2i mode = Core_GetMode();
-            Rect rect = {engine->camera.x, engine->camera.y, mode.x, mode.y};
+            Vector2f camera = Camera_GetPosition();
+            Rect rect = {camera.x, camera.y, mode.x, mode.y};
             Renderer_TextureBlit(rect, 0, 0, _renderer_background.texture); 
             break;
         }

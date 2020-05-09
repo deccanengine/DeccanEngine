@@ -32,12 +32,13 @@ void Renderer_TextureBlit(Rect rect, double angle, Flip flip, RawTexture *textur
 void Renderer_TextureBlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, RawTexture *texture) {
     if(texture == NULL) { return; }
     GameInfo *engine = Core_GetGlobalInfo();
+    Vector2f camera = Camera_GetPosition();
     SDL_Renderer *renderer = Renderer_GetRenderer();
 
 #ifdef DECCAN_RENDERER_SDL
     SDL_Rect tgt = {
-        rect.x - engine->camera.x, 
-        rect.y - engine->camera.y, 
+        rect.x - camera.x, 
+        rect.y - camera.y, 
         rect.w, 
         rect.h
     };
@@ -60,6 +61,7 @@ void Renderer_TextureBlitScaled(Rect rect, Vector2f scale, double angle, Flip fl
 void Renderer_TextureBlitPartial(Rect rect, Rect dim, double angle, Flip flip, RawTexture *texture) {
     if(texture == NULL) { return; }
     GameInfo *engine = Core_GetGlobalInfo();
+    Vector2f camera = Camera_GetPosition();
     SDL_Renderer *renderer = Renderer_GetRenderer();
 
 #ifdef DECCAN_RENDERER_SDL
@@ -68,8 +70,8 @@ void Renderer_TextureBlitPartial(Rect rect, Rect dim, double angle, Flip flip, R
     };
 
     SDL_Rect tgt = {
-        rect.x - engine->camera.x, 
-        rect.y - engine->camera.y, 
+        rect.x - camera.x, 
+        rect.y - camera.y, 
         rect.w,
         rect.h
     };

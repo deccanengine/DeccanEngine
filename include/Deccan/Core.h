@@ -31,9 +31,7 @@ typedef struct GameInfo {
     
 
     /* Input system */
-    SDL_Event event;
-    uint8_t curr_keys [SDL_NUM_SCANCODES];
-    uint8_t prev_keys [SDL_NUM_SCANCODES];
+    
 
     /* Scene manager */
     GameScene **scenes;
@@ -42,8 +40,7 @@ typedef struct GameInfo {
     /* Messaging */
 
     /* Renderer */
-    Vector2f camera;
-    PosRect  camera_bounds;
+    
     
 } GameInfo;
 
@@ -86,6 +83,8 @@ void Asset_LoadFont(const char *name, const char *path);
 TTF_Font *Asset_GetFont(const char *name);
 
 /* Camera */
+void _camera_init();
+
 void Camera_Move(Vector2f pos);
 void Camera_CenterOn(GameObject *obj);
 void Camera_SetPosition(Vector2f pos);
