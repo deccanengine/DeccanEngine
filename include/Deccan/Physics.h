@@ -7,34 +7,33 @@
 
 #pragma once
 #include <Deccan/Config.h>
-#include <Deccan/Info.h>
 
-typedef struct DE_GameObject DE_GameObject;
+typedef struct GameObject GameObject;
 
-enum {
+typedef enum {
     ColliderVec,
     ColliderRect,
     ColliderCircle
-};
+} ColliderType;
 
-typedef struct DE_Collider {
-    int type;
+typedef struct Collider {
+    ColliderType type;
     union {
-        struct { DE_Vector2i vec;  };
-        struct { DE_PosRect rect;  };
-        struct { DE_Circle circle; };
+        struct { Vector2i vec;  };
+        struct { PosRect rect;  };
+        struct { Circle circle; };
     };
-} DE_Collider;
+} Collider;
 
-DE_Collider DE_Collision_NewRectCollider(DE_PosRect rect);
-DE_Collider DE_Collision_NewCircleCollider(DE_Circle circle);
+Collider Collision_NewRectCollider(PosRect rect);
+Collider Collision_NewCircleCollider(Circle circle);
 
-bool DE_Collision_VecVec(DE_Vector2f *v1, DE_Vector2f *v2);
-bool DE_Collision_RectRect(DE_PosRect *r1, DE_PosRect *r2);
-bool DE_Collision_CircleCircle(DE_Circle *c1, DE_Circle *c2);
-bool DE_Collision_VecRect(DE_Vector2f *vec, DE_PosRect *rect);
-bool DE_Collision_CircleVec(DE_Circle *circle, DE_Vector2f *vec);
-bool DE_Collision_RectCircle(DE_PosRect *rect, DE_Circle *circle);
-bool DE_Collision_ObjectObject(DE_GameObject *obj1, DE_GameObject *obj2);
-bool DE_Collision_ObjectVec(DE_GameObject *obj, DE_Vector2f *vec);
-bool DE_Collision_Test(const char *name1, const char *name2);
+bool Collision_VecVec(Vector2f *v1, Vector2f *v2);
+bool Collision_RectRect(PosRect *r1, PosRect *r2);
+bool Collision_CircleCircle(Circle *c1, Circle *c2);
+bool Collision_VecRect(Vector2f *vec, PosRect *rect);
+bool Collision_CircleVec(Circle *circle, Vector2f *vec);
+bool Collision_RectCircle(PosRect *rect, Circle *circle);
+bool Collision_ObjectObject(GameObject *obj1, GameObject *obj2);
+bool Collision_ObjectVec(GameObject *obj, Vector2f *vec);
+bool Collision_Test(const char *name1, const char *name2);

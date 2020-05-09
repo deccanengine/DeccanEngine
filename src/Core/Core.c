@@ -9,18 +9,18 @@
 #include <Deccan/Core.h>
 #include <Deccan/Renderer.h>
 
-static DE_GameInfo engine;
+static GameInfo engine;
 
 /* Core */
-void DE_Core_SetGlobalInfo(DE_GameInfo *info) {
+void Core_SetGlobalInfo(GameInfo *info) {
     engine = *info;
 }
 
-DE_GameInfo *DE_Core_GetGlobalInfo() {
+GameInfo *Core_GetGlobalInfo() {
     return &engine;
 }
 
-int DE_Core_Init(const char *title, DE_Vector2i mode) {
+int Core_Init(const char *title, Vector2i mode) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
         DE_error("Could not initialize SDL2: %s", SDL_GetError());
@@ -94,9 +94,9 @@ int DE_Core_Init(const char *title, DE_Vector2i mode) {
     engine.textures = NULL;
     engine.fonts = NULL;
 
-    engine.camera_bounds = (DE_PosRect){-1, -1, -1, -1};
+    engine.camera_bounds = (PosRect){-1, -1, -1, -1};
 
-    DE_msg_init(&engine.msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
+    msg_init(&engine.msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
 
     memcpy(engine.prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
     memcpy(engine.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
@@ -104,7 +104,7 @@ int DE_Core_Init(const char *title, DE_Vector2i mode) {
     return 1;
 }
 
-void DE_Core_Quit() {
+void Core_Quit() {
     fclose(engine.logfile);
     stbds_arrfree(engine.scenes);
 #ifdef DECCAN_RENDERER_SDL
@@ -118,15 +118,15 @@ void DE_Core_Quit() {
     SDL_Quit();
 }
 
-void DE_Core_Run(float fps) {
-    DE_Timer fps_timer = DE_Clock_NewTimer();
-    DE_Timer frm_timer = DE_Clock_NewTimer();
+void Core_Run(float fps) {
+    Timer fps_timer = Clock_NewTimer();
+    Timer frm_timer = Clock_NewTimer();
 
     fps_timer.Start(&fps_timer);    /* To calculate FPS */
 
     /* If no FPS limit is set then enable VSync*/
-    if(fps <= 0.0f) { DE_Core_SetVsyncStatus(true); }
-    else { DE_Core_SetVsyncStatus(false); }
+    if(fps <= 0.0f) { Core_SetVsyncStatus(true); }
+    else { Core_SetVsyncStatus(false); }
     
     /* Set FPS limit if VSync is not enabled */
     /* There is no gurantee than VSync is enabled by set_vsync_status().
@@ -161,7 +161,7 @@ void DE_Core_Run(float fps) {
 
         /* Process Scene(s) and GameObject(s) */
         int index = engine.scene_count-1;        /* Current Scene index */
-        DE_GameScene *scene = engine.scenes[index];  /* Current scene */
+        GameScene *scene = engine.scenes[index];  /* Current scene */
         /* First frame of the scene. Same as at_beginning for scene */
         if(scene->is_first_frame == true) {
             scene->AtFirstFrame();
@@ -169,14 +169,14 @@ void DE_Core_Run(float fps) {
 
             /* First frame of objects */
             for(int i=0; i<scene->object_count; i++) {
-                DE_GameObject *obj = scene->objects[i];
+                GameObject *obj = scene->objects[i];
                 obj->AtFirstFrame(obj);
             }
         }
 
         /* at_beginning of objects */
         for(int i=0; i<scene->object_count; i++) {
-            DE_GameObject *obj = scene->objects[i];
+            GameObject *obj = scene->objects[i];
             if(obj->is_beginning) {
                 obj->AtBeginning(obj);
                 obj->is_beginning = false;
@@ -186,17 +186,17 @@ void DE_Core_Run(float fps) {
         /* at_step of scenes and objects */
         scene->AtStep();
         for(int i=0; i<scene->object_count; i++) {
-            DE_GameObject *obj = scene->objects[i];
+            GameObject *obj = scene->objects[i];
             obj->AtStep(obj);
         }
 
         
         switch(engine.background.type) {
-            case 0: DE_Renderer_ClearColor(engine.background.color); break;
+            case 0: Renderer_ClearColor(engine.background.color); break;
             case 1: {
-                DE_Rect rect = {engine.camera.x, engine.camera.y, engine.win_mode.x, engine.win_mode.y};
-                DE_Renderer_Clear();
-                DE_Renderer_TextureBlit(rect, 0, 0, engine.background.texture); 
+                Rect rect = {engine.camera.x, engine.camera.y, engine.win_mode.x, engine.win_mode.y};
+                Renderer_Clear();
+                Renderer_TextureBlit(rect, 0, 0, engine.background.texture); 
                 break;
             }
         }
@@ -204,7 +204,7 @@ void DE_Core_Run(float fps) {
         /* at_render of scenes and objects */
         scene->AtRender();
         for(int i=0; i<scene->object_count; i++) {
-            DE_GameObject *obj = scene->objects[i];
+            GameObject *obj = scene->objects[i];
             obj->AtRender(obj);
         }
         
@@ -227,30 +227,30 @@ void DE_Core_Run(float fps) {
         if(!engine.vsync_enabled && engine.fps_req > 0.0f) {
             float ticks_per_frame = 1000/engine.fps_req;  /* Required ticks per frame */
             if(engine.delta_time < ticks_per_frame) {
-                DE_Clock_Delay((int)(ticks_per_frame - engine.delta_time));
+                Clock_Delay((int)(ticks_per_frame - engine.delta_time));
             }
         }
     }
     
     /* at_end of scenes and objects */
-    DE_GameScene *scene = engine.scenes[engine.scene_count-1];
+    GameScene *scene = engine.scenes[engine.scene_count-1];
     scene->AtEnd();
     for(int i=0; i<scene->object_count; i++) {
-        DE_GameObject *obj = scene->objects[i];
+        GameObject *obj = scene->objects[i];
         obj->AtEnd(obj);
-        DE_msg_free(&obj->msg);
+        msg_free(&obj->msg);
     }
     
-    DE_msg_free(&engine.msg);
-    DE_Core_Quit();
+    msg_free(&engine.msg);
+    Core_Quit();
 }
 
 /* Core Settings Setters */
-void DE_Core_SetTitle(const char *name) {
+void Core_SetTitle(const char *name) {
     SDL_SetWindowTitle(engine.window, name);
 }
 
-void DE_Core_SetMode(DE_Vector2i mode) {
+void Core_SetMode(Vector2i mode) {
     if(engine.is_fullscreen) {
         SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN, mode.x, mode.y, 0, 0};
         if(SDL_SetWindowDisplayMode(engine.window, &disp) > 0) {
@@ -262,12 +262,12 @@ void DE_Core_SetMode(DE_Vector2i mode) {
     engine.win_mode = mode;
 }
 
-void DE_Core_SetFullscreen() {
+void Core_SetFullscreen() {
     SDL_SetWindowFullscreen(engine.window, engine.is_fullscreen ? 0 : 1);
     engine.is_fullscreen = !engine.is_fullscreen;
 }
 
-void DE_Core_SetVsyncStatus(bool vsync) {
+void Core_SetVsyncStatus(bool vsync) {
     // ??: Adaptive vsync
     if(SDL_GL_SetSwapInterval(vsync ? -1 : 0) == -1) {
         DE_report("VSync is not supported: %s", SDL_GetError());
@@ -278,49 +278,49 @@ void DE_Core_SetVsyncStatus(bool vsync) {
     else { engine.vsync_enabled = true; }
 }
 
-void DE_Core_SetFramerateLimit(float fps){
+void Core_SetFramerateLimit(float fps){
     engine.fps_req = fps;
 }
 
 /* Core Settings Getters */
-const char *DE_Core_GetTitle() {
+const char *Core_GetTitle() {
     return SDL_GetWindowTitle(engine.window);
 }
 
-DE_Vector2i DE_Core_GetMode() {
+Vector2i Core_GetMode() {
     return engine.win_mode;
 }
 
-bool DE_Core_GetFullscreenStatus() {
+bool Core_GetFullscreenStatus() {
     return engine.is_fullscreen;
 }
 
-bool DE_Core_GetVsyncStatus() {
+bool Core_GetVsyncStatus() {
     return engine.vsync_enabled;
 }
 
-float DE_Core_GetFramerateLimit() {
+float Core_GetFramerateLimit() {
     return engine.fps_req;
 }
 
-float DE_Core_GetAverageFramerate() {
+float Core_GetAverageFramerate() {
     return engine.fps_avg;
 }
 
-int32_t DE_Core_GetTotalFrameCount() {
+int32_t Core_GetTotalFrameCount() {
     return engine.frame_count;
 }
 
-float DE_Core_GetDeltaTime() {
+float Core_GetDeltaTime() {
     return engine.delta_time;
 }
 
-void DE_Core_SendMessage(const char *msg) {
-    DE_msg_send(&engine.msg, msg);
+void Core_SendMessage(const char *msg) {
+    msg_send(&engine.msg, msg);
 }
 
-bool DE_Core_ReceiveMessage(const char *msg) {
-    return DE_msg_receive(&engine.msg, msg);
+bool Core_ReceiveMessage(const char *msg) {
+    return msg_receive(&engine.msg, msg);
 }
 
 void DE_error(const char *str, ...) {

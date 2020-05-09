@@ -9,28 +9,28 @@
 #include <Deccan/Scene.h>
 #include <Deccan/Core.h>
 
-void _msg_send(DE_GameObject *obj, const char *msg) {
-    DE_msg_send(&obj->msg, msg);
+void _msg_send(GameObject *obj, const char *msg) {
+    msg_send(&obj->msg, msg);
 }
 
-bool _msg_receive(DE_GameObject *obj, const char *msg) {
-    return DE_msg_receive(&obj->msg, msg);
+bool _msg_receive(GameObject *obj, const char *msg) {
+    return msg_receive(&obj->msg, msg);
 }
 
-#define obj_func(x) void (*x)(DE_GameObject *object)
+#define obj_func(x) void (*x)(GameObject *object)
 
-DE_GameObject *DE_Object_NewObject(
+GameObject *Object_NewObject(
     const char *name, const char *type, 
     obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae)) {
     
-    DE_GameObject *obj = DE_new(DE_GameObject, 1);
+    GameObject *obj = DE_NEW(GameObject, 1);
     
     obj->info.name = DE_newstring(name);
     obj->info.type = DE_newstring(type);
     
     obj->angle = 0.0f;
     
-    DE_msg_init(&obj->msg, DECCAN_OBJ_MSG_COUNT, DECCAN_OBJ_MSG_LENGTH);
+    msg_init(&obj->msg, DECCAN_OBJ_MSG_COUNT, DECCAN_OBJ_MSG_LENGTH);
     obj->SendMessage = _msg_send;
     obj->ReceiveMessage = _msg_receive;
     
@@ -48,18 +48,18 @@ DE_GameObject *DE_Object_NewObject(
 
 #define PTR_NULLCHECK(x) if(x == NULL) { return; }  
 
-void DE_Object_InstantiateObject(DE_GameObject *object) {
+void Object_InstantiateObject(GameObject *object) {
     PTR_NULLCHECK(object);
     
-    DE_GameScene *scene = DE_Scene_CurrentScene(); 
+    GameScene *scene = Scene_CurrentScene(); 
     if(stbds_arrput(scene->objects, object) != object) {
         DE_report("Cannot instantiate object: %s", object->info.name); return;
     }
     scene->object_count++;
 }
 
-DE_GameObject *DE_Object_GetObject(const char *name) {
-    DE_GameScene *scene = DE_Scene_CurrentScene();
+GameObject *Object_GetObject(const char *name) {
+    GameScene *scene = Scene_CurrentScene();
     for(int i=0; i<scene->object_count; i++) {
         if(!strcmp(scene->objects[i]->info.name, name)) {
             return scene->objects[i];
@@ -68,8 +68,8 @@ DE_GameObject *DE_Object_GetObject(const char *name) {
     DE_report("GameObject not found: %s", name);
 }
 
-void DE_Object_GetObjectOfType(const char *name, void(*func)(DE_GameObject *obj)) {
-    DE_GameScene *scene = DE_Scene_CurrentScene();
+void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj)) {
+    GameScene *scene = Scene_CurrentScene();
     for(int i=0; i<scene->object_count; i++) {
         if(!strcmp(scene->objects[i]->info.type, name)) {
             func(scene->objects[i]);
@@ -84,7 +84,7 @@ void _clamp_angle(double *angle) {
 
 /* Setters */
 
-void DE_Object_SetAngle(DE_GameObject *obj, double angle) {
+void Object_SetAngle(GameObject *obj, double angle) {
     PTR_NULLCHECK(obj);
     
     _clamp_angle(&angle);
@@ -93,7 +93,7 @@ void DE_Object_SetAngle(DE_GameObject *obj, double angle) {
 
 /* Getters */
 
-double DE_Object_GetAngle(DE_GameObject *obj) {
+double Object_GetAngle(GameObject *obj) {
     PTR_NULLCHECK(obj);
     
     _clamp_angle(&obj->angle);
@@ -107,7 +107,7 @@ int _angle_diff(double a1, double a2) {
 }
 
 /* WIP */
-void DE_Object_Rotate(DE_GameObject *obj, double angle, int speed) {
+void Object_Rotate(GameObject *obj, double angle, int speed) {
     PTR_NULLCHECK(obj);
 
     if(speed <= 0) { 
@@ -124,7 +124,7 @@ void DE_Object_Rotate(DE_GameObject *obj, double angle, int speed) {
     if(doaa == 0 || doaa == (speed * -1)) { return; }
     else {
         bool is_positive = (doaa >= 0);
-        double new_angle = obj->angle + ((is_positive ? -1.0f : 1.0f) * (speed)); //* (DE_Core_GetDeltaTime()));
+        double new_angle = obj->angle + ((is_positive ? -1.0f : 1.0f) * (speed)); //* (Core_GetDeltaTime()));
     
         //double dnaa = 180.0f - abs(abs(new_angle - angle) - 180.0f);
         int dnaa = _angle_diff(new_angle, angle);
@@ -138,12 +138,12 @@ void DE_Object_Rotate(DE_GameObject *obj, double angle, int speed) {
     }
 }
 
-void DE_Object_RotateTowardsObject(DE_GameObject *obj, DE_GameObject *target, int speed) {
+void Object_RotateTowardsObject(GameObject *obj, GameObject *target, int speed) {
     PTR_NULLCHECK(target);
-    DE_Object_RotateTowardsPosition(obj, target->position, speed);
+    Object_RotateTowardsPosition(obj, target->position, speed);
 }
 
-void DE_Object_RotateTowardsPosition(DE_GameObject *obj, DE_Vector2f pos, int speed) {
+void Object_RotateTowardsPosition(GameObject *obj, Vector2f pos, int speed) {
     PTR_NULLCHECK(obj);
 
     double angle;
@@ -151,7 +151,7 @@ void DE_Object_RotateTowardsPosition(DE_GameObject *obj, DE_Vector2f pos, int sp
     angle = angle * 180.0000 / 3.14159;
 
     obj->angle = angle;
-    // DE_Object_Rotate(obj, angle, speed);
+    // Object_Rotate(obj, angle, speed);
 }
 
 #undef PTR_NULLCHECK

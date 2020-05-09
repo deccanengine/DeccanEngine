@@ -8,10 +8,9 @@
 #pragma once
 #include <Deccan/Config.h>
 #include <Deccan/Core.h>
-#include <Deccan/Info.h>
 
 /* Key Codes */
-typedef struct DE_KeyList {
+typedef struct KeyList {
     int unknown, 
         
         a, b, c, d, e, f, 
@@ -38,9 +37,9 @@ typedef struct DE_KeyList {
         del,         end,        pagedown, 
         right,       left,       down, 
         up;
-} DE_KeyList;
+} KeyList;
 
-static DE_KeyList Key = { 
+static KeyList Key = { 
      0, 
      4,  5,  6,  7,  8,  9,
     10, 11, 12, 13, 14, 15,
@@ -63,11 +62,11 @@ static DE_KeyList Key = {
 };
 
 /* Button Codes */
-typedef struct DE_ButtonList {
+typedef struct ButtonList {
     int left, middle, right, x1, x2; 
-} DE_ButtonList;
+} ButtonList;
 
-static DE_ButtonList Button = {
+static ButtonList Button = {
     1, 2, 3, 4, 5
 };
 
@@ -76,22 +75,22 @@ typedef struct {
     bool is_pressed;
     bool is_released;
     bool is_held;
-} DE_KeyState;
+} KeyState;
 
 typedef struct {
     bool is_down;
     bool is_up;
-} DE_MouseState;
+} MouseState;
 
-DE_KeyState DE_Input_GetKey(int key_code);
-DE_MouseState DE_Input_GetMouseButton(int button_code);
-DE_Vector2i DE_Input_GetMousePos();
-DE_Vector2f DE_Input_GetRelativeMousePos();
-int DE_Input_MouseScrollHorizontal();
-int DE_Input_MouseScrollVertical();
+KeyState Input_GetKey(int key_code);
+MouseState Input_GetMouseButton(int button_code);
+Vector2i Input_GetMousePos();
+Vector2f Input_GetRelativeMousePos();
+int Input_MouseScrollHorizontal();
+int Input_MouseScrollVertical();
 
-bool DE_Input_KeyPressed(int key_code);
-bool DE_Input_KeyReleased(int key_code);
-bool DE_Input_KeyHeld(int key_code);
-bool DE_Input_ButtonDown(int button_code);
-bool DE_Input_ButtonUp(int button_code);
+bool Input_KeyPressed(int key_code);
+bool Input_KeyReleased(int key_code);
+bool Input_KeyHeld(int key_code);
+bool Input_ButtonDown(int button_code);
+bool Input_ButtonUp(int button_code);

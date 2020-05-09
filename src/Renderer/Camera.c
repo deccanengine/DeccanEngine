@@ -9,7 +9,7 @@
 #include <Deccan/Core.h>
 #include <Deccan/Object.h>
 
-void _clamp(DE_Vector2f *pos, DE_PosRect *rect, float *final_x, float *final_y) {
+void _clamp(Vector2f *pos, PosRect *rect, float *final_x, float *final_y) {
     /* Bounds are not set */
     if(rect->x1 == -1) { 
         *final_x = pos->x;
@@ -28,8 +28,8 @@ void _clamp(DE_Vector2f *pos, DE_PosRect *rect, float *final_x, float *final_y) 
     else { *final_y = pos->y; }
 }
 
-void DE_Camera_Move(DE_Vector2f pos) {
-    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
+void Camera_Move(Vector2f pos) {
+    GameInfo *engine = Core_GetGlobalInfo();
 
     float x, y; 
     _clamp(&pos, &engine->camera_bounds, &x, &y);
@@ -38,34 +38,34 @@ void DE_Camera_Move(DE_Vector2f pos) {
     engine->camera.y += y;
 }
 
-void DE_Camera_CenterOn(DE_GameObject *obj) {
+void Camera_CenterOn(GameObject *obj) {
     if(obj == NULL) {
         DE_report("Invalid object used with camera"); return;
     }
 
-    DE_Vector2i mode = DE_Core_GetMode();
-    DE_Vector2f pixel = DE_Renderer_GetPixelSize();
+    Vector2i mode = Core_GetMode();
+    Vector2f pixel = Renderer_GetPixelSize();
 
     float x = (obj->position.x) + (obj->size.x)/2 - (mode.x/pixel.x)/2; 
     float y = (obj->position.y) + (obj->size.y)/2 - (mode.y/pixel.y)/2;
 
-    DE_Vector2f pos = {x, y};
-    _clamp(&pos, &DE_Core_GetGlobalInfo()->camera_bounds, &x, &y);
-    DE_Camera_SetPosition((DE_Vector2f){x, y});
+    Vector2f pos = {x, y};
+    _clamp(&pos, &Core_GetGlobalInfo()->camera_bounds, &x, &y);
+    Camera_SetPosition((Vector2f){x, y});
 }
 
-void DE_Camera_SetPosition(DE_Vector2f pos) {
-    DE_Core_GetGlobalInfo()->camera = pos;
+void Camera_SetPosition(Vector2f pos) {
+    Core_GetGlobalInfo()->camera = pos;
 }
 
-void DE_Camera_SetBounds(DE_PosRect rect) {
-    DE_Core_GetGlobalInfo()->camera_bounds = rect;
+void Camera_SetBounds(PosRect rect) {
+    Core_GetGlobalInfo()->camera_bounds = rect;
 }
 
-DE_Vector2f DE_Camera_GetPosition() {
-    return DE_Core_GetGlobalInfo()->camera;
+Vector2f Camera_GetPosition() {
+    return Core_GetGlobalInfo()->camera;
 }
 
-DE_PosRect DE_Camera_GetBounds() {
-    return DE_Core_GetGlobalInfo()->camera_bounds;
+PosRect Camera_GetBounds() {
+    return Core_GetGlobalInfo()->camera_bounds;
 }

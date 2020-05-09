@@ -3,20 +3,20 @@
 #include "player.h"
 
 Timer timer;
-DE_Texture *text;
+RawTexture *text;
 
 void begin() {
     /* Start here */
-    Object.InstantiateObject(Object.NewObject("main player", "player", NULL_OBJFUNC, _player_begin, _player_step, _player_render, _player_end));
-    timer = Clock.NewTimer();
+    Object_InstantiateObject(Object_NewObject("main player", "player", NULL_OBJFUNC, _player_begin, _player_step, _player_render, _player_end));
+    timer = Clock_NewTimer();
     timer.Start(&timer);
 
-    Asset.LoadTexture("arrow0", "arrow0.png");
-    Asset.LoadFont("arial", "arial.ttf");
+    Asset_LoadTexture("arrow0", "arrow0.png");
+    Asset_LoadFont("arial", "arial.ttf");
 
-    Renderer.SetBackgroundColor(ColorList.white);
+    Renderer_SetBackgroundColor(ColorList.white);
 
-    text = Renderer.FontText(Asset.GetFont("arial"), "hello", ColorList.black);
+    text = Renderer_FontText(Asset_GetFont("arial"), "hello", ColorList.black);
 }
 
 void step() {
@@ -25,46 +25,46 @@ void step() {
 
 void render() {
     /* Start here */
-    if(Input.KeyReleased(Key.space) && timer.GetTimeMS(&timer) > 200) {
-        GameObject *s = Object.NewObject("circle", "static", NULL_OBJFUNC, _none_begin, _none_step, _none_render, _none_end);
-        s->position.x = Object.GetObject("main player")->position.x + 10;
-        s->position.y = Object.GetObject("main player")->position.y + 10;
-        Object.InstantiateObject(s);
+    if(Input_KeyReleased(Key.space) && timer.GetTimeMS(&timer) > 200) {
+        GameObject *s = Object_NewObject("circle", "static", NULL_OBJFUNC, _none_begin, _none_step, _none_render, _none_end);
+        s->position.x = Object_GetObject("main player")->position.x + 10;
+        s->position.y = Object_GetObject("main player")->position.y + 10;
+        Object_InstantiateObject(s);
         
         timer.Reset(&timer);
     }
     
-    if(Input.KeyReleased(Key.up)) {
-        Vector2f size = Renderer.GetPixelSize();
+    if(Input_KeyReleased(Key.up)) {
+        Vector2f size = Renderer_GetPixelSize();
         size.x += 0.1f;
         size.y += 0.1f; 
-        Renderer.SetPixelSize(size);
+        Renderer_SetPixelSize(size);
     }
-    else if(Input.KeyReleased(Key.down)) {
-        Vector2f size = Renderer.GetPixelSize();
+    else if(Input_KeyReleased(Key.down)) {
+        Vector2f size = Renderer_GetPixelSize();
         size.x -= size.x ? 0.1f : 0.0f; 
         size.y -= size.y ? 0.1f : 0.0f;
-        Renderer.SetPixelSize(size);
+        Renderer_SetPixelSize(size);
     }
 
-    if(Input.KeyReleased(Key.left)) {
-        Vector2i mode = Core.GetMode();
+    if(Input_KeyReleased(Key.left)) {
+        Vector2i mode = Core_GetMode();
         mode.x += 40;
         mode.y += 40; 
-        Core.SetMode(mode);
+        Core_SetMode(mode);
     }
-    else if(Input.KeyReleased(Key.right)) {
-        Vector2i mode = Core.GetMode();
+    else if(Input_KeyReleased(Key.right)) {
+        Vector2i mode = Core_GetMode();
         mode.x -= mode.x > 40 ? 40 : 0;
         mode.y -= mode.y > 40 ? 40 : 0; 
-        Core.SetMode(mode);
+        Core_SetMode(mode);
     }
     
-    if(Input.KeyReleased(Key.v)) {
-        Core.SetVsyncStatus(false);
+    if(Input_KeyReleased(Key.v)) {
+        Core_SetVsyncStatus(false);
     }
 
-    Renderer.TextureBlitScaled((Rect){10, 10, 0, 0}, (Vector2f){1.0f, 1.0f}, 0, 0, text);
+    Renderer_TextureBlitScaled((Rect){10, 10, 0, 0}, (Vector2f){1.0f, 1.0f}, 0, 0, text);
 }
 
 void end() {
@@ -72,9 +72,9 @@ void end() {
 }
 
 int main(int argc, char **argv) {
-    if(Core.Init("Test", (Vector2i){640, 320})) {
-        Scene.AddScene(Scene.NewScene("scene0", begin, step, render, end), false);
-        Core.Run(120.0f);
+    if(Core_Init("Test", (Vector2i){640, 320})) {
+        Scene_AddScene(Scene_NewScene("scene0", begin, step, render, end), false);
+        Core_Run(120.0f);
     }
-    atexit(Core.Quit);
+    atexit(Core_Quit);
 }

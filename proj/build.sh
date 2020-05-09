@@ -1,6 +1,6 @@
 mkdir bin
 gcc -g -o bin/test ../main.c ../player.c -I../include/ \
-    ../src/Deccan.c ../src/Core/Input.c ../src/Core/Asset.c \
+    ../src/Core/Input.c ../src/Core/Asset.c \
     ../src/Physics/Collision.c ../src/Core/Object.c ../src/Renderer/Camera.c ../src/Core/Core.c \
     ../src/Core/Scene.c ../src/Renderer/Draw.c ../src/Renderer/Texture.c ../src/Renderer/Font.c \
     ../src/Renderer/Renderer.c ../src/Utils/Timer.c ../src/Utils/Message.c -I/usr/include/SDL2 \

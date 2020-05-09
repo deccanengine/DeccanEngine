@@ -10,34 +10,34 @@
 
 /* Setters */
 
-void DE_Renderer_Clear() {
-    DE_Color blank = {0, 0, 0, 0};
-    DE_Renderer_ClearColor(blank);
+void Renderer_Clear() {
+    Color blank = {0, 0, 0, 0};
+    Renderer_ClearColor(blank);
 }
 
-void DE_Renderer_ClearColor(DE_Color color) {
-    DE_Renderer_SetColor(color);
+void Renderer_ClearColor(Color color) {
+    Renderer_SetColor(color);
 #ifdef DECCAN_RENDERER_SDL
-    SDL_RenderClear(DE_Core_GetGlobalInfo()->renderer);
+    SDL_RenderClear(Core_GetGlobalInfo()->renderer);
 #else
 
 #endif
 }
 
-void DE_Renderer_SetBackgroundColor(DE_Color color) {
-    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
+void Renderer_SetBackgroundColor(Color color) {
+    GameInfo *engine = Core_GetGlobalInfo();
     engine->background.type = 0;
     engine->background.color = color;
 }
 
-void DE_Renderer_SetBackgroundTexture(DE_Texture *texture) {
-    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
+void Renderer_SetBackgroundTexture(RawTexture *texture) {
+    GameInfo *engine = Core_GetGlobalInfo();
     engine->background.type = 1;
     engine->background.texture = texture;
 }
 
-void DE_Renderer_SetTarget(DE_Texture *target) {
-    DE_GameInfo *engine = DE_Core_GetGlobalInfo(); 
+void Renderer_SetTarget(RawTexture *target) {
+    GameInfo *engine = Core_GetGlobalInfo(); 
     if(target == NULL) { target = engine->target; }
 
 #ifdef DECCAN_RENDERER_SDL
@@ -49,25 +49,25 @@ void DE_Renderer_SetTarget(DE_Texture *target) {
 #endif
 }
 
-void DE_Renderer_SetColor(DE_Color color) {
+void Renderer_SetColor(Color color) {
 #ifdef DECCAN_RENDERER_SDL
-    SDL_SetRenderDrawColor(DE_Core_GetGlobalInfo()->renderer, color.r, color.g, color.b, color.a);
+    SDL_SetRenderDrawColor(Core_GetGlobalInfo()->renderer, color.r, color.g, color.b, color.a);
 #else
 
 #endif
 }
 
-void DE_Renderer_SetPixelSize(DE_Vector2f size) {
+void Renderer_SetPixelSize(Vector2f size) {
 #ifdef DECCAN_RENDERER_SDL
-    SDL_RenderSetScale(DE_Core_GetGlobalInfo()->renderer, size.x, size.y);
+    SDL_RenderSetScale(Core_GetGlobalInfo()->renderer, size.x, size.y);
 #else
 
 #endif
 }
 
-void DE_Renderer_SetBlendMode(int blend_mode) {
+void Renderer_SetBlendMode(int blend_mode) {
 #ifdef DECCAN_RENDERER_SDL
-    if(SDL_SetRenderDrawBlendMode(DE_Core_GetGlobalInfo()->renderer, blend_mode) != 0) {
+    if(SDL_SetRenderDrawBlendMode(Core_GetGlobalInfo()->renderer, blend_mode) != 0) {
         DE_report("Cannot set blend mode: %s", SDL_GetError());
     }
 #else
@@ -77,28 +77,28 @@ void DE_Renderer_SetBlendMode(int blend_mode) {
 
 /* Getters */
 
-DE_Color DE_Renderer_GetBackgroundColor() {
-    DE_Color color = {0, 0, 0, 0};
-    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
+Color Renderer_GetBackgroundColor() {
+    Color color = {0, 0, 0, 0};
+    GameInfo *engine = Core_GetGlobalInfo();
     if(engine->background.type == 0) { 
         color = engine->background.color; 
     }
     return color;
 }
 
-DE_Texture *DE_Renderer_GetBackgroundTexture() {
-    DE_Texture *texture = NULL;
-    DE_GameInfo *engine = DE_Core_GetGlobalInfo();
+RawTexture *Renderer_GetBackgroundTexture() {
+    RawTexture *texture = NULL;
+    GameInfo *engine = Core_GetGlobalInfo();
     if(engine->background.type == 1) { 
         texture = engine->background.texture; 
     }
     return texture;
 }
 
-DE_Texture *DE_Renderer_GetTarget() {
-    DE_Texture *target;
+RawTexture *Renderer_GetTarget() {
+    RawTexture *target;
 #ifdef DECCAN_RENDERER_SDL
-    target = SDL_GetRenderTarget(DE_Core_GetGlobalInfo()->renderer);
+    target = SDL_GetRenderTarget(Core_GetGlobalInfo()->renderer);
     if(target == NULL) {
         DE_error("Render target is NULL");
     }
@@ -108,30 +108,30 @@ DE_Texture *DE_Renderer_GetTarget() {
     return target;
 }
 
-DE_Color DE_Renderer_GetColor() {
-    DE_Color color = {0, 0, 0, 0};
+Color Renderer_GetColor() {
+    Color color = {0, 0, 0, 0};
 #ifdef DECCAN_RENDERER_SDL
-    SDL_GetRenderDrawColor(DE_Core_GetGlobalInfo()->renderer, &color.r, &color.g, &color.b, &color.a);
+    SDL_GetRenderDrawColor(Core_GetGlobalInfo()->renderer, &color.r, &color.g, &color.b, &color.a);
 #else
 
 #endif
     return color;
 }
 
-DE_Vector2f DE_Renderer_GetPixelSize() {
-    DE_Vector2f size = {0.0f, 0.0f};
+Vector2f Renderer_GetPixelSize() {
+    Vector2f size = {0.0f, 0.0f};
 #ifdef DECCAN_RENDERER_SDL
-    SDL_RenderGetScale(DE_Core_GetGlobalInfo()->renderer, &size.x, &size.y);
+    SDL_RenderGetScale(Core_GetGlobalInfo()->renderer, &size.x, &size.y);
 #else
 
 #endif
     return size;
 }
 
-DE_BlendMode DE_Renderer_GetBlendMode() {
+BlendMode Renderer_GetBlendMode() {
     SDL_BlendMode blend = SDL_BLENDMODE_NONE;
 #ifdef DECCAN_RENDERER_SDL
-    SDL_GetRenderDrawBlendMode(DE_Core_GetGlobalInfo()->renderer, &blend);
+    SDL_GetRenderDrawBlendMode(Core_GetGlobalInfo()->renderer, &blend);
 #else
 
 #endif

@@ -5,20 +5,20 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include <Deccan/Info.h>
+#include <Deccan/Config.h>
 
-void DE_msg_init(DE_msgbuf *buf, int msg_count, int msg_length) {
+void msg_init(msgbuf *buf, int msg_count, int msg_length) {
     buf->msg_num = 0;
     buf->msg_count = msg_count;
     buf->msg_length = msg_length;
-    buf->messages = DE_new(char*, msg_count);
+    buf->messages = DE_NEW(char*, msg_count);
     for(int i=0; i<msg_count; i++) {
-        buf->messages[i] = DE_new(char, msg_length);
+        buf->messages[i] = DE_NEW(char, msg_length);
         memset(buf->messages[i], '\0', sizeof(char)*msg_length);
     }
 }
 
-void DE_msg_send(DE_msgbuf *buf, const char *msg) {
+void msg_send(msgbuf *buf, const char *msg) {
     /* Store the message */
     for(int i=0; i<buf->msg_count; i++) {
         if(!strcmp(buf->messages[i], "\0")) {
@@ -32,7 +32,7 @@ void DE_msg_send(DE_msgbuf *buf, const char *msg) {
     strncpy(buf->messages[buf->msg_num], msg, buf->msg_length);
 }
 
-bool DE_msg_receive(DE_msgbuf *buf, const char *msg) {
+bool msg_receive(msgbuf *buf, const char *msg) {
     /* Find the message */
     for(int i=0; i<buf->msg_count; i++) {
         if(!strcmp(buf->messages[i], msg)) {
@@ -44,7 +44,7 @@ bool DE_msg_receive(DE_msgbuf *buf, const char *msg) {
     return false;
 }
 
-void DE_msg_free(DE_msgbuf *buf) {
+void msg_free(msgbuf *buf) {
     for(int i=0; i<buf->msg_count; i++) {
         free(buf->messages[i]);
     }

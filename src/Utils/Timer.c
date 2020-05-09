@@ -5,23 +5,23 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include <Deccan/Info.h>
+#include <Deccan/Config.h>
 
-void _timer_start(DE_Timer *timer) {
+void _timer_start(Timer *timer) {
     timer->start_ticks = SDL_GetTicks();
     timer->paused_ticks = 0;
     timer->is_running = true;
     timer->is_paused = false;
 }
 
-void _timer_stop(DE_Timer *timer) {
+void _timer_stop(Timer *timer) {
     timer->start_ticks = 0;
     timer->paused_ticks = 0;
     timer->is_running = false;
     timer->is_paused = false;
 }
 
-void _timer_pause(DE_Timer *timer) {
+void _timer_pause(Timer *timer) {
     if(timer->is_running && timer->is_paused) {
         timer->is_paused = true;
         
@@ -31,7 +31,7 @@ void _timer_pause(DE_Timer *timer) {
     }
 }
 
-float _timer_get_time_ms(DE_Timer *timer) {
+float _timer_get_time_ms(Timer *timer) {
     float time = 0.0f;
 
     if(timer->is_running) {
@@ -42,12 +42,12 @@ float _timer_get_time_ms(DE_Timer *timer) {
     return time;
 }
 
-float _timer_get_time(DE_Timer *timer) {
+float _timer_get_time(Timer *timer) {
     return _timer_get_time_ms(timer)/1000.0f;
 }
 
-DE_Timer DE_Clock_NewTimer() {
-    DE_Timer timer;
+Timer Clock_NewTimer() {
+    Timer timer;
     timer.Start = _timer_start;
     timer.Stop  = _timer_stop;
     timer.Pause = _timer_pause;

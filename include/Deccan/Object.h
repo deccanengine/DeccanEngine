@@ -9,7 +9,6 @@
 #include <Deccan/Config.h>
 #include <Deccan/Renderer.h>
 #include <Deccan/Physics.h>
-#include <Deccan/Info.h>
 
 #ifndef DECCAN_OBJ_MSG_LENGTH
     #define DECCAN_OBJ_MSG_LENGTH 50
@@ -19,24 +18,24 @@
     #define DECCAN_OBJ_MSG_COUNT 100
 #endif
 
-#define obj_func(x) void (*x)(DE_GameObject *object)
+#define obj_func(x) void (*x)(GameObject *object)
 
-typedef struct DE_GameObject DE_GameObject;
-typedef struct DE_GameObject {
+typedef struct GameObject GameObject;
+typedef struct GameObject {
     struct { char *name, *type; } info;     /* Basic information about the object */ 
-    DE_Vector2f position;               /* Positional info of the object */
-    DE_Vector2f size;                   /* Size of the rect bounding the object */
-    DE_Vector2f transform;              /* Transformation info */
+    Vector2f position;               /* Positional info of the object */
+    Vector2f size;                   /* Size of the rect bounding the object */
+    Vector2f transform;              /* Transformation info */
     double angle;
     struct { bool dead, hidden; } status;   /* Status */
-    DE_Collider collider;               /* Collider info */
+    Collider collider;               /* Collider info */
     union {
-        struct { DE_Color color; };     /* Color value for shape rendering */
+        struct { Color color; };     /* Color value for shape rendering */
     };
 
-    DE_msgbuf msg;
-    void (*SendMessage)(DE_GameObject *obj, const char *msg);
-    bool (*ReceiveMessage)(DE_GameObject *obj, const char *msg);
+    msgbuf msg;
+    void (*SendMessage)(GameObject *obj, const char *msg);
+    bool (*ReceiveMessage)(GameObject *obj, const char *msg);
 
     bool is_beginning;
     obj_func(AtFirstFrame);
@@ -44,21 +43,21 @@ typedef struct DE_GameObject {
     obj_func(AtStep);
     obj_func(AtRender);
     obj_func(AtEnd);
-} DE_GameObject;
+} GameObject;
 
-DE_GameObject *DE_Object_NewObject(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
-void DE_Object_InstantiateObject(DE_GameObject *object);
-DE_GameObject *DE_Object_GetObject(const char *name);
-void DE_Object_GetObjectOfType(const char *name, void(*func)(DE_GameObject *obj));
+GameObject *Object_NewObject(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
+void Object_InstantiateObject(GameObject *object);
+GameObject *Object_GetObject(const char *name);
+void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj));
 
-void DE_Object_SetAngle(DE_GameObject *obj, double angle);
+void Object_SetAngle(GameObject *obj, double angle);
 
-double DE_Object_GetAngle(DE_GameObject *obj);
+double Object_GetAngle(GameObject *obj);
 
-void DE_Object_Rotate(DE_GameObject *obj, double angle, int speed);
-void DE_Object_RotateTowardsObject(DE_GameObject *obj, DE_GameObject *target, int speed);
-void DE_Object_RotateTowardsPosition(DE_GameObject *obj, DE_Vector2f pos, int speed);
+void Object_Rotate(GameObject *obj, double angle, int speed);
+void Object_RotateTowardsObject(GameObject *obj, GameObject *target, int speed);
+void Object_RotateTowardsPosition(GameObject *obj, Vector2f pos, int speed);
 
-static inline void NULL_OBJFUNC(DE_GameObject *obj) { }
+static inline void NULL_OBJFUNC(GameObject *obj) { }
 
 #undef obj_func
