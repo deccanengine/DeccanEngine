@@ -8,35 +8,37 @@
 #include <Deccan/Input.h>
 #include <Deccan/Core.h>
 
-static SDL_Event _input_event;
-static uint8_t _input_curr_keys [SDL_NUM_SCANCODES];
-static uint8_t _input_prev_keys [SDL_NUM_SCANCODES];
+static struct { 
+    SDL_Event event;
+    uint8_t curr_keys [SDL_NUM_SCANCODES];
+    uint8_t prev_keys [SDL_NUM_SCANCODES];
+} Input_Info = {0};
 
-SDL_Event *_input_get_event() {
-    return &_input_event;
+SDL_Event *Input_GetEventHandler() {
+    return &Input_Info.event;
 }
 
-void _input_init() {
-    memcpy(_input_prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
-    memcpy(_input_curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+void Input_ResetStates() {
+    memcpy(Input_Info.prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(Input_Info.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 }
 
-void _input_update() {
-    memcpy(_input_prev_keys, _input_curr_keys, sizeof(uint8_t)*SDL_NUM_SCANCODES);
-    memcpy(_input_curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+void Input_UpdateStates() {
+    memcpy(Input_Info.prev_keys, Input_Info.curr_keys, sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(Input_Info.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 }
 
 KeyState Input_GetKey(int key_code) {
     KeyState key;
 
-    if(_input_curr_keys[key_code]) { 
-        if(!_input_prev_keys[key_code]) { key.is_pressed = true; }
+    if(Input_Info.curr_keys[key_code]) { 
+        if(!Input_Info.prev_keys[key_code]) { key.is_pressed = true; }
         else { key.is_pressed = false; }
         key.is_held = true; 
         key.is_released = false;
     }
     else {
-        if(_input_prev_keys[key_code]) { key.is_released = true; }
+        if(Input_Info.prev_keys[key_code]) { key.is_released = true; }
         else { key.is_released = false; }
         
         key.is_held = false;
@@ -49,9 +51,9 @@ KeyState Input_GetKey(int key_code) {
 MouseState Input_GetMouseButton(int button_code) {
     MouseState button = {false, false};
 
-    if(_input_event.button.button == button_code) {
-        if(_input_event.type == SDL_MOUSEBUTTONDOWN) { button.is_down = true; }
-        else if(_input_event.type == SDL_MOUSEBUTTONUP) { button.is_up = true; }
+    if(Input_Info.event.button.button == button_code) {
+        if(Input_Info.event.type == SDL_MOUSEBUTTONDOWN) { button.is_down = true; }
+        else if(Input_Info.event.type == SDL_MOUSEBUTTONUP) { button.is_up = true; }
     }
 
     return button;
@@ -75,39 +77,39 @@ Vector2f Input_GetRelativeMousePos() {
 }
 
 int Input_MouseScrollHorizontal() {
-    if(_input_event.type == SDL_MOUSEWHEEL) {
-        if(_input_event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) { return _input_event.wheel.x; }
-        else { return -_input_event.wheel.x; }
+    if(Input_Info.event.type == SDL_MOUSEWHEEL) {
+        if(Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) { return Input_Info.event.wheel.x; }
+        else { return -Input_Info.event.wheel.x; }
     }
     return 0;
 }
 
 int Input_MouseScrollVertical() {
-    if(_input_event.type == SDL_MOUSEWHEEL) {
-        if(_input_event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) { return _input_event.wheel.y; }
-        else { return -_input_event.wheel.y ;}
+    if(Input_Info.event.type == SDL_MOUSEWHEEL) {
+        if(Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) { return Input_Info.event.wheel.y; }
+        else { return -Input_Info.event.wheel.y ;}
     }
     else { return 0; }
 }
 
 bool Input_KeyPressed(int key_code) {
-    return _input_curr_keys[key_code] && !_input_prev_keys[key_code];
+    return Input_Info.curr_keys[key_code] && !Input_Info.prev_keys[key_code];
 }
 
 bool Input_KeyReleased(int key_code) {
-    return !_input_curr_keys[key_code] && _input_prev_keys[key_code];
+    return !Input_Info.curr_keys[key_code] && Input_Info.prev_keys[key_code];
 }
 
 bool Input_KeyHeld(int key_code) {
-    return _input_curr_keys[key_code];
+    return Input_Info.curr_keys[key_code];
 }
 
 bool Input_ButtonDown(int button_code) {
-    return _input_event.type == SDL_MOUSEBUTTONDOWN &&
-           _input_event.button.button == button_code;
+    return Input_Info.event.type == SDL_MOUSEBUTTONDOWN &&
+           Input_Info.event.button.button == button_code;
 }
 
 bool Input_ButtonUp(int button_code) {
-    return _input_event.type == SDL_MOUSEBUTTONUP &&
-           _input_event.button.button == button_code;
+    return Input_Info.event.type == SDL_MOUSEBUTTONUP &&
+           Input_Info.event.button.button == button_code;
 }

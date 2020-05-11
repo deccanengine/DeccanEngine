@@ -98,7 +98,7 @@ int Core_Init(const char *title, Vector2i mode) {
     msg_init(&_core_msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
 
     _camera_init();
-    _input_init();
+    Input_ResetStates();
 
     return 1;
 }
@@ -133,7 +133,7 @@ void Core_Run(float fps) {
      */
     if(!_core_vsync_enabled) { _core_fps_req = fps; }
 
-    SDL_Event *event = _input_get_event();
+    SDL_Event *event = Input_GetEventHandler();
 
     while(_core_is_running) {
         frm_timer.Start(&frm_timer);
@@ -152,8 +152,8 @@ void Core_Run(float fps) {
             }
         }
         
-        /* Get and set current and key states*/
-        _input_update();
+        /* Update the input key states */
+        Input_UpdateStates();
 
         /* Calculate FPS */
         _core_fps_avg = _core_frame_count/fps_timer.GetTime(&fps_timer);

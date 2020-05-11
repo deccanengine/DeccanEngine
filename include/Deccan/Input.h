@@ -81,9 +81,9 @@ typedef struct {
     bool is_up;
 } MouseState;
 
-SDL_Event *_input_get_event();
-void _input_init();
-void _input_update();
+SDL_Event *Input_GetEventHandler();
+void Input_ResetStates();
+void Input_UpdateStates();
 
 KeyState Input_GetKey(int key_code);
 MouseState Input_GetMouseButton(int button_code);
