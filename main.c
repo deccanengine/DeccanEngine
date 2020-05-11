@@ -8,11 +8,11 @@ RawTexture *text;
 void begin() {
     /* Start here */
     Object_InstantiateObject(Object_NewObject("main player", "player", NULL_OBJFUNC, _player_begin, _player_step, _player_render, _player_end));
-    timer = Clock_NewTimer();
-    timer.Start(&timer);
-
+    
     Asset_LoadTexture("arrow0", "arrow0.png");
     Asset_LoadFont("arial", "arial.ttf");
+
+    Clock_StartTimer(&timer);
 
     Renderer_SetBackgroundColor(ColorList.white);
 
@@ -25,13 +25,13 @@ void step() {
 
 void render() {
     /* Start here */
-    if(Input_KeyReleased(Key.space) && timer.GetTimeMS(&timer) > 200) {
+    if(Input_KeyReleased(Key.space) && Clock_GetTime(&timer).milliseconds > 200) {
         GameObject *s = Object_NewObject("circle", "static", NULL_OBJFUNC, _none_begin, _none_step, _none_render, _none_end);
         s->position.x = Object_GetObject("main player")->position.x + 10;
         s->position.y = Object_GetObject("main player")->position.y + 10;
         Object_InstantiateObject(s);
         
-        timer.Reset(&timer);
+        Clock_ResetTimer(&timer);
     }
     
     if(Input_KeyReleased(Key.up)) {

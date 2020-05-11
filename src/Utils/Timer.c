@@ -7,52 +7,49 @@
 
 #include <Deccan/Config.h>
 
-void _timer_start(Timer *timer) {
-    timer->start_ticks = SDL_GetTicks();
-    timer->paused_ticks = 0;
-    timer->is_running = true;
-    timer->is_paused = false;
+void Clock_StartTimer(Timer *timer) {
+    timer->startTicks = SDL_GetTicks();
+    timer->pausedTicks = 0;
+    timer->isRunning = true;
+    timer->isPaused = false;
 }
 
-void _timer_stop(Timer *timer) {
-    timer->start_ticks = 0;
-    timer->paused_ticks = 0;
-    timer->is_running = false;
-    timer->is_paused = false;
+void Clock_StopTimer(Timer *timer) {
+    timer->startTicks = 0;
+    timer->pausedTicks = 0;
+    timer->isRunning = false;
+    timer->isPaused = false;
 }
 
-void _timer_pause(Timer *timer) {
-    if(timer->is_running && timer->is_paused) {
-        timer->is_paused = true;
+void Clock_ResetTimer(Timer *timer) {
+    Clock_StartTimer(timer);
+}
+
+void Clock_PauseTimer(Timer *timer) {
+    if(timer->isRunning && timer->isPaused) {
+        timer->isPaused = true;
         
         /* Calculate the paused ticks */
-        timer->paused_ticks = SDL_GetTicks() - timer->start_ticks;
-        timer->start_ticks = 0;
+        timer->pausedTicks = SDL_GetTicks() - timer->startTicks;
+        timer->startTicks = 0;
     }
 }
 
-float _timer_get_time_ms(Timer *timer) {
-    float time = 0.0f;
+Time Clock_GetTime(Timer *timer) {
+    float timeMS = 0.0f;
 
-    if(timer->is_running) {
-        if(timer->is_paused) { time = timer->paused_ticks; }
-        else { time = SDL_GetTicks() - timer->start_ticks; }
+    if(timer->isRunning) {
+        if(timer->isPaused) { 
+            timeMS = timer->pausedTicks; 
+        }
+        else { 
+            timeMS = SDL_GetTicks() - timer->startTicks; 
+        }
     }
     
+    Time time;
+    time.milliseconds = timeMS;
+    time.seconds = timeMS / 1000.0f;
+
     return time;
-}
-
-float _timer_get_time(Timer *timer) {
-    return _timer_get_time_ms(timer)/1000.0f;
-}
-
-Timer Clock_NewTimer() {
-    Timer timer;
-    timer.Start = _timer_start;
-    timer.Stop  = _timer_stop;
-    timer.Pause = _timer_pause;
-    timer.Reset = _timer_start; /* reset and start are same */
-    timer.GetTime = _timer_get_time;
-    timer.GetTimeMS = _timer_get_time_ms;
-    return timer;
 }

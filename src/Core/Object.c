@@ -10,11 +10,11 @@
 #include <Deccan/Core.h>
 
 void _msg_send(GameObject *obj, const char *msg) {
-    msg_send(&obj->msg, msg);
+    Msg_Send(&obj->msg, msg);
 }
 
 bool _msg_receive(GameObject *obj, const char *msg) {
-    return msg_receive(&obj->msg, msg);
+    return Msg_Receive(&obj->msg, msg);
 }
 
 #define obj_func(x) void (*x)(GameObject *object)
@@ -30,7 +30,7 @@ GameObject *Object_NewObject(
     
     obj->angle = 0.0f;
     
-    msg_init(&obj->msg, DECCAN_OBJ_MSG_COUNT, DECCAN_OBJ_MSG_LENGTH);
+    Msg_Init(&obj->msg, DECCAN_OBJ_MSG_COUNT, DECCAN_OBJ_MSG_LENGTH);
     obj->SendMessage = _msg_send;
     obj->ReceiveMessage = _msg_receive;
     

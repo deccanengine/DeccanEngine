@@ -33,7 +33,7 @@ typedef struct GameObject {
         struct { Color color; };     /* Color value for shape rendering */
     };
 
-    msgbuf msg;
+    MsgBuf msg;
     void (*SendMessage)(GameObject *obj, const char *msg);
     bool (*ReceiveMessage)(GameObject *obj, const char *msg);
 

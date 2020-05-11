@@ -90,30 +90,37 @@ typedef struct Vector3i {
     int32_t z;
 } Vector3i;
 
-typedef struct msgbuf {
-    int msg_count;
-    int msg_length;
-    int msg_num;
+typedef struct MsgBuf {
+    int count;
+    int length;
+    int num;
     char **messages;
-} msgbuf;
+} MsgBuf;
 
-void msg_init(msgbuf *buf, int msg_count, int msg_length);
-void msg_send(msgbuf *buf, const char *msg);
-bool msg_receive(msgbuf *buf, const char *msg);
-void msg_free(msgbuf *buf);
+void Msg_Init(MsgBuf *buf, int count, int length);
+void Msg_Send(MsgBuf *buf, const char *msg);
+bool Msg_Receive(MsgBuf *buf, const char *msg);
+void Msg_Free(MsgBuf *buf);
 
 typedef struct Timer Timer;
 typedef struct Timer {
-    float start_ticks, paused_ticks;
-    bool is_running, is_paused;
-
-    void (*Start)(Timer *timer);
-    void (*Stop) (Timer *timer);
-    void (*Pause)(Timer *timer);
-    void (*Reset)(Timer *timer);
-    float (*GetTime)(Timer *timer);
-    float (*GetTimeMS)(Timer *timer);
+    float startTicks;
+    float pausedTicks;
+    bool isRunning;
+    bool isPaused;
 } Timer;
 
-static inline void Clock_Delay(int32_t ms) { SDL_Delay(ms); }
-Timer Clock_NewTimer();
+typedef struct Time {
+    float seconds;
+    float milliseconds;
+} Time;
+
+static inline void Clock_Delay(int32_t ms) { 
+    SDL_Delay(ms); 
+}
+
+void Clock_StartTimer(Timer *timer);
+void Clock_StopTimer (Timer *timer);
+void Clock_PauseTimer(Timer *timer);
+void Clock_ResetTimer(Timer *timer);
+Time Clock_GetTime(Timer *timer);

@@ -29,7 +29,7 @@ static struct {
     float fpsAverage;
     float deltaTime;
 
-    msgbuf msg;
+    MsgBuf msg;
 
 #ifdef DECCAN_REPORTS_ENABLED
     FILE *logfile;
@@ -100,7 +100,7 @@ int Core_Init(const char *title, Vector2i mode) {
     Core_Info.winMode = mode;
 
     Input_ResetStates();
-    msg_init(&Core_Info.msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
+    Msg_Init(&Core_Info.msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
 
     return 1;
 }
@@ -121,10 +121,10 @@ void Core_Quit() {
 }
 
 void Core_Run(float fps) {
-    Timer fpsTimer = Clock_NewTimer();
-    Timer frmTimer = Clock_NewTimer();
+    Timer fpsTimer;
+    Timer frmTimer;
 
-    fpsTimer.Start(&fpsTimer);    /* To calculate FPS */
+    Clock_StartTimer(&fpsTimer);    /* To calculate FPS */
 
     /* If no FPS limit is set then enable VSync*/
     if(fps <= 0.0f) 
@@ -139,7 +139,7 @@ void Core_Run(float fps) {
     SDL_Event *event = Input_GetEventHandler();
 
     while(Core_Info.isRunning) {
-        frmTimer.Start(&frmTimer);
+        Clock_StartTimer(&frmTimer);
 
         /* Handle some events */
         if(SDL_PollEvent(event)) {
@@ -159,7 +159,7 @@ void Core_Run(float fps) {
         Input_UpdateStates();
 
         /* Calculate FPS */
-        Core_Info.fpsAverage = Core_Info.frameCount/fpsTimer.GetTime(&fpsTimer);
+        Core_Info.fpsAverage = Core_Info.frameCount / Clock_GetTime(&fpsTimer).seconds;
         if(Core_Info.fpsAverage > 20000) { 
             Core_Info.fpsAverage = 0.0f; 
         }
@@ -219,7 +219,7 @@ void Core_Run(float fps) {
         Core_Info.frameCount++; /* Increment the frame counter */
         
         /* Current ticks per frame i.e delta time */
-        Core_Info.deltaTime = frmTimer.GetTimeMS(&frmTimer);  
+        Core_Info.deltaTime = Clock_GetTime(&frmTimer).milliseconds;  
 
         /* Limit FPS */
         if(!Core_Info.isVsyncEnabled && (Core_Info.fpsRequired > 0.0f)) {
@@ -236,10 +236,10 @@ void Core_Run(float fps) {
     for(int i=0; i<scene->object_count; i++) {
         GameObject *obj = scene->objects[i];
         obj->AtEnd(obj);
-        msg_free(&obj->msg);
+        Msg_Free(&obj->msg);
     }
     
-    msg_free(&Core_Info.msg);
+    Msg_Free(&Core_Info.msg);
     Core_Quit();
 }
 
@@ -319,11 +319,11 @@ float Core_GetDeltaTime() {
 }
 
 void Core_SendMessage(const char *msg) {
-    msg_send(&Core_Info.msg, msg);
+    Msg_Send(&Core_Info.msg, msg);
 }
 
 bool Core_ReceiveMessage(const char *msg) {
-    return msg_receive(&Core_Info.msg, msg);
+    return Msg_Receive(&Core_Info.msg, msg);
 }
 
 void DE_error(const char *str, ...) {
