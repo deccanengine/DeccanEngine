@@ -21,6 +21,7 @@
 
 #include "../../depends/stb_ds.h"
 
+/* Define basic constants */
 #ifndef PI 
     #define PI 3.14159265358979323846
 #endif
@@ -28,8 +29,12 @@
 #define DEG2RAD (PI/180.0000)
 #define RAD2DEG (180.0000/PI)
 
-typedef SDL_Texture RawTexture;
+/* Texture structure depends on backend */
+#ifdef DECCAN_RENDERER_SDL
+    typedef SDL_Texture RawTexture;
+#endif
 
+/* Memory management functions */
 #ifndef DE_NEW
     #define DE_NEW(type,size) (type*)malloc(sizeof(type)*size);
 #endif
@@ -40,6 +45,7 @@ static inline char *DE_newstring(const char *source) {
     return string;
 }
 
+/* Error handling/logging */
 extern void DE_error (const char *str, ...);
 extern void DE_report(const char *str, ...);
 

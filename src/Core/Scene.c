@@ -10,10 +10,10 @@
 
 static struct {
     GameScene **scenes;
-    int scene_count;
+    int sceneCount;
 } SceneInfo = {
     .scenes = NULL,
-    .scene_count = 0
+    .sceneCount = 0
 };
 
 GameScene **Scene_GetSceneArray() {
@@ -21,7 +21,7 @@ GameScene **Scene_GetSceneArray() {
 }
 
 int Scene_GetSceneCount() {
-    return SceneInfo.scene_count;
+    return SceneInfo.sceneCount;
 }
 
 void Scene_FreeAll() {
@@ -52,33 +52,33 @@ GameScene *Scene_NewScene(const char *name, void_func(af), void_func(as), void_f
 void Scene_AddScene(GameScene *scene, bool is_replacing) {
     if(scene == NULL) { DE_report("Invalid scene data"); return; }
 
-    if(SceneInfo.scene_count != 0) {
-        if(is_replacing) { stbds_arrpop(SceneInfo.scenes); SceneInfo.scene_count--; }
-        else { SceneInfo.scenes[SceneInfo.scene_count-1]->is_paused = true; }
+    if(SceneInfo.sceneCount != 0) {
+        if(is_replacing) { stbds_arrpop(SceneInfo.scenes); SceneInfo.sceneCount--; }
+        else { SceneInfo.scenes[SceneInfo.sceneCount-1]->is_paused = true; }
     }
     
     if(stbds_arrput(SceneInfo.scenes, scene) != scene) {
         DE_report("Cannot add scene: %s\n", scene->name);
         return;
     }
-    SceneInfo.scene_count++;
+    SceneInfo.sceneCount++;
 }
 
 void Scene_RemoveScene() {
-    if(SceneInfo.scene_count > 1) { 
+    if(SceneInfo.sceneCount > 1) { 
         stbds_arrpop(SceneInfo.scenes);
-        SceneInfo.scenes[SceneInfo.scene_count-1]->is_paused = false;
+        SceneInfo.scenes[SceneInfo.sceneCount-1]->is_paused = false;
     }
 }
 
 GameScene *Scene_CurrentScene() {
-    return SceneInfo.scenes[SceneInfo.scene_count-1];
+    return SceneInfo.scenes[SceneInfo.sceneCount-1];
 }
 
 void Scene_PauseScene(bool pause) {
-    SceneInfo.scenes[SceneInfo.scene_count-1]->is_paused = pause;
+    SceneInfo.scenes[SceneInfo.sceneCount-1]->is_paused = pause;
 }
 
 bool Scene_IsScenePaused() {
-    return SceneInfo.scenes[SceneInfo.scene_count-1]->is_paused;
+    return SceneInfo.scenes[SceneInfo.sceneCount-1]->is_paused;
 }

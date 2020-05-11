@@ -10,29 +10,37 @@
 #include <Deccan/Input.h>
 #include <Deccan/Renderer.h>
 
+static struct {
 #ifdef DECCAN_RENDERER_SDL
-    static SDL_Window *_core_window;
-#else
-
+    SDL_Window *window;
 #endif
 
-static int _core_gl_major;
-static int _core_gl_minor;
-static bool _core_is_running;
+    int glMajor;
+    int glMinor;
 
-static Vector2i _core_win_mode;
-static bool _core_is_fullscreen;
-static bool _core_vsync_enabled;
-static int32_t _core_frame_count;
-static float _core_fps_req;
-static float _core_fps_avg;
-static float _core_delta_time;
+    Vector2i winMode;
 
-static msgbuf _core_msg;
+    bool isRunning;
+    bool isFullscreen;
+    bool isVsyncEnabled;
+    
+    int32_t frameCount;
+    float fpsRequired;
+    float fpsAverage;
+    float deltaTime;
+
+    msgbuf msg;
 
 #ifdef DECCAN_REPORTS_ENABLED
-    static FILE *_core_logfile;
+    FILE *logfile;
 #endif
+} Core_Info = {
+    .isRunning = true,
+    .isFullscreen = false,
+    .isVsyncEnabled = false,
+    .fpsRequired = 60.0f,
+    .frameCount = 0
+};
 
 /* Core */
 int Core_Init(const char *title, Vector2i mode) {
@@ -63,7 +71,7 @@ int Core_Init(const char *title, Vector2i mode) {
 
     /* Create window */
     int window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-    if((_core_window = SDL_CreateWindow(title, 0, 0, mode.x, mode.y, window_flags)) == NULL) {
+    if((Core_Info.window = SDL_CreateWindow(title, 0, 0, mode.x, mode.y, window_flags)) == NULL) {
         DE_error("Could not create window: %s", SDL_GetError());
     }
 
@@ -73,41 +81,37 @@ int Core_Init(const char *title, Vector2i mode) {
     }
 
     /* Create renderer */
-    Renderer_Init(_core_window);
+    Renderer_Init(Core_Info.window);
 #else
     
 #endif
-    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &_core_gl_major);
-    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &_core_gl_minor);
-    if(_core_gl_major < 2 || (_core_gl_major == 2 && _core_gl_minor < 1)) {
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &Core_Info.glMajor);
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &Core_Info.glMinor);
+    if(Core_Info.glMajor < 2 || (Core_Info.glMajor == 2 && Core_Info.glMinor < 1)) {
         DE_error("OpenGL 2.1 support needed at minimum. Consider upgrading your hardware.");
     }
 
     /* Open the log file */
-    _core_logfile = fopen("report.log", "w");
-    if(_core_logfile == NULL) {
+    Core_Info.logfile = fopen("report.log", "w");
+    if(Core_Info.logfile == NULL) {
         DE_error("Could not create/open log file");
     }
 
-    _core_is_running = true;
-
-    _core_win_mode = mode;
-    _core_vsync_enabled = false;
-    _core_fps_req = 60.0f;      /* Fallback FPS limit if vsync is disabled somwhere and new limit is not set */
-
-    msg_init(&_core_msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
+    Core_Info.winMode = mode;
 
     Input_ResetStates();
+    msg_init(&Core_Info.msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
 
     return 1;
 }
 
 void Core_Quit() {
-    fclose(_core_logfile);
+    fclose(Core_Info.logfile);
     Scene_FreeAll();
+
 #ifdef DECCAN_RENDERER_SDL
     Renderer_Quit();
-    SDL_DestroyWindow(_core_window);    
+    SDL_DestroyWindow(Core_Info.window);    
 #else
     
 #endif
@@ -117,35 +121,35 @@ void Core_Quit() {
 }
 
 void Core_Run(float fps) {
-    Timer fps_timer = Clock_NewTimer();
-    Timer frm_timer = Clock_NewTimer();
+    Timer fpsTimer = Clock_NewTimer();
+    Timer frmTimer = Clock_NewTimer();
 
-    fps_timer.Start(&fps_timer);    /* To calculate FPS */
+    fpsTimer.Start(&fpsTimer);    /* To calculate FPS */
 
     /* If no FPS limit is set then enable VSync*/
-    if(fps <= 0.0f) { Core_SetVsyncStatus(true); }
+    if(fps <= 0.0f) 
+         { Core_SetVsyncStatus(true);  }
     else { Core_SetVsyncStatus(false); }
     
     /* Set FPS limit if VSync is not enabled */
-    /* There is no gurantee than VSync is enabled by set_vsync_status().
-     * Hence, it is separated. 
-     */
-    if(!_core_vsync_enabled) { _core_fps_req = fps; }
+    if(!Core_Info.isVsyncEnabled) { 
+        Core_Info.fpsRequired = fps; 
+    }
 
     SDL_Event *event = Input_GetEventHandler();
 
-    while(_core_is_running) {
-        frm_timer.Start(&frm_timer);
+    while(Core_Info.isRunning) {
+        frmTimer.Start(&frmTimer);
 
         /* Handle some events */
         if(SDL_PollEvent(event)) {
             switch(event->type) {
-                case SDL_QUIT: { _core_is_running = false; break; }
+                case SDL_QUIT: { Core_Info.isRunning = false; break; }
                 case SDL_KEYDOWN: {
                     /* Close on Escape Key */
                     // To do: make it toggleable
                     if(event->key.keysym.sym == SDLK_ESCAPE) { 
-                        _core_is_running = false; break;
+                        Core_Info.isRunning = false; break;
                     }
                 }
             }
@@ -155,12 +159,15 @@ void Core_Run(float fps) {
         Input_UpdateStates();
 
         /* Calculate FPS */
-        _core_fps_avg = _core_frame_count/fps_timer.GetTime(&fps_timer);
-        if(_core_fps_avg > 20000) { _core_fps_avg = 0.0f; }
+        Core_Info.fpsAverage = Core_Info.frameCount/fpsTimer.GetTime(&fpsTimer);
+        if(Core_Info.fpsAverage > 20000) { 
+            Core_Info.fpsAverage = 0.0f; 
+        }
 
         /* Process Scene(s) and GameObject(s) */
         int index = Scene_GetSceneCount()-1;        /* Current Scene index */
         GameScene *scene = Scene_GetSceneArray()[index];  /* Current scene */
+
         /* First frame of the scene. Same as at_beginning for scene */
         if(scene->is_first_frame == true) {
             scene->AtFirstFrame();
@@ -173,7 +180,7 @@ void Core_Run(float fps) {
             }
         }
 
-        /* at_beginning of objects */
+        /* AtBeginning of objects */
         for(int i=0; i<scene->object_count; i++) {
             GameObject *obj = scene->objects[i];
             if(obj->is_beginning) {
@@ -182,17 +189,17 @@ void Core_Run(float fps) {
             }
         }
 
-        /* at_step of scenes and objects */
+        /* AtStep of scenes and objects */
         scene->AtStep();
         for(int i=0; i<scene->object_count; i++) {
             GameObject *obj = scene->objects[i];
             obj->AtStep(obj);
         }
 
-        
+        /* Render the background before rendering anything */
         Renderer_Background();
 
-        /* at_render of scenes and objects */
+        /* AtRender of scenes and objects */
         scene->AtRender();
         for(int i=0; i<scene->object_count; i++) {
             GameObject *obj = scene->objects[i];
@@ -209,16 +216,16 @@ void Core_Run(float fps) {
         event->wheel.x = 0;
         event->wheel.y = 0;
 
-        /* Increment the frame counter */
-        _core_frame_count++;
+        Core_Info.frameCount++; /* Increment the frame counter */
+        
         /* Current ticks per frame i.e delta time */
-        _core_delta_time = frm_timer.GetTimeMS(&frm_timer);  
+        Core_Info.deltaTime = frmTimer.GetTimeMS(&frmTimer);  
 
         /* Limit FPS */
-        if(!_core_vsync_enabled && _core_fps_req > 0.0f) {
-            float ticks_per_frame = 1000/_core_fps_req;  /* Required ticks per frame */
-            if(_core_delta_time < ticks_per_frame) {
-                Clock_Delay((int)(ticks_per_frame - _core_delta_time));
+        if(!Core_Info.isVsyncEnabled && (Core_Info.fpsRequired > 0.0f)) {
+            float ticksPerFrame = (1000.0f / Core_Info.fpsRequired);  /* Required ticks per frame */
+            if(Core_Info.deltaTime < ticksPerFrame) {
+                Clock_Delay((int)(ticksPerFrame - Core_Info.deltaTime));
             }
         }
     }
@@ -232,30 +239,34 @@ void Core_Run(float fps) {
         msg_free(&obj->msg);
     }
     
-    msg_free(&_core_msg);
+    msg_free(&Core_Info.msg);
     Core_Quit();
 }
 
 /* Core Settings Setters */
 void Core_SetTitle(const char *name) {
-    SDL_SetWindowTitle(_core_window, name);
+    SDL_SetWindowTitle(Core_Info.window, name);
 }
 
 void Core_SetMode(Vector2i mode) {
-    if(_core_is_fullscreen) {
+    if(Core_Info.isFullscreen) {
         SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN, mode.x, mode.y, 0, 0};
-        if(SDL_SetWindowDisplayMode(_core_window, &disp) > 0) {
+        
+        if(SDL_SetWindowDisplayMode(Core_Info.window, &disp) > 0) {
             DE_report("Cannot set fullscreen window mode: %s", SDL_GetError());
         }
-        SDL_MaximizeWindow(_core_window);
+        
+        SDL_MaximizeWindow(Core_Info.window);
     }
-    else { SDL_SetWindowSize(_core_window, mode.x, mode.y); }
-    _core_win_mode = mode;
+    else { 
+        SDL_SetWindowSize(Core_Info.window, mode.x, mode.y); 
+    }
+    Core_Info.winMode = mode;
 }
 
 void Core_SetFullscreen() {
-    SDL_SetWindowFullscreen(_core_window, _core_is_fullscreen ? 0 : 1);
-    _core_is_fullscreen = !_core_is_fullscreen;
+    SDL_SetWindowFullscreen(Core_Info.window, Core_Info.isFullscreen ? 0 : 1);
+    Core_Info.isFullscreen = !Core_Info.isFullscreen;
 }
 
 void Core_SetVsyncStatus(bool vsync) {
@@ -265,53 +276,54 @@ void Core_SetVsyncStatus(bool vsync) {
     }
 
     int status = SDL_GL_GetSwapInterval();
-    if(status == 0) { _core_vsync_enabled = false; }
-    else { _core_vsync_enabled = true; }
+    if(status == 0) 
+         { Core_Info.isVsyncEnabled = false; }
+    else { Core_Info.isVsyncEnabled = true; }
 }
 
 void Core_SetFramerateLimit(float fps){
-    _core_fps_req = fps;
+    Core_Info.fpsRequired = fps;
 }
 
 /* Core Settings Getters */
 const char *Core_GetTitle() {
-    return SDL_GetWindowTitle(_core_window);
+    return SDL_GetWindowTitle(Core_Info.window);
 }
 
 Vector2i Core_GetMode() {
-    return _core_win_mode;
+    return Core_Info.winMode;
 }
 
 bool Core_GetFullscreenStatus() {
-    return _core_is_fullscreen;
+    return Core_Info.isFullscreen;
 }
 
 bool Core_GetVsyncStatus() {
-    return _core_vsync_enabled;
+    return Core_Info.isVsyncEnabled;
 }
 
 float Core_GetFramerateLimit() {
-    return _core_fps_req;
+    return Core_Info.fpsRequired;
 }
 
 float Core_GetAverageFramerate() {
-    return _core_fps_avg;
+    return Core_Info.fpsAverage;
 }
 
 int32_t Core_GetTotalFrameCount() {
-    return _core_frame_count;
+    return Core_Info.frameCount;
 }
 
 float Core_GetDeltaTime() {
-    return _core_delta_time;
+    return Core_Info.deltaTime;
 }
 
 void Core_SendMessage(const char *msg) {
-    msg_send(&_core_msg, msg);
+    msg_send(&Core_Info.msg, msg);
 }
 
 bool Core_ReceiveMessage(const char *msg) {
-    return msg_receive(&_core_msg, msg);
+    return msg_receive(&Core_Info.msg, msg);
 }
 
 void DE_error(const char *str, ...) {
@@ -331,9 +343,9 @@ void DE_report(const char *str, ...) {
     va_list args;
     
     va_start(args, str);
-    vfprintf(_core_logfile, str, args);
+    vfprintf(Core_Info.logfile, str, args);
     va_end(args);
     
-    fprintf(_core_logfile, "\n");
+    fprintf(Core_Info.logfile, "\n");
 #endif
 }

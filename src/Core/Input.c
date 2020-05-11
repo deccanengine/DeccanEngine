@@ -10,8 +10,8 @@
 
 static struct { 
     SDL_Event event;
-    uint8_t curr_keys [SDL_NUM_SCANCODES];
-    uint8_t prev_keys [SDL_NUM_SCANCODES];
+    uint8_t currKeys [SDL_NUM_SCANCODES];
+    uint8_t prevKeys [SDL_NUM_SCANCODES];
 } Input_Info = {0};
 
 SDL_Event *Input_GetEventHandler() {
@@ -19,26 +19,26 @@ SDL_Event *Input_GetEventHandler() {
 }
 
 void Input_ResetStates() {
-    memcpy(Input_Info.prev_keys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
-    memcpy(Input_Info.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(Input_Info.prevKeys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(Input_Info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 }
 
 void Input_UpdateStates() {
-    memcpy(Input_Info.prev_keys, Input_Info.curr_keys, sizeof(uint8_t)*SDL_NUM_SCANCODES);
-    memcpy(Input_Info.curr_keys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(Input_Info.prevKeys, Input_Info.currKeys, sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(Input_Info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
 }
 
 KeyState Input_GetKey(int key_code) {
     KeyState key;
 
-    if(Input_Info.curr_keys[key_code]) { 
-        if(!Input_Info.prev_keys[key_code]) { key.is_pressed = true; }
+    if(Input_Info.currKeys[key_code]) { 
+        if(!Input_Info.prevKeys[key_code]) { key.is_pressed = true; }
         else { key.is_pressed = false; }
         key.is_held = true; 
         key.is_released = false;
     }
     else {
-        if(Input_Info.prev_keys[key_code]) { key.is_released = true; }
+        if(Input_Info.prevKeys[key_code]) { key.is_released = true; }
         else { key.is_released = false; }
         
         key.is_held = false;
@@ -93,15 +93,15 @@ int Input_MouseScrollVertical() {
 }
 
 bool Input_KeyPressed(int key_code) {
-    return Input_Info.curr_keys[key_code] && !Input_Info.prev_keys[key_code];
+    return Input_Info.currKeys[key_code] && !Input_Info.prevKeys[key_code];
 }
 
 bool Input_KeyReleased(int key_code) {
-    return !Input_Info.curr_keys[key_code] && Input_Info.prev_keys[key_code];
+    return !Input_Info.currKeys[key_code] && Input_Info.prevKeys[key_code];
 }
 
 bool Input_KeyHeld(int key_code) {
-    return Input_Info.curr_keys[key_code];
+    return Input_Info.currKeys[key_code];
 }
 
 bool Input_ButtonDown(int button_code) {
