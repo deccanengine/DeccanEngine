@@ -56,8 +56,6 @@ void Asset_LoadFont(const char *name, const char *path);
 TTF_Font *Asset_GetFont(const char *name);
 
 /* Camera */
-void _camera_init();
-
 void Camera_Move(Vector2f pos);
 void Camera_CenterOn(GameObject *obj);
 void Camera_SetPosition(Vector2f pos);

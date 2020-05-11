@@ -9,13 +9,13 @@
 #include <Deccan/Core.h>
 #include <Deccan/Object.h>
 
-static Vector2f _camera_camera;
-static PosRect  _camera_camera_bounds;
-
-void _camera_init() {
-    _camera_camera = (Vector2f){0, 0};
-    _camera_camera_bounds = (PosRect){-1, -1, -1, -1};
-}
+static struct {
+    Vector2f position;
+    PosRect  bounds;
+} Camera_Info = {
+    .position = (Vector2f){ 0,  0},
+    .bounds   = (PosRect ){-1, -1, -1, -1}
+};
 
 void _clamp(Vector2f *pos, PosRect *rect, float *final_x, float *final_y) {
     /* Bounds are not set */
@@ -38,10 +38,10 @@ void _clamp(Vector2f *pos, PosRect *rect, float *final_x, float *final_y) {
 
 void Camera_Move(Vector2f pos) {
     float x, y; 
-    _clamp(&pos, &_camera_camera_bounds, &x, &y);
+    _clamp(&pos, &Camera_Info.bounds, &x, &y);
 
-    _camera_camera.x += x;
-    _camera_camera.y += y;
+    Camera_Info.position.x += x;
+    Camera_Info.position.y += y;
 }
 
 void Camera_CenterOn(GameObject *obj) {
@@ -56,22 +56,22 @@ void Camera_CenterOn(GameObject *obj) {
     float y = (obj->position.y) + (obj->size.y)/2 - (mode.y/pixel.y)/2;
 
     Vector2f pos = {x, y};
-    _clamp(&pos, &_camera_camera_bounds, &x, &y);
+    _clamp(&pos, &Camera_Info.bounds, &x, &y);
     Camera_SetPosition((Vector2f){x, y});
 }
 
 void Camera_SetPosition(Vector2f pos) {
-    _camera_camera = pos;
+    Camera_Info.position = pos;
 }
 
 void Camera_SetBounds(PosRect rect) {
-    _camera_camera_bounds = rect;
+    Camera_Info.bounds = rect;
 }
 
 Vector2f Camera_GetPosition() {
-    return _camera_camera;
+    return Camera_Info.position;
 }
 
 PosRect Camera_GetBounds() {
-    return _camera_camera_bounds;
+    return Camera_Info.bounds;
 }

@@ -97,7 +97,6 @@ int Core_Init(const char *title, Vector2i mode) {
 
     msg_init(&_core_msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
 
-    _camera_init();
     Input_ResetStates();
 
     return 1;

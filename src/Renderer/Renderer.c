@@ -8,52 +8,54 @@
 #include <Deccan/Renderer.h>
 #include <Deccan/Core.h>
 
+static struct {
 #ifdef DECCAN_RENDERER_SDL
-    static SDL_Renderer *_renderer_renderer;
+    SDL_Renderer *renderer;
 #endif
+    RawTexture *target;
 
-static RawTexture *_renderer_target;
+    struct {
+        int type; 
+        union {
+            RawTexture *texture;
+            Color color;
+        };
+    } background;
 
-struct {
-    int type; 
-    union {
-        RawTexture *texture;
-        Color color;
-    };
-} _renderer_background;
+} Renderer_Info = {0};
 
 SDL_Renderer *Renderer_GetRenderer() {
-    return _renderer_renderer;
+    return Renderer_Info.renderer;
 }
 
 void Renderer_Init(SDL_Window *window) {
     int render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    if((_renderer_renderer = SDL_CreateRenderer(window, -1, render_flags)) == NULL) {
+    if((Renderer_Info.renderer = SDL_CreateRenderer(window, -1, render_flags)) == NULL) {
         DE_error("Could not create renderer: %s", SDL_GetError());
     }
 
-    _renderer_target = SDL_GetRenderTarget(_renderer_renderer);
+    Renderer_Info.target = SDL_GetRenderTarget(Renderer_Info.renderer);
 }
 
 void Renderer_Quit() {
-    SDL_DestroyRenderer(_renderer_renderer);
+    SDL_DestroyRenderer(Renderer_Info.renderer);
 }
 
 void Renderer_Present() {
-    SDL_RenderPresent(_renderer_renderer);
+    SDL_RenderPresent(Renderer_Info.renderer);
 }
 
 void Renderer_Background() {
-    switch(_renderer_background.type) {
+    switch(Renderer_Info.background.type) {
         case 0: {
-            Renderer_ClearColor(_renderer_background.color); break;
+            Renderer_ClearColor(Renderer_Info.background.color); break;
         }
         case 1: {
             Renderer_Clear();
             Vector2i mode = Core_GetMode();
             Vector2f camera = Camera_GetPosition();
             Rect rect = {camera.x, camera.y, mode.x, mode.y};
-            Renderer_TextureBlit(rect, 0, 0, _renderer_background.texture); 
+            Renderer_TextureBlit(rect, 0, 0, Renderer_Info.background.texture); 
             break;
         }
     }
@@ -69,27 +71,27 @@ void Renderer_Clear() {
 void Renderer_ClearColor(Color color) {
     Renderer_SetColor(color);
 #ifdef DECCAN_RENDERER_SDL
-    SDL_RenderClear(_renderer_renderer);
+    SDL_RenderClear(Renderer_Info.renderer);
 #else
 
 #endif
 }
 
 void Renderer_SetBackgroundColor(Color color) {
-    _renderer_background.type = 0;
-    _renderer_background.color = color;
+    Renderer_Info.background.type = 0;
+    Renderer_Info.background.color = color;
 }
 
 void Renderer_SetBackgroundTexture(RawTexture *texture) {
-    _renderer_background.type = 1;
-    _renderer_background.texture = texture;
+    Renderer_Info.background.type = 1;
+    Renderer_Info.background.texture = texture;
 }
 
 void Renderer_SetTarget(RawTexture *target) { 
-    if(target == NULL) { target = _renderer_target; }
+    if(target == NULL) { target = Renderer_Info.target; }
 
 #ifdef DECCAN_RENDERER_SDL
-    if(SDL_SetRenderTarget(_renderer_renderer, target) != 0) {
+    if(SDL_SetRenderTarget(Renderer_Info.renderer, target) != 0) {
         DE_report("Cannot set render target: %s", SDL_GetError());
     }
 #else
@@ -99,7 +101,7 @@ void Renderer_SetTarget(RawTexture *target) {
 
 void Renderer_SetColor(Color color) {
 #ifdef DECCAN_RENDERER_SDL
-    SDL_SetRenderDrawColor(_renderer_renderer, color.r, color.g, color.b, color.a);
+    SDL_SetRenderDrawColor(Renderer_Info.renderer, color.r, color.g, color.b, color.a);
 #else
 
 #endif
@@ -107,7 +109,7 @@ void Renderer_SetColor(Color color) {
 
 void Renderer_SetPixelSize(Vector2f size) {
 #ifdef DECCAN_RENDERER_SDL
-    SDL_RenderSetScale(_renderer_renderer, size.x, size.y);
+    SDL_RenderSetScale(Renderer_Info.renderer, size.x, size.y);
 #else
 
 #endif
@@ -115,7 +117,7 @@ void Renderer_SetPixelSize(Vector2f size) {
 
 void Renderer_SetBlendMode(int blend_mode) {
 #ifdef DECCAN_RENDERER_SDL
-    if(SDL_SetRenderDrawBlendMode(_renderer_renderer, blend_mode) != 0) {
+    if(SDL_SetRenderDrawBlendMode(Renderer_Info.renderer, blend_mode) != 0) {
         DE_report("Cannot set blend mode: %s", SDL_GetError());
     }
 #else
@@ -127,16 +129,16 @@ void Renderer_SetBlendMode(int blend_mode) {
 
 Color Renderer_GetBackgroundColor() {
     Color color = {0, 0, 0, 0};
-    if(_renderer_background.type == 0) { 
-        color = _renderer_background.color; 
+    if(Renderer_Info.background.type == 0) { 
+        color = Renderer_Info.background.color; 
     }
     return color;
 }
 
 RawTexture *Renderer_GetBackgroundTexture() {
     RawTexture *texture = NULL;
-    if(_renderer_background.type == 1) { 
-        texture = _renderer_background.texture; 
+    if(Renderer_Info.background.type == 1) { 
+        texture = Renderer_Info.background.texture; 
     }
     return texture;
 }
@@ -144,7 +146,7 @@ RawTexture *Renderer_GetBackgroundTexture() {
 RawTexture *Renderer_GetTarget() {
     RawTexture *target;
 #ifdef DECCAN_RENDERER_SDL
-    target = SDL_GetRenderTarget(_renderer_renderer);
+    target = SDL_GetRenderTarget(Renderer_Info.renderer);
     if(target == NULL) {
         DE_error("Render target is NULL");
     }
@@ -157,7 +159,7 @@ RawTexture *Renderer_GetTarget() {
 Color Renderer_GetColor() {
     Color color = {0, 0, 0, 0};
 #ifdef DECCAN_RENDERER_SDL
-    SDL_GetRenderDrawColor(_renderer_renderer, &color.r, &color.g, &color.b, &color.a);
+    SDL_GetRenderDrawColor(Renderer_Info.renderer, &color.r, &color.g, &color.b, &color.a);
 #else
 
 #endif
@@ -167,7 +169,7 @@ Color Renderer_GetColor() {
 Vector2f Renderer_GetPixelSize() {
     Vector2f size = {0.0f, 0.0f};
 #ifdef DECCAN_RENDERER_SDL
-    SDL_RenderGetScale(_renderer_renderer, &size.x, &size.y);
+    SDL_RenderGetScale(Renderer_Info.renderer, &size.x, &size.y);
 #else
 
 #endif
@@ -177,7 +179,7 @@ Vector2f Renderer_GetPixelSize() {
 BlendMode Renderer_GetBlendMode() {
     SDL_BlendMode blend = SDL_BLENDMODE_NONE;
 #ifdef DECCAN_RENDERER_SDL
-    SDL_GetRenderDrawBlendMode(_renderer_renderer, &blend);
+    SDL_GetRenderDrawBlendMode(Renderer_Info.renderer, &blend);
 #else
 
 #endif
