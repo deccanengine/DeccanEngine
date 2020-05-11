@@ -44,7 +44,6 @@ void Renderer_Present() {
 }
 
 void Renderer_Background() {
-    GameInfo *engine = Core_GetGlobalInfo();
     switch(_renderer_background.type) {
         case 0: {
             Renderer_ClearColor(_renderer_background.color); break;

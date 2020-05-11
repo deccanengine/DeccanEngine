@@ -10,8 +10,6 @@
 #include <Deccan/Input.h>
 #include <Deccan/Renderer.h>
 
-static GameInfo engine;
-
 #ifdef DECCAN_RENDERER_SDL
     static SDL_Window *_core_window;
 #else
@@ -37,14 +35,6 @@ static msgbuf _core_msg;
 #endif
 
 /* Core */
-void Core_SetGlobalInfo(GameInfo *info) {
-    engine = *info;
-}
-
-GameInfo *Core_GetGlobalInfo() {
-    return &engine;
-}
-
 int Core_Init(const char *title, Vector2i mode) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
@@ -105,9 +95,6 @@ int Core_Init(const char *title, Vector2i mode) {
     _core_vsync_enabled = false;
     _core_fps_req = 60.0f;      /* Fallback FPS limit if vsync is disabled somwhere and new limit is not set */
 
-    engine.scenes = NULL;
-    engine.scene_count = 0;
-
     msg_init(&_core_msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
 
     _camera_init();
@@ -118,7 +105,7 @@ int Core_Init(const char *title, Vector2i mode) {
 
 void Core_Quit() {
     fclose(_core_logfile);
-    stbds_arrfree(engine.scenes);
+    Scene_FreeAll();
 #ifdef DECCAN_RENDERER_SDL
     Renderer_Quit();
     SDL_DestroyWindow(_core_window);    
@@ -173,8 +160,8 @@ void Core_Run(float fps) {
         if(_core_fps_avg > 20000) { _core_fps_avg = 0.0f; }
 
         /* Process Scene(s) and GameObject(s) */
-        int index = engine.scene_count-1;        /* Current Scene index */
-        GameScene *scene = engine.scenes[index];  /* Current scene */
+        int index = Scene_GetSceneCount()-1;        /* Current Scene index */
+        GameScene *scene = Scene_GetSceneArray()[index];  /* Current scene */
         /* First frame of the scene. Same as at_beginning for scene */
         if(scene->is_first_frame == true) {
             scene->AtFirstFrame();
@@ -238,7 +225,7 @@ void Core_Run(float fps) {
     }
     
     /* at_end of scenes and objects */
-    GameScene *scene = engine.scenes[engine.scene_count-1];
+    GameScene *scene = Scene_GetSceneArray()[Scene_GetSceneCount()-1];
     scene->AtEnd();
     for(int i=0; i<scene->object_count; i++) {
         GameObject *obj = scene->objects[i];

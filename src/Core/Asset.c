@@ -55,7 +55,6 @@ SDL_Texture *Asset_GetTexture(const char *name) {
 }
 
 TTF_Font *Asset_GetFont(const char *name) {
-    GameInfo *info = Core_GetGlobalInfo();
     for(int i=0; i<stbds_shlen(_asset_fonts); i++) {
         if(!strcmp(name, _asset_fonts[i].key)) {
             return _asset_fonts[i].value;

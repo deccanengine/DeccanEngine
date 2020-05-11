@@ -25,6 +25,10 @@ typedef struct GameScene {
     void_func(AtEnd);
 } GameScene;
 
+GameScene **Scene_GetSceneArray();
+int Scene_GetSceneCount();
+void Scene_FreeAll();
+
 GameScene *Scene_NewScene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae));
 void Scene_AddScene(GameScene *scene, bool is_replacing);
 void Scene_RemoveScene();

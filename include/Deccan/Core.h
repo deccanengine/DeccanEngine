@@ -11,8 +11,6 @@
 #include <Deccan/Scene.h>
 #include <Deccan/Object.h>
 
-typedef Color Color;
-
 #ifndef DECCAN_MSG_LENGTH
     #define DECCAN_MSG_LENGTH 50
 #endif
@@ -20,29 +18,6 @@ typedef Color Color;
 #ifndef DECCAN_MSG_COUNT
     #define DECCAN_MSG_COUNT 100
 #endif
-
-typedef struct GameInfo {
-    /* Core engine */
-    
-
-
-
-    /* Settings */
-    
-
-    /* Input system */
-    
-
-    /* Scene manager */
-    GameScene **scenes;
-    int scene_count;
-
-    /* Messaging */
-
-    /* Renderer */
-    
-    
-} GameInfo;
 
 typedef struct TextureAsset {
     const char *key;
@@ -55,8 +30,6 @@ typedef struct FontAsset {
 } FontAsset;
 
 /* Core functions */
-void Core_SetGlobalInfo(GameInfo *engine);
-GameInfo *Core_GetGlobalInfo();
 int  Core_Init(const char *title, Vector2i mode);
 void Core_Quit();
 void Core_Run(float fps);

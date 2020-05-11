@@ -9,7 +9,6 @@
 #include <Deccan/Core.h>
 
 #define DE_DRAW_BEGIN()                          \
-GameInfo *engine = Core_GetGlobalInfo();         \
 Vector2f camera = Camera_GetPosition();          \
 SDL_Renderer *renderer = Renderer_GetRenderer(); \
 Color def = Renderer_GetColor();                 \
