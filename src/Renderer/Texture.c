@@ -8,8 +8,10 @@
 #include <Deccan/Renderer.h>
 #include <Deccan/Core.h>
 
-void Renderer_TextureSetColor(RawTexture *texture, Color color) {
-    if(texture == NULL) { return; }
+void Texture_SetColor(RawTexture *texture, Color color) {
+    if(texture == NULL) { 
+        return; 
+    }
 #ifdef DECCAN_RENDERER_SDL
     SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
 #else
@@ -17,20 +19,25 @@ void Renderer_TextureSetColor(RawTexture *texture, Color color) {
 #endif
 }
 
-Vector2i Renderer_TextureGetSize(RawTexture *texture) {
+Vector2i Texture_GetSize(RawTexture *texture) {
     Vector2i size;
+
     if(SDL_QueryTexture(texture, NULL, NULL, &size.x, &size.y) > 0) {
-        DE_report("Cannot get texture size: %s", SDL_GetError());
+        DE_REPORT("Cannot get texture size: %s", SDL_GetError());
     }
+
     return size;
 }
 
-void Renderer_TextureBlit(Rect rect, double angle, Flip flip, RawTexture *texture) {
-    Renderer_TextureBlitScaled(rect, (Vector2f){0.0f, 0.0f}, angle, flip, texture);
+void Texture_Blit(Rect rect, double angle, Flip flip, RawTexture *texture) {
+    Texture_BlitScaled(rect, (Vector2f){0.0f, 0.0f}, angle, flip, texture);
 }
 
-void Renderer_TextureBlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, RawTexture *texture) {
-    if(texture == NULL) { return; }
+void Texture_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, RawTexture *texture) {
+    if(texture == NULL) { 
+        return; 
+    }
+
     Vector2f camera = Camera_GetPosition();
     SDL_Renderer *renderer = Renderer_GetRenderer();
 
@@ -43,7 +50,7 @@ void Renderer_TextureBlitScaled(Rect rect, Vector2f scale, double angle, Flip fl
     };
 
     if((!tgt.w || !tgt.h) && SDL_QueryTexture(texture, NULL, NULL, &tgt.w, &tgt.h) > 0) {
-        DE_report("Cannot query texture: %s", SDL_GetError());
+        DE_REPORT("Cannot query texture: %s", SDL_GetError());
     }
     
     if(scale.x && scale.y) { 
@@ -57,7 +64,7 @@ void Renderer_TextureBlitScaled(Rect rect, Vector2f scale, double angle, Flip fl
 #endif
 }
     
-void Renderer_TextureBlitPartial(Rect rect, Rect dim, double angle, Flip flip, RawTexture *texture) {
+void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, RawTexture *texture) {
     if(texture == NULL) { return; }
     Vector2f camera = Camera_GetPosition();
     SDL_Renderer *renderer = Renderer_GetRenderer();
@@ -76,7 +83,7 @@ void Renderer_TextureBlitPartial(Rect rect, Rect dim, double angle, Flip flip, R
 
     if(!src.w || !src.h) {
         if(SDL_QueryTexture(texture, NULL, NULL, &src.w, &src.h) > 0) {
-            DE_report("Cannot query texture: %s", SDL_GetError());
+            DE_REPORT("Cannot query texture: %s", SDL_GetError());
         }
     }
 

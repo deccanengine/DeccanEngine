@@ -33,7 +33,7 @@ void Scene_FreeAll() {
 GameScene *Scene_NewScene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae)) {
     GameScene *scene = DE_NEW(GameScene, 1);
     
-    scene->name = DE_newstring(name);
+    scene->name = DE_NEWSTRING(name);
     scene->is_paused = false;
     scene->objects = NULL;
     scene->object_count = 0;
@@ -50,7 +50,7 @@ GameScene *Scene_NewScene(const char *name, void_func(af), void_func(as), void_f
 #undef void_func
 
 void Scene_AddScene(GameScene *scene, bool is_replacing) {
-    if(scene == NULL) { DE_report("Invalid scene data"); return; }
+    if(scene == NULL) { DE_REPORT("Invalid scene data"); return; }
 
     if(SceneInfo.sceneCount != 0) {
         if(is_replacing) { stbds_arrpop(SceneInfo.scenes); SceneInfo.sceneCount--; }
@@ -58,7 +58,7 @@ void Scene_AddScene(GameScene *scene, bool is_replacing) {
     }
     
     if(stbds_arrput(SceneInfo.scenes, scene) != scene) {
-        DE_report("Cannot add scene: %s\n", scene->name);
+        DE_REPORT("Cannot add scene: %s\n", scene->name);
         return;
     }
     SceneInfo.sceneCount++;

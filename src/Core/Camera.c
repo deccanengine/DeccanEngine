@@ -46,7 +46,7 @@ void Camera_Move(Vector2f pos) {
 
 void Camera_CenterOn(GameObject *obj) {
     if(obj == NULL) {
-        DE_report("Invalid object used with camera"); return;
+        DE_REPORT("Invalid object used with camera"); return;
     }
 
     Vector2i mode = Core_GetMode();

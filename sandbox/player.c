@@ -63,9 +63,9 @@ void _player_step(GameObject *this) {
 }
 
 void _player_render(GameObject *this) {
-    Renderer_DrawRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
+    Draw_Rect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
 
-    Renderer_TextureBlitScaled((Rect){this->position.x, this->position.y, 0, 0},
+    Texture_BlitScaled((Rect){this->position.x, this->position.y, 0, 0},
                                (Vector2f){2.0f, 2.0f},
                                (this->angle+90.0f), FlipVertical, Asset_GetTexture("arrow0"));
 
@@ -99,7 +99,8 @@ void _none_render(GameObject *this) {
     if(this->ReceiveMessage(this, "hello")) {
         // do nothing, or!
     }
-    //Renderer.DrawRect((Rect){this->position.x, this->position.y, 40, 40}, ColorList.red); 
+    
+    Draw_Rect((Rect){this->position.x, this->position.y, 40, 40}, ColorList.red); 
     /*Object.RotateTowardsObject(this, Object.GetObject("main player"), 1);
     Renderer.TextureBlitScaled((Rect){this->position.x, this->position.y, 0, 0},
                                (Vector2f){2.0f, 2.0f},

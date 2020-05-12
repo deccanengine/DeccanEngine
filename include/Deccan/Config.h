@@ -39,15 +39,15 @@
     #define DE_NEW(type,size) (type*)malloc(sizeof(type)*size);
 #endif
 
-static inline char *DE_newstring(const char *source) {
+static inline char *DE_NEWSTRING(const char *source) {
     char *string = DE_NEW(char, strlen(source));
     strcpy(string, source);
     return string;
 }
 
 /* Error handling/logging */
-extern void DE_error (const char *str, ...);
-extern void DE_report(const char *str, ...);
+extern void DE_ERROR (const char *str, ...);
+extern void DE_REPORT(const char *str, ...);
 
 typedef struct Rect {
     float x;

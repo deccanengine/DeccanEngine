@@ -70,19 +70,19 @@ Vector2f Renderer_GetPixelSize();
 BlendMode Renderer_GetBlendMode();
 
 /* Drawing */
-void Renderer_DrawPoint(Vector2f pos, Color color);
-void Renderer_DrawLine(Vector2f start, Vector2f end, Color color);
-void Renderer_DrawRect(Rect rect, Color color);
-void Renderer_DrawFilledRect(Rect rect, Color color);
-void Renderer_DrawCircle(Circle circle, Color color);
-void Renderer_DrawFilledCircle(Circle circle, Color color);
+void Draw_Point(Vector2f pos, Color color);
+void Draw_Line(Vector2f start, Vector2f end, Color color);
+void Draw_Rect(Rect rect, Color color);
+void Draw_FilledRect(Rect rect, Color color);
+void Draw_Circle(Circle circle, Color color);
+void Draw_FilledCircle(Circle circle, Color color);
 
 /* Texture */
-void Renderer_TextureSetColor(RawTexture *texture, Color color);
-Vector2i Renderer_TextureGetSize(RawTexture *texture);
-void Renderer_TextureBlit(Rect rect, double angle, Flip flip, RawTexture *texture);
-void Renderer_TextureBlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, RawTexture *texture);
-void Renderer_TextureBlitPartial(Rect rect, Rect dim, double angle, Flip flip, RawTexture *texture);
+void Texture_SetColor(RawTexture *texture, Color color);
+Vector2i Texture_GetSize(RawTexture *texture);
+void Texture_Blit(Rect rect, double angle, Flip flip, RawTexture *texture);
+void Texture_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, RawTexture *texture);
+void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, RawTexture *texture);
 
 /* Font/Text */
-SDL_Texture *Renderer_FontText(TTF_Font *font, const char *text, Color color);
+SDL_Texture *Font_Text(TTF_Font *font, const char *text, Color color);

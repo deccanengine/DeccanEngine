@@ -25,8 +25,8 @@ GameObject *Object_NewObject(
     
     GameObject *obj = DE_NEW(GameObject, 1);
     
-    obj->info.name = DE_newstring(name);
-    obj->info.type = DE_newstring(type);
+    obj->info.name = DE_NEWSTRING(name);
+    obj->info.type = DE_NEWSTRING(type);
     
     obj->angle = 0.0f;
     
@@ -53,7 +53,7 @@ void Object_InstantiateObject(GameObject *object) {
     
     GameScene *scene = Scene_CurrentScene(); 
     if(stbds_arrput(scene->objects, object) != object) {
-        DE_report("Cannot instantiate object: %s", object->info.name); return;
+        DE_REPORT("Cannot instantiate object: %s", object->info.name); return;
     }
     scene->object_count++;
 }
@@ -65,7 +65,7 @@ GameObject *Object_GetObject(const char *name) {
             return scene->objects[i];
         }
     }
-    DE_report("GameObject not found: %s", name);
+    DE_REPORT("GameObject not found: %s", name);
 }
 
 void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj)) {

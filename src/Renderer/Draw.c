@@ -20,7 +20,7 @@ SDL_GetRenderDrawBlendMode(renderer, &blend);
 Renderer_SetColor(def);                          \
 SDL_SetRenderDrawBlendMode(renderer,  blend);
 
-void Renderer_DrawPoint(Vector2f pos, Color color) {
+void Draw_Point(Vector2f pos, Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_RenderDrawPoint(renderer, pos.x - camera.x, pos.y - camera.y);
@@ -30,7 +30,7 @@ void Renderer_DrawPoint(Vector2f pos, Color color) {
 #endif
 }
 
-void Renderer_DrawLine(Vector2f start, Vector2f end, Color color) {
+void Draw_Line(Vector2f start, Vector2f end, Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_RenderDrawLine(renderer, start.x - camera.x, start.y - camera.y, end.x - camera.x, end.y - camera.y);
@@ -40,7 +40,7 @@ void Renderer_DrawLine(Vector2f start, Vector2f end, Color color) {
 #endif
 }
 
-void Renderer_DrawRect(Rect rect, Color color) {
+void Draw_Rect(Rect rect, Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_Rect sr = {rect.x - camera.x, rect.y - camera.y, rect.w, rect.h};
@@ -51,7 +51,7 @@ void Renderer_DrawRect(Rect rect, Color color) {
 #endif
 }
 
-void Renderer_DrawFilledRect(Rect rect, Color color) {
+void Draw_FilledRect(Rect rect, Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_Rect sr = {rect.x - camera.x, rect.y - camera.y, rect.w, rect.h};
@@ -62,7 +62,7 @@ void Renderer_DrawFilledRect(Rect rect, Color color) {
 #endif
 }
 
-void Renderer_DrawCircle(Circle circle, Color color) {
+void Draw_Circle(Circle circle, Color color) {
     if(!circle.radius) { return; }
 
 #ifdef DECCAN_RENDERER_SDL
@@ -96,7 +96,7 @@ void Renderer_DrawCircle(Circle circle, Color color) {
 #endif
 }
 
-void Renderer_DrawFilledCircle(Circle circle, Color color) {
+void Draw_FilledCircle(Circle circle, Color color) {
     if(!circle.radius) { return; }
 
 #ifdef DECCAN_RENDERER_SDL

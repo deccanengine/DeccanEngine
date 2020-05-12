@@ -16,7 +16,7 @@ void begin() {
 
     Renderer_SetBackgroundColor(ColorList.white);
 
-    text = Renderer_FontText(Asset_GetFont("arial"), "hello", ColorList.black);
+    text = Font_Text(Asset_GetFont("arial"), "hello", ColorList.black);
 }
 
 void step() {
@@ -64,7 +64,7 @@ void render() {
         Core_SetVsyncStatus(false);
     }
 
-    Renderer_TextureBlitScaled((Rect){10, 10, 0, 0}, (Vector2f){1.0f, 1.0f}, 0, 0, text);
+    Texture_BlitScaled((Rect){10, 10, 0, 0}, (Vector2f){1.0f, 1.0f}, 0, 0, text);
 }
 
 void end() {

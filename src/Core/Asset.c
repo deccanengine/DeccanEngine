@@ -22,7 +22,7 @@ void Asset_LoadTexture(const char *name, const char *path) {
 
     img = IMG_Load(path);
     if(img == NULL) {
-        DE_report("Cannot load image: %s: %s", path, IMG_GetError());
+        DE_REPORT("Cannot load image: %s: %s", path, IMG_GetError());
     }
 
 #ifdef DECCAN_RENDERER_SDL
@@ -33,7 +33,7 @@ void Asset_LoadTexture(const char *name, const char *path) {
     SDL_FreeSurface(img);
 
     if(tex == NULL) {
-        DE_report("Cannot create texture: %s: %s", name, SDL_GetError());
+        DE_REPORT("Cannot create texture: %s: %s", name, SDL_GetError());
     }
 
     stbds_shput(Asset_Info.textures, name, tex);
@@ -44,7 +44,7 @@ void Asset_LoadFont(const char *name, const char *path) {
 
     font = TTF_OpenFont(path, 20);
     if(font == NULL) {
-        DE_report("Cannot load font: %s: %s", path, TTF_GetError());
+        DE_REPORT("Cannot load font: %s: %s", path, TTF_GetError());
     }
 
     stbds_shput(Asset_Info.fonts, name, font);
@@ -56,7 +56,7 @@ SDL_Texture *Asset_GetTexture(const char *name) {
             return Asset_Info.textures[i].value;
         }
     }
-    DE_report("Texture not found: %s", name);
+    DE_REPORT("Texture not found: %s", name);
 }
 
 TTF_Font *Asset_GetFont(const char *name) {
@@ -65,5 +65,5 @@ TTF_Font *Asset_GetFont(const char *name) {
             return Asset_Info.fonts[i].value;
         }
     }
-    DE_report("Font not found: %s", name);
+    DE_REPORT("Font not found: %s", name);
 }

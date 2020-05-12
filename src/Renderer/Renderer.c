@@ -31,7 +31,7 @@ SDL_Renderer *Renderer_GetRenderer() {
 void Renderer_Init(SDL_Window *window) {
     int render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     if((Renderer_Info.renderer = SDL_CreateRenderer(window, -1, render_flags)) == NULL) {
-        DE_error("Could not create renderer: %s", SDL_GetError());
+        DE_ERROR("Could not create renderer: %s", SDL_GetError());
     }
 
     Renderer_Info.target = SDL_GetRenderTarget(Renderer_Info.renderer);
@@ -46,25 +46,33 @@ void Renderer_Present() {
 }
 
 void Renderer_Background() {
-    switch(Renderer_Info.background.type) {
-        case 0: {
-            Renderer_ClearColor(Renderer_Info.background.color); break;
-        }
-        case 1: {
-            Renderer_Clear();
-            Vector2i mode = Core_GetMode();
-            Vector2f camera = Camera_GetPosition();
-            Rect rect = {camera.x, camera.y, mode.x, mode.y};
-            Renderer_TextureBlit(rect, 0, 0, Renderer_Info.background.texture); 
-            break;
-        }
+    if(Renderer_Info.background.type == 0) {
+        Renderer_ClearColor(Renderer_Info.background.color); 
+    }
+    else {
+        Renderer_Clear(); // Removing it produces artifacts 
+
+        Vector2i mode = Core_GetMode();
+        Vector2f camera = Camera_GetPosition();
+            
+        Rect rect = {
+            camera.x, 
+            camera.y, 
+            mode.x, 
+            mode.y
+        };
+
+        Texture_Blit(rect, 0, 0, Renderer_Info.background.texture); 
     }
 }
 
 /* Setters */
 
 void Renderer_Clear() {
-    Color blank = {0, 0, 0, 0};
+    Color blank = {
+        0, 0, 0, 0
+    };
+
     Renderer_ClearColor(blank);
 }
 
@@ -88,11 +96,13 @@ void Renderer_SetBackgroundTexture(RawTexture *texture) {
 }
 
 void Renderer_SetTarget(RawTexture *target) { 
-    if(target == NULL) { target = Renderer_Info.target; }
+    if(target == NULL) { 
+        target = Renderer_Info.target; 
+    }
 
 #ifdef DECCAN_RENDERER_SDL
     if(SDL_SetRenderTarget(Renderer_Info.renderer, target) != 0) {
-        DE_report("Cannot set render target: %s", SDL_GetError());
+        DE_REPORT("Cannot set render target: %s", SDL_GetError());
     }
 #else
 
@@ -118,7 +128,7 @@ void Renderer_SetPixelSize(Vector2f size) {
 void Renderer_SetBlendMode(int blend_mode) {
 #ifdef DECCAN_RENDERER_SDL
     if(SDL_SetRenderDrawBlendMode(Renderer_Info.renderer, blend_mode) != 0) {
-        DE_report("Cannot set blend mode: %s", SDL_GetError());
+        DE_REPORT("Cannot set blend mode: %s", SDL_GetError());
     }
 #else
 
@@ -128,27 +138,34 @@ void Renderer_SetBlendMode(int blend_mode) {
 /* Getters */
 
 Color Renderer_GetBackgroundColor() {
-    Color color = {0, 0, 0, 0};
+    Color color = {
+        0, 0, 0, 0
+    };
+
     if(Renderer_Info.background.type == 0) { 
         color = Renderer_Info.background.color; 
     }
+
     return color;
 }
 
 RawTexture *Renderer_GetBackgroundTexture() {
     RawTexture *texture = NULL;
+
     if(Renderer_Info.background.type == 1) { 
         texture = Renderer_Info.background.texture; 
     }
+
     return texture;
 }
 
 RawTexture *Renderer_GetTarget() {
     RawTexture *target;
+
 #ifdef DECCAN_RENDERER_SDL
     target = SDL_GetRenderTarget(Renderer_Info.renderer);
     if(target == NULL) {
-        DE_error("Render target is NULL");
+        DE_ERROR("Render target is NULL");
     }
 #else
 
@@ -157,7 +174,9 @@ RawTexture *Renderer_GetTarget() {
 }
 
 Color Renderer_GetColor() {
-    Color color = {0, 0, 0, 0};
+    Color color = {
+        0, 0, 0, 0
+    };
 #ifdef DECCAN_RENDERER_SDL
     SDL_GetRenderDrawColor(Renderer_Info.renderer, &color.r, &color.g, &color.b, &color.a);
 #else
@@ -167,7 +186,9 @@ Color Renderer_GetColor() {
 }
 
 Vector2f Renderer_GetPixelSize() {
-    Vector2f size = {0.0f, 0.0f};
+    Vector2f size = {
+        0.0f, 0.0f
+    };
 #ifdef DECCAN_RENDERER_SDL
     SDL_RenderGetScale(Renderer_Info.renderer, &size.x, &size.y);
 #else

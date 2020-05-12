@@ -46,16 +46,16 @@ static struct {
 int Core_Init(const char *title, Vector2i mode) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
-        DE_error("Could not initialize SDL2: %s", SDL_GetError());
+        DE_ERROR("Could not initialize SDL2: %s", SDL_GetError());
     }
 
     int image_flags = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF;
     if(!IMG_Init(image_flags) & !image_flags) {
-        DE_error("Could not initialize SDL2_image: %s", IMG_GetError());
+        DE_ERROR("Could not initialize SDL2_image: %s", IMG_GetError());
     }
 
     if(TTF_Init() != 0) {
-        DE_error("Could not initialize SDL2_ttf: %s", TTF_GetError());
+        DE_ERROR("Could not initialize SDL2_ttf: %s", TTF_GetError());
     }
 
 #ifdef DECCAN_RENDERER_SDL
@@ -72,12 +72,12 @@ int Core_Init(const char *title, Vector2i mode) {
     /* Create window */
     int window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
     if((Core_Info.window = SDL_CreateWindow(title, 0, 0, mode.x, mode.y, window_flags)) == NULL) {
-        DE_error("Could not create window: %s", SDL_GetError());
+        DE_ERROR("Could not create window: %s", SDL_GetError());
     }
 
     /* Set the renderer to OpenGL */
     if(SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl") != SDL_TRUE) {
-        DE_error("OpenGL cannot be enabled");
+        DE_ERROR("OpenGL cannot be enabled");
     }
 
     /* Create renderer */
@@ -88,13 +88,13 @@ int Core_Init(const char *title, Vector2i mode) {
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &Core_Info.glMajor);
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &Core_Info.glMinor);
     if(Core_Info.glMajor < 2 || (Core_Info.glMajor == 2 && Core_Info.glMinor < 1)) {
-        DE_error("OpenGL 2.1 support needed at minimum. Consider upgrading your hardware.");
+        DE_ERROR("OpenGL 2.1 support needed at minimum. Consider upgrading your hardware.");
     }
 
     /* Open the log file */
     Core_Info.logfile = fopen("report.log", "w");
     if(Core_Info.logfile == NULL) {
-        DE_error("Could not create/open log file");
+        DE_ERROR("Could not create/open log file");
     }
 
     Core_Info.winMode = mode;
@@ -253,7 +253,7 @@ void Core_SetMode(Vector2i mode) {
         SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN, mode.x, mode.y, 0, 0};
         
         if(SDL_SetWindowDisplayMode(Core_Info.window, &disp) > 0) {
-            DE_report("Cannot set fullscreen window mode: %s", SDL_GetError());
+            DE_REPORT("Cannot set fullscreen window mode: %s", SDL_GetError());
         }
         
         SDL_MaximizeWindow(Core_Info.window);
@@ -272,7 +272,7 @@ void Core_SetFullscreen() {
 void Core_SetVsyncStatus(bool vsync) {
     // ??: Adaptive vsync
     if(SDL_GL_SetSwapInterval(vsync ? -1 : 0) == -1) {
-        DE_report("VSync is not supported: %s", SDL_GetError());
+        DE_REPORT("VSync is not supported: %s", SDL_GetError());
     }
 
     int status = SDL_GL_GetSwapInterval();
@@ -326,7 +326,7 @@ bool Core_ReceiveMessage(const char *msg) {
     return Msg_Receive(&Core_Info.msg, msg);
 }
 
-void DE_error(const char *str, ...) {
+void DE_ERROR(const char *str, ...) {
     printf("Fatal Error: ");
     
     va_list args;
@@ -338,7 +338,7 @@ void DE_error(const char *str, ...) {
     exit(-1);
 }
 
-void DE_report(const char *str, ...) {
+void DE_REPORT(const char *str, ...) {
 #ifdef DECCAN_REPORTS_ENABLED
     va_list args;
     
