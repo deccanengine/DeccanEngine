@@ -23,7 +23,7 @@ Vector2i Texture_GetSize(TextureAsset *texture) {
     Vector2i size;
 
     if(SDL_QueryTexture(texture->texture, NULL, NULL, &size.x, &size.y) > 0) {
-        DE_REPORT("Cannot get texture size: %s", SDL_GetError());
+        DE_REPORT("Cannot get texture size of texture: %s : %s", texture->name, SDL_GetError());
     }
 
     return size;
@@ -50,7 +50,7 @@ void Texture_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, Text
     };
 
     if((!tgt.w || !tgt.h) && SDL_QueryTexture(texture->texture, NULL, NULL, &tgt.w, &tgt.h) > 0) {
-        DE_REPORT("Cannot query texture: %s", SDL_GetError());
+        DE_REPORT("Cannot query texture: %s : %s", texture->name, SDL_GetError());
     }
     
     if(scale.x && scale.y) { 
@@ -83,7 +83,7 @@ void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, TextureAs
 
     if(!src.w || !src.h) {
         if(SDL_QueryTexture(texture->texture, NULL, NULL, &src.w, &src.h) > 0) {
-            DE_REPORT("Cannot query texture: %s", SDL_GetError());
+            DE_REPORT("Cannot query texture: %s :%s", texture->name, SDL_GetError());
         }
     }
 
