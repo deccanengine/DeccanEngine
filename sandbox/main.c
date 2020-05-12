@@ -3,7 +3,7 @@
 #include "player.h"
 
 Timer timer;
-RawTexture *text;
+TextureAsset *text;
 
 void begin() {
     /* Start here */

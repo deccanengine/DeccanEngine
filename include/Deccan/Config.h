@@ -124,3 +124,13 @@ void Clock_StopTimer (Timer *timer);
 void Clock_PauseTimer(Timer *timer);
 void Clock_ResetTimer(Timer *timer);
 Time Clock_GetTime(Timer *timer);
+
+typedef struct TextureAsset {
+    const char *name;
+    RawTexture *texture;
+} TextureAsset;
+
+typedef struct FontAsset {
+    const char *name;
+    TTF_Font *font;
+} FontAsset;

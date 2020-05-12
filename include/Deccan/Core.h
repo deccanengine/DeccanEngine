@@ -19,16 +19,6 @@
     #define DECCAN_MSG_COUNT 100
 #endif
 
-typedef struct TextureAsset {
-    const char *key;
-    RawTexture *value;
-} TextureAsset;
-
-typedef struct FontAsset {
-    const char *key;
-    TTF_Font *value;
-} FontAsset;
-
 /* Core functions */
 int  Core_Init(const char *title, Vector2i mode);
 void Core_Quit();
@@ -51,9 +41,9 @@ bool Core_ReceiveMessage(const char *msg);
 
 /* Asset Manager */
 void Asset_LoadTexture(const char *name, const char *path);
-SDL_Texture *Asset_GetTexture(const char *name);
+TextureAsset *Asset_GetTexture(const char *name);
 void Asset_LoadFont(const char *name, const char *path);
-TTF_Font *Asset_GetFont(const char *name);
+FontAsset *Asset_GetFont(const char *name);
 
 /* Camera */
 void Camera_Move(Vector2f pos);

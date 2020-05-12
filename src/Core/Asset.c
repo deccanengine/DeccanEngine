@@ -9,8 +9,8 @@
 #include <Deccan/Renderer.h>
 
 static struct {
-    TextureAsset *textures;
-    FontAsset *fonts;
+    TextureAsset **textures;
+    FontAsset **fonts;
 } Asset_Info = {
     .textures = NULL,
     .fonts = NULL
@@ -36,7 +36,11 @@ void Asset_LoadTexture(const char *name, const char *path) {
         DE_REPORT("Cannot create texture: %s: %s", name, SDL_GetError());
     }
 
-    stbds_shput(Asset_Info.textures, name, tex);
+    TextureAsset *asset = DE_NEW(TextureAsset, 1); 
+    asset->name = DE_NEWSTRING(name);
+    asset->texture = tex;
+
+    stbds_arrput(Asset_Info.textures, asset);
 }
 
 void Asset_LoadFont(const char *name, const char *path) {
@@ -47,22 +51,26 @@ void Asset_LoadFont(const char *name, const char *path) {
         DE_REPORT("Cannot load font: %s: %s", path, TTF_GetError());
     }
 
-    stbds_shput(Asset_Info.fonts, name, font);
+    FontAsset *asset = DE_NEW(FontAsset, 1);
+    asset->name = DE_NEWSTRING(name);
+    asset->font = font; 
+
+    stbds_arrput(Asset_Info.fonts, asset);
 }
 
-SDL_Texture *Asset_GetTexture(const char *name) {
-    for(int i=0; i<stbds_shlen(Asset_Info.textures); i++) {
-        if(!strcmp(name, Asset_Info.textures[i].key)) {
-            return Asset_Info.textures[i].value;
+TextureAsset *Asset_GetTexture(const char *name) {
+    for(int i=0; i<stbds_arrlen(Asset_Info.textures); i++) {
+        if(!strcmp(name, Asset_Info.textures[i]->name)) {
+            return Asset_Info.textures[i];
         }
     }
     DE_REPORT("Texture not found: %s", name);
 }
 
-TTF_Font *Asset_GetFont(const char *name) {
-    for(int i=0; i<stbds_shlen(Asset_Info.fonts); i++) {
-        if(!strcmp(name, Asset_Info.fonts[i].key)) {
-            return Asset_Info.fonts[i].value;
+FontAsset *Asset_GetFont(const char *name) {
+    for(int i=0; i<stbds_arrlen(Asset_Info.fonts); i++) {
+        if(!strcmp(name, Asset_Info.fonts[i]->name)) {
+            return Asset_Info.fonts[i];
         }
     }
     DE_REPORT("Font not found: %s", name);

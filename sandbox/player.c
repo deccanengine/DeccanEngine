@@ -3,7 +3,7 @@
 bool selected = false;
 Vector2i offset;
 
-RawTexture *tar;
+TextureAsset tar;
 
 void action(GameObject *this) {
     if(Collision_ObjectObject(Object_GetObject("main player"), this)) { 
@@ -24,7 +24,7 @@ void _player_begin(GameObject *this) {
     this->color = ColorList.blue;
 
     Vector2i mode = Core_GetMode();
-    //tar = SDL_CreateTexture(Core.GetGlobalEngine()->renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
+    tar.texture = SDL_CreateTexture(Renderer_GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
 }
 
 void _player_step(GameObject *this) {
@@ -69,21 +69,15 @@ void _player_render(GameObject *this) {
                                (Vector2f){2.0f, 2.0f},
                                (this->angle+90.0f), FlipVertical, Asset_GetTexture("arrow0"));
 
-    /*Renderer.SetTarget(tar);
-    Renderer.Clear(ColorList.white);
+    /*
+    Renderer_SetTarget(&tar);
+    Renderer_Clear(ColorList.white);
 
-    Renderer.SetBlendMode(BlendMode_Alpha);
-
-    Renderer.DrawRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
+    Draw_Rect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
     Renderer.draw_circle((Circle){this->position.x, this->position.y, 50}, true, this->color);
-    Renderer.TextureDrawWithScale((Vector2i){this->position.x, this->position.y}, (Vector2f){2.0f, 2.0f}, Asset.GetTexture("arrow0"));
-
-    Renderer.SetTarget(NULL);
-    Info *engine = Core.GetGlobalEngine();
+    Renderer_SetTarget(NULL);
     
-    SDL_RenderCopyEx(engine->renderer, tar, NULL, NULL, 0, NULL, 0);
-
-    Renderer.SetBlendMode(BlendMode_None);
+    SDL_RenderCopyEx(Renderer_GetRenderer(), tar.texture, NULL, NULL, 67, NULL, 0);
     */
 }
 

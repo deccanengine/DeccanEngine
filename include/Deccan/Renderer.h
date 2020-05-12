@@ -57,14 +57,14 @@ void Renderer_Background();
 void Renderer_Clear();
 void Renderer_ClearColor(Color color);
 void Renderer_SetBackgroundColor(Color color);
-void Renderer_SetBackgroundTexture(RawTexture *texture);
-void Renderer_SetTarget(RawTexture *target);
+void Renderer_SetBackgroundTexture(TextureAsset *texture);
+void Renderer_SetTarget(TextureAsset *target);
 void Renderer_SetColor(Color color);
 void Renderer_SetPixelSize(Vector2f size);
 void Renderer_SetBlendMode(int blend_mode);
 Color Renderer_GetBackgroundColor();
-RawTexture *Renderer_GetBackgroundTexture();
-RawTexture *Renderer_GetTarget();
+TextureAsset *Renderer_GetBackgroundTexture();
+TextureAsset *Renderer_GetTarget();
 Color Renderer_GetColor();
 Vector2f Renderer_GetPixelSize();
 BlendMode Renderer_GetBlendMode();
@@ -78,11 +78,11 @@ void Draw_Circle(Circle circle, Color color);
 void Draw_FilledCircle(Circle circle, Color color);
 
 /* Texture */
-void Texture_SetColor(RawTexture *texture, Color color);
-Vector2i Texture_GetSize(RawTexture *texture);
-void Texture_Blit(Rect rect, double angle, Flip flip, RawTexture *texture);
-void Texture_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, RawTexture *texture);
-void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, RawTexture *texture);
+void Texture_SetColor(TextureAsset *texture, Color color);
+Vector2i Texture_GetSize(TextureAsset *texture);
+void Texture_Blit(Rect rect, double angle, Flip flip, TextureAsset *texture);
+void Texture_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, TextureAsset *texture);
+void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, TextureAsset *texture);
 
 /* Font/Text */
-SDL_Texture *Font_Text(TTF_Font *font, const char *text, Color color);
+TextureAsset *Font_Text(FontAsset *font, const char *text, Color color);

@@ -8,7 +8,7 @@
 #include <Deccan/Renderer.h>
 #include <Deccan/Core.h>
 
-SDL_Texture *Font_Text(TTF_Font *font, const char *text, Color color) {
+TextureAsset *Font_Text(FontAsset *font, const char *text, Color color) {
     SDL_Renderer *renderer = Renderer_GetRenderer();
     
     SDL_Color scol = {
@@ -18,7 +18,7 @@ SDL_Texture *Font_Text(TTF_Font *font, const char *text, Color color) {
         color.a
     };
 
-    SDL_Surface *surf = TTF_RenderText_Solid(font, text, scol);
+    SDL_Surface *surf = TTF_RenderText_Solid(font->font, text, scol);
     if(surf == NULL) {
         DE_REPORT("Cannot generate font text surface: %s", TTF_GetError());
     }
@@ -28,5 +28,9 @@ SDL_Texture *Font_Text(TTF_Font *font, const char *text, Color color) {
         DE_REPORT("Cannot create text texture: %s", SDL_GetError());
     }
 
-    return tex;
+    TextureAsset *asset = DE_NEW(TextureAsset, 1);
+    asset->name = DE_NEWSTRING("__font_generated_text_texture__");
+    asset->texture = tex;
+
+    return asset;
 }

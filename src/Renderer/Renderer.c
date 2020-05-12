@@ -12,12 +12,12 @@ static struct {
 #ifdef DECCAN_RENDERER_SDL
     SDL_Renderer *renderer;
 #endif
-    RawTexture *target;
+    TextureAsset target;
 
     struct {
         int type; 
         union {
-            RawTexture *texture;
+            TextureAsset *texture;
             Color color;
         };
     } background;
@@ -34,7 +34,8 @@ void Renderer_Init(SDL_Window *window) {
         DE_ERROR("Could not create renderer: %s", SDL_GetError());
     }
 
-    Renderer_Info.target = SDL_GetRenderTarget(Renderer_Info.renderer);
+    Renderer_Info.target.name = DE_NEWSTRING("DE_Renderer_Target");
+    Renderer_Info.target.texture = SDL_GetRenderTarget(Renderer_Info.renderer);
 }
 
 void Renderer_Quit() {
@@ -90,18 +91,18 @@ void Renderer_SetBackgroundColor(Color color) {
     Renderer_Info.background.color = color;
 }
 
-void Renderer_SetBackgroundTexture(RawTexture *texture) {
+void Renderer_SetBackgroundTexture(TextureAsset *texture) {
     Renderer_Info.background.type = 1;
     Renderer_Info.background.texture = texture;
 }
 
-void Renderer_SetTarget(RawTexture *target) { 
+void Renderer_SetTarget(TextureAsset *target) { 
     if(target == NULL) { 
-        target = Renderer_Info.target; 
+        target = &Renderer_Info.target; 
     }
 
 #ifdef DECCAN_RENDERER_SDL
-    if(SDL_SetRenderTarget(Renderer_Info.renderer, target) != 0) {
+    if(SDL_SetRenderTarget(Renderer_Info.renderer, target->texture) != 0) {
         DE_REPORT("Cannot set render target: %s", SDL_GetError());
     }
 #else
@@ -149,8 +150,8 @@ Color Renderer_GetBackgroundColor() {
     return color;
 }
 
-RawTexture *Renderer_GetBackgroundTexture() {
-    RawTexture *texture = NULL;
+TextureAsset *Renderer_GetBackgroundTexture() {
+    TextureAsset *texture = NULL;
 
     if(Renderer_Info.background.type == 1) { 
         texture = Renderer_Info.background.texture; 
@@ -159,11 +160,11 @@ RawTexture *Renderer_GetBackgroundTexture() {
     return texture;
 }
 
-RawTexture *Renderer_GetTarget() {
-    RawTexture *target;
+TextureAsset *Renderer_GetTarget() {
+    TextureAsset *target = DE_NEW(TextureAsset, 1);
 
 #ifdef DECCAN_RENDERER_SDL
-    target = SDL_GetRenderTarget(Renderer_Info.renderer);
+    target->texture = SDL_GetRenderTarget(Renderer_Info.renderer);
     if(target == NULL) {
         DE_ERROR("Render target is NULL");
     }
