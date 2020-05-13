@@ -102,7 +102,7 @@ void Renderer_SetTarget(TextureAsset *target) {
         texture = Renderer_Info.target; 
     }
     else {
-        texture = target->texture;
+        texture = target->texture[0];
     }
 
 #ifdef DECCAN_RENDERER_SDL
@@ -169,7 +169,7 @@ TextureAsset *Renderer_GetTarget() {
     target->name = DE_NEWSTRING("DE_Renderer_Target");
 
 #ifdef DECCAN_RENDERER_SDL
-    target->texture = SDL_GetRenderTarget(Renderer_Info.renderer);
+    target->texture[0] = SDL_GetRenderTarget(Renderer_Info.renderer);
     if(target->texture == NULL) {
         DE_ERROR("Render target is NULL");
     }

@@ -127,7 +127,11 @@ Time Clock_GetTime(Timer *timer);
 
 typedef struct TextureAsset {
     const char *name;
-    RawTexture *texture;
+    RawTexture **texture;
+    uint32_t count;
+    uint32_t current;
+    float delay;
+    float clock;
 } TextureAsset;
 
 typedef struct FontAsset {

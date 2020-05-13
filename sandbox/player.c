@@ -24,7 +24,7 @@ void _player_begin(GameObject *this) {
     this->color = ColorList.blue;
 
     Vector2i mode = Core_GetMode();
-    tar.texture = SDL_CreateTexture(Renderer_GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
+    //tar.texture = SDL_CreateTexture(Renderer_GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
 }
 
 void _player_step(GameObject *this) {

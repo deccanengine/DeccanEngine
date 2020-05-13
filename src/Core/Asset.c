@@ -16,7 +16,16 @@ static struct {
     .fonts = NULL
 };
 
-void Asset_LoadTexture(const char *name, const char *path) {
+int FindTexture(const char *name) {
+    for(int i=0; i<stbds_arrlen(Asset_Info.textures); i++) {
+        if(!strcmp(name, Asset_Info.textures[i]->name)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+RawTexture *LoadTexture(const char *path) {
     SDL_Surface *img;
     SDL_Texture *tex;
 
@@ -32,15 +41,34 @@ void Asset_LoadTexture(const char *name, const char *path) {
 #endif
     SDL_FreeSurface(img);
 
+    return tex;
+}
+
+void Asset_LoadTexture(const char *name, const char *path) {
+    RawTexture *tex = LoadTexture(path);
     if(tex == NULL) {
         DE_REPORT("Cannot create texture: %s: %s", name, SDL_GetError());
+        return;
     }
 
-    TextureAsset *asset = DE_NEW(TextureAsset, 1); 
-    asset->name = DE_NEWSTRING(name);
-    asset->texture = tex;
-
-    stbds_arrput(Asset_Info.textures, asset);
+    int index = FindTexture(name);
+    if(index != -1) {
+        /* Found the texture */
+        stbds_arrput(Asset_Info.textures[index]->texture, tex);
+        Asset_Info.textures[index]->count++;
+    }
+    else {
+        /* Create new texture */
+        TextureAsset *asset = DE_NEW(TextureAsset, 1); 
+        asset->name  = DE_NEWSTRING(name);
+        asset->delay = 100.0f;
+        asset->current = 0;
+        asset->count   = 1;
+        asset->texture = NULL;
+        asset->clock   = SDL_GetTicks();
+        stbds_arrput(asset->texture, tex);
+        stbds_arrput(Asset_Info.textures, asset);
+    }
 }
 
 void Asset_LoadFont(const char *name, const char *path) {

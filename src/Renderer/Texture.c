@@ -13,7 +13,7 @@ void Texture_SetColor(TextureAsset *texture, Color color) {
         return; 
     }
 #ifdef DECCAN_RENDERER_SDL
-    SDL_SetTextureColorMod(texture->texture, color.r, color.g, color.b);
+    SDL_SetTextureColorMod(texture->texture[0], color.r, color.g, color.b);
 #else
 
 #endif
@@ -22,7 +22,7 @@ void Texture_SetColor(TextureAsset *texture, Color color) {
 Vector2i Texture_GetSize(TextureAsset *texture) {
     Vector2i size;
 
-    if(SDL_QueryTexture(texture->texture, NULL, NULL, &size.x, &size.y) > 0) {
+    if(SDL_QueryTexture(texture->texture[0], NULL, NULL, &size.x, &size.y) > 0) {
         DE_REPORT("Cannot get texture size of texture: %s : %s", texture->name, SDL_GetError());
     }
 
@@ -49,7 +49,7 @@ void Texture_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, Text
         rect.h
     };
 
-    if((!tgt.w || !tgt.h) && SDL_QueryTexture(texture->texture, NULL, NULL, &tgt.w, &tgt.h) > 0) {
+    if((!tgt.w || !tgt.h) && SDL_QueryTexture(texture->texture[texture->current], NULL, NULL, &tgt.w, &tgt.h) > 0) {
         DE_REPORT("Cannot query texture: %s : %s", texture->name, SDL_GetError());
     }
     
@@ -58,10 +58,17 @@ void Texture_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, Text
         tgt.h *= scale.y;
     }
     
-    SDL_RenderCopyEx(renderer, texture->texture, NULL, &tgt, angle, NULL, flip);
+    SDL_RenderCopyEx(renderer, texture->texture[texture->current], NULL, &tgt, angle, NULL, flip);
 #else
 
 #endif
+
+    if(texture->delay <= SDL_GetTicks() - texture->clock) {
+        texture->clock = SDL_GetTicks();
+        if(texture->current++ == texture->count - 1) {
+            texture->current = 0;
+        }
+    }
 }
     
 void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, TextureAsset *texture) {
@@ -82,7 +89,7 @@ void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, TextureAs
     };
 
     if(!src.w || !src.h) {
-        if(SDL_QueryTexture(texture->texture, NULL, NULL, &src.w, &src.h) > 0) {
+        if(SDL_QueryTexture(texture->texture[0], NULL, NULL, &src.w, &src.h) > 0) {
             DE_REPORT("Cannot query texture: %s :%s", texture->name, SDL_GetError());
         }
     }
@@ -92,7 +99,7 @@ void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, TextureAs
         tgt.h = src.h;
     }
     
-    SDL_RenderCopyEx(renderer, texture->texture, &src, &tgt, angle, NULL, flip);
+    SDL_RenderCopyEx(renderer, texture->texture[0], &src, &tgt, angle, NULL, flip);
 #else
 
 #endif

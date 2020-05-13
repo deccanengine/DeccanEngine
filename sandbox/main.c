@@ -10,6 +10,9 @@ void begin() {
     Object_InstantiateObject(Object_NewObject("main player", "player", NULL_OBJFUNC, _player_begin, _player_step, _player_render, _player_end));
     
     Asset_LoadTexture("arrow0", "arrow0.png");
+    Asset_LoadTexture("arrow0", "arrow1.png");
+    Asset_LoadTexture("arrow0", "arrow2.png");
+    Asset_LoadTexture("arrow0", "arrow3.png");
     Asset_LoadFont("arial", "arial.ttf");
 
     Clock_StartTimer(&timer);

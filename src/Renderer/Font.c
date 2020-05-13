@@ -30,7 +30,10 @@ TextureAsset *Font_Text(FontAsset *font, const char *text, Color color) {
 
     TextureAsset *asset = DE_NEW(TextureAsset, 1);
     asset->name = DE_NEWSTRING("__font_generated_text_texture__");
-    asset->texture = tex;
+    asset->current = 0;
+    asset->count = 1;
+    asset->texture = NULL;
+    stbds_arrput(asset->texture, tex);
 
     return asset;
 }
