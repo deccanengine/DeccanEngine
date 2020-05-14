@@ -83,6 +83,7 @@ Vector2i Texture_GetSize(TextureAsset *texture);
 void Texture_Blit(Rect rect, double angle, Flip flip, TextureAsset *texture);
 void Texture_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, TextureAsset *texture);
 void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, TextureAsset *texture);
+void Texture_BlitPartialScaled(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, TextureAsset *texture);
 
 /* Font/Text */
 TextureAsset *Font_Text(FontAsset *font, const char *text, Color color);
