@@ -27,12 +27,8 @@ TextureAsset *Font_Text(FontAsset *font, const char *text, Color color) {
     if(tex == NULL) {
         DE_REPORT("Cannot create text texture: %s", SDL_GetError());
     }
-
-    TextureAsset *asset = DE_NEW(TextureAsset, 1);
-    asset->name = DE_NEWSTRING("__font_generated_text_texture__");
-    asset->current = 0;
-    asset->count = 1;
-    asset->texture = NULL;
+ 
+    TextureAsset *asset = Asset_NewTextureAsset("__font_generated_text_texture__");
     stbds_arrput(asset->texture, tex);
 
     return asset;

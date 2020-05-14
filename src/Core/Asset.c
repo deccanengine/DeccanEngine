@@ -16,13 +16,25 @@ static struct {
     .fonts = NULL
 };
 
-int FindTexture(const char *name) {
-    for(int i=0; i<stbds_arrlen(Asset_Info.textures); i++) {
+TextureAsset *Asset_NewTextureAsset(const char *name) {
+    TextureAsset *asset = DE_NEW(TextureAsset, 1); 
+    asset->name  = DE_NEWSTRING(name);
+    asset->delay = 100.0f;
+    asset->current = 0;
+    asset->count   = 1;
+    asset->texture = NULL;
+    asset->clock   = SDL_GetTicks();
+
+    return asset;
+}
+
+int32_t Asset_GetTextureIndex(const char *name) {
+    for(int32_t i=0; i<stbds_arrlen(Asset_Info.textures); i++) {
         if(!strcmp(name, Asset_Info.textures[i]->name)) {
             return i;
         }
     }
-    return -1;
+    return -1;            
 }
 
 RawTexture *LoadTexture(const char *path) {
@@ -51,7 +63,7 @@ void Asset_LoadTexture(const char *name, const char *path) {
         return;
     }
 
-    int index = FindTexture(name);
+    int32_t index = Asset_GetTextureIndex(name);
     if(index != -1) {
         /* Found the texture */
         stbds_arrput(Asset_Info.textures[index]->texture, tex);
@@ -59,16 +71,33 @@ void Asset_LoadTexture(const char *name, const char *path) {
     }
     else {
         /* Create new texture */
-        TextureAsset *asset = DE_NEW(TextureAsset, 1); 
-        asset->name  = DE_NEWSTRING(name);
-        asset->delay = 100.0f;
-        asset->current = 0;
-        asset->count   = 1;
-        asset->texture = NULL;
-        asset->clock   = SDL_GetTicks();
+        TextureAsset *asset = Asset_NewTextureAsset(name);
         stbds_arrput(asset->texture, tex);
         stbds_arrput(Asset_Info.textures, asset);
     }
+}
+
+TextureAsset *Asset_GetTexture(const char *name) {
+    int index = Asset_GetTextureIndex(name);
+    if(index == -1) {
+        DE_REPORT("Texture not found: %s", name);
+    }
+    return Asset_Info.textures[index];    
+}
+
+int32_t Asset_GetFontIndex(const char *name) {
+    for(int32_t i=0; i<stbds_arrlen(Asset_Info.fonts); i++) {
+        if(!strcmp(name, Asset_Info.fonts[i]->name)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+FontAsset *Asset_NewFontAsset(const char *name) {
+    FontAsset *asset = DE_NEW(FontAsset, 1);
+    asset->name = DE_NEWSTRING(name);
+    return asset;
 }
 
 void Asset_LoadFont(const char *name, const char *path) {
@@ -79,27 +108,21 @@ void Asset_LoadFont(const char *name, const char *path) {
         DE_REPORT("Cannot load font: %s: %s", path, TTF_GetError());
     }
 
-    FontAsset *asset = DE_NEW(FontAsset, 1);
-    asset->name = DE_NEWSTRING(name);
-    asset->font = font; 
-
-    stbds_arrput(Asset_Info.fonts, asset);
-}
-
-TextureAsset *Asset_GetTexture(const char *name) {
-    for(int i=0; i<stbds_arrlen(Asset_Info.textures); i++) {
-        if(!strcmp(name, Asset_Info.textures[i]->name)) {
-            return Asset_Info.textures[i];
-        }
+    int32_t index = Asset_GetFontIndex(name);
+    if(index != -1) {
+        Asset_Info.fonts[index]->font = font;
     }
-    DE_REPORT("Texture not found: %s", name);
+    else {
+        FontAsset *asset = Asset_NewFontAsset(name);
+        asset->font = font;
+        stbds_arrput(Asset_Info.fonts, asset);
+    }
 }
 
 FontAsset *Asset_GetFont(const char *name) {
-    for(int i=0; i<stbds_arrlen(Asset_Info.fonts); i++) {
-        if(!strcmp(name, Asset_Info.fonts[i]->name)) {
-            return Asset_Info.fonts[i];
-        }
+    int32_t index = Asset_GetFontIndex(name);
+    if(index == -1) {
+        DE_REPORT("Font not found: %s", name);
     }
-    DE_REPORT("Font not found: %s", name);
+    return Asset_Info.fonts[index];
 }
