@@ -80,6 +80,12 @@ void Draw_FilledCircle(Circle circle, Color color);
 /* Texture */
 void Texture_SetColor(TextureAsset *texture, Color color);
 Vector2i Texture_GetSize(TextureAsset *texture);
+void Texture_SetAnimLoop(TextureAsset *texture, bool loop);
+bool Texture_GetAnimLoop(TextureAsset *texture);
+void Texture_SetAnimActive(TextureAsset *texture, bool active);
+bool Texture_GetAnimActive(TextureAsset *texture);
+void Texture_SetAnimDelay(TextureAsset *texture, float ms);
+float Texture_GetAnimDelay(TextureAsset *texture);
 void Texture_Blit(Rect rect, double angle, Flip flip, TextureAsset *texture);
 void Texture_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, TextureAsset *texture);
 void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, TextureAsset *texture);

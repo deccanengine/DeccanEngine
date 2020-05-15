@@ -125,6 +125,11 @@ void Clock_PauseTimer(Timer *timer);
 void Clock_ResetTimer(Timer *timer);
 Time Clock_GetTime(Timer *timer);
 
+typedef enum {
+    AnimActive = 1,
+    AnimLoop = 2
+} AnimFlag;
+
 typedef struct TextureAsset {
     const char *name;
     RawTexture **texture;
@@ -132,6 +137,7 @@ typedef struct TextureAsset {
     uint32_t current;
     float delay;
     float clock;
+    AnimFlag flags;
 } TextureAsset;
 
 typedef struct FontAsset {

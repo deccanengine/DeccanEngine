@@ -29,6 +29,40 @@ Vector2i Texture_GetSize(TextureAsset *texture) {
     return size;
 }
 
+void Texture_SetAnimLoop(TextureAsset *texture, bool loop) {
+    int32_t flags = 0;
+
+    if(texture->flags & AnimActive) { flags |= AnimActive; }
+    if(loop) { flags |= AnimLoop; }
+
+    texture->flags = flags;
+}
+
+bool Texture_GetAnimLoop(TextureAsset *texture) {
+    return (bool)(texture->flags & AnimLoop);
+}
+
+void Texture_SetAnimActive(TextureAsset *texture, bool active) {
+    int32_t flags = 0;
+
+    if(active) { flags |= AnimActive; }
+    if(texture->flags & AnimLoop) { flags |= AnimLoop; }
+
+    texture->flags = flags;
+}
+
+bool Texture_GetAnimActive(TextureAsset *texture) {
+    return (bool)(texture->flags & AnimActive);
+}
+
+void Texture_SetAnimDelay(TextureAsset *texture, float ms) {
+    texture->delay = ms;
+}
+
+float Texture_GetAnimDelay(TextureAsset *texture) {
+    return texture->delay;
+}
+
 void BlitInternal(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, TextureAsset *texture) {
     if(texture == NULL) { 
         return; 
@@ -39,10 +73,12 @@ void BlitInternal(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, 
 #ifdef DECCAN_RENDERER_SDL
     SDL_Renderer *renderer = Renderer_GetRenderer();
 
+    /* Source rect */
     SDL_Rect src = {
         dim.x, dim.y, dim.w, dim.h
     };
 
+    /* Destination(target) rect */
     SDL_Rect tgt = {
         rect.x - camera.x, 
         rect.y - camera.y, 
@@ -51,6 +87,7 @@ void BlitInternal(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, 
     };
 
     int width, height;
+    /* Get the default width and height */
     if(SDL_QueryTexture(texture->texture[texture->current], NULL, NULL, &width, &height) > 0) {
         DE_REPORT("Cannot query texture: %s :%s", texture->name, SDL_GetError());
     }
@@ -68,10 +105,23 @@ void BlitInternal(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, 
 
 #endif
     
-    if(texture->delay <= SDL_GetTicks() - texture->clock) {
-        texture->clock = SDL_GetTicks();
-        if(texture->current++ == texture->count - 1) {
-            texture->current = 0;
+    /* Check if animation is active */
+    if(texture->flags & AnimActive) {
+        /* Change frame only if delay is reached */
+        if(texture->delay <= SDL_GetTicks() - texture->clock) {
+            texture->clock = SDL_GetTicks();
+
+            /* Reached final frame */
+            if(texture->current == texture->count - 1) {
+                /* If looping is allowed then set to first(0 index) frame */
+                if(texture->flags & AnimLoop) {
+                    texture->current = 0;
+                }
+            }
+            else {
+                /* Simply increment frame */
+                texture->current++;
+            }
         }
     }
 }

@@ -24,6 +24,7 @@ TextureAsset *Asset_NewTextureAsset(const char *name) {
     asset->count   = 1;
     asset->texture = NULL;
     asset->clock   = SDL_GetTicks();
+    asset->flags   = AnimActive;
 
     return asset;
 }
