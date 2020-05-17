@@ -81,7 +81,7 @@ void render() {
         bool is = Texture_GetAnimLoop(Asset_GetTexture("arrow0"));
         Texture_SetAnimLoop(Asset_GetTexture("arrow0"), is ? false : true); // It toogles 
 
-        //Object_SetZOrder(Object_GetObject("main player"), 20);
+        Object_SetZOrder(Object_GetObject("main player"), 20);
     }
 
     Texture_BlitScaled((Rect){10, 10, 0, 0}, (Vector2f){1.0f, 1.0f}, 0, 0, text);

@@ -129,12 +129,6 @@ double Object_GetAngle(GameObject *obj) {
     return obj->angle;
 }
 
-/* !! Broken !! 
- * Removing the old object overwrites the memory location 
- * of the object(probably) as it used memmove
- * Not doing so duplicates the object which leads to
- * strange behaviours 
- */
 void Object_SetZOrder(GameObject *obj, int32_t z) {
     PTR_NULLCHECK(obj);
 
@@ -147,9 +141,13 @@ void Object_SetZOrder(GameObject *obj, int32_t z) {
     for(int i=0; i<stbds_arrlen(scene->objects); i++) {
         /* Finding itself */
         if(scene->objects[i] == obj) {
-            //stbds_arrdel(scene->objects, i);    /* Remove the old object */
-            obj->order.z = z;                   /* Set the new Z Order */
-            AddObjectToArray(obj);              /* Add to the array */
+            /* Remove the old object */
+            stbds_arrdel(scene->objects, i);
+            scene->object_count--;
+
+            /* Add the same object with different Z-order */
+            obj->order.z = z;
+            AddObjectToArray(obj);
             return;
         }
     }
