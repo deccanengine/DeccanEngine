@@ -26,6 +26,7 @@ typedef struct GameObject {
     Vector2f position;               /* Positional info of the object */
     Vector2f size;                   /* Size of the rect bounding the object */
     Vector2f transform;              /* Transformation info */
+    int32_t zOrder;
     double angle;
     struct { bool dead, hidden; } status;   /* Status */
     Collider collider;               /* Collider info */

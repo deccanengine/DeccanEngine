@@ -9,6 +9,12 @@
 #include <Deccan/Scene.h>
 #include <Deccan/Core.h>
 
+static struct {
+    int32_t zAccum;
+} Object_Info = {
+    .zAccum = 0
+};
+
 void _msg_send(GameObject *obj, const char *msg) {
     Msg_Send(&obj->msg, msg);
 }
@@ -28,6 +34,7 @@ GameObject *Object_NewObject(
     obj->info.name = DE_NEWSTRING(name);
     obj->info.type = DE_NEWSTRING(type);
     
+    obj->zOrder = Object_Info.zAccum++;
     obj->angle = 0.0f;
     
     Msg_Init(&obj->msg, DECCAN_OBJ_MSG_COUNT, DECCAN_OBJ_MSG_LENGTH);
@@ -52,8 +59,31 @@ void Object_InstantiateObject(GameObject *object) {
     PTR_NULLCHECK(object);
     
     GameScene *scene = Scene_CurrentScene(); 
-    if(stbds_arrput(scene->objects, object) != object) {
-        DE_REPORT("Cannot instantiate object: %s", object->info.name); return;
+    int length = stbds_arrlen(scene->objects);
+
+    if(length > 0 && object->zOrder != -1) {
+        for(int i=0; i<length; i++) {
+            if(object->zOrder >= scene->objects[i]->zOrder) {
+                if(i+1 >= length) {
+                    goto _push;
+                }
+
+                if(object->zOrder < scene->objects[i+1]->zOrder) {
+                    stbds_arrins(scene->objects, i+1, object);
+                    break;
+                }
+            }
+            else {
+                stbds_arrins(scene->objects, i, object);
+                break;
+            }
+        }
+    }
+    else {
+_push:
+        if(stbds_arrput(scene->objects, object) != object) {
+            DE_REPORT("Cannot instantiate object: %s", object->info.name); return;
+        }
     }
     scene->object_count++;
 }

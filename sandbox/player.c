@@ -63,7 +63,7 @@ void _player_step(GameObject *this) {
 }
 
 void _player_render(GameObject *this) {
-    Draw_Rect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
+    Draw_FilledRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
 
     Texture_BlitScaled((Rect){this->position.x, this->position.y, 0, 0},
                                (Vector2f){2.0f, 2.0f},
@@ -94,7 +94,7 @@ void _none_render(GameObject *this) {
         // do nothing, or!
     }
     
-    Draw_Rect((Rect){this->position.x, this->position.y, 40, 40}, ColorList.red); 
+    Draw_FilledRect((Rect){this->position.x, this->position.y, 40, 40}, ColorList.red); 
     /*Object.RotateTowardsObject(this, Object.GetObject("main player"), 1);
     Renderer.TextureBlitScaled((Rect){this->position.x, this->position.y, 0, 0},
                                (Vector2f){2.0f, 2.0f},

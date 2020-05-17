@@ -7,7 +7,9 @@ TextureAsset *text;
 
 void begin() {
     /* Start here */
-    Object_InstantiateObject(Object_NewObject("main player", "player", NULL_OBJFUNC, _player_begin, _player_step, _player_render, _player_end));
+    GameObject *player = Object_NewObject("main player", "player", NULL_OBJFUNC, _player_begin, _player_step, _player_render, _player_end);
+    player->zOrder = 10; 
+    Object_InstantiateObject(player);
     
     Asset_LoadTexture("arrow0", "arrow0.png");
     Asset_LoadTexture("arrow0", "arrow1.png");
@@ -32,6 +34,7 @@ void render() {
         GameObject *s = Object_NewObject("circle", "static", NULL_OBJFUNC, _none_begin, _none_step, _none_render, _none_end);
         s->position.x = Object_GetObject("main player")->position.x + 10;
         s->position.y = Object_GetObject("main player")->position.y + 10;
+        //s->zOrder = zAccum++;
         Object_InstantiateObject(s);
         
         Clock_ResetTimer(&timer);
