@@ -23,13 +23,14 @@
 typedef struct GameObject GameObject;
 typedef struct GameObject {
     struct { char *name, *type; } info;     /* Basic information about the object */ 
-    Vector2f position;               /* Positional info of the object */
-    Vector2f size;                   /* Size of the rect bounding the object */
-    Vector2f transform;              /* Transformation info */
-    int32_t zOrder;
-    double angle;
+    Vector2f position;                      /* Positional info of the object */
+    Vector2f size;                          /* Size of the rect bounding the object */
+    Vector2f transform;                     /* Transformation info */
+    struct { int32_t z, layer; } order;     /* The Z order and layer */
+    double angle;                           /* Present rotation(in degrees) */
     struct { bool dead, hidden; } status;   /* Status */
-    Collider collider;               /* Collider info */
+    Collider collider;                      /* Collider info */
+    /* !! Unused !!*/
     union {
         struct { Color color; };     /* Color value for shape rendering */
     };
@@ -46,14 +47,16 @@ typedef struct GameObject {
     obj_func(AtEnd);
 } GameObject;
 
-GameObject *Object_NewObject(const char *name, const char *type, obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae));
+GameObject *Object_NewObject(const char *name, const char *type);
 void Object_InstantiateObject(GameObject *object);
 GameObject *Object_GetObject(const char *name);
 void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj));
 
 void Object_SetAngle(GameObject *obj, double angle);
-
 double Object_GetAngle(GameObject *obj);
+
+void Object_SetZOrder(GameObject *obj, int32_t z);
+int32_t Object_GetZOrder(GameObject *obj);
 
 void Object_Rotate(GameObject *obj, double angle, int speed);
 void Object_RotateTowardsObject(GameObject *obj, GameObject *target, int speed);

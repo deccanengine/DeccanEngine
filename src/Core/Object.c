@@ -25,28 +25,26 @@ bool _msg_receive(GameObject *obj, const char *msg) {
 
 #define obj_func(x) void (*x)(GameObject *object)
 
-GameObject *Object_NewObject(
-    const char *name, const char *type, 
-    obj_func(af), obj_func(ab), obj_func(as), obj_func(ar), obj_func(ae)) {
+GameObject *Object_NewObject(const char *name, const char *type) {
     
     GameObject *obj = DE_NEW(GameObject, 1);
     
     obj->info.name = DE_NEWSTRING(name);
     obj->info.type = DE_NEWSTRING(type);
     
-    obj->zOrder = Object_Info.zAccum++;
-    obj->angle = 0.0f;
+    obj->order.z = Object_Info.zAccum++;
+    obj->angle   = 0.0f;
     
     Msg_Init(&obj->msg, DECCAN_OBJ_MSG_COUNT, DECCAN_OBJ_MSG_LENGTH);
     obj->SendMessage = _msg_send;
     obj->ReceiveMessage = _msg_receive;
     
     obj->is_beginning = true;
-    obj->AtFirstFrame = af;
-    obj->AtBeginning = ab;
-    obj->AtStep = as;
-    obj->AtRender = ar;
-    obj->AtEnd = ae;
+    obj->AtFirstFrame = NULL_OBJFUNC;
+    obj->AtBeginning = NULL_OBJFUNC;
+    obj->AtStep = NULL_OBJFUNC;
+    obj->AtRender = NULL_OBJFUNC;
+    obj->AtEnd = NULL_OBJFUNC;
 
     return obj;
 }
@@ -55,20 +53,18 @@ GameObject *Object_NewObject(
 
 #define PTR_NULLCHECK(x) if(x == NULL) { return; }  
 
-void Object_InstantiateObject(GameObject *object) {
-    PTR_NULLCHECK(object);
-    
+void AddObjectToArray(GameObject *object) {
     GameScene *scene = Scene_CurrentScene(); 
     int length = stbds_arrlen(scene->objects);
 
-    if(length > 0 && object->zOrder != -1) {
+    if(length > 0 && object->order.z != -1) {
         for(int i=0; i<length; i++) {
-            if(object->zOrder >= scene->objects[i]->zOrder) {
+            if(object->order.z >= scene->objects[i]->order.z) {
                 if(i+1 >= length) {
                     goto _push;
                 }
 
-                if(object->zOrder < scene->objects[i+1]->zOrder) {
+                if(object->order.z < scene->objects[i+1]->order.z) {
                     stbds_arrins(scene->objects, i+1, object);
                     break;
                 }
@@ -86,6 +82,11 @@ _push:
         }
     }
     scene->object_count++;
+}
+
+void Object_InstantiateObject(GameObject *object) {
+    PTR_NULLCHECK(object);
+    AddObjectToArray(object);
 }
 
 GameObject *Object_GetObject(const char *name) {
@@ -112,7 +113,7 @@ void _clamp_angle(double *angle) {
     while(*angle <   0) { *angle += 360; }
 }
 
-/* Setters */
+/* Setters and Getters */
 
 void Object_SetAngle(GameObject *obj, double angle) {
     PTR_NULLCHECK(obj);
@@ -121,13 +122,41 @@ void Object_SetAngle(GameObject *obj, double angle) {
     obj->angle = angle;
 }
 
-/* Getters */
-
 double Object_GetAngle(GameObject *obj) {
     PTR_NULLCHECK(obj);
     
     _clamp_angle(&obj->angle);
     return obj->angle;
+}
+
+/* !! Broken !! 
+ * Removing the old object overwrites the memory location 
+ * of the object(probably) as it used memmove
+ * Not doing so duplicates the object which leads to
+ * strange behaviours 
+ */
+void Object_SetZOrder(GameObject *obj, int32_t z) {
+    PTR_NULLCHECK(obj);
+
+    if(obj->order.z == z) {
+        return;
+    }
+
+    GameScene *scene = Scene_CurrentScene();
+
+    for(int i=0; i<stbds_arrlen(scene->objects); i++) {
+        /* Finding itself */
+        if(scene->objects[i] == obj) {
+            //stbds_arrdel(scene->objects, i);    /* Remove the old object */
+            obj->order.z = z;                   /* Set the new Z Order */
+            AddObjectToArray(obj);              /* Add to the array */
+            return;
+        }
+    }
+}
+
+int32_t Object_GetZOrder(GameObject *obj) {
+    return obj->order.z;
 }
 
 /* Object rotation functions */

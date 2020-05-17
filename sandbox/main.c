@@ -7,8 +7,12 @@ TextureAsset *text;
 
 void begin() {
     /* Start here */
-    GameObject *player = Object_NewObject("main player", "player", NULL_OBJFUNC, _player_begin, _player_step, _player_render, _player_end);
-    player->zOrder = 10; 
+    GameObject *player = Object_NewObject("main player", "player");
+    player->order.z = 10;
+    player->AtBeginning = _player_begin;
+    player->AtStep = _player_step;
+    player->AtRender = _player_render;
+    player->AtEnd = _player_end;
     Object_InstantiateObject(player);
     
     Asset_LoadTexture("arrow0", "arrow0.png");
@@ -31,10 +35,13 @@ void step() {
 void render() {
     /* Start here */
     if(Input_KeyReleased(Key.space) && Clock_GetTime(&timer).milliseconds > 200) {
-        GameObject *s = Object_NewObject("circle", "static", NULL_OBJFUNC, _none_begin, _none_step, _none_render, _none_end);
+        GameObject *s = Object_NewObject("circle", "static");
         s->position.x = Object_GetObject("main player")->position.x + 10;
         s->position.y = Object_GetObject("main player")->position.y + 10;
-        //s->zOrder = zAccum++;
+        s->AtBeginning = _none_begin;
+        s->AtStep = _none_step;
+        s->AtRender = _none_render;
+        s->AtEnd = _none_end;
         Object_InstantiateObject(s);
         
         Clock_ResetTimer(&timer);
@@ -73,6 +80,8 @@ void render() {
     if(Input_KeyReleased(Key.l)) {
         bool is = Texture_GetAnimLoop(Asset_GetTexture("arrow0"));
         Texture_SetAnimLoop(Asset_GetTexture("arrow0"), is ? false : true); // It toogles 
+
+        //Object_SetZOrder(Object_GetObject("main player"), 20);
     }
 
     Texture_BlitScaled((Rect){10, 10, 0, 0}, (Vector2f){1.0f, 1.0f}, 0, 0, text);
