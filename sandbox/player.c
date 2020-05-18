@@ -30,10 +30,10 @@ void _player_begin(GameObject *this) {
 void _player_step(GameObject *this) {
     int mod = 5;
 
-    if(Input_KeyHeld(Key.w)){ this->position.y -= mod; }
-    else if(Input_KeyHeld(Key.s)){ this->position.y += mod; }
-    else if(Input_KeyHeld(Key.a)){ this->position.x -= mod; }
-    else if(Input_KeyHeld(Key.d)){ this->position.x += mod; }
+    if(Input_KeyHeld(KeyCode_W)){ this->position.y -= mod; }
+    else if(Input_KeyHeld(KeyCode_S)){ this->position.y += mod; }
+    else if(Input_KeyHeld(KeyCode_A)){ this->position.x -= mod; }
+    else if(Input_KeyHeld(KeyCode_D)){ this->position.x += mod; }
 
     /* Center the camera on player */
     Camera_CenterOn(this);
@@ -41,12 +41,12 @@ void _player_step(GameObject *this) {
     Vector2f pos = Input_GetRelativeMousePos();
     if(Collision_ObjectVec(this, &pos)) { 
         this->color = ColorList.fuchsia;
-        if(Input_ButtonDown(Button.left)) {
+        if(Input_ButtonDown(ButtonCode_Left)) {
             selected = true;
             offset.x = pos.x - this->position.x;
             offset.y = pos.y - this->position.y;
         }
-        else if(Input_ButtonUp(Button.left)) { selected = false; }
+        else if(Input_ButtonUp(ButtonCode_Left)) { selected = false; }
     }
     
     /* Modify the color on mouse wheel */

@@ -34,7 +34,7 @@ void step() {
 
 void render() {
     /* Start here */
-    if(Input_KeyReleased(Key.space) && Clock_GetTime(&timer).milliseconds > 200) {
+    if(Input_KeyReleased(KeyCode_Space) && Clock_GetTime(&timer).milliseconds > 200) {
         GameObject *s = Object_NewObject("circle", "static");
         s->position.x = Object_GetObject("main player")->position.x + 10;
         s->position.y = Object_GetObject("main player")->position.y + 10;
@@ -47,37 +47,37 @@ void render() {
         Clock_ResetTimer(&timer);
     }
     
-    if(Input_KeyReleased(Key.up)) {
+    if(Input_KeyReleased(KeyCode_Up)) {
         Vector2f size = Renderer_GetPixelSize();
         size.x += 0.1f;
         size.y += 0.1f; 
         Renderer_SetPixelSize(size);
     }
-    else if(Input_KeyReleased(Key.down)) {
+    else if(Input_KeyReleased(KeyCode_Down)) {
         Vector2f size = Renderer_GetPixelSize();
         size.x -= size.x ? 0.1f : 0.0f; 
         size.y -= size.y ? 0.1f : 0.0f;
         Renderer_SetPixelSize(size);
     }
 
-    if(Input_KeyReleased(Key.left)) {
+    if(Input_KeyReleased(KeyCode_Left)) {
         Vector2i mode = Core_GetMode();
         mode.x += 40;
         mode.y += 40; 
         Core_SetMode(mode);
     }
-    else if(Input_KeyReleased(Key.right)) {
+    else if(Input_KeyReleased(KeyCode_Right)) {
         Vector2i mode = Core_GetMode();
         mode.x -= mode.x > 40 ? 40 : 0;
         mode.y -= mode.y > 40 ? 40 : 0; 
         Core_SetMode(mode);
     }
     
-    if(Input_KeyReleased(Key.v)) {
+    if(Input_KeyReleased(KeyCode_V)) {
         Core_SetVsyncStatus(false);
     }
 
-    if(Input_KeyReleased(Key.l)) {
+    if(Input_KeyReleased(KeyCode_L)) {
         bool is = Texture_GetAnimLoop(Asset_GetTexture("arrow0"));
         Texture_SetAnimLoop(Asset_GetTexture("arrow0"), is ? false : true); // It toogles 
 
