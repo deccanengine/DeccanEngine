@@ -94,7 +94,9 @@ typedef enum {
     KeyCode_Right,       
     KeyCode_Left,       
     KeyCode_Down, 
-    KeyCode_Up
+    KeyCode_Up,
+
+    KeyCodeTotalCount
 } KeyCode;
 
 /* Button Codes */
@@ -103,19 +105,21 @@ typedef enum {
     ButtonCode_Middle, 
     ButtonCode_Right, 
     ButtonCode_X1, 
-    ButtonCode_X2
+    ButtonCode_X2,
+
+    ButtonCodeTotalCount
 } ButtonList;
 
 /* Functions and Structs */
 typedef struct {
-    bool is_pressed;
-    bool is_released;
-    bool is_held;
+    bool IsPressed;
+    bool IsReleased;
+    bool IsHeld;
 } KeyState;
 
 typedef struct {
-    bool is_down;
-    bool is_up;
+    bool IsDown;
+    bool IsUp;
 } MouseState;
 
 SDL_Event *Input_GetEventHandler();
