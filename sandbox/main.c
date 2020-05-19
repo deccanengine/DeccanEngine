@@ -84,6 +84,10 @@ void render() {
         Object_SetZOrder(Object_GetObject("main player"), 20);
     }
 
+    if(Input_KeyReleased(KeyCode_X)) {
+        Object_DeleteObject(Object_GetObject("main player"));
+    }
+
     Texture_BlitScaled((Rect){10, 10, 0, 0}, (Vector2f){1.0f, 1.0f}, 0, 0, text);
 }
 

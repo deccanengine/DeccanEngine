@@ -15,6 +15,8 @@ static struct {
     .zAccum = 0
 };
 
+#define PTR_NULLCHECK(x) if(x == NULL) { return; }  
+
 /////////////////////////////////////////////////
 // Initialization and instantiator functions
 ////////////////////////////////////////////////
@@ -26,8 +28,6 @@ void _msg_send(GameObject *obj, const char *msg) {
 bool _msg_receive(GameObject *obj, const char *msg) {
     return Msg_Receive(&obj->msg, msg);
 }
-
-#define obj_func(x) void (*x)(GameObject *object)
 
 GameObject *Object_NewObject(const char *name, const char *type) {
     
@@ -53,9 +53,39 @@ GameObject *Object_NewObject(const char *name, const char *type) {
     return obj;
 }
 
-#undef obj_func
+void Object_DeleteObject(GameObject *obj) {
+    PTR_NULLCHECK(obj);
 
-#define PTR_NULLCHECK(x) if(x == NULL) { return; }  
+    int32_t index = 0;
+    GameScene *scene = Scene_CurrentScene();
+
+    /* Index of the object in the array */
+    while(obj != scene->objects[index] && index < stbds_arrlen(scene->objects)) {
+        index++;
+    }
+
+    obj->AtEnd(obj);
+
+    /* Free the name */
+    if(obj->info.name != NULL) {
+        free(obj->info.name);
+        obj->info.name = NULL;
+    }
+
+    /* Free the type */
+    if(obj->info.type != NULL) {
+        free(obj->info.type);
+        obj->info.type = NULL;
+    }
+
+    /* Remove from the array */
+    stbds_arrdel(scene->objects, index);
+    scene->object_count--;
+
+    /* Free */
+    free(obj);
+    obj = NULL;
+}
 
 void AddObjectToArray(GameObject *object) {
     GameScene *scene = Scene_CurrentScene(); 

@@ -48,6 +48,7 @@ typedef struct GameObject {
 } GameObject;
 
 GameObject *Object_NewObject(const char *name, const char *type);
+void Object_DeleteObject(GameObject *obj);
 void Object_InstantiateObject(GameObject *object);
 GameObject *Object_GetObject(const char *name);
 void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj));
