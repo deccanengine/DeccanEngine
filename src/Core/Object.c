@@ -15,6 +15,10 @@ static struct {
     .zAccum = 0
 };
 
+/////////////////////////////////////////////////
+// Initialization and instantiator functions
+////////////////////////////////////////////////
+
 void _msg_send(GameObject *obj, const char *msg) {
     Msg_Send(&obj->msg, msg);
 }
@@ -108,12 +112,30 @@ void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj)) {
     }
 }
 
+/////////////////////////////////////////////////
+// Setters and Getters
+////////////////////////////////////////////////
+
+/***********
+ * Position
+ ***********/
+
+void Object_SetPosition(GameObject *obj, Vector2f pos) {
+    obj->position = pos;
+}
+
+Vector2f Object_GetPosition(GameObject *obj) {
+    return obj->position;
+}
+
+/***********
+ * Angle
+ ***********/
+
 void _clamp_angle(double *angle) {
     while(*angle > 360) { *angle -= 360; }
     while(*angle <   0) { *angle += 360; }
 }
-
-/* Setters and Getters */
 
 void Object_SetAngle(GameObject *obj, double angle) {
     PTR_NULLCHECK(obj);
@@ -128,6 +150,10 @@ double Object_GetAngle(GameObject *obj) {
     _clamp_angle(&obj->angle);
     return obj->angle;
 }
+
+/***********
+ * Z-Order
+ ***********/
 
 void Object_SetZOrder(GameObject *obj, int32_t z) {
     PTR_NULLCHECK(obj);
@@ -157,7 +183,37 @@ int32_t Object_GetZOrder(GameObject *obj) {
     return obj->order.z;
 }
 
-/* Object rotation functions */
+/***********
+ * Status
+ ***********/
+
+bool Object_IsDead(GameObject *obj) {
+    return obj->status.dead;
+}
+
+bool Object_IsHidden(GameObject *obj) {
+    return obj->status.hidden;
+}
+
+void Object_Hide(GameObject *obj, bool hide) {
+    obj->status.hidden = hide;
+}
+
+/***********
+ * Collider
+ ***********/
+
+Collider Object_GetCollider(GameObject *obj) {
+    return obj->collider;
+}
+
+void Object_SetCollider(GameObject *obj, Collider collider) {
+    obj->collider = collider;
+}
+
+/////////////////////////////////////////////////
+// Rotation functions
+////////////////////////////////////////////////
 
 int _angle_diff(double a1, double a2) {
     return ((((int)(a1 - a2) % 360) + 180) % 360) - 180;
