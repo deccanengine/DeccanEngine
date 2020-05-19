@@ -11,8 +11,10 @@
 
 static struct {
     int32_t zAccum;
+    GameObject defaultObj;
 } Object_Info = {
-    .zAccum = 0
+    .zAccum = 0,
+    .defaultObj = {0}
 };
 
 #define PTR_NULLCHECK(x) if(x == NULL) { return; }  
@@ -130,7 +132,9 @@ GameObject *Object_GetObject(const char *name) {
             return scene->objects[i];
         }
     }
+    
     DE_REPORT("GameObject not found: %s", name);
+    return &Object_Info.defaultObj;
 }
 
 void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj)) {

@@ -18,8 +18,6 @@
     #define DECCAN_OBJ_MSG_COUNT 100
 #endif
 
-#define obj_func(x) void (*x)(GameObject *object)
-
 typedef struct GameObject GameObject;
 typedef struct GameObject {
     struct { char *name, *type; } info;     /* Basic information about the object */ 
@@ -40,11 +38,11 @@ typedef struct GameObject {
     bool (*ReceiveMessage)(GameObject *obj, const char *msg);
 
     bool is_beginning;
-    obj_func(AtFirstFrame);
-    obj_func(AtBeginning);
-    obj_func(AtStep);
-    obj_func(AtRender);
-    obj_func(AtEnd);
+    void (*AtFirstFrame)(GameObject *object);
+    void (*AtBeginning)(GameObject *object);
+    void (*AtStep)(GameObject *object);
+    void (*AtRender)(GameObject *object);
+    void (*AtEnd)(GameObject *object);
 } GameObject;
 
 GameObject *Object_NewObject(const char *name, const char *type);
@@ -74,5 +72,3 @@ void Object_RotateTowardsObject(GameObject *obj, GameObject *target, int speed);
 void Object_RotateTowardsPosition(GameObject *obj, Vector2f pos, int speed);
 
 static inline void NULL_OBJFUNC(GameObject *obj) { }
-
-#undef obj_func
