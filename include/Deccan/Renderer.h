@@ -21,6 +21,14 @@ typedef enum {
     FlipVertical
 } Flip;
 
+typedef enum {
+	FontStyle_Bold = TTF_STYLE_BOLD,
+	FontStyle_Italic = TTF_STYLE_ITALIC,
+	FontStyle_Underline = TTF_STYLE_UNDERLINE,
+	FontStyle_Strikethrough = TTF_STYLE_STRIKETHROUGH,
+	FontStyle_Normal = TTF_STYLE_NORMAL
+} FontStyle;
+
 typedef struct Color {
     uint8_t r;
     uint8_t g;
@@ -92,4 +100,6 @@ void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, TextureAs
 void Texture_BlitPartialScaled(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, TextureAsset *texture);
 
 /* Font/Text */
-TextureAsset *Font_Text(FontAsset *font, const char *text, Color color);
+TextureAsset *Font_FastText(FontAsset *font, const char *text, Color color);
+TextureAsset *Font_Text(FontAsset *font, const char *text, FontStyle style, Color color);
+TextureAsset *Font_OutlinedText(FontAsset *font, const char *text, FontStyle style, int32_t outline, Color color);

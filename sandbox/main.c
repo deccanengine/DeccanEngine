@@ -25,7 +25,7 @@ void begin() {
 
     Renderer_SetBackgroundColor(ColorList.white);
 
-    text = Font_Text(Asset_GetFont("arial"), "hello", ColorList.black);
+    text = Font_Text(Asset_GetFont("arial"), "Hello! This is Deccan Game Engine", FontStyle_Italic, ColorList.black);
 }
 
 void step() {
