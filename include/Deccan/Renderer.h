@@ -100,6 +100,11 @@ void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, TextureAs
 void Texture_BlitPartialScaled(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, TextureAsset *texture);
 
 /* Font/Text */
+void Font_SetKerning(FontAsset *font, bool kerning);
+bool Font_GetKerning(FontAsset *font);
+
+Vector2i Font_CalculateTextSize(FontAsset *font, const char *text);
+
 TextureAsset *Font_FastText(FontAsset *font, const char *text, Color color);
 TextureAsset *Font_Text(FontAsset *font, const char *text, FontStyle style, Color color);
 TextureAsset *Font_OutlinedText(FontAsset *font, const char *text, FontStyle style, int32_t outline, Color color);

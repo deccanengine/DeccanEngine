@@ -8,7 +8,32 @@
 #include <Deccan/Renderer.h>
 #include <Deccan/Core.h>
 
+#define PTR_NULLCHECK(x,y) if(!x) { return y; }
+
+void Font_SetKerning(FontAsset *font, bool kerning) {
+    PTR_NULLCHECK(font,);
+    
+    TTF_SetFontKerning(font->font, kerning ? 1 : 0);
+}
+
+bool Font_GetKerning(FontAsset *font) {
+    PTR_NULLCHECK(font, false);
+
+    return (bool)TTF_GetFontKerning(font->font);
+}
+
+Vector2i Font_CalculateTextSize(FontAsset *font, const char *text) {
+    Vector2i size = {-1, -1};
+    
+    PTR_NULLCHECK(font, size);
+    TTF_SizeText(font->font, text, &size.x, &size.y);
+    
+    return size;
+}
+
 TextureAsset *Font_FastText(FontAsset *font, const char *text, Color color) {
+    PTR_NULLCHECK(font, NULL);
+
 	SDL_Renderer *renderer = Renderer_GetRenderer();
     
     SDL_Color scol = {
@@ -39,6 +64,8 @@ TextureAsset *Font_Text(FontAsset *font, const char *text, FontStyle style, Colo
 }
 
 TextureAsset *Font_OutlinedText(FontAsset *font, const char *text, FontStyle style, int32_t outline, Color color) {
+    PTR_NULLCHECK(font, NULL);
+    
     SDL_Renderer *renderer = Renderer_GetRenderer();
     
     SDL_Color scol = {
