@@ -18,8 +18,18 @@
 #ifndef DECCAN_MSG_COUNT
     #define DECCAN_MSG_COUNT 100
 #endif
+/////////////////////////////////////////////////
+// Enums
+////////////////////////////////////////////////
 
-/* Core functions */
+/////////////////////////////////////////////////
+// Structs
+////////////////////////////////////////////////
+
+/////////////////////////////////////////////////
+// Core functions
+////////////////////////////////////////////////
+
 int  Core_Init(const char *title, Vector2i mode);
 void Core_Quit();
 void Core_Run(float fps);
@@ -39,7 +49,10 @@ float Core_GetDeltaTime();
 void Core_SendMessage(const char *msg);
 bool Core_ReceiveMessage(const char *msg);
 
-/* Asset Manager */
+/////////////////////////////////////////////////
+// Asset Manager
+////////////////////////////////////////////////
+
 int32_t Asset_GetSpriteIndex(const char *name);
 SpriteAsset *Asset_NewSpriteAsset(const char *name);
 void Asset_LoadSprite(const char *name, const char *path);
@@ -49,7 +62,10 @@ FontAsset *Asset_NewFontAsset(const char *name);
 void Asset_LoadFont(const char *name, const char *path);
 FontAsset *Asset_GetFont(const char *name);
 
-/* Camera */
+/////////////////////////////////////////////////
+// Camera
+////////////////////////////////////////////////
+
 void Camera_Move(Vector2f pos);
 void Camera_CenterOn(GameObject *obj);
 void Camera_SetPosition(Vector2f pos);

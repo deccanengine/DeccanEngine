@@ -18,6 +18,14 @@
     #define DECCAN_OBJ_MSG_COUNT 100
 #endif
 
+/////////////////////////////////////////////////
+// Enums
+////////////////////////////////////////////////
+
+/////////////////////////////////////////////////
+// Structs
+////////////////////////////////////////////////
+
 typedef struct GameObject GameObject;
 typedef struct GameObject {
     struct { char *name, *type; } info;     /* Basic information about the object */ 
@@ -45,27 +53,59 @@ typedef struct GameObject {
     void (*AtEnd)(GameObject *object);
 } GameObject;
 
+/////////////////////////////////////////////////
+// Initialization and instantiator functions
+////////////////////////////////////////////////
+
 GameObject *Object_NewObject(const char *name, const char *type);
 void Object_DeleteObject(GameObject *obj);
 void Object_InstantiateObject(GameObject *object);
 GameObject *Object_GetObject(const char *name);
 void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj));
 
+/////////////////////////////////////////////////
+// Getters and Setters
+////////////////////////////////////////////////
+
+/***********
+ * Position
+ ***********/
+
 void Object_SetPosition(GameObject *obj, Vector2f pos);
 Vector2f Object_GetPosition(GameObject *obj);
+
+/***********
+ * Angle
+ ***********/
 
 void Object_SetAngle(GameObject *obj, double angle);
 double Object_GetAngle(GameObject *obj);
 
+/***********
+ * Z-Order
+ ***********/
+
 void Object_SetZOrder(GameObject *obj, int32_t z);
 int32_t Object_GetZOrder(GameObject *obj);
+
+/***********
+ * Status
+ ***********/
 
 bool Object_IsDead(GameObject *obj);
 bool Object_IsHidden(GameObject *obj);
 void Object_Hide(GameObject *obj, bool hide);
 
+/***********
+ * Collider
+ ***********/
+
 Collider Object_GetCollider(GameObject *obj);
 void Object_SetCollider(GameObject *obj, Collider collider);
+
+/////////////////////////////////////////////////
+// Rotation Functions 
+////////////////////////////////////////////////
 
 void Object_Rotate(GameObject *obj, double angle, int speed);
 void Object_RotateTowardsObject(GameObject *obj, GameObject *target, int speed);

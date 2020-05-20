@@ -8,6 +8,10 @@
 #pragma once
 #include <Deccan/Config.h>
 
+/////////////////////////////////////////////////
+// Enums
+////////////////////////////////////////////////
+
 typedef enum {
     BlendMode_None  = SDL_BLENDMODE_NONE,
     BlendMode_Alpha = SDL_BLENDMODE_BLEND,
@@ -28,6 +32,10 @@ typedef enum {
 	FontStyle_Strikethrough = TTF_STYLE_STRIKETHROUGH,
 	FontStyle_Normal = TTF_STYLE_NORMAL
 } FontStyle;
+
+/////////////////////////////////////////////////
+// Structs
+////////////////////////////////////////////////
 
 typedef struct Color {
     uint8_t r;
@@ -55,7 +63,10 @@ static Color
     ColorList_Violet    = {238, 130, 238, 255}, 
     ColorList_Fuchsia   = {255,   0, 255, 255};
 
-/* Renderer */
+/////////////////////////////////////////////////
+// Renderer functions
+////////////////////////////////////////////////
+
 SDL_Renderer *Renderer_GetRenderer();
 void Renderer_Init(SDL_Window *window);
 void Renderer_Quit();
@@ -76,7 +87,10 @@ Color Renderer_GetColor();
 Vector2f Renderer_GetPixelSize();
 BlendMode Renderer_GetBlendMode();
 
-/* Drawing */
+/////////////////////////////////////////////////
+// Drawing functions
+////////////////////////////////////////////////
+
 void Draw_Point(Vector2f pos, Color color);
 void Draw_Line(Vector2f start, Vector2f end, Color color);
 void Draw_Rect(Rect rect, Color color);
@@ -84,7 +98,10 @@ void Draw_FilledRect(Rect rect, Color color);
 void Draw_Circle(Circle circle, Color color);
 void Draw_FilledCircle(Circle circle, Color color);
 
-/* Sprite */
+/////////////////////////////////////////////////
+// Sprite functions
+////////////////////////////////////////////////
+
 void Sprite_SetColor(SpriteAsset *texture, Color color);
 Vector2i Sprite_GetSize(SpriteAsset *texture);
 void Sprite_SetAnimLoop(SpriteAsset *texture, bool loop);
@@ -98,7 +115,10 @@ void Sprite_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, Sprit
 void Sprite_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, SpriteAsset *texture);
 void Sprite_BlitPartialScaled(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, SpriteAsset *texture);
 
-/* Font/Text */
+/////////////////////////////////////////////////
+// Font/Text functions
+////////////////////////////////////////////////
+
 void Font_SetKerning(FontAsset *font, bool kerning);
 bool Font_GetKerning(FontAsset *font);
 

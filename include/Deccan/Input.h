@@ -8,6 +8,10 @@
 #pragma once
 #include <Deccan/Config.h>
 
+/////////////////////////////////////////////////
+// Enums
+////////////////////////////////////////////////
+
 /* Key Codes */
 typedef enum {
     KeyCode_Unknown1 = 0, 
@@ -110,7 +114,10 @@ typedef enum {
     ButtonCodeTotalCount
 } ButtonList;
 
-/* Functions and Structs */
+/////////////////////////////////////////////////
+// Structs
+////////////////////////////////////////////////
+
 typedef struct {
     bool IsPressed;
     bool IsReleased;
@@ -122,19 +129,35 @@ typedef struct {
     bool IsUp;
 } MouseState;
 
+/////////////////////////////////////////////////
+// Input management
+////////////////////////////////////////////////
+
 SDL_Event *Input_GetEventHandler();
 void Input_ResetStates();
 void Input_UpdateStates();
 
+/////////////////////////////////////////////////
+// Keyboard functions
+////////////////////////////////////////////////
+
 KeyState Input_GetKey(int key_code);
-MouseState Input_GetMouseButton(int button_code);
-Vector2i Input_GetMousePos();
-Vector2f Input_GetRelativeMousePos();
-int Input_MouseScrollHorizontal();
-int Input_MouseScrollVertical();
 
 bool Input_KeyPressed(int key_code);
 bool Input_KeyReleased(int key_code);
 bool Input_KeyHeld(int key_code);
+
+/////////////////////////////////////////////////
+// Mouse functions
+////////////////////////////////////////////////
+
+MouseState Input_GetMouseButton(int button_code);
+
 bool Input_ButtonDown(int button_code);
 bool Input_ButtonUp(int button_code);
+
+Vector2i Input_GetMousePos();
+Vector2f Input_GetRelativeMousePos();
+
+int Input_MouseScrollHorizontal();
+int Input_MouseScrollVertical();
