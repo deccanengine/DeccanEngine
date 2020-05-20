@@ -36,25 +36,24 @@ typedef struct Color {
     uint8_t a;
 } Color;
 
-typedef struct ColorList_ {
-    Color blank, 
-    white, black, grey, dark_grey,
-    red, dark_red, green, dark_green,
-    blue, dark_blue, yellow, cyan,
-    magenta, orange, violet, fuchsia;
-} ColorList_;
-
-static ColorList_ ColorList = {
-    {  0,   0,   0,   0},
-    {255, 255, 255, 255}, {  0,   0,   0, 255},
-    {192, 192, 192, 255}, {128, 128, 128, 255},
-	{255,   0,   0, 255}, {128,   0,   0, 255},
-    {  0, 255,   0, 255}, {  0, 128,   0, 255},
-    {  0,   0, 255, 255}, {  0,   0, 128, 255},
-    {255, 255,   0, 255}, {  0, 255, 255, 255}, 
-    {255,   0, 255, 255}, {255, 165,   0, 255}, 
-    {238, 130, 238, 255}, {255,   0, 255, 255}
-};
+static Color
+    ColorList_Blank     = {  0,   0,   0,   0},
+    ColorList_White     = {255, 255, 255, 255}, 
+    ColorList_Black     = {  0,   0,   0, 255},
+    ColorList_Grey      = {192, 192, 192, 255}, 
+    ColorList_DarkGrey  = {128, 128, 128, 255},
+	ColorList_Red       = {255,   0,   0, 255}, 
+    ColorList_DarkRed   = {128,   0,   0, 255},
+    ColorList_Green     = {  0, 255,   0, 255}, 
+    ColorList_DarkGreen = {  0, 128,   0, 255},
+    ColorList_Blue      = {  0,   0, 255, 255}, 
+    ColorList_DarkBlue  = {  0,   0, 128, 255},
+    ColorList_Yellow    = {255, 255,   0, 255}, 
+    ColorList_Cyan      = {  0, 255, 255, 255}, 
+    ColorList_Magenta   = {255,   0, 255, 255}, 
+    ColorList_Orange    = {255, 165,   0, 255}, 
+    ColorList_Violet    = {238, 130, 238, 255}, 
+    ColorList_Fuchsia   = {255,   0, 255, 255};
 
 /* Renderer */
 SDL_Renderer *Renderer_GetRenderer();

@@ -7,7 +7,7 @@ TextureAsset tar;
 
 void action(GameObject *this) {
     if(Collision_ObjectObject(Object_GetObject("main player"), this)) { 
-        Object_GetObject("main player")->color = ColorList.green;
+        Object_GetObject("main player")->color = ColorList_Green;
         this->SendMessage(this, "hello");
     }
 }
@@ -21,7 +21,7 @@ void _player_begin(GameObject *this) {
 
     this->collider = Collision_NewRectCollider((PosRect){0, 0, 50, 50});
     //this->collider = Collision.new_circle_collider((Circle){0, 0, 50});
-    this->color = ColorList.blue;
+    this->color = ColorList_Blue;
 
     Vector2i mode = Core_GetMode();
     //tar.texture = SDL_CreateTexture(Renderer_GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
@@ -40,7 +40,7 @@ void _player_step(GameObject *this) {
 
     Vector2f pos = Input_GetRelativeMousePos();
     if(Collision_ObjectVec(this, &pos)) { 
-        this->color = ColorList.fuchsia;
+        this->color = ColorList_Orange;
         if(Input_ButtonDown(ButtonCode_Left)) {
             selected = true;
             offset.x = pos.x - this->position.x;
@@ -94,7 +94,7 @@ void _none_render(GameObject *this) {
         // do nothing, or!
     }
     
-    Draw_FilledRect((Rect){this->position.x, this->position.y, 40, 40}, ColorList.red); 
+    Draw_FilledRect((Rect){this->position.x, this->position.y, 40, 40}, ColorList_Red); 
     /*Object.RotateTowardsObject(this, Object.GetObject("main player"), 1);
     Renderer.TextureBlitScaled((Rect){this->position.x, this->position.y, 0, 0},
                                (Vector2f){2.0f, 2.0f},
