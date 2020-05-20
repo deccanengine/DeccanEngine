@@ -9,15 +9,15 @@
 #include <Deccan/Renderer.h>
 
 static struct {
-    TextureAsset **textures;
+    SpriteAsset **textures;
     FontAsset **fonts;
 } Asset_Info = {
     .textures = NULL,
     .fonts = NULL
 };
 
-TextureAsset *Asset_NewTextureAsset(const char *name) {
-    TextureAsset *asset = DE_NEW(TextureAsset, 1); 
+SpriteAsset *Asset_NewSpriteAsset(const char *name) {
+    SpriteAsset *asset = DE_NEW(SpriteAsset, 1); 
     asset->name  = DE_NEWSTRING(name);
     asset->delay = 100.0f;
     asset->current = 0;
@@ -29,7 +29,7 @@ TextureAsset *Asset_NewTextureAsset(const char *name) {
     return asset;
 }
 
-int32_t Asset_GetTextureIndex(const char *name) {
+int32_t Asset_GetSpriteIndex(const char *name) {
     for(int32_t i=0; i<stbds_arrlen(Asset_Info.textures); i++) {
         if(!strcmp(name, Asset_Info.textures[i]->name)) {
             return i;
@@ -38,7 +38,7 @@ int32_t Asset_GetTextureIndex(const char *name) {
     return -1;            
 }
 
-RawTexture *LoadTexture(const char *path) {
+RawTexture *LoadSprite(const char *path) {
     SDL_Surface *img;
     SDL_Texture *tex;
 
@@ -57,14 +57,14 @@ RawTexture *LoadTexture(const char *path) {
     return tex;
 }
 
-void Asset_LoadTexture(const char *name, const char *path) {
-    RawTexture *tex = LoadTexture(path);
+void Asset_LoadSprite(const char *name, const char *path) {
+    RawTexture *tex = LoadSprite(path);
     if(tex == NULL) {
         DE_REPORT("Cannot create texture: %s: %s", name, SDL_GetError());
         return;
     }
 
-    int32_t index = Asset_GetTextureIndex(name);
+    int32_t index = Asset_GetSpriteIndex(name);
     if(index != -1) {
         /* Found the texture */
         stbds_arrput(Asset_Info.textures[index]->texture, tex);
@@ -72,16 +72,16 @@ void Asset_LoadTexture(const char *name, const char *path) {
     }
     else {
         /* Create new texture */
-        TextureAsset *asset = Asset_NewTextureAsset(name);
+        SpriteAsset *asset = Asset_NewSpriteAsset(name);
         stbds_arrput(asset->texture, tex);
         stbds_arrput(Asset_Info.textures, asset);
     }
 }
 
-TextureAsset *Asset_GetTexture(const char *name) {
-    int index = Asset_GetTextureIndex(name);
+SpriteAsset *Asset_GetSprite(const char *name) {
+    int index = Asset_GetSpriteIndex(name);
     if(index == -1) {
-        DE_REPORT("Texture not found: %s", name);
+        DE_REPORT("Sprite not found: %s", name);
     }
     return Asset_Info.textures[index];    
 }

@@ -8,7 +8,7 @@
 #include <Deccan/Renderer.h>
 #include <Deccan/Core.h>
 
-void Texture_SetColor(TextureAsset *texture, Color color) {
+void Sprite_SetColor(SpriteAsset *texture, Color color) {
     if(texture == NULL) { 
         return; 
     }
@@ -19,7 +19,7 @@ void Texture_SetColor(TextureAsset *texture, Color color) {
 #endif
 }
 
-Vector2i Texture_GetSize(TextureAsset *texture) {
+Vector2i Sprite_GetSize(SpriteAsset *texture) {
     Vector2i size;
 
     if(SDL_QueryTexture(texture->texture[0], NULL, NULL, &size.x, &size.y) > 0) {
@@ -29,7 +29,7 @@ Vector2i Texture_GetSize(TextureAsset *texture) {
     return size;
 }
 
-void Texture_SetAnimLoop(TextureAsset *texture, bool loop) {
+void Sprite_SetAnimLoop(SpriteAsset *texture, bool loop) {
     int32_t flags = 0;
 
     if(texture->flags & AnimActive) { flags |= AnimActive; }
@@ -38,11 +38,11 @@ void Texture_SetAnimLoop(TextureAsset *texture, bool loop) {
     texture->flags = flags;
 }
 
-bool Texture_GetAnimLoop(TextureAsset *texture) {
+bool Sprite_GetAnimLoop(SpriteAsset *texture) {
     return (bool)(texture->flags & AnimLoop);
 }
 
-void Texture_SetAnimActive(TextureAsset *texture, bool active) {
+void Sprite_SetAnimActive(SpriteAsset *texture, bool active) {
     int32_t flags = 0;
 
     if(active) { flags |= AnimActive; }
@@ -51,19 +51,19 @@ void Texture_SetAnimActive(TextureAsset *texture, bool active) {
     texture->flags = flags;
 }
 
-bool Texture_GetAnimActive(TextureAsset *texture) {
+bool Sprite_GetAnimActive(SpriteAsset *texture) {
     return (bool)(texture->flags & AnimActive);
 }
 
-void Texture_SetAnimDelay(TextureAsset *texture, float ms) {
+void Sprite_SetAnimDelay(SpriteAsset *texture, float ms) {
     texture->delay = ms;
 }
 
-float Texture_GetAnimDelay(TextureAsset *texture) {
+float Sprite_GetAnimDelay(SpriteAsset *texture) {
     return texture->delay;
 }
 
-void BlitInternal(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, TextureAsset *texture) {
+void BlitInternal(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, SpriteAsset *texture) {
     if(texture == NULL) { 
         return; 
     }
@@ -126,18 +126,18 @@ void BlitInternal(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, 
     }
 }
 
-void Texture_Blit(Rect rect, double angle, Flip flip, TextureAsset *texture) {
+void Sprite_Blit(Rect rect, double angle, Flip flip, SpriteAsset *texture) {
     BlitInternal(rect, (Rect){0, 0, 0, 0}, (Vector2f){0.0f, 0.0f}, angle, flip, texture);
 }
 
-void Texture_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, TextureAsset *texture) {
+void Sprite_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, SpriteAsset *texture) {
     BlitInternal(rect, (Rect){0, 0, 0, 0}, scale, angle, flip, texture);
 }
     
-void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, TextureAsset *texture) {
+void Sprite_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, SpriteAsset *texture) {
     BlitInternal(rect, dim, (Vector2f){0, 0}, angle, flip, texture);
 }
 
-void Texture_BlitPartialScaled(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, TextureAsset *texture) {
+void Sprite_BlitPartialScaled(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, SpriteAsset *texture) {
     BlitInternal(rect, dim, scale, angle, flip, texture);
 }

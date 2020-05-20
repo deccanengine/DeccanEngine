@@ -64,14 +64,14 @@ void Renderer_Background();
 void Renderer_Clear();
 void Renderer_ClearColor(Color color);
 void Renderer_SetBackgroundColor(Color color);
-void Renderer_SetBackgroundTexture(TextureAsset *texture);
-void Renderer_SetTarget(TextureAsset *target);
+void Renderer_SetBackgroundTexture(SpriteAsset *texture);
+void Renderer_SetTarget(SpriteAsset *target);
 void Renderer_SetColor(Color color);
 void Renderer_SetPixelSize(Vector2f size);
 void Renderer_SetBlendMode(int blend_mode);
 Color Renderer_GetBackgroundColor();
-TextureAsset *Renderer_GetBackgroundTexture();
-TextureAsset *Renderer_GetTarget();
+SpriteAsset *Renderer_GetBackgroundTexture();
+SpriteAsset *Renderer_GetTarget();
 Color Renderer_GetColor();
 Vector2f Renderer_GetPixelSize();
 BlendMode Renderer_GetBlendMode();
@@ -84,19 +84,19 @@ void Draw_FilledRect(Rect rect, Color color);
 void Draw_Circle(Circle circle, Color color);
 void Draw_FilledCircle(Circle circle, Color color);
 
-/* Texture */
-void Texture_SetColor(TextureAsset *texture, Color color);
-Vector2i Texture_GetSize(TextureAsset *texture);
-void Texture_SetAnimLoop(TextureAsset *texture, bool loop);
-bool Texture_GetAnimLoop(TextureAsset *texture);
-void Texture_SetAnimActive(TextureAsset *texture, bool active);
-bool Texture_GetAnimActive(TextureAsset *texture);
-void Texture_SetAnimDelay(TextureAsset *texture, float ms);
-float Texture_GetAnimDelay(TextureAsset *texture);
-void Texture_Blit(Rect rect, double angle, Flip flip, TextureAsset *texture);
-void Texture_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, TextureAsset *texture);
-void Texture_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, TextureAsset *texture);
-void Texture_BlitPartialScaled(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, TextureAsset *texture);
+/* Sprite */
+void Sprite_SetColor(SpriteAsset *texture, Color color);
+Vector2i Sprite_GetSize(SpriteAsset *texture);
+void Sprite_SetAnimLoop(SpriteAsset *texture, bool loop);
+bool Sprite_GetAnimLoop(SpriteAsset *texture);
+void Sprite_SetAnimActive(SpriteAsset *texture, bool active);
+bool Sprite_GetAnimActive(SpriteAsset *texture);
+void Sprite_SetAnimDelay(SpriteAsset *texture, float ms);
+float Sprite_GetAnimDelay(SpriteAsset *texture);
+void Sprite_Blit(Rect rect, double angle, Flip flip, SpriteAsset *texture);
+void Sprite_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, SpriteAsset *texture);
+void Sprite_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, SpriteAsset *texture);
+void Sprite_BlitPartialScaled(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, SpriteAsset *texture);
 
 /* Font/Text */
 void Font_SetKerning(FontAsset *font, bool kerning);
@@ -104,6 +104,6 @@ bool Font_GetKerning(FontAsset *font);
 
 Vector2i Font_CalculateTextSize(FontAsset *font, const char *text);
 
-TextureAsset *Font_FastText(FontAsset *font, const char *text, Color color);
-TextureAsset *Font_Text(FontAsset *font, const char *text, FontStyle style, Color color);
-TextureAsset *Font_OutlinedText(FontAsset *font, const char *text, FontStyle style, int32_t outline, Color color);
+SpriteAsset *Font_FastText(FontAsset *font, const char *text, Color color);
+SpriteAsset *Font_Text(FontAsset *font, const char *text, FontStyle style, Color color);
+SpriteAsset *Font_OutlinedText(FontAsset *font, const char *text, FontStyle style, int32_t outline, Color color);

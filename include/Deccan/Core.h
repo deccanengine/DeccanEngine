@@ -40,10 +40,10 @@ void Core_SendMessage(const char *msg);
 bool Core_ReceiveMessage(const char *msg);
 
 /* Asset Manager */
-int32_t Asset_GetTextureIndex(const char *name);
-TextureAsset *Asset_NewTextureAsset(const char *name);
-void Asset_LoadTexture(const char *name, const char *path);
-TextureAsset *Asset_GetTexture(const char *name);
+int32_t Asset_GetSpriteIndex(const char *name);
+SpriteAsset *Asset_NewSpriteAsset(const char *name);
+void Asset_LoadSprite(const char *name, const char *path);
+SpriteAsset *Asset_GetSprite(const char *name);
 int32_t Asset_GetFontIndex(const char *name);
 FontAsset *Asset_NewFontAsset(const char *name);
 void Asset_LoadFont(const char *name, const char *path);

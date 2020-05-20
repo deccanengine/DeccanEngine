@@ -3,7 +3,7 @@
 bool selected = false;
 Vector2i offset;
 
-TextureAsset tar;
+SpriteAsset tar;
 
 void action(GameObject *this) {
     if(Collision_ObjectObject(Object_GetObject("main player"), this)) { 
@@ -65,9 +65,9 @@ void _player_step(GameObject *this) {
 void _player_render(GameObject *this) {
     Draw_FilledRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
 
-    Texture_BlitScaled((Rect){this->position.x, this->position.y, 0, 0},
+    Sprite_BlitScaled((Rect){this->position.x, this->position.y, 0, 0},
                                (Vector2f){2.0f, 2.0f},
-                               (this->angle+90.0f), FlipVertical, Asset_GetTexture("arrow0"));
+                               (this->angle+90.0f), FlipVertical, Asset_GetSprite("arrow0"));
 
     /*
     Renderer_SetTarget(&tar);

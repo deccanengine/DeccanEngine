@@ -31,7 +31,7 @@ Vector2i Font_CalculateTextSize(FontAsset *font, const char *text) {
     return size;
 }
 
-TextureAsset *Font_FastText(FontAsset *font, const char *text, Color color) {
+SpriteAsset *Font_FastText(FontAsset *font, const char *text, Color color) {
     PTR_NULLCHECK(font, NULL);
 
 	SDL_Renderer *renderer = Renderer_GetRenderer();
@@ -53,17 +53,17 @@ TextureAsset *Font_FastText(FontAsset *font, const char *text, Color color) {
         DE_REPORT("Cannot create text texture: %s", SDL_GetError());
     }
  
-    TextureAsset *asset = Asset_NewTextureAsset("__font_generated_fase_text_texture__");
+    SpriteAsset *asset = Asset_NewSpriteAsset("__font_generated_fase_text_texture__");
     stbds_arrput(asset->texture, tex);
 
     return asset;
 }
 
-TextureAsset *Font_Text(FontAsset *font, const char *text, FontStyle style, Color color) {
+SpriteAsset *Font_Text(FontAsset *font, const char *text, FontStyle style, Color color) {
     Font_OutlinedText(font, text, style, -1, color);
 }
 
-TextureAsset *Font_OutlinedText(FontAsset *font, const char *text, FontStyle style, int32_t outline, Color color) {
+SpriteAsset *Font_OutlinedText(FontAsset *font, const char *text, FontStyle style, int32_t outline, Color color) {
     PTR_NULLCHECK(font, NULL);
     
     SDL_Renderer *renderer = Renderer_GetRenderer();
@@ -100,7 +100,7 @@ TextureAsset *Font_OutlinedText(FontAsset *font, const char *text, FontStyle sty
         DE_REPORT("Cannot create text texture: %s", SDL_GetError());
     }
  
-    TextureAsset *asset = Asset_NewTextureAsset("__font_generated_text_texture__");
+    SpriteAsset *asset = Asset_NewSpriteAsset("__font_generated_text_texture__");
     stbds_arrput(asset->texture, tex);
 
     return asset;

@@ -130,7 +130,7 @@ typedef enum {
     AnimLoop = 2
 } AnimFlag;
 
-typedef struct TextureAsset {
+typedef struct SpriteAsset {
     const char *name;
     RawTexture **texture;
     uint32_t count;
@@ -138,7 +138,7 @@ typedef struct TextureAsset {
     float delay;
     float clock;
     AnimFlag flags;
-} TextureAsset;
+} SpriteAsset;
 
 typedef struct FontAsset {
     const char *name;

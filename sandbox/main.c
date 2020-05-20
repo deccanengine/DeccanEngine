@@ -3,7 +3,7 @@
 #include "player.h"
 
 Timer timer;
-TextureAsset *text;
+SpriteAsset *text;
 
 void begin() {
     /* Start here */
@@ -15,10 +15,10 @@ void begin() {
     player->AtEnd = _player_end;
     Object_InstantiateObject(player);
     
-    Asset_LoadTexture("arrow0", "arrow0.png");
-    Asset_LoadTexture("arrow0", "arrow1.png");
-    Asset_LoadTexture("arrow0", "arrow2.png");
-    Asset_LoadTexture("arrow0", "arrow3.png");
+    Asset_LoadSprite("arrow0", "arrow0.png");
+    Asset_LoadSprite("arrow0", "arrow1.png");
+    Asset_LoadSprite("arrow0", "arrow2.png");
+    Asset_LoadSprite("arrow0", "arrow3.png");
     Asset_LoadFont("arial", "arial.ttf");
 
     Clock_StartTimer(&timer);
@@ -78,8 +78,8 @@ void render() {
     }
 
     if(Input_KeyReleased(KeyCode_L)) {
-        bool is = Texture_GetAnimLoop(Asset_GetTexture("arrow0"));
-        Texture_SetAnimLoop(Asset_GetTexture("arrow0"), is ? false : true); // It toogles 
+        bool is = Sprite_GetAnimLoop(Asset_GetSprite("arrow0"));
+        Sprite_SetAnimLoop(Asset_GetSprite("arrow0"), is ? false : true); // It toogles 
 
         Object_SetZOrder(Object_GetObject("main player"), 20);
     }
@@ -88,7 +88,7 @@ void render() {
         Object_DeleteObject(Object_GetObject("main player"));
     }
 
-    Texture_BlitScaled((Rect){10, 10, 0, 0}, (Vector2f){1.0f, 1.0f}, 0, 0, text);
+    Sprite_BlitScaled((Rect){10, 10, 0, 0}, (Vector2f){1.0f, 1.0f}, 0, 0, text);
 }
 
 void end() {

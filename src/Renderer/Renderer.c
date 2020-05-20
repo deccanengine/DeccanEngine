@@ -17,7 +17,7 @@ static struct {
     struct {
         int type; 
         union {
-            TextureAsset *texture;
+            SpriteAsset *texture;
             Color color;
         };
     } background;
@@ -62,7 +62,7 @@ void Renderer_Background() {
             mode.y
         };
 
-        Texture_Blit(rect, 0, 0, Renderer_Info.background.texture); 
+        Sprite_Blit(rect, 0, 0, Renderer_Info.background.texture); 
     }
 }
 
@@ -90,12 +90,12 @@ void Renderer_SetBackgroundColor(Color color) {
     Renderer_Info.background.color = color;
 }
 
-void Renderer_SetBackgroundTexture(TextureAsset *texture) {
+void Renderer_SetBackgroundTexture(SpriteAsset *texture) {
     Renderer_Info.background.type = 1;
     Renderer_Info.background.texture = texture;
 }
 
-void Renderer_SetTarget(TextureAsset *target) { 
+void Renderer_SetTarget(SpriteAsset *target) { 
     RawTexture *texture;
     
     if(texture == NULL) { 
@@ -154,8 +154,8 @@ Color Renderer_GetBackgroundColor() {
     return color;
 }
 
-TextureAsset *Renderer_GetBackgroundTexture() {
-    TextureAsset *texture = NULL;
+SpriteAsset *Renderer_GetBackgroundTexture() {
+    SpriteAsset *texture = NULL;
 
     if(Renderer_Info.background.type == 1) { 
         texture = Renderer_Info.background.texture; 
@@ -164,8 +164,8 @@ TextureAsset *Renderer_GetBackgroundTexture() {
     return texture;
 }
 
-TextureAsset *Renderer_GetTarget() {
-    TextureAsset *target = DE_NEW(TextureAsset, 1);
+SpriteAsset *Renderer_GetTarget() {
+    SpriteAsset *target = DE_NEW(SpriteAsset, 1);
     target->name = DE_NEWSTRING("DE_Renderer_Target");
 
 #ifdef DECCAN_RENDERER_SDL
