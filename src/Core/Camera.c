@@ -17,6 +17,10 @@ static struct {
     .bounds   = (PosRect ){-1, -1, -1, -1}
 };
 
+/////////////////////////////////////////////////
+// Camera
+////////////////////////////////////////////////
+
 void _clamp(Vector2f *pos, PosRect *rect, float *final_x, float *final_y) {
     /* Bounds are not set */
     if(rect->x1 == -1) { 

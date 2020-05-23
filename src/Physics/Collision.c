@@ -8,6 +8,10 @@
 #include <Deccan/Physics.h>
 #include <Deccan/Object.h>
 
+/////////////////////////////////////////////////
+// Colliders
+////////////////////////////////////////////////
+
 Collider Collision_NewRectCollider(PosRect rect) {
     Collider coll;
     coll.type = ColliderRect;
@@ -21,6 +25,10 @@ Collider Collision_NewCircleCollider(Circle circle) {
     coll.circle = circle;
     return coll;
 }
+
+/////////////////////////////////////////////////
+// Collisions
+////////////////////////////////////////////////
 
 bool Collision_VecVec(Vector2f *v1, Vector2f *v2) {
     return v1->x == v2->x && v1->y == v2->y;

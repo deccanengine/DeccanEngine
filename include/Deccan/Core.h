@@ -57,6 +57,7 @@ int32_t Asset_GetSpriteIndex(const char *name);
 SpriteAsset *Asset_NewSpriteAsset(const char *name);
 void Asset_LoadSprite(const char *name, const char *path);
 SpriteAsset *Asset_GetSprite(const char *name);
+
 int32_t Asset_GetFontIndex(const char *name);
 FontAsset *Asset_NewFontAsset(const char *name);
 void Asset_LoadFont(const char *name, const char *path);

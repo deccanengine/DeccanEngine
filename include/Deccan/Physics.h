@@ -8,13 +8,21 @@
 #pragma once
 #include <Deccan/Config.h>
 
-typedef struct GameObject GameObject;
+/////////////////////////////////////////////////
+// Enums
+////////////////////////////////////////////////
 
 typedef enum {
     ColliderVec,
     ColliderRect,
     ColliderCircle
 } ColliderType;
+
+/////////////////////////////////////////////////
+// Structs
+////////////////////////////////////////////////
+
+typedef struct GameObject GameObject;
 
 typedef struct Collider {
     ColliderType type;
@@ -25,8 +33,16 @@ typedef struct Collider {
     };
 } Collider;
 
+/////////////////////////////////////////////////
+// Colliders
+////////////////////////////////////////////////
+
 Collider Collision_NewRectCollider(PosRect rect);
 Collider Collision_NewCircleCollider(Circle circle);
+
+/////////////////////////////////////////////////
+// Collisions
+////////////////////////////////////////////////
 
 bool Collision_VecVec(Vector2f *v1, Vector2f *v2);
 bool Collision_RectRect(PosRect *r1, PosRect *r2);

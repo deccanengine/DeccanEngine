@@ -16,6 +16,10 @@ static struct {
     .fonts = NULL
 };
 
+/////////////////////////////////////////////////
+// SpriteAsset
+////////////////////////////////////////////////
+
 SpriteAsset *Asset_NewSpriteAsset(const char *name) {
     SpriteAsset *asset = DE_NEW(SpriteAsset, 1); 
     asset->name  = DE_NEWSTRING(name);
@@ -85,6 +89,10 @@ SpriteAsset *Asset_GetSprite(const char *name) {
     }
     return Asset_Info.textures[index];    
 }
+
+/////////////////////////////////////////////////
+// FontAsset
+////////////////////////////////////////////////
 
 int32_t Asset_GetFontIndex(const char *name) {
     for(int32_t i=0; i<stbds_arrlen(Asset_Info.fonts); i++) {

@@ -16,6 +16,10 @@ static struct {
     .sceneCount = 0
 };
 
+/////////////////////////////////////////////////
+// Scene internals
+////////////////////////////////////////////////
+
 GameScene **Scene_GetSceneArray() {
     return SceneInfo.scenes;
 }
@@ -27,6 +31,10 @@ int Scene_GetSceneCount() {
 void Scene_FreeAll() {
     stbds_arrfree(SceneInfo.scenes);
 }
+
+/////////////////////////////////////////////////
+// Constructor and destructor
+////////////////////////////////////////////////
 
 #define void_func(x) void (*x)(void)
 
@@ -70,6 +78,10 @@ void Scene_RemoveScene() {
         SceneInfo.scenes[SceneInfo.sceneCount-1]->is_paused = false;
     }
 }
+
+/////////////////////////////////////////////////
+// Scene status
+////////////////////////////////////////////////
 
 GameScene *Scene_CurrentScene() {
     return SceneInfo.scenes[SceneInfo.sceneCount-1];
