@@ -26,6 +26,11 @@
 // Structs
 ////////////////////////////////////////////////
 
+typedef struct Component {
+    const char *name;
+    void *address;
+} Component;
+
 typedef struct GameObject GameObject;
 typedef struct GameObject {
     struct { char *name, *type; } info;     /* Basic information about the object */ 
@@ -40,6 +45,8 @@ typedef struct GameObject {
     union {
         struct { Color color; };     /* Color value for shape rendering */
     };
+
+    Component **components;
 
     MsgBuf msg;
     void (*SendMessage)(GameObject *obj, const char *msg);
@@ -62,6 +69,23 @@ void Object_DeleteObject(GameObject *obj);
 void Object_InstantiateObject(GameObject *object);
 GameObject *Object_GetObject(const char *name);
 void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj));
+
+/////////////////////////////////////////////////
+// Component
+////////////////////////////////////////////////
+
+#define OBJECT_AddComponent(obj, component)                 \
+    Component *component##_new = DE_NEW(Component, 1);      \
+    component##_new->name = DE_NEWSTRING(#component);       \
+    component##_new->address = DE_NEW(component, 1);        \
+    stbds_arrput(obj->components, (void*)component##_new);
+
+#define OBJECT_GetComponent(obj, component)                 \
+    component *my_##component = NULL;                       \
+    for(int i=0; i<stbds_arrlen(obj->components); i++) {    \
+        if(!strcmp(obj->components[i]->name, #component)) { \
+            my_##component = (component*)(obj->components[i]->address); \
+        }}                                                  \
 
 /////////////////////////////////////////////////
 // Getters and Setters

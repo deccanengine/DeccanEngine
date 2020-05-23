@@ -5,6 +5,10 @@ Vector2i offset;
 
 SpriteAsset tar;
 
+typedef struct test {
+    int blah;
+} test;
+
 void action(GameObject *this) {
     if(Collision_ObjectObject(Object_GetObject("main player"), this)) { 
         Object_GetObject("main player")->color = ColorList_Green;
@@ -24,6 +28,10 @@ void _player_begin(GameObject *this) {
     this->color = ColorList_Blue;
 
     Vector2i mode = Core_GetMode();
+
+    OBJECT_AddComponent(this, test);
+    OBJECT_GetComponent(this, test);
+    my_test->blah = 100;
     //tar.texture = SDL_CreateTexture(Renderer_GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
 }
 
@@ -48,6 +56,9 @@ void _player_step(GameObject *this) {
         }
         else if(Input_ButtonUp(ButtonCode_Left)) { selected = false; }
     }
+    
+    OBJECT_GetComponent(this, test);
+    printf("test: %d\n", my_test->blah++);
     
     /* Modify the color on mouse wheel */
     this->color.g += 10 * Input_MouseScrollVertical();

@@ -52,6 +52,8 @@ GameObject *Object_NewObject(const char *name, const char *type) {
     obj->AtRender = NULL_OBJFUNC;
     obj->AtEnd = NULL_OBJFUNC;
 
+    obj->components = NULL;
+
     return obj;
 }
 
