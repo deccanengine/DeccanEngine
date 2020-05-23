@@ -61,25 +61,31 @@ RawTexture *LoadSprite(const char *path) {
     return tex;
 }
 
-void Asset_LoadSprite(const char *name, const char *path) {
+SpriteAsset *Asset_LoadSprite(const char *name, const char *path) {
     RawTexture *tex = LoadSprite(path);
     if(tex == NULL) {
         DE_REPORT("Cannot create texture: %s: %s", name, SDL_GetError());
         return;
     }
 
+    SpriteAsset *asset;
+
     int32_t index = Asset_GetSpriteIndex(name);
     if(index != -1) {
         /* Found the texture */
-        stbds_arrput(Asset_Info.textures[index]->texture, tex);
-        Asset_Info.textures[index]->count++;
+        asset = Asset_Info.textures[index];
+
+        stbds_arrput(asset->texture, tex);
+        asset->count++;
     }
     else {
         /* Create new texture */
-        SpriteAsset *asset = Asset_NewSpriteAsset(name);
+        asset = Asset_NewSpriteAsset(name);
         stbds_arrput(asset->texture, tex);
         stbds_arrput(Asset_Info.textures, asset);
     }
+
+    return asset;
 }
 
 SpriteAsset *Asset_GetSprite(const char *name) {
@@ -109,7 +115,7 @@ FontAsset *Asset_NewFontAsset(const char *name) {
     return asset;
 }
 
-void Asset_LoadFont(const char *name, const char *path) {
+FontAsset *Asset_LoadFont(const char *name, const char *path) {
     TTF_Font *font;
 
     font = TTF_OpenFont(path, 20);
@@ -117,15 +123,20 @@ void Asset_LoadFont(const char *name, const char *path) {
         DE_REPORT("Cannot load font: %s: %s", path, TTF_GetError());
     }
 
+    FontAsset *asset;
+
     int32_t index = Asset_GetFontIndex(name);
     if(index != -1) {
-        Asset_Info.fonts[index]->font = font;
+        asset = Asset_Info.fonts[index];
+        asset->font = font;
     }
     else {
-        FontAsset *asset = Asset_NewFontAsset(name);
+        asset = Asset_NewFontAsset(name);
         asset->font = font;
         stbds_arrput(Asset_Info.fonts, asset);
     }
+
+    return asset;
 }
 
 FontAsset *Asset_GetFont(const char *name) {
