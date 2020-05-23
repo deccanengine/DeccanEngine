@@ -5,10 +5,6 @@ Vector2i offset;
 
 SpriteAsset tar;
 
-typedef struct test {
-    int blah;
-} test;
-
 void action(GameObject *this) {
     if(Collision_ObjectObject(Object_GetObject("main player"), this)) { 
         Object_GetObject("main player")->color = ColorList_Green;
@@ -29,9 +25,17 @@ void _player_begin(GameObject *this) {
 
     Vector2i mode = Core_GetMode();
 
-    OBJECT_AddComponent(this, test);
-    OBJECT_GetComponent(this, test);
-    my_test->blah = 100;
+
+    /* Component test */
+    OBJECT_AddComponent(this, Color);
+    Color *thisColor = OBJECT_GetComponent(this, Color);
+    
+    thisColor->r = 0;
+    thisColor->g = 0;
+    thisColor->b = 0;
+    thisColor->a = 255;
+    /* Component test */
+
     //tar.texture = SDL_CreateTexture(Renderer_GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
 }
 
@@ -56,10 +60,18 @@ void _player_step(GameObject *this) {
         }
         else if(Input_ButtonUp(ButtonCode_Left)) { selected = false; }
     }
-    
-    OBJECT_GetComponent(this, test);
-    printf("test: %d\n", my_test->blah++);
-    
+
+    /* Component test */
+    Color thisColor = *OBJECT_GetComponent(this, Color);
+    if(thisColor.r <= 255) {
+        thisColor.r += 1;
+    }
+    else {
+        thisColor.r = 0;
+    }
+    OBJECT_SetComponent(this, Color, &thisColor);
+    /* Component test */
+
     /* Modify the color on mouse wheel */
     this->color.g += 10 * Input_MouseScrollVertical();
     
@@ -74,7 +86,9 @@ void _player_step(GameObject *this) {
 }
 
 void _player_render(GameObject *this) {
-    Draw_FilledRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, this->color);
+    Color *thisColor = OBJECT_GetComponent(this, Color);
+
+    Draw_FilledRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, *thisColor);
 
     Sprite_BlitScaled((Rect){this->position.x, this->position.y, 0, 0},
                                (Vector2f){2.0f, 2.0f},

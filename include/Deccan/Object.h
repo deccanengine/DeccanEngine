@@ -47,6 +47,7 @@ typedef struct GameObject {
     };
 
     Component **components;
+    int32_t component_length;
 
     MsgBuf msg;
     void (*SendMessage)(GameObject *obj, const char *msg);
@@ -74,18 +75,18 @@ void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj));
 // Component
 ////////////////////////////////////////////////
 
-#define OBJECT_AddComponent(obj, component)                 \
-    Component *component##_new = DE_NEW(Component, 1);      \
-    component##_new->name = DE_NEWSTRING(#component);       \
-    component##_new->address = DE_NEW(component, 1);        \
-    stbds_arrput(obj->components, (void*)component##_new);
+void Object_SetComponent(GameObject *obj, const char *name, void *component);
+void *Object_GetComponent(GameObject *obj, const char *name);
 
-#define OBJECT_GetComponent(obj, component)                 \
-    component *my_##component = NULL;                       \
-    for(int i=0; i<stbds_arrlen(obj->components); i++) {    \
-        if(!strcmp(obj->components[i]->name, #component)) { \
-            my_##component = (component*)(obj->components[i]->address); \
-        }}                                                  \
+#define OBJECT_AddComponent(obj, component) \
+    component *_##obj##_component_##component = DE_NEW(component, 1);   \
+    Object_SetComponent(obj, #component, (void*)(_##obj##_component_##component))
+
+#define OBJECT_SetComponent(obj, component, input) \
+    Object_SetComponent(obj, #component, (void*)(input))
+
+#define OBJECT_GetComponent(obj, component) \
+    (component*)Object_GetComponent(obj, #component)
 
 /////////////////////////////////////////////////
 // Getters and Setters

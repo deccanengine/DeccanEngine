@@ -53,6 +53,7 @@ GameObject *Object_NewObject(const char *name, const char *type) {
     obj->AtEnd = NULL_OBJFUNC;
 
     obj->components = NULL;
+    obj->component_length = 0;
 
     return obj;
 }
@@ -146,6 +147,39 @@ void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj)) {
             func(scene->objects[i]);
         }
     }
+}
+
+/////////////////////////////////////////////////
+// Component
+////////////////////////////////////////////////
+
+void Object_SetComponent(GameObject *obj, const char *name, void *component) {
+    /* Find the component */
+    for(int i=0; i<obj->component_length; i++) {
+        if(!strcmp(obj->components[i]->name, name)) {
+            obj->components[i]->address = component;
+            return;
+        }
+    }
+
+    /* Create a new one if not found */
+    Component *comp = DE_NEW(Component, 1);
+    comp->name = DE_NEWSTRING(name);
+    comp->address = component;
+
+    stbds_arrput(obj->components, comp);
+    obj->component_length++;
+}
+
+void *Object_GetComponent(GameObject *obj, const char *name) {
+    for(int i=0; i<obj->component_length; i++) {
+        if(!strcmp(obj->components[i]->name, name)) {
+            return (void*)obj->components[i]->address;
+        }
+    }
+
+    /* Component not found! Error */
+    DE_ERROR("Component not found: %s for GameObject: %s", name, obj->info.name);    
 }
 
 /////////////////////////////////////////////////
