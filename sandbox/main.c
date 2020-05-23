@@ -15,10 +15,13 @@ void begin() {
     player->AtEnd = _player_end;
     Object_InstantiateObject(player);
     
-    Asset_LoadSprite("arrow0", "arrow0.png");
-    Asset_LoadSprite("arrow0", "arrow1.png");
-    Asset_LoadSprite("arrow0", "arrow2.png");
-    Asset_LoadSprite("arrow0", "arrow3.png");
+    Asset_LoadAnimatedSprite("arrow0", 
+        "arrow0.png", 
+        "arrow1.png", 
+        "arrow2.png", 
+        "arrow3.png", 
+        NULL
+    );
     Asset_LoadFont("arial", "arial.ttf");
 
     Clock_StartTimer(&timer);

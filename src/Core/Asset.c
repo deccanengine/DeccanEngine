@@ -62,13 +62,13 @@ RawTexture *LoadSprite(const char *path) {
 }
 
 SpriteAsset *Asset_LoadSprite(const char *name, const char *path) {
+    SpriteAsset *asset = NULL;
     RawTexture *tex = LoadSprite(path);
+    
     if(tex == NULL) {
         DE_REPORT("Cannot create texture: %s: %s", name, SDL_GetError());
-        return;
+        return asset;
     }
-
-    SpriteAsset *asset;
 
     int32_t index = Asset_GetSpriteIndex(name);
     if(index != -1) {
@@ -84,6 +84,23 @@ SpriteAsset *Asset_LoadSprite(const char *name, const char *path) {
         stbds_arrput(asset->texture, tex);
         stbds_arrput(Asset_Info.textures, asset);
     }
+
+    return asset;
+}
+
+SpriteAsset *Asset_LoadAnimatedSprite(const char *name, const char *path, ...) {
+    va_list args;
+    SpriteAsset *asset;
+
+    va_start(args, path);
+    
+    char *this = (char*)path; /* Current path */
+    
+    do {
+        asset = Asset_LoadSprite(name, this); /* Load the current frame */
+        this  = va_arg(args, char *);         /* Next frame path */
+    } while(this != NULL);
+    va_end(args);
 
     return asset;
 }
@@ -116,14 +133,14 @@ FontAsset *Asset_NewFontAsset(const char *name) {
 }
 
 FontAsset *Asset_LoadFont(const char *name, const char *path) {
+    FontAsset *asset = NULL;
     TTF_Font *font;
 
     font = TTF_OpenFont(path, 20);
     if(font == NULL) {
         DE_REPORT("Cannot load font: %s: %s", path, TTF_GetError());
+        return asset;
     }
-
-    FontAsset *asset;
 
     int32_t index = Asset_GetFontIndex(name);
     if(index != -1) {

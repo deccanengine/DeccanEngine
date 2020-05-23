@@ -56,6 +56,7 @@ bool Core_ReceiveMessage(const char *msg);
 int32_t Asset_GetSpriteIndex(const char *name);
 SpriteAsset *Asset_NewSpriteAsset(const char *name);
 SpriteAsset *Asset_LoadSprite(const char *name, const char *path);
+SpriteAsset *Asset_LoadAnimatedSprite(const char *name, const char *path, ...);
 SpriteAsset *Asset_GetSprite(const char *name);
 
 int32_t Asset_GetFontIndex(const char *name);
