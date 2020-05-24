@@ -5,6 +5,10 @@ Vector2i offset;
 
 SpriteAsset tar;
 
+typedef struct {
+    int32_t mod;
+} SpeedModifier;
+
 void action(GameObject *this) {
     if(Collision_ObjectObject(Object_GetObject("main player"), this)) { 
         Object_GetObject("main player")->color = ColorList_Green;
@@ -25,8 +29,10 @@ void _player_begin(GameObject *this) {
 
     Vector2i mode = Core_GetMode();
 
-
     /* Component test */
+    ECSystem_RegisterComponent("Color");
+    ECSystem_RegisterComponent("SpeedModifier");
+
     OBJECT_AddComponent(this, Color);
     Color *thisColor = OBJECT_GetComponent(this, Color);
     
@@ -34,18 +40,26 @@ void _player_begin(GameObject *this) {
     thisColor->g = 0;
     thisColor->b = 0;
     thisColor->a = 255;
+
+    OBJECT_AddComponent(this, SpeedModifier);
+    SpeedModifier *thisSpeed = OBJECT_GetComponent(this, SpeedModifier);
+
+    thisSpeed->mod = 5;
+
     /* Component test */
 
     //tar.texture = SDL_CreateTexture(Renderer_GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
 }
 
 void _player_step(GameObject *this) {
-    int mod = 5;
+    //int mod = 5;
 
-    if(Input_KeyHeld(KeyCode_W)){ this->position.y -= mod; }
-    else if(Input_KeyHeld(KeyCode_S)){ this->position.y += mod; }
-    else if(Input_KeyHeld(KeyCode_A)){ this->position.x -= mod; }
-    else if(Input_KeyHeld(KeyCode_D)){ this->position.x += mod; }
+    SpeedModifier *thisSpeed = OBJECT_GetComponent(this, SpeedModifier);
+
+    if(Input_KeyHeld(KeyCode_W)){ this->position.y -= thisSpeed->mod; }
+    else if(Input_KeyHeld(KeyCode_S)){ this->position.y += thisSpeed->mod; }
+    else if(Input_KeyHeld(KeyCode_A)){ this->position.x -= thisSpeed->mod; }
+    else if(Input_KeyHeld(KeyCode_D)){ this->position.x += thisSpeed->mod; }
 
     /* Center the camera on player */
     Camera_CenterOn(this);
@@ -62,14 +76,15 @@ void _player_step(GameObject *this) {
     }
 
     /* Component test */
-    Color thisColor = *OBJECT_GetComponent(this, Color);
-    if(thisColor.r <= 255) {
-        thisColor.r += 1;
+    Color *thisColor = OBJECT_GetComponent(this, Color);
+    if(thisColor->r <= 255) {
+        thisColor->r += 1;
     }
     else {
-        thisColor.r = 0;
+        thisColor->r = 0;
     }
-    OBJECT_SetComponent(this, Color, &thisColor);
+
+    thisSpeed->mod += 1 * Input_MouseScrollVertical();
     /* Component test */
 
     /* Modify the color on mouse wheel */

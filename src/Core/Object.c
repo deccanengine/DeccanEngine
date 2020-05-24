@@ -153,10 +153,10 @@ void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj)) {
 // Component
 ////////////////////////////////////////////////
 
-void Object_SetComponent(GameObject *obj, const char *name, void *component) {
+void Object_SetComponent(GameObject *obj, int32_t id, void *component) {
     /* Find the component */
     for(int i=0; i<obj->component_length; i++) {
-        if(!strcmp(obj->components[i]->name, name)) {
+        if(obj->components[i]->id == id) {
             obj->components[i]->address = component;
             return;
         }
@@ -164,22 +164,22 @@ void Object_SetComponent(GameObject *obj, const char *name, void *component) {
 
     /* Create a new one if not found */
     Component *comp = DE_NEW(Component, 1);
-    comp->name = DE_NEWSTRING(name);
+    comp->id = id;
     comp->address = component;
 
     stbds_arrput(obj->components, comp);
     obj->component_length++;
 }
 
-void *Object_GetComponent(GameObject *obj, const char *name) {
+void *Object_GetComponent(GameObject *obj, int32_t id) {
     for(int i=0; i<obj->component_length; i++) {
-        if(!strcmp(obj->components[i]->name, name)) {
+        if(obj->components[i]->id == id) {
             return (void*)obj->components[i]->address;
         }
     }
 
-    /* Component not found! Error */
-    DE_ERROR("Component not found: %s for GameObject: %s", name, obj->info.name);    
+    /* Component not found! Quite impossible due to ID system */
+    DE_ERROR("Component not found: ID: %d for GameObject: %s", id, obj->info.name);
 }
 
 /////////////////////////////////////////////////

@@ -27,8 +27,8 @@
 ////////////////////////////////////////////////
 
 typedef struct Component {
-    const char *name;
-    void *address;
+    int32_t  id;
+    void    *address;
 } Component;
 
 typedef struct GameObject GameObject;
@@ -75,18 +75,15 @@ void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj));
 // Component
 ////////////////////////////////////////////////
 
-void Object_SetComponent(GameObject *obj, const char *name, void *component);
-void *Object_GetComponent(GameObject *obj, const char *name);
+void  Object_SetComponent(GameObject *obj, int32_t id, void *component);
+void *Object_GetComponent(GameObject *obj, int32_t id);
 
 #define OBJECT_AddComponent(obj, component) \
     component *_##obj##_component_##component = DE_NEW(component, 1);   \
-    Object_SetComponent(obj, #component, (void*)(_##obj##_component_##component))
-
-#define OBJECT_SetComponent(obj, component, input) \
-    Object_SetComponent(obj, #component, (void*)(input))
+    Object_SetComponent(obj, ECSystem_GetComponentID(#component), (void*)(_##obj##_component_##component))
 
 #define OBJECT_GetComponent(obj, component) \
-    (component*)Object_GetComponent(obj, #component)
+    (component*)Object_GetComponent(obj, ECSystem_GetComponentID(#component))
 
 /////////////////////////////////////////////////
 // Getters and Setters
@@ -137,3 +134,11 @@ void Object_RotateTowardsObject(GameObject *obj, GameObject *target, int speed);
 void Object_RotateTowardsPosition(GameObject *obj, Vector2f pos, int speed);
 
 static inline void NULL_OBJFUNC(GameObject *obj) { }
+
+/////////////////////////////////////////////////
+// Entity Component System
+////////////////////////////////////////////////
+
+int32_t ECSystem_RegisterComponent(const char *name);
+int32_t ECSystem_GetComponentID(const char *name);
+const char *ECSystem_GetComponentName(int32_t id);
