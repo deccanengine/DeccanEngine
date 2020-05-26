@@ -7,12 +7,17 @@
 
 #include <Deccan/Object.h>
 
+typedef struct ECSystem {
+    int32_t *components;
+    void (*func)(GameObject *object);
+} ECSystem;
+
 static struct {
     const char **componentTable;
-    int32_t **systemTable;
+    ECSystem **systemTable;
 } ECS_Info = {
     .componentTable = NULL,
-    .systemTable = NULL,
+    .systemTable = NULL
 };
 
 /////////////////////////////////////////////////
@@ -39,12 +44,15 @@ int32_t ECSystem_RegisterComponent(const char *name) {
     return stbds_arrlen(ECS_Info.componentTable) - 1;
 }
 
-void ECSystem_RegisterSystem(int count, const char *participants[]) {
+void ECSystem_RegisterSystem(int count, const char *participants[], void (*func)(GameObject *object)) {
     if(!count) { 
         return;
     }
     
-    int32_t *system = NULL;
+    //int32_t *system = NULL;
+    ECSystem *system = DE_NEW(ECSystem, 1);
+    system->components = NULL;
+    system->func = func;
 
     /* Iterate through */
     for(int i=0; i<count; i++) {
@@ -55,7 +63,7 @@ void ECSystem_RegisterSystem(int count, const char *participants[]) {
         if(ValidComponent(id)) {
             /* Push the ID into system                          */
             /* Allocation and relloacation is managed by STBDS  */
-            stbds_arrput(system, id);
+            stbds_arrput(system->components, id);
         }
         else {
             DE_ERROR("Invalid component used in system: %d\n", participants[i]);
@@ -88,9 +96,42 @@ const char *ECSystem_GetComponentName(int32_t id) {
 
 // For debugging only, to be removed soon
 int32_t ECSystem_GetSystem(int32_t index) {
-    int length = stbds_arrlen(ECS_Info.systemTable[index]);
+    int length = stbds_arrlen(ECS_Info.systemTable[index]->components);
 
     for(int i=0; i<length; i++) {
-        printf("system component: %s\n", ECSystem_GetComponentName(ECS_Info.systemTable[index][i]));
+        printf("system component: %s\n", ECSystem_GetComponentName(ECS_Info.systemTable[index]->components[i]));
+    }
+}
+
+int32_t ObjectHasComponent(GameObject *obj, int32_t id) {
+    for(int i=0; i<obj->component_length; i++) {
+        if(obj->components[i]->id == id) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void ECSystem_UpdateSystems(GameObject *obj) {
+    int loopStatus;
+    int systemCount = stbds_arrlen(ECS_Info.systemTable);
+
+    for(int i=0; i<systemCount; i++) {
+        int systemComponentCount = stbds_arrlen(ECS_Info.systemTable[i]->components);
+        
+        for(int j=0; j<systemComponentCount; j++) {
+            int32_t component = ECS_Info.systemTable[i]->components[j];    
+            if(!ObjectHasComponent(obj, component)) {
+                loopStatus = 0;
+                break;
+            }
+            else {
+                loopStatus = 1;
+            }
+        }
+
+        if(loopStatus == 1) {
+            ECS_Info.systemTable[i]->func(obj);
+        }
     }
 }

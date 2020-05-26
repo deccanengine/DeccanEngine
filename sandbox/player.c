@@ -12,6 +12,27 @@ typedef struct {
 typedef Vector2f Position;
 typedef Vector2f Velocity;
 
+void func0(GameObject *obj) {
+    Position *p = OBJECT_GetComponent(obj, Position);
+    SpeedModifier *s = OBJECT_GetComponent(obj, SpeedModifier);
+
+    p->x += 0.1 * s->mod;
+    p->y += 0.1 * s->mod;
+
+    s->mod += 1 * Input_MouseScrollVertical();
+}
+
+void func1(GameObject *obj) {
+    Color *c = OBJECT_GetComponent(obj, Color);
+    
+    if(c->r > 255) {
+        c->r = 0;
+    }
+    else {
+        c->r++;
+    }
+}
+
 void action(GameObject *this) {
     if(Collision_ObjectObject(Object_GetObject("main player"), this)) { 
         Object_GetObject("main player")->color = ColorList_Green;
@@ -45,18 +66,16 @@ void _player_begin(GameObject *this) {
     const char *comps[] = {
         "SpeedModifier",
         "Position",
-        "Velocity",
     };
-    ECSystem_RegisterSystem(3, comps);
+    ECSystem_RegisterSystem(2, comps, &func0);
 
     // check
     int32_t s0 = ECSystem_GetSystem(0);
     
     const char *comps2[] = {
         "Color",
-        "SpeedModifier"
     };
-    ECSystem_RegisterSystem(2, comps2);
+    ECSystem_RegisterSystem(1, comps2, &func1);
 
     // check
     int32_t s1 = ECSystem_GetSystem(1);
@@ -71,10 +90,12 @@ void _player_begin(GameObject *this) {
 
     OBJECT_AddComponent(this, SpeedModifier);
     SpeedModifier *thisSpeed = OBJECT_GetComponent(this, SpeedModifier);
+    thisSpeed->mod = 5;
 
     OBJECT_AddComponent(this, Position);
-
-    thisSpeed->mod = 5;
+    Position *thisPosition = OBJECT_GetComponent(this, Position);
+    thisPosition->x = 100;
+    thisPosition->y = 100;
 
     //tar.texture = SDL_CreateTexture(Renderer_GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
 }
@@ -103,17 +124,6 @@ void _player_step(GameObject *this) {
         else if(Input_ButtonUp(ButtonCode_Left)) { selected = false; }
     }
 
-    /* Component test */
-    Color *thisColor = OBJECT_GetComponent(this, Color);
-    if(thisColor->r <= 255) {
-        thisColor->r += 1;
-    }
-    else {
-        thisColor->r = 0;
-    }
-
-    thisSpeed->mod += 1 * Input_MouseScrollVertical();
-    /* Component test */
 
     /* Modify the color on mouse wheel */
     this->color.g += 10 * Input_MouseScrollVertical();
@@ -126,12 +136,17 @@ void _player_step(GameObject *this) {
     Object_GetObjectOfType("static", action);
 
     Object_RotateTowardsPosition(this, Input_GetRelativeMousePos(), 1);
+
+    ECSystem_UpdateSystems(this);
 }
 
 void _player_render(GameObject *this) {
     Color *thisColor = OBJECT_GetComponent(this, Color);
+    Position *thisPosition = OBJECT_GetComponent(this, Position);
+    
+    Draw_FilledRect((Rect){thisPosition->x, thisPosition->y, this->size.y, this->size.y}, *thisColor);
 
-    Draw_FilledRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, *thisColor);
+    //Draw_FilledRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, *thisColor);
 
     Sprite_BlitScaled((Rect){this->position.x, this->position.y, 0, 0},
                                (Vector2f){2.0f, 2.0f},
