@@ -7,30 +7,21 @@
 
 #include <Deccan/Object.h>
 
-typedef struct ECSystemInfo {
-    int32_t *components;
-    int32_t  count;
-} ECSystemInfo;
-
 static struct {
     const char **componentTable;
-    int32_t componentTableCount;
-    
-    ECSystemInfo **systemTable;
-    int32_t systemTableCount;
+    int32_t **systemTable;
 } ECS_Info = {
     .componentTable = NULL,
-    .componentTableCount = 0,
     .systemTable = NULL,
-    .systemTableCount = 0
 };
 
 /////////////////////////////////////////////////
 // Entity Component System
 ////////////////////////////////////////////////
 
+/* Check if the requested component ID is valid or not */
 int32_t ValidComponent(int32_t id) {
-    if(id >= 0 && id < ECS_Info.componentTableCount) {
+    if(id >= 0 && id < stbds_arrlen(ECS_Info.componentTable)) {
         return id;
     }
     else {
@@ -39,8 +30,13 @@ int32_t ValidComponent(int32_t id) {
 }
 
 int32_t ECSystem_RegisterComponent(const char *name) {
+    /* Push the component into the global table */
     stbds_arrput(ECS_Info.componentTable, name);
-    return ECS_Info.componentTableCount++;
+
+    /* Return the ID of the component           */
+    /* STBDS will automatically increment it    */
+    /* So return the previous index             */
+    return stbds_arrlen(ECS_Info.componentTable) - 1;
 }
 
 void ECSystem_RegisterSystem(int count, const char *participants[]) {
@@ -48,30 +44,33 @@ void ECSystem_RegisterSystem(int count, const char *participants[]) {
         return;
     }
     
-    ECSystemInfo *system = DE_NEW(ECSystemInfo, 1);
-    system->components = DE_NEW(int32_t, count);
-    system->count = count;
-    
-    /* Check if all components are valid */
+    int32_t *system = NULL;
+
+    /* Iterate through */
     for(int i=0; i<count; i++) {
+        /* Get component ID from name */
         int id = ECSystem_GetComponentID(participants[i]);
+        
+        /* Check if all components are valid */
         if(ValidComponent(id)) {
-            system->components[i] = id;
-            printf("Component: %s\n", ECSystem_GetComponentName(id));
+            /* Push the ID into system                          */
+            /* Allocation and relloacation is managed by STBDS  */
+            stbds_arrput(system, id);
         }
         else {
-            free(system);
             DE_ERROR("Invalid component used in system: %d\n", participants[i]);
         }
     }
 
     stbds_arrput(ECS_Info.systemTable, system);
-    ECS_Info.systemTableCount++;
 }
 
 int32_t ECSystem_GetComponentID(const char *name) {
-    for(int i=0; i<ECS_Info.componentTableCount; i++) {
+    int length = stbds_arrlen(ECS_Info.componentTable);
+
+    for(int i=0; i<length; i++) {
         if(!strcmp(ECS_Info.componentTable[i], name)) {
+            /* Name matched */
             return i;
         }
     }
@@ -80,16 +79,18 @@ int32_t ECSystem_GetComponentID(const char *name) {
 }
 
 const char *ECSystem_GetComponentName(int32_t id) {
-    if(id >= 0 && id < ECS_Info.componentTableCount) {
+    if(ValidComponent(id)) {
         return ECS_Info.componentTable[id];
     }
 
     DE_ERROR("Not a valid registered component ID: %d", id);
 }
 
-// For debugging only 
+// For debugging only, to be removed soon
 int32_t ECSystem_GetSystem(int32_t index) {
-    for(int i=0; i < ECS_Info.systemTable[index]->count; i++) {
-        printf("system component: %s\n", ECSystem_GetComponentName(ECS_Info.systemTable[index]->components[i]));
+    int length = stbds_arrlen(ECS_Info.systemTable[index]);
+
+    for(int i=0; i<length; i++) {
+        printf("system component: %s\n", ECSystem_GetComponentName(ECS_Info.systemTable[index][i]));
     }
 }
