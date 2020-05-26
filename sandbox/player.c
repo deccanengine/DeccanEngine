@@ -9,6 +9,9 @@ typedef struct {
     int32_t mod;
 } SpeedModifier;
 
+typedef Vector2f Position;
+typedef Vector2f Velocity;
+
 void action(GameObject *this) {
     if(Collision_ObjectObject(Object_GetObject("main player"), this)) { 
         Object_GetObject("main player")->color = ColorList_Green;
@@ -29,9 +32,34 @@ void _player_begin(GameObject *this) {
 
     Vector2i mode = Core_GetMode();
 
-    /* Component test */
+    /* A easy fix for not letting any component use the index: 0    */
+    /* The zero index cannot be 'AND' and is taken as no component  */
+    ECSystem_RegisterComponent("NULL");
+
+    /* Register all the components */
     ECSystem_RegisterComponent("Color");
     ECSystem_RegisterComponent("SpeedModifier");
+    ECSystem_RegisterComponent("Position");
+    ECSystem_RegisterComponent("Velocity");
+
+    const char *comps[] = {
+        "SpeedModifier",
+        "Position",
+        "Velocity",
+    };
+    ECSystem_RegisterSystem(3, comps);
+
+    // check
+    int32_t s0 = ECSystem_GetSystem(0);
+    
+    const char *comps2[] = {
+        "Color",
+        "SpeedModifier"
+    };
+    ECSystem_RegisterSystem(2, comps2);
+
+    // check
+    int32_t s1 = ECSystem_GetSystem(1);
 
     OBJECT_AddComponent(this, Color);
     Color *thisColor = OBJECT_GetComponent(this, Color);
@@ -44,9 +72,9 @@ void _player_begin(GameObject *this) {
     OBJECT_AddComponent(this, SpeedModifier);
     SpeedModifier *thisSpeed = OBJECT_GetComponent(this, SpeedModifier);
 
-    thisSpeed->mod = 5;
+    OBJECT_AddComponent(this, Position);
 
-    /* Component test */
+    thisSpeed->mod = 5;
 
     //tar.texture = SDL_CreateTexture(Renderer_GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
 }
