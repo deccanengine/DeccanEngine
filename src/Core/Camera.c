@@ -48,6 +48,8 @@ void Camera_Move(Vector2f pos) {
     Camera_Info.position.y += y;
 }
 
+/* New function needed */
+/*
 void Camera_CenterOn(GameObject *obj) {
     if(obj == NULL) {
         DE_REPORT("Invalid object used with camera"); return;
@@ -63,6 +65,7 @@ void Camera_CenterOn(GameObject *obj) {
     _clamp(&pos, &Camera_Info.bounds, &x, &y);
     Camera_SetPosition((Vector2f){x, y});
 }
+*/
 
 void Camera_SetPosition(Vector2f pos) {
     Camera_Info.position = pos;

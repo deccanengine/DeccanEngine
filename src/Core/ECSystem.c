@@ -9,6 +9,7 @@
 
 typedef struct ECSystem {
     int32_t *components;
+    int32_t  when;
     void (*func)(GameObject *object);
 } ECSystem;
 
@@ -44,7 +45,7 @@ int32_t ECSystem_RegisterComponent(const char *name) {
     return stbds_arrlen(ECS_Info.componentTable) - 1;
 }
 
-void ECSystem_RegisterSystem(int count, const char *participants[], void (*func)(GameObject *object)) {
+void ECSystem_RegisterSystem(int count, const char *participants[], int32_t when, void (*func)(GameObject *object)) {
     if(!count) { 
         return;
     }
@@ -52,6 +53,7 @@ void ECSystem_RegisterSystem(int count, const char *participants[], void (*func)
     //int32_t *system = NULL;
     ECSystem *system = DE_NEW(ECSystem, 1);
     system->components = NULL;
+    system->when = when;
     system->func = func;
 
     /* Iterate through */
@@ -66,7 +68,7 @@ void ECSystem_RegisterSystem(int count, const char *participants[], void (*func)
             stbds_arrput(system->components, id);
         }
         else {
-            DE_ERROR("Invalid component used in system: %d\n", participants[i]);
+            DE_ERROR("Invalid component used in system: %s\n", participants[i]);
         }
     }
 
@@ -112,26 +114,28 @@ int32_t ObjectHasComponent(GameObject *obj, int32_t id) {
     return false;
 }
 
-void ECSystem_UpdateSystems(GameObject *obj) {
+void ECSystem_UpdateSystems(GameObject *obj, int32_t when) {
     int loopStatus;
     int systemCount = stbds_arrlen(ECS_Info.systemTable);
 
     for(int i=0; i<systemCount; i++) {
-        int systemComponentCount = stbds_arrlen(ECS_Info.systemTable[i]->components);
-        
-        for(int j=0; j<systemComponentCount; j++) {
-            int32_t component = ECS_Info.systemTable[i]->components[j];    
-            if(!ObjectHasComponent(obj, component)) {
-                loopStatus = 0;
-                break;
+        if(ECS_Info.systemTable[i]->when == when) {
+            int systemComponentCount = stbds_arrlen(ECS_Info.systemTable[i]->components);
+            
+            for(int j=0; j<systemComponentCount; j++) {
+                int32_t component = ECS_Info.systemTable[i]->components[j];    
+                if(!ObjectHasComponent(obj, component)) {
+                    loopStatus = 0;
+                    break;
+                }
+                else {
+                    loopStatus = 1;
+                }
             }
-            else {
-                loopStatus = 1;
-            }
-        }
 
-        if(loopStatus == 1) {
-            ECS_Info.systemTable[i]->func(obj);
+            if(loopStatus == 1) {
+                ECS_Info.systemTable[i]->func(obj);
+            }
         }
     }
 }

@@ -12,20 +12,6 @@
 // Colliders
 ////////////////////////////////////////////////
 
-Collider Collision_NewRectCollider(PosRect rect) {
-    Collider coll;
-    coll.type = ColliderRect;
-    coll.rect = rect;
-    return coll;
-}
-
-Collider Collision_NewCircleCollider(Circle circle) {
-    Collider coll;
-    coll.type = ColliderCircle;
-    coll.circle = circle;
-    return coll;
-}
-
 /////////////////////////////////////////////////
 // Collisions
 ////////////////////////////////////////////////
@@ -192,14 +178,30 @@ bool Collision_ObjectObject(GameObject *obj1, GameObject *obj2) {
 bool Collision_ObjectVec(GameObject *obj, Vector2f *vec) {
     if(obj == NULL) {
         DE_REPORT("Invalid object passed to collision system");
+        return false;
     }
 
-    switch(obj->collider.type) {
+    Collider *c = OBJECT_GetComponent(obj, Collider);
+    if(c == NULL) {
+        DE_REPORT("Collider component not found in object: %s", obj->name);
+        return false;
+    }
+
+    Position *p = OBJECT_GetComponent(obj, Position);
+    if(p == NULL) {
+        DE_REPORT("Collider component not found in object: %s", obj->name);
+        return false;
+    }
+
+    switch(c->type) {
         /* To do more. Done this one now just for mouse hovering */
         case ColliderRect: {
-            PosRect rect = {obj->position.x + obj->collider.rect.x1, obj->position.y + obj->collider.rect.y1,
-                               obj->position.x + obj->collider.rect.x2, obj->position.y + obj->collider.rect.y2};
+            PosRect rect = {p->x + c->rect.x1, p->y + c->rect.y1,
+                            p->x + c->rect.x2, p->y + c->rect.y2};
             return Collision_VecRect(vec, &rect);
+        }
+        default: {
+            return false;
         }
     }
 }

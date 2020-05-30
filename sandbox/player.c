@@ -9,39 +9,29 @@ typedef struct {
     int32_t mod;
 } SpeedModifier;
 
-typedef Vector2f Position;
+//typedef Vector2f Position;
 typedef Vector2f Velocity;
 
-void func0(GameObject *obj) {
-    Position *p = OBJECT_GetComponent(obj, Position);
-    SpeedModifier *s = OBJECT_GetComponent(obj, SpeedModifier);
-
-    p->x += 0.1 * s->mod;
-    p->y += 0.1 * s->mod;
-
-    s->mod += 1 * Input_MouseScrollVertical();
-}
-
-void func1(GameObject *obj) {
+void ColorFunc(GameObject *obj) {
     Color *c = OBJECT_GetComponent(obj, Color);
-    
+    c->r += 10 * Input_MouseScrollVertical();
+    if(c->r < 0) {
+        c->r = 255;
+    }
     if(c->r > 255) {
         c->r = 0;
-    }
-    else {
-        c->r++;
     }
 }
 
 void action(GameObject *this) {
-    if(Collision_ObjectObject(Object_GetObject("main player"), this)) { 
+    /*if(Collision_ObjectObject(Object_GetObject("main player"), this)) { 
         Object_GetObject("main player")->color = ColorList_Green;
         this->SendMessage(this, "hello");
-    }
+    }*/
 }
 
 void _player_begin(GameObject *this) {
-    this->position.x = 100;
+    /*this->position.x = 100;
     this->position.y = 100;
 
     this->size.x = 50;
@@ -52,106 +42,95 @@ void _player_begin(GameObject *this) {
     this->color = ColorList_Blue;
 
     Vector2i mode = Core_GetMode();
+    */
 
     /* A easy fix for not letting any component use the index: 0    */
     /* The zero index cannot be 'AND' and is taken as no component  */
-    ECSystem_RegisterComponent("NULL");
+    //ECSystem_RegisterComponent("NULL");
 
-    /* Register all the components */
-    ECSystem_RegisterComponent("Color");
-    ECSystem_RegisterComponent("SpeedModifier");
-    ECSystem_RegisterComponent("Position");
-    ECSystem_RegisterComponent("Velocity");
-
-    const char *comps[] = {
-        "SpeedModifier",
-        "Position",
-    };
-    ECSystem_RegisterSystem(2, comps, &func0);
-
-    // check
-    int32_t s0 = ECSystem_GetSystem(0);
-    
-    const char *comps2[] = {
-        "Color",
-    };
-    ECSystem_RegisterSystem(1, comps2, &func1);
-
-    // check
-    int32_t s1 = ECSystem_GetSystem(1);
+    const char *ColorComp[] = { "Color" };
+    ECSystem_RegisterSystem(1, ColorComp, SYSTEM_AT_STEP, &ColorFunc);
 
     OBJECT_AddComponent(this, Color);
     Color *thisColor = OBJECT_GetComponent(this, Color);
-    
-    thisColor->r = 0;
+    thisColor->r = 255;
     thisColor->g = 0;
     thisColor->b = 0;
     thisColor->a = 255;
-
-    OBJECT_AddComponent(this, SpeedModifier);
-    SpeedModifier *thisSpeed = OBJECT_GetComponent(this, SpeedModifier);
-    thisSpeed->mod = 5;
 
     OBJECT_AddComponent(this, Position);
     Position *thisPosition = OBJECT_GetComponent(this, Position);
     thisPosition->x = 100;
     thisPosition->y = 100;
 
+    OBJECT_AddComponent(this, Collider);
+    Collider *thisCollider = OBJECT_GetComponent(this, Collider);
+    thisCollider->type = ColliderRect;
+    thisCollider->rect = (PosRect){0, 0, 50, 50};
+
     //tar.texture = SDL_CreateTexture(Renderer_GetRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mode.x, mode.y);
 }
 
 void _player_step(GameObject *this) {
-    //int mod = 5;
+    static int32_t SpeedModifier = 5;
 
-    SpeedModifier *thisSpeed = OBJECT_GetComponent(this, SpeedModifier);
+    Position *thisPosition = OBJECT_GetComponent(this, Position);
+    Color *thisColor = OBJECT_GetComponent(this, Color);
+    
+    if(Input_KeyHeld(KeyCode_W)){ thisPosition->y -= SpeedModifier; }
+    else if(Input_KeyHeld(KeyCode_S)){ thisPosition->y += SpeedModifier; }
+    else if(Input_KeyHeld(KeyCode_A)){ thisPosition->x -= SpeedModifier; }
+    else if(Input_KeyHeld(KeyCode_D)){ thisPosition->x += SpeedModifier; }
 
-    if(Input_KeyHeld(KeyCode_W)){ this->position.y -= thisSpeed->mod; }
-    else if(Input_KeyHeld(KeyCode_S)){ this->position.y += thisSpeed->mod; }
-    else if(Input_KeyHeld(KeyCode_A)){ this->position.x -= thisSpeed->mod; }
-    else if(Input_KeyHeld(KeyCode_D)){ this->position.x += thisSpeed->mod; }
+    if(Input_KeyReleased(KeyCode_Left)) {
+        SpeedModifier -= 1;
+    }
+    // Issue: using else here causes it to
+    // crash with segmentation fault
+    if(Input_KeyReleased(KeyCode_Right)) {
+        SpeedModifier += 1;
+    }
 
     /* Center the camera on player */
-    Camera_CenterOn(this);
+    //Camera_CenterOn(this);
 
     Vector2f pos = Input_GetRelativeMousePos();
     if(Collision_ObjectVec(this, &pos)) { 
-        this->color = ColorList_Orange;
+        *thisColor = ColorList_Orange;
         if(Input_ButtonDown(ButtonCode_Left)) {
             selected = true;
-            offset.x = pos.x - this->position.x;
-            offset.y = pos.y - this->position.y;
+            offset.x = pos.x - thisPosition->x;
+            offset.y = pos.y - thisPosition->y;
         }
-        else if(Input_ButtonUp(ButtonCode_Left)) { selected = false; }
+        else if(Input_ButtonUp(ButtonCode_Left)) { 
+            selected = false; 
+        }
     }
-
-
-    /* Modify the color on mouse wheel */
-    this->color.g += 10 * Input_MouseScrollVertical();
     
     if(selected) {
-        this->position.x = pos.x - offset.x;
-        this->position.y = pos.y - offset.y;
+        thisPosition->x = pos.x - offset.x;
+        thisPosition->y = pos.y - offset.y;
     }
-
+    /*
     Object_GetObjectOfType("static", action);
 
     Object_RotateTowardsPosition(this, Input_GetRelativeMousePos(), 1);
-
-    ECSystem_UpdateSystems(this);
+    */
+    ECSystem_UpdateSystems(this, SYSTEM_AT_STEP);
 }
 
 void _player_render(GameObject *this) {
     Color *thisColor = OBJECT_GetComponent(this, Color);
     Position *thisPosition = OBJECT_GetComponent(this, Position);
     
-    Draw_FilledRect((Rect){thisPosition->x, thisPosition->y, this->size.y, this->size.y}, *thisColor);
+    Draw_FilledRect((Rect){thisPosition->x, thisPosition->y, 50, 50}, *thisColor);
 
     //Draw_FilledRect((Rect){this->position.x, this->position.y, this->size.y, this->size.y}, *thisColor);
 
-    Sprite_BlitScaled((Rect){this->position.x, this->position.y, 0, 0},
+    /*Sprite_BlitScaled((Rect){this->position.x, this->position.y, 0, 0},
                                (Vector2f){2.0f, 2.0f},
                                (this->angle+90.0f), FlipVertical, Asset_GetSprite("arrow0"));
-
+    */
     /*
     Renderer_SetTarget(&tar);
     Renderer_Clear(ColorList.white);
@@ -167,7 +146,7 @@ void _player_render(GameObject *this) {
 void _player_end(GameObject *this) { }
 
 void _none_begin(GameObject *this) {
-    this->collider = Collision_NewRectCollider((PosRect){0, 0, 40, 40});
+    //this->collider = Collision_NewRectCollider((PosRect){0, 0, 40, 40});
 }
 
 void _none_step(GameObject *this) { }
@@ -177,7 +156,7 @@ void _none_render(GameObject *this) {
         // do nothing, or!
     }
     
-    Draw_FilledRect((Rect){this->position.x, this->position.y, 40, 40}, ColorList_Red); 
+    //Draw_FilledRect((Rect){this->position.x, this->position.y, 40, 40}, ColorList_Red); 
     /*Object.RotateTowardsObject(this, Object.GetObject("main player"), 1);
     Renderer.TextureBlitScaled((Rect){this->position.x, this->position.y, 0, 0},
                                (Vector2f){2.0f, 2.0f},

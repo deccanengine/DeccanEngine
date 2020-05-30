@@ -22,6 +22,13 @@
 // Enums
 ////////////////////////////////////////////////
 
+typedef enum {
+    SYSTEM_AT_BEGINING,
+    SYSTEM_AT_STEP,
+    SYSTEM_AT_RENDER,
+    SYSTEM_AT_END
+} SYSTEM_WHEN;
+
 /////////////////////////////////////////////////
 // Structs
 ////////////////////////////////////////////////
@@ -31,21 +38,32 @@ typedef struct Component {
     void    *address;
 } Component;
 
+/* Common components */
+typedef Vector3f Position;
+typedef Vector2f Scale;
+typedef double   Rotation;
+typedef Collider Collider;
+
 typedef struct GameObject GameObject;
 typedef struct GameObject {
-    struct { char *name, *type; } info;     /* Basic information about the object */ 
-    Vector2f position;                      /* Positional info of the object */
-    Vector2f size;                          /* Size of the rect bounding the object */
-    Vector2f transform;                     /* Transformation info */
-    struct { int32_t z, layer; } order;     /* The Z order and layer */
-    double angle;                           /* Present rotation(in degrees) */
-    struct { bool dead, hidden; } status;   /* Status */
-    Collider collider;                      /* Collider info */
-    /* !! Unused !!*/
-    union {
-        struct { Color color; };     /* Color value for shape rendering */
-    };
+    char *name;
+    char *type;
+    int32_t layer;
 
+    bool active;
+    bool visible;
+
+    Position position;
+    Vector2f size;
+    //Scale    scale;
+    //Rotation rotation;
+    Collider collider;
+    struct { int32_t z; } order;
+/*
+    union {
+        struct { Color color; };
+    };
+*/
     Component **components;
     int32_t component_length;
 
@@ -140,11 +158,11 @@ static inline void NULL_OBJFUNC(GameObject *obj) { }
 ////////////////////////////////////////////////
 
 int32_t ECSystem_RegisterComponent(const char *name);
-void ECSystem_RegisterSystem(int count, const char *participants[], void (*func)(GameObject *object)); 
+void ECSystem_RegisterSystem(int count, const char *participants[], int32_t when, void (*func)(GameObject *object)); 
 
 int32_t ECSystem_GetComponentID(const char *name);
 const char *ECSystem_GetComponentName(int32_t id);
 
 int32_t ECSystem_GetSystem(int32_t index);
 
-void ECSystem_UpdateSystems(GameObject *obj);
+void ECSystem_UpdateSystems(GameObject *obj, int32_t when);

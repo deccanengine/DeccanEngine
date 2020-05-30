@@ -7,6 +7,17 @@ SpriteAsset *text;
 
 void begin() {
     /* Start here */
+    
+    /* Register all the components */
+    ECSystem_RegisterComponent("NULL");
+    ECSystem_RegisterComponent("Color");
+    ECSystem_RegisterComponent("Scale");
+    ECSystem_RegisterComponent("Rotation");
+    ECSystem_RegisterComponent("Collider");
+    ECSystem_RegisterComponent("SpeedModifier");
+    ECSystem_RegisterComponent("Position");
+    ECSystem_RegisterComponent("Velocity");
+
     GameObject *player = Object_NewObject("main player", "player");
     player->order.z = 10;
     player->AtBeginning = _player_begin;
@@ -37,6 +48,7 @@ void step() {
 
 void render() {
     /* Start here */
+    /*
     if(Input_KeyReleased(KeyCode_Space) && Clock_GetTime(&timer).milliseconds > 200) {
         GameObject *s = Object_NewObject("circle", "static");
         s->position.x = Object_GetObject("main player")->position.x + 10;
@@ -90,6 +102,7 @@ void render() {
     if(Input_KeyReleased(KeyCode_X)) {
         Object_DeleteObject(Object_GetObject("main player"));
     }
+    */
 
     Sprite_BlitScaled((Rect){10, 10, 0, 0}, (Vector2f){1.0f, 1.0f}, 0, 0, text);
 }

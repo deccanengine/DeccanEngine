@@ -35,11 +35,18 @@ GameObject *Object_NewObject(const char *name, const char *type) {
     
     GameObject *obj = DE_NEW(GameObject, 1);
     
-    obj->info.name = DE_NEWSTRING(name);
-    obj->info.type = DE_NEWSTRING(type);
+    obj->name = DE_NEWSTRING(name);
+    obj->type = DE_NEWSTRING(type);
     
-    obj->order.z = Object_Info.zAccum++;
-    obj->angle   = 0.0f;
+    //obj->order.z = Object_Info.zAccum++;
+    //obj->angle   = 0.0f;
+
+    OBJECT_AddComponent(obj, Position);
+    OBJECT_AddComponent(obj, Scale);
+    OBJECT_AddComponent(obj, Rotation);
+    OBJECT_AddComponent(obj, Collider);
+
+    obj->visible = true;
     
     Msg_Init(&obj->msg, DECCAN_OBJ_MSG_COUNT, DECCAN_OBJ_MSG_LENGTH);
     obj->SendMessage = _msg_send;
@@ -72,15 +79,15 @@ void Object_DeleteObject(GameObject *obj) {
     obj->AtEnd(obj);
 
     /* Free the name */
-    if(obj->info.name != NULL) {
-        free(obj->info.name);
-        obj->info.name = NULL;
+    if(obj->name != NULL) {
+        free(obj->name);
+        obj->name = NULL;
     }
 
     /* Free the type */
-    if(obj->info.type != NULL) {
-        free(obj->info.type);
-        obj->info.type = NULL;
+    if(obj->type != NULL) {
+        free(obj->type);
+        obj->type = NULL;
     }
 
     /* Remove from the array */
@@ -117,7 +124,7 @@ void AddObjectToArray(GameObject *object) {
     else {
 _push:
         if(stbds_arrput(scene->objects, object) != object) {
-            DE_REPORT("Cannot instantiate object: %s", object->info.name); return;
+            DE_REPORT("Cannot instantiate object: %s", object->name); return;
         }
     }
     scene->object_count++;
@@ -131,7 +138,7 @@ void Object_InstantiateObject(GameObject *object) {
 GameObject *Object_GetObject(const char *name) {
     GameScene *scene = Scene_CurrentScene();
     for(int i=0; i<scene->object_count; i++) {
-        if(!strcmp(scene->objects[i]->info.name, name)) {
+        if(!strcmp(scene->objects[i]->name, name)) {
             return scene->objects[i];
         }
     }
@@ -143,7 +150,7 @@ GameObject *Object_GetObject(const char *name) {
 void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj)) {
     GameScene *scene = Scene_CurrentScene();
     for(int i=0; i<scene->object_count; i++) {
-        if(!strcmp(scene->objects[i]->info.type, name)) {
+        if(!strcmp(scene->objects[i]->type, name)) {
             func(scene->objects[i]);
         }
     }
@@ -179,7 +186,8 @@ void *Object_GetComponent(GameObject *obj, int32_t id) {
     }
 
     /* Component not found! Quite impossible due to ID system */
-    DE_ERROR("Component not found: ID: %d for GameObject: %s", id, obj->info.name);
+    //DE_ERROR("Component not found: ID: %d for GameObject: %s", id, obj->info.name);
+    return NULL;
 }
 
 /////////////////////////////////////////////////
@@ -190,18 +198,23 @@ void *Object_GetComponent(GameObject *obj, int32_t id) {
  * Position
  ***********/
 
+/*
 void Object_SetPosition(GameObject *obj, Vector2f pos) {
-    obj->position = pos;
+    Position *p = OBJECT_GetComponent(obj, Position);
+    p->x = pos.x;
+    p->y = pos.y;
+    p->z = pos.z;
+    //obj->position = pos;
 }
 
 Vector2f Object_GetPosition(GameObject *obj) {
     return obj->position;
 }
-
+*/
 /***********
  * Angle
  ***********/
-
+/*
 void _clamp_angle(double *angle) {
     while(*angle > 360) { *angle -= 360; }
     while(*angle <   0) { *angle += 360; }
@@ -220,11 +233,11 @@ double Object_GetAngle(GameObject *obj) {
     _clamp_angle(&obj->angle);
     return obj->angle;
 }
-
+*/
 /***********
  * Z-Order
  ***********/
-
+/*
 void Object_SetZOrder(GameObject *obj, int32_t z) {
     PTR_NULLCHECK(obj);
 
@@ -236,13 +249,13 @@ void Object_SetZOrder(GameObject *obj, int32_t z) {
 
     for(int i=0; i<stbds_arrlen(scene->objects); i++) {
         /* Finding itself */
-        if(scene->objects[i] == obj) {
+        //if(scene->objects[i] == obj) {
             /* Remove the old object */
-            stbds_arrdel(scene->objects, i);
+            /*stbds_arrdel(scene->objects, i);
             scene->object_count--;
 
             /* Add the same object with different Z-order */
-            obj->order.z = z;
+            /*obj->order.z = z;
             AddObjectToArray(obj);
             return;
         }
@@ -252,27 +265,23 @@ void Object_SetZOrder(GameObject *obj, int32_t z) {
 int32_t Object_GetZOrder(GameObject *obj) {
     return obj->order.z;
 }
-
+*/
 /***********
  * Status
  ***********/
 
-bool Object_IsDead(GameObject *obj) {
-    return obj->status.dead;
-}
-
 bool Object_IsHidden(GameObject *obj) {
-    return obj->status.hidden;
+    return obj->visible;
 }
 
 void Object_Hide(GameObject *obj, bool hide) {
-    obj->status.hidden = hide;
+    obj->visible = hide;
 }
 
 /***********
  * Collider
  ***********/
-
+/*
 Collider Object_GetCollider(GameObject *obj) {
     return obj->collider;
 }
@@ -280,17 +289,18 @@ Collider Object_GetCollider(GameObject *obj) {
 void Object_SetCollider(GameObject *obj, Collider collider) {
     obj->collider = collider;
 }
-
+*/
 /////////////////////////////////////////////////
 // Rotation functions
 ////////////////////////////////////////////////
 
+/*
 int _angle_diff(double a1, double a2) {
     return ((((int)(a1 - a2) % 360) + 180) % 360) - 180;
 }
 
 /* WIP */
-void Object_Rotate(GameObject *obj, double angle, int speed) {
+/*void Object_Rotate(GameObject *obj, double angle, int speed) {
     PTR_NULLCHECK(obj);
 
     if(speed <= 0) { 
@@ -336,5 +346,5 @@ void Object_RotateTowardsPosition(GameObject *obj, Vector2f pos, int speed) {
     obj->angle = angle;
     // Object_Rotate(obj, angle, speed);
 }
-
+*/
 #undef PTR_NULLCHECK
