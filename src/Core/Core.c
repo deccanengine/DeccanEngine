@@ -193,7 +193,9 @@ void Core_Run(float fps) {
         scene->AtStep();
         for(int i=0; i<scene->object_count; i++) {
             GameObject *obj = scene->objects[i];
-            obj->AtStep(obj);
+            if(!obj->is_beginning) {
+                obj->AtStep(obj);
+            }
         }
 
         /* Render the background before rendering anything */
@@ -203,7 +205,9 @@ void Core_Run(float fps) {
         scene->AtRender();
         for(int i=0; i<scene->object_count; i++) {
             GameObject *obj = scene->objects[i];
-            obj->AtRender(obj);
+            if(!obj->is_beginning) {
+                obj->AtRender(obj);
+            }
         }
         
 #ifdef DECCAN_RENDERER_SDL

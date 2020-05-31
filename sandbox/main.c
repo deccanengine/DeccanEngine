@@ -48,20 +48,19 @@ void step() {
 
 void render() {
     /* Start here */
-    /*
+
     if(Input_KeyReleased(KeyCode_Space) && Clock_GetTime(&timer).milliseconds > 200) {
         GameObject *s = Object_NewObject("circle", "static");
-        s->position.x = Object_GetObject("main player")->position.x + 10;
-        s->position.y = Object_GetObject("main player")->position.y + 10;
         s->AtBeginning = _none_begin;
         s->AtStep = _none_step;
         s->AtRender = _none_render;
         s->AtEnd = _none_end;
+
         Object_InstantiateObject(s);
-        
+
         Clock_ResetTimer(&timer);
     }
-    
+    /*
     if(Input_KeyReleased(KeyCode_Up)) {
         Vector2f size = Renderer_GetPixelSize();
         size.x += 0.1f;

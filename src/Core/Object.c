@@ -38,13 +38,8 @@ GameObject *Object_NewObject(const char *name, const char *type) {
     obj->name = DE_NEWSTRING(name);
     obj->type = DE_NEWSTRING(type);
     
-    //obj->order.z = Object_Info.zAccum++;
+    obj->order.z = Object_Info.zAccum++;
     //obj->angle   = 0.0f;
-
-    OBJECT_AddComponent(obj, Position);
-    OBJECT_AddComponent(obj, Scale);
-    OBJECT_AddComponent(obj, Rotation);
-    OBJECT_AddComponent(obj, Collider);
 
     obj->visible = true;
     

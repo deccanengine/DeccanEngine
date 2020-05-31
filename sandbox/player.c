@@ -24,10 +24,12 @@ void ColorFunc(GameObject *obj) {
 }
 
 void action(GameObject *this) {
-    /*if(Collision_ObjectObject(Object_GetObject("main player"), this)) { 
-        Object_GetObject("main player")->color = ColorList_Green;
+    if(Collision_ObjectObject(Object_GetObject("main player"), this)) { 
+        Color *c = OBJECT_GetComponent(Object_GetObject("main player"), Color);
+        *c = ColorList_Green;
+        
         this->SendMessage(this, "hello");
-    }*/
+    }
 }
 
 void _player_begin(GameObject *this) {
@@ -111,9 +113,9 @@ void _player_step(GameObject *this) {
         thisPosition->x = pos.x - offset.x;
         thisPosition->y = pos.y - offset.y;
     }
-    /*
+    
     Object_GetObjectOfType("static", action);
-
+    /*
     Object_RotateTowardsPosition(this, Input_GetRelativeMousePos(), 1);
     */
     ECSystem_UpdateSystems(this, SYSTEM_AT_STEP);
@@ -146,6 +148,18 @@ void _player_render(GameObject *this) {
 void _player_end(GameObject *this) { }
 
 void _none_begin(GameObject *this) {
+    OBJECT_AddComponent(this, Position);
+    Position *p = OBJECT_GetComponent(this, Position);
+
+    Position *o = OBJECT_GetComponent(Object_GetObject("main player"), Position);
+    p->x = o->x;
+    p->y = o->y;
+
+    OBJECT_AddComponent(this, Collider);
+    Collider *c = OBJECT_GetComponent(this, Collider);
+    c->type = ColliderRect;
+    c->rect = (PosRect){0, 0, 40, 40};
+
     //this->collider = Collision_NewRectCollider((PosRect){0, 0, 40, 40});
 }
 
@@ -155,8 +169,10 @@ void _none_render(GameObject *this) {
     if(this->ReceiveMessage(this, "hello")) {
         // do nothing, or!
     }
+
+    Position *p = OBJECT_GetComponent(this, Position);
     
-    //Draw_FilledRect((Rect){this->position.x, this->position.y, 40, 40}, ColorList_Red); 
+    Draw_FilledRect((Rect){p->x, p->y, 40, 40}, ColorList_Red); 
     /*Object.RotateTowardsObject(this, Object.GetObject("main player"), 1);
     Renderer.TextureBlitScaled((Rect){this->position.x, this->position.y, 0, 0},
                                (Vector2f){2.0f, 2.0f},
