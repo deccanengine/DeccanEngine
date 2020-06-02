@@ -48,28 +48,22 @@ typedef struct GameObject GameObject;
 typedef struct GameObject {
     char *name;
     char *type;
-    int32_t layer;
+    int32_t layer;   // To do
 
+    // To do: use these
     bool active;
     bool visible;
 
-    Position position;
-    Vector2f size;
-    //Scale    scale;
-    //Rotation rotation;
-    Collider collider;
+    // Temporary
     struct { int32_t z; } order;
-/*
-    union {
-        struct { Color color; };
-    };
-*/
+
+    // To do: mark and remove system
+    bool toRemove;
+
     Component **components;
     int32_t component_length;
 
     MsgBuf msg;
-    void (*SendMessage)(GameObject *obj, const char *msg);
-    bool (*ReceiveMessage)(GameObject *obj, const char *msg);
 
     bool is_beginning;
     void (*AtFirstFrame)(GameObject *object);
@@ -88,6 +82,13 @@ void Object_DeleteObject(GameObject *obj);
 void Object_InstantiateObject(GameObject *object);
 GameObject *Object_GetObject(const char *name);
 void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj));
+
+/////////////////////////////////////////////////
+// Messaging
+////////////////////////////////////////////////
+
+void Object_SendMessage(GameObject *obj, const char *msg);
+bool Object_ReceiveMessage(GameObject *obj, const char *msg);
 
 /////////////////////////////////////////////////
 // Component

@@ -60,48 +60,6 @@ void render() {
 
         Clock_ResetTimer(&timer);
     }
-    /*
-    if(Input_KeyReleased(KeyCode_Up)) {
-        Vector2f size = Renderer_GetPixelSize();
-        size.x += 0.1f;
-        size.y += 0.1f; 
-        Renderer_SetPixelSize(size);
-    }
-    else if(Input_KeyReleased(KeyCode_Down)) {
-        Vector2f size = Renderer_GetPixelSize();
-        size.x -= size.x ? 0.1f : 0.0f; 
-        size.y -= size.y ? 0.1f : 0.0f;
-        Renderer_SetPixelSize(size);
-    }
-
-    if(Input_KeyReleased(KeyCode_Left)) {
-        Vector2i mode = Core_GetMode();
-        mode.x += 40;
-        mode.y += 40; 
-        Core_SetMode(mode);
-    }
-    else if(Input_KeyReleased(KeyCode_Right)) {
-        Vector2i mode = Core_GetMode();
-        mode.x -= mode.x > 40 ? 40 : 0;
-        mode.y -= mode.y > 40 ? 40 : 0; 
-        Core_SetMode(mode);
-    }
-    
-    if(Input_KeyReleased(KeyCode_V)) {
-        Core_SetVsyncStatus(false);
-    }
-
-    if(Input_KeyReleased(KeyCode_L)) {
-        bool is = Sprite_GetAnimLoop(Asset_GetSprite("arrow0"));
-        Sprite_SetAnimLoop(Asset_GetSprite("arrow0"), is ? false : true); // It toogles 
-
-        Object_SetZOrder(Object_GetObject("main player"), 20);
-    }
-
-    if(Input_KeyReleased(KeyCode_X)) {
-        Object_DeleteObject(Object_GetObject("main player"));
-    }
-    */
 
     Sprite_BlitScaled((Rect){10, 10, 0, 0}, (Vector2f){1.0f, 1.0f}, 0, 0, text);
 }

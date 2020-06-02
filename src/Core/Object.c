@@ -23,14 +23,6 @@ static struct {
 // Initialization and instantiator functions
 ////////////////////////////////////////////////
 
-void _msg_send(GameObject *obj, const char *msg) {
-    Msg_Send(&obj->msg, msg);
-}
-
-bool _msg_receive(GameObject *obj, const char *msg) {
-    return Msg_Receive(&obj->msg, msg);
-}
-
 GameObject *Object_NewObject(const char *name, const char *type) {
     
     GameObject *obj = DE_NEW(GameObject, 1);
@@ -41,11 +33,12 @@ GameObject *Object_NewObject(const char *name, const char *type) {
     obj->order.z = Object_Info.zAccum++;
     //obj->angle   = 0.0f;
 
-    obj->visible = true;
+    obj->visible    = true;
+    obj->active     = true;
+    obj->toRemove   = false;
     
+    /* Initialize messaging system */
     Msg_Init(&obj->msg, DECCAN_OBJ_MSG_COUNT, DECCAN_OBJ_MSG_LENGTH);
-    obj->SendMessage = _msg_send;
-    obj->ReceiveMessage = _msg_receive;
     
     obj->is_beginning = true;
     obj->AtFirstFrame = NULL_OBJFUNC;
@@ -149,6 +142,18 @@ void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj)) {
             func(scene->objects[i]);
         }
     }
+}
+
+/////////////////////////////////////////////////
+// Messaging
+////////////////////////////////////////////////
+
+void Object_SendMessage(GameObject *obj, const char *msg) {
+    Msg_Send(&obj->msg, msg);
+}
+
+bool Object_ReceiveMessage(GameObject *obj, const char *msg) {
+    return Msg_Receive(&obj->msg, msg);
 }
 
 /////////////////////////////////////////////////
