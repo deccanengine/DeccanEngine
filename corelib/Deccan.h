@@ -8,6 +8,8 @@
 #pragma once
 #include "Config.h"
 #include "Core.h"
+#include "Asset/Importer.h"
+#include "Asset/SpriteAsset.h"
 #include "Input/Input.h"
 #include "Scene/Object.h"
 #include "Scene/Scene.h"

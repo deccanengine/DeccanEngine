@@ -7,6 +7,8 @@
 
 #pragma once
 #include "../Config.h"
+#include "../Asset/FontAsset.h"
+#include "../Asset/SpriteAsset.h"
 #include "../Math/Vector2.h"
 #include "../Math/Vector3.h"
 
@@ -105,13 +107,7 @@ void Draw_FilledCircle(Circle circle, Color color);
 ////////////////////////////////////////////////
 
 void Sprite_SetColor(SpriteAsset *texture, Color color);
-Vector2i Sprite_GetSize(SpriteAsset *texture);
-void Sprite_SetAnimLoop(SpriteAsset *texture, bool loop);
-bool Sprite_GetAnimLoop(SpriteAsset *texture);
-void Sprite_SetAnimActive(SpriteAsset *texture, bool active);
-bool Sprite_GetAnimActive(SpriteAsset *texture);
-void Sprite_SetAnimDelay(SpriteAsset *texture, float ms);
-float Sprite_GetAnimDelay(SpriteAsset *texture);
+
 void Sprite_Blit(Rect rect, double angle, Flip flip, SpriteAsset *texture);
 void Sprite_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, SpriteAsset *texture);
 void Sprite_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, SpriteAsset *texture);
@@ -120,11 +116,6 @@ void Sprite_BlitPartialScaled(Rect rect, Rect dim, Vector2f scale, double angle,
 /////////////////////////////////////////////////
 // Font/Text functions
 ////////////////////////////////////////////////
-
-void Font_SetKerning(FontAsset *font, bool kerning);
-bool Font_GetKerning(FontAsset *font);
-
-Vector2i Font_CalculateTextSize(FontAsset *font, const char *text);
 
 SpriteAsset *Font_FastText(FontAsset *font, const char *text, Color color);
 SpriteAsset *Font_Text(FontAsset *font, const char *text, FontStyle style, Color color);

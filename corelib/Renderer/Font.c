@@ -7,29 +7,10 @@
 
 #include "Renderer.h"
 #include "../Core.h"
+#include "../Asset/FontAsset.h"
+#include "../Asset/SpriteAsset.h"
 
 #define PTR_NULLCHECK(x,y) if(!x) { return y; }
-
-void Font_SetKerning(FontAsset *font, bool kerning) {
-    PTR_NULLCHECK(font,);
-    
-    TTF_SetFontKerning(font->font, kerning ? 1 : 0);
-}
-
-bool Font_GetKerning(FontAsset *font) {
-    PTR_NULLCHECK(font, false);
-
-    return (bool)TTF_GetFontKerning(font->font);
-}
-
-Vector2i Font_CalculateTextSize(FontAsset *font, const char *text) {
-    Vector2i size = {-1, -1};
-    
-    PTR_NULLCHECK(font, size);
-    TTF_SizeText(font->font, text, &size.x, &size.y);
-    
-    return size;
-}
 
 SpriteAsset *Font_FastText(FontAsset *font, const char *text, Color color) {
     PTR_NULLCHECK(font, NULL);
@@ -53,7 +34,7 @@ SpriteAsset *Font_FastText(FontAsset *font, const char *text, Color color) {
         DE_REPORT("Cannot create text texture: %s", SDL_GetError());
     }
  
-    SpriteAsset *asset = Asset_NewSpriteAsset("__font_generated_fase_text_texture__");
+    SpriteAsset *asset = Sprite_New("__font_generated_fase_text_texture__");
     stbds_arrput(asset->texture, tex);
 
     return asset;
@@ -100,7 +81,7 @@ SpriteAsset *Font_OutlinedText(FontAsset *font, const char *text, FontStyle styl
         DE_REPORT("Cannot create text texture: %s", SDL_GetError());
     }
  
-    SpriteAsset *asset = Asset_NewSpriteAsset("__font_generated_text_texture__");
+    SpriteAsset *asset = Sprite_New("__font_generated_text_texture__");
     stbds_arrput(asset->texture, tex);
 
     return asset;

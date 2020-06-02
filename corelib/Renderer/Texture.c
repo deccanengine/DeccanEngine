@@ -6,6 +6,7 @@
  */
 
 #include "Renderer.h"
+#include "../Asset/SpriteAsset.h"
 #include "../Core.h"
 
 void Sprite_SetColor(SpriteAsset *texture, Color color) {
@@ -17,50 +18,6 @@ void Sprite_SetColor(SpriteAsset *texture, Color color) {
 #else
 
 #endif
-}
-
-Vector2i Sprite_GetSize(SpriteAsset *texture) {
-    Vector2i size;
-
-    if(SDL_QueryTexture(texture->texture[0], NULL, NULL, &size.x, &size.y) > 0) {
-        DE_REPORT("Cannot get texture size of texture: %s : %s", texture->name, SDL_GetError());
-    }
-
-    return size;
-}
-
-void Sprite_SetAnimLoop(SpriteAsset *texture, bool loop) {
-    int32_t flags = 0;
-
-    if(texture->flags & AnimActive) { flags |= AnimActive; }
-    if(loop) { flags |= AnimLoop; }
-
-    texture->flags = flags;
-}
-
-bool Sprite_GetAnimLoop(SpriteAsset *texture) {
-    return (bool)(texture->flags & AnimLoop);
-}
-
-void Sprite_SetAnimActive(SpriteAsset *texture, bool active) {
-    int32_t flags = 0;
-
-    if(active) { flags |= AnimActive; }
-    if(texture->flags & AnimLoop) { flags |= AnimLoop; }
-
-    texture->flags = flags;
-}
-
-bool Sprite_GetAnimActive(SpriteAsset *texture) {
-    return (bool)(texture->flags & AnimActive);
-}
-
-void Sprite_SetAnimDelay(SpriteAsset *texture, float ms) {
-    texture->delay = ms;
-}
-
-float Sprite_GetAnimDelay(SpriteAsset *texture) {
-    return texture->delay;
 }
 
 void BlitInternal(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, SpriteAsset *texture) {
@@ -86,16 +43,18 @@ void BlitInternal(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, 
         rect.h
     };
 
-    int width, height;
+    //int width, height;
     /* Get the default width and height */
-    if(SDL_QueryTexture(texture->texture[texture->current], NULL, NULL, &width, &height) > 0) {
-        DE_REPORT("Cannot query texture: %s :%s", texture->name, SDL_GetError());
-    }
+    //if(SDL_QueryTexture(texture->texture[texture->current], NULL, NULL, &width, &height) > 0) {
+    //    DE_REPORT("Cannot query texture: %s :%s", texture->name, SDL_GetError());
+    //}
+
+    Vector2i size = Sprite_GetSize(texture);
     
-    if(!src.w) { src.w = width;  }
-    if(!src.h) { src.h = height; }
-    if(!tgt.w) { tgt.w = width;  }
-    if(!tgt.h) { tgt.h = height; }
+    if(!src.w) { src.w = size.x;  }
+    if(!src.h) { src.h = size.y; }
+    if(!tgt.w) { tgt.w = size.x;  }
+    if(!tgt.h) { tgt.h = size.y; }
 
     if(scale.x) { tgt.w *= scale.x; }
     if(scale.y) { tgt.h *= scale.y; }

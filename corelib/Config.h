@@ -68,30 +68,3 @@ typedef struct Circle {
     float y;
     float radius;
 } Circle;
-
-
-
-
-
-
-
-
-typedef enum {
-    AnimActive = 1,
-    AnimLoop = 2
-} AnimFlag;
-
-typedef struct SpriteAsset {
-    const char *name;
-    RawTexture **texture;
-    uint32_t count;
-    uint32_t current;
-    float delay;
-    float clock;
-    AnimFlag flags;
-} SpriteAsset;
-
-typedef struct FontAsset {
-    const char *name;
-    TTF_Font *font;
-} FontAsset;

@@ -20,19 +20,6 @@ static struct {
 // SpriteAsset
 ////////////////////////////////////////////////
 
-SpriteAsset *Asset_NewSpriteAsset(const char *name) {
-    SpriteAsset *asset = DE_NEW(SpriteAsset, 1); 
-    asset->name  = DE_NEWSTRING(name);
-    asset->delay = 100.0f;
-    asset->current = 0;
-    asset->count   = 1;
-    asset->texture = NULL;
-    asset->clock   = SDL_GetTicks();
-    asset->flags   = AnimActive;
-
-    return asset;
-}
-
 int32_t Asset_GetSpriteIndex(const char *name) {
     for(int32_t i=0; i<stbds_arrlen(Asset_Info.textures); i++) {
         if(!strcmp(name, Asset_Info.textures[i]->name)) {
@@ -80,7 +67,7 @@ SpriteAsset *Asset_LoadSprite(const char *name, const char *path) {
     }
     else {
         /* Create new texture */
-        asset = Asset_NewSpriteAsset(name);
+        asset = Sprite_New(name);
         stbds_arrput(asset->texture, tex);
         stbds_arrput(Asset_Info.textures, asset);
     }
@@ -126,12 +113,6 @@ int32_t Asset_GetFontIndex(const char *name) {
     return -1;
 }
 
-FontAsset *Asset_NewFontAsset(const char *name) {
-    FontAsset *asset = DE_NEW(FontAsset, 1);
-    asset->name = DE_NEWSTRING(name);
-    return asset;
-}
-
 FontAsset *Asset_LoadFont(const char *name, const char *path) {
     FontAsset *asset = NULL;
     TTF_Font *font;
@@ -148,7 +129,7 @@ FontAsset *Asset_LoadFont(const char *name, const char *path) {
         asset->font = font;
     }
     else {
-        asset = Asset_NewFontAsset(name);
+        asset = Font_New(name);
         asset->font = font;
         stbds_arrput(Asset_Info.fonts, asset);
     }
