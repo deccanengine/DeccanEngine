@@ -5,8 +5,8 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include <Deccan/Renderer.h>
-#include <Deccan/Core.h>
+#include "Renderer.h"
+#include "../Core.h"
 
 #define PTR_NULLCHECK(x,y) if(!x) { return y; }
 

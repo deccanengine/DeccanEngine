@@ -6,7 +6,9 @@
  */
 
 #pragma once
-#include <Deccan/Config.h>
+#include "../Config.h"
+#include "../Math/Vector2.h"
+#include "../Math/Vector3.h"
 
 /////////////////////////////////////////////////
 // Enums

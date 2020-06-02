@@ -5,9 +5,9 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include <Deccan/Renderer.h>
-#include <Deccan/Core.h>
-#include <Deccan/Object.h>
+#include "Renderer.h"
+#include "../Core.h"
+#include "../Scene/Object.h"
 
 static struct {
     Vector2f position;

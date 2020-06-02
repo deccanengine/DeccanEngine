@@ -5,8 +5,8 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include <Deccan/Core.h>
-#include <Deccan/Renderer.h>
+#include "../Core.h"
+#include "../Renderer/Renderer.h"
 
 static struct {
     SpriteAsset **textures;

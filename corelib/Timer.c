@@ -5,7 +5,7 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include <Deccan/Config.h>
+#include "Timer.h"
 
 void Clock_StartTimer(Timer *timer) {
     timer->startTicks = SDL_GetTicks();

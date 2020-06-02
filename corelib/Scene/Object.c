@@ -5,9 +5,9 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include <Deccan/Object.h>
-#include <Deccan/Scene.h>
-#include <Deccan/Core.h>
+#include "Object.h"
+#include "Scene.h"
+#include "../Core.h"
 
 static struct {
     int32_t zAccum;

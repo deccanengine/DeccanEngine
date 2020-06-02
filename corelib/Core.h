@@ -7,9 +7,10 @@
 
 #pragma once
 
-#include <Deccan/Config.h>
-#include <Deccan/Scene.h>
-#include <Deccan/Object.h>
+#include "Config.h"
+#include "Timer.h"
+#include "Scene/Scene.h"
+#include "Scene/Object.h"
 
 #ifndef DECCAN_MSG_LENGTH
     #define DECCAN_MSG_LENGTH 50

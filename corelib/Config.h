@@ -19,7 +19,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#include "../../depends/stb_ds.h"
+#include "../depends/stb_ds.h"
 
 /* Define basic constants */
 #ifndef PI 
@@ -69,67 +69,12 @@ typedef struct Circle {
     float radius;
 } Circle;
 
-typedef struct Vector2i {
-    int32_t x;
-    int32_t y;
-} Vector2i;
 
-typedef struct Vector2u {
-    uint32_t x;
-    uint32_t y;
-} Vector2u;
 
-typedef struct Vector2f {
-    float x;
-    float y;
-} Vector2f;
 
-typedef struct Vector3i {
-    int32_t x;
-    int32_t y;
-    int32_t z;
-} Vector3i;
 
-typedef struct Vector3f {
-    float x;
-    float y;
-    float z;
-} Vector3f;
 
-typedef struct MsgBuf {
-    int count;
-    int length;
-    int num;
-    char **messages;
-} MsgBuf;
 
-void Msg_Init(MsgBuf *buf, int count, int length);
-void Msg_Send(MsgBuf *buf, const char *msg);
-bool Msg_Receive(MsgBuf *buf, const char *msg);
-void Msg_Free(MsgBuf *buf);
-
-typedef struct Timer Timer;
-typedef struct Timer {
-    float startTicks;
-    float pausedTicks;
-    bool isRunning;
-    bool isPaused;
-} Timer;
-
-typedef struct Time {
-    float seconds;
-    float milliseconds;
-} Time;
-
-static inline void Clock_Delay(int32_t ms) { 
-    SDL_Delay(ms); 
-}
-
-void Clock_StartTimer(Timer *timer);
-void Clock_StopTimer (Timer *timer);
-void Clock_PauseTimer(Timer *timer);
-void Clock_ResetTimer(Timer *timer);
-Time Clock_GetTime(Timer *timer);
 
 typedef enum {
     AnimActive = 1,

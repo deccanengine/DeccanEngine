@@ -5,7 +5,7 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include <Deccan/Object.h>
+#include "Object.h"
 
 typedef struct ECSystem {
     int32_t *components;

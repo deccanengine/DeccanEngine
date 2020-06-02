@@ -5,8 +5,8 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include <Deccan/Renderer.h>
-#include <Deccan/Core.h>
+#include "Renderer.h"
+#include "../Core.h"
 
 static struct {
 #ifdef DECCAN_RENDERER_SDL

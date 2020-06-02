@@ -6,9 +6,9 @@
  */
 
 #define STB_DS_IMPLEMENTATION
-#include <Deccan/Core.h>
-#include <Deccan/Input.h>
-#include <Deccan/Renderer.h>
+#include "Core.h"
+#include "Input/Input.h"
+#include "Renderer/Renderer.h"
 
 static struct {
 #ifdef DECCAN_RENDERER_SDL

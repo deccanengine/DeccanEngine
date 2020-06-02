@@ -5,8 +5,8 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include <Deccan/Renderer.h>
-#include <Deccan/Core.h>
+#include "Renderer.h"
+#include "../Core.h"
 
 void Sprite_SetColor(SpriteAsset *texture, Color color) {
     if(texture == NULL) { 

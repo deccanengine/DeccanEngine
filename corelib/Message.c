@@ -5,7 +5,7 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include <Deccan/Config.h>
+#include "Message.h"
 
 void Msg_Init(MsgBuf *buf, int count, int length) {
     buf->num = 0;

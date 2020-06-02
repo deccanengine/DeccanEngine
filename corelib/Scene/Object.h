@@ -6,9 +6,10 @@
  */
 
 #pragma once
-#include <Deccan/Config.h>
-#include <Deccan/Renderer.h>
-#include <Deccan/Physics.h>
+#include "../Config.h"
+#include "../Message.h"
+#include "../Renderer/Renderer.h"
+#include "../Behaviour/Physics/Physics.h"
 
 #ifndef DECCAN_OBJ_MSG_LENGTH
     #define DECCAN_OBJ_MSG_LENGTH 50

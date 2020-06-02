@@ -6,8 +6,8 @@
  */
 
 #pragma once
-#include <Deccan/Config.h>
-#include <Deccan/Object.h>
+#include "../Config.h"
+#include "Object.h"
 
 #define void_func(x) void (*x)(void)
 

@@ -5,8 +5,8 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include <Deccan/Scene.h>
-#include <Deccan/Core.h>
+#include "Scene.h"
+#include "../Core.h"
 
 static struct {
     GameScene **scenes;

@@ -6,9 +6,10 @@
  */
 
 #pragma once
-#include <Deccan/Config.h>
-#include <Deccan/Core.h>
-#include <Deccan/Input.h>
-#include <Deccan/Object.h>
-#include <Deccan/Scene.h>
-#include <Deccan/Physics.h>
+#include "Config.h"
+#include "Core.h"
+#include "Input/Input.h"
+#include "Scene/Object.h"
+#include "Scene/Scene.h"
+#include "Behaviour/Physics/Physics.h"
+#include "Timer.h"

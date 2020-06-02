@@ -5,8 +5,8 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include <Deccan/Physics.h>
-#include <Deccan/Object.h>
+#include "Physics.h"
+#include "../../Scene/Object.h"
 
 /////////////////////////////////////////////////
 // Colliders
