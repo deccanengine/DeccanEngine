@@ -99,7 +99,7 @@ int Core_Init(const char *title, Vector2i mode) {
 
     Core_Info.winMode = mode;
 
-    Input_ResetStates();
+    Input_Init();
     Msg_Init(&Core_Info.msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
 
     return 1;
@@ -154,9 +154,7 @@ void Core_Run(float fps) {
                 }
             }
         }
-        
-        /* Update the input key states */
-        Input_UpdateStates();
+
 
         /* Calculate FPS */
         Core_Info.fpsAverage = Core_Info.frameCount / Clock_GetTime(&fpsTimer).seconds;
@@ -216,9 +214,8 @@ void Core_Run(float fps) {
 
 #endif
 
-        /* Prevent mouse wheel scroll input spam */
-        event->wheel.x = 0;
-        event->wheel.y = 0;
+        /* Update the input key states */
+        Input_Update();
 
         Core_Info.frameCount++; /* Increment the frame counter */
         
