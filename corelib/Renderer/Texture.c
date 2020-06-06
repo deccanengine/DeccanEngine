@@ -5,10 +5,13 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include "Renderer.h"
+#include "Texture.h"
+#include "Camera.h"
 #include "../Asset/SpriteAsset.h"
 #include "../Core.h"
 
+// To be replaced with better and practical functions
+/*
 void Sprite_SetColor(SpriteAsset *texture, Color color) {
     if(texture == NULL) { 
         return; 
@@ -19,6 +22,7 @@ void Sprite_SetColor(SpriteAsset *texture, Color color) {
 
 #endif
 }
+*/
 
 void BlitInternal(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, SpriteAsset *texture) {
     if(texture == NULL) { 

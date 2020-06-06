@@ -5,9 +5,7 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include "Renderer.h"
-#include "../Core.h"
-#include "../Scene/Object.h"
+#include "Camera.h"
 
 static struct {
     Vector2f position;
@@ -21,7 +19,7 @@ static struct {
 // Camera
 ////////////////////////////////////////////////
 
-void _clamp(Vector2f *pos, PosRect *rect, float *final_x, float *final_y) {
+void Clamp(Vector2f *pos, PosRect *rect, float *final_x, float *final_y) {
     /* Bounds are not set */
     if(rect->x1 == -1) { 
         *final_x = pos->x;
@@ -42,7 +40,7 @@ void _clamp(Vector2f *pos, PosRect *rect, float *final_x, float *final_y) {
 
 void Camera_Move(Vector2f pos) {
     float x, y; 
-    _clamp(&pos, &Camera_Info.bounds, &x, &y);
+    Clamp(&pos, &Camera_Info.bounds, &x, &y);
 
     Camera_Info.position.x += x;
     Camera_Info.position.y += y;

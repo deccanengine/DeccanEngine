@@ -48,23 +48,3 @@ static inline char *DE_NEWSTRING(const char *source) {
 /* Error handling/logging */
 extern void DE_ERROR (const char *str, ...);
 extern void DE_REPORT(const char *str, ...);
-
-typedef struct Rect {
-    float x;
-    float y;
-    float w;
-    float h;
-} Rect;
-
-typedef struct PosRect {
-    float x1;
-    float y1;
-    float x2;
-    float y2;
-} PosRect;
-
-typedef struct Circle {
-    float x;
-    float y;
-    float radius;
-} Circle;

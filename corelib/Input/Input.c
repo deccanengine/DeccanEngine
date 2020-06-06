@@ -6,7 +6,7 @@
  */
 
 #include "Input.h"
-#include "../Core.h"
+#include "../Renderer/Camera.h"
 
 static struct { 
     SDL_Event event;

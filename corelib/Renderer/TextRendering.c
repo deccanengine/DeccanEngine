@@ -5,10 +5,8 @@
  * See LICENSE.md included with this package for more info.
  */
 
+#include "TextRendering.h"
 #include "Renderer.h"
-#include "../Core.h"
-#include "../Asset/FontAsset.h"
-#include "../Asset/SpriteAsset.h"
 
 #define PTR_NULLCHECK(x,y) if(!x) { return y; }
 

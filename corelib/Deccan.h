@@ -14,4 +14,5 @@
 #include "Scene/Object.h"
 #include "Scene/Scene.h"
 #include "Behaviour/Physics/Physics.h"
+#include "Renderer/Renderer.h"
 #include "Timer.h"

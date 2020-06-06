@@ -6,6 +6,7 @@
  */
 
 #include "Renderer.h"
+#include "Camera.h"
 #include "../Core.h"
 
 static struct {

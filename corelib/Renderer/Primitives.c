@@ -5,8 +5,9 @@
  * See LICENSE.md included with this package for more info.
  */
 
+#include "Primitives.h"
 #include "Renderer.h"
-#include "../Core.h"
+#include "Camera.h"
 
 #define DE_DRAW_BEGIN()                          \
 Vector2f camera = Camera_GetPosition();          \

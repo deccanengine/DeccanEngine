@@ -49,14 +49,3 @@ int32_t Core_GetTotalFrameCount();
 float Core_GetDeltaTime();
 void Core_SendMessage(const char *msg);
 bool Core_ReceiveMessage(const char *msg);
-
-/////////////////////////////////////////////////
-// Camera
-////////////////////////////////////////////////
-
-void Camera_Move(Vector2f pos);
-void Camera_CenterOn(GameObject *obj);
-void Camera_SetPosition(Vector2f pos);
-void Camera_SetBounds(PosRect rect);
-Vector2f Camera_GetPosition();
-PosRect  Camera_GetBounds();

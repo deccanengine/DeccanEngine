@@ -8,6 +8,7 @@
 #pragma once
 #include "../../Config.h"
 #include "../../Math/Vector2.h"
+#include "../../Renderer/Primitives.h"
 
 /////////////////////////////////////////////////
 // Enums
