@@ -35,9 +35,9 @@ typedef enum {
 ////////////////////////////////////////////////
 
 typedef struct Component {
-    int32_t  id;
-    void    *address;
-} Component;
+    int32_t  key;
+    void    *value;
+} ObjectComponent;
 
 /* Common components */
 typedef Vector3f Position;
@@ -61,8 +61,7 @@ typedef struct GameObject {
     // To do: mark and remove system
     bool toRemove;
 
-    Component **components;
-    int32_t component_length;
+    ObjectComponent *components;
 
     MsgBuf msg;
 
@@ -95,15 +94,15 @@ bool Object_ReceiveMessage(GameObject *obj, const char *msg);
 // Component
 ////////////////////////////////////////////////
 
-void  Object_SetComponent(GameObject *obj, int32_t id, void *component);
-void *Object_GetComponent(GameObject *obj, int32_t id);
+void  Object_SetComponent(GameObject *obj, const char *name, void *component);
+void *Object_GetComponent(GameObject *obj, const char *name);
 
 #define OBJECT_AddComponent(obj, component) \
     component *_##obj##_component_##component = DE_NEW(component, 1);   \
-    Object_SetComponent(obj, ECSystem_GetComponentID(#component), (void*)(_##obj##_component_##component))
+    Object_SetComponent(obj, #component, (void*)(_##obj##_component_##component))
 
 #define OBJECT_GetComponent(obj, component) \
-    (component*)Object_GetComponent(obj, ECSystem_GetComponentID(#component))
+    (component*)Object_GetComponent(obj, #component)
 
 /////////////////////////////////////////////////
 // Getters and Setters

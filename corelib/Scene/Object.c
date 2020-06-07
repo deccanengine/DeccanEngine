@@ -48,7 +48,7 @@ GameObject *Object_NewObject(const char *name, const char *type) {
     obj->AtEnd = NULL_OBJFUNC;
 
     obj->components = NULL;
-    obj->component_length = 0;
+    stbds_hmdefault(obj->components, (void*)NULL);
 
     return obj;
 }
@@ -160,34 +160,22 @@ bool Object_ReceiveMessage(GameObject *obj, const char *msg) {
 // Component
 ////////////////////////////////////////////////
 
-void Object_SetComponent(GameObject *obj, int32_t id, void *component) {
+void Object_SetComponent(GameObject *obj, const char *name, void *component) {
     /* Find the component */
-    for(int i=0; i<obj->component_length; i++) {
-        if(obj->components[i]->id == id) {
-            obj->components[i]->address = component;
-            return;
-        }
+    int32_t id = ECSystem_GetComponentID(name);
+    int32_t index = stbds_hmgeti(obj->components, id);
+    if(index != -1) {
+        obj->components[index].value = component;
     }
 
-    /* Create a new one if not found */
-    Component *comp = DE_NEW(Component, 1);
-    comp->id = id;
-    comp->address = component;
-
-    stbds_arrput(obj->components, comp);
-    obj->component_length++;
+    /* Add a new one if not found */
+    stbds_hmput(obj->components, id, component);
 }
 
-void *Object_GetComponent(GameObject *obj, int32_t id) {
-    for(int i=0; i<obj->component_length; i++) {
-        if(obj->components[i]->id == id) {
-            return (void*)obj->components[i]->address;
-        }
-    }
-
-    /* Component not found! Quite impossible due to ID system */
-    //DE_ERROR("Component not found: ID: %d for GameObject: %s", id, obj->info.name);
-    return NULL;
+void *Object_GetComponent(GameObject *obj, const char *name) {
+    /* Get the component from its name, using its registered ID */
+    int32_t id = ECSystem_GetComponentID(name);
+    return stbds_hmget(obj->components, id);
 }
 
 /////////////////////////////////////////////////

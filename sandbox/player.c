@@ -34,8 +34,10 @@ void _player_begin(GameObject *this) {
 void _player_step(GameObject *this) {
     static int32_t SpeedModifier = 5;
 
-    Position *position = OBJECT_GetComponent(this, Position);
-    Color *color = OBJECT_GetComponent(this, Color);
+    //Position *position = OBJECT_GetComponent(this, Position);
+    //Color *color = OBJECT_GetComponent(this, Color);
+    Position *position = Object_GetComponent(this, "Position");
+    Color *color = Object_GetComponent(this, "Color");
     
     if(Input_KeyHeld(KeyCode_W)){ position->y -= SpeedModifier; }
     else if(Input_KeyHeld(KeyCode_S)){ position->y += SpeedModifier; }
