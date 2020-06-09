@@ -11,7 +11,7 @@ void begin() {
     /* Register all the components */
     ECSystem_RegisterComponent("NULL");
 
-    State2D_InitInternal();
+    State2D_Register();
 
     ECSystem_RegisterComponent("Color");
     ECSystem_RegisterComponent("Scale");
