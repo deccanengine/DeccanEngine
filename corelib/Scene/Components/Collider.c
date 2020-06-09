@@ -7,6 +7,10 @@
 
 #include "Collider.h"
 
+/////////////////////////////////////////////////
+// Registers/Constructors/Destructors
+////////////////////////////////////////////////
+
 void Collider_Register() {
     ECSystem_RegisterComponent("Collider");
 }

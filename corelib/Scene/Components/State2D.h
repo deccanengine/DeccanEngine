@@ -9,6 +9,10 @@
 #include "../../Config.h"
 #include "../ECSystem.h"
 
+/////////////////////////////////////////////////
+// Structs
+////////////////////////////////////////////////
+
 typedef struct State2D {
     Vector3f position;
     Vector2f scale;
@@ -16,6 +20,10 @@ typedef struct State2D {
 
     bool is_z_dirty;
 } State2D;
+
+/////////////////////////////////////////////////
+// Registers/Constructors/Destructors
+////////////////////////////////////////////////
 
 void State2D_Register();
 

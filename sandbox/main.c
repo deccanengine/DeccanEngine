@@ -7,16 +7,6 @@ SpriteAsset *text;
 
 void begin() {
     /* Start here */
-    
-    /* Register all the components */
-    ECSystem_RegisterComponent("NULL");
-
-    State2D_Register();
-    Collider_Register();
-
-    // To do: material component
-    ECSystem_RegisterComponent("Color");
-
     GameObject *player = Object_NewObject("main player", "player");
     player->order.z = 5;
     player->AtBeginning = _player_begin;
@@ -68,6 +58,15 @@ void end() {
 }
 
 int main(int argc, char **argv) {
+    /* Register all the components */
+    ECSystem_RegisterComponent("NULL");
+
+    State2D_Register();
+    Collider_Register();
+
+    // To do: material component
+    ECSystem_RegisterComponent("Color");
+    
     if(Core_Init("Test", (Vector2i){640, 320})) {
         Scene_AddScene(Scene_NewScene("scene0", begin, step, render, end), false);
         Core_Run(120.0f);

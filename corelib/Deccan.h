@@ -13,9 +13,8 @@
 #include "Input/Input.h"
 #include "Scene/Object.h"
 #include "Scene/Scene.h"
+#include "Scene/ECSystem.h"
+#include "Scene/ComponentList.h"
 #include "Behaviour/Physics/Physics.h"
 #include "Renderer/Renderer.h"
 #include "Timer.h"
-
-#include "Scene/Components/State2D.h"
-#include "Scene/Components/Collider.h"

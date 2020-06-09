@@ -7,7 +7,9 @@
 
 #include "State2D.h"
 
-void AtStep0(GameObject *obj);
+/////////////////////////////////////////////////
+// Registers/Constructors/Destructors
+////////////////////////////////////////////////
 
 void State2D_Register() {
     ECSystem_RegisterComponent("State2D");

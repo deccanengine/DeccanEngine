@@ -10,6 +10,10 @@
 #include "../ECSystem.h"
 #include "../../Behaviour/Physics/Physics.h"
 
+/////////////////////////////////////////////////
+// Registers/Constructors/Destructors
+////////////////////////////////////////////////
+
 void Collider_Register();
 
 Collider *Collider_Init(Collider s);
