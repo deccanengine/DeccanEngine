@@ -12,14 +12,10 @@ void begin() {
     ECSystem_RegisterComponent("NULL");
 
     State2D_Register();
+    Collider_Register();
 
+    // To do: material component
     ECSystem_RegisterComponent("Color");
-    ECSystem_RegisterComponent("Scale");
-    ECSystem_RegisterComponent("Rotation");
-    ECSystem_RegisterComponent("Collider");
-    ECSystem_RegisterComponent("SpeedModifier");
-    ECSystem_RegisterComponent("Position");
-    ECSystem_RegisterComponent("Velocity");
 
     GameObject *player = Object_NewObject("main player", "player");
     player->order.z = 5;

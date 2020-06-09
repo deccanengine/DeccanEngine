@@ -97,12 +97,12 @@ bool Object_ReceiveMessage(GameObject *obj, const char *msg);
 void  Object_SetComponent(GameObject *obj, const char *name, void *component);
 void *Object_GetComponent(GameObject *obj, const char *name);
 
-#define OBJECT_AddComponent(obj, component) \
+#define OBJECT_AddComponentCustom(obj, component) \
     component *_##obj##_component_##component = DE_NEW(component, 1);   \
     Object_SetComponent(obj, #component, (void*)(_##obj##_component_##component))
 
-#define OBJECT_AddComponentEx(obj, component) \
-    component *_##obj##_component_##component = component##_Init();     \
+#define OBJECT_AddComponent(obj, component, ...) \
+    component *_##obj##_component_##component = component##_Init((component)__VA_ARGS__);     \
     Object_SetComponent(obj, #component, (void*)(_##obj##_component_##component))
 
 #define OBJECT_GetComponent(obj, component) \

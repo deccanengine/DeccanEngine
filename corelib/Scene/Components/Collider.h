@@ -8,15 +8,8 @@
 #pragma once
 #include "../../Config.h"
 #include "../ECSystem.h"
+#include "../../Behaviour/Physics/Physics.h"
 
-typedef struct State2D {
-    Vector3f position;
-    Vector2f scale;
-    double   rotation;
+void Collider_Register();
 
-    bool is_z_dirty;
-} State2D;
-
-void State2D_Register();
-
-State2D *State2D_Init(State2D s);
+Collider *Collider_Init(Collider s);

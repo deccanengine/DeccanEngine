@@ -13,22 +13,23 @@ void action(GameObject *this) {
 }
 
 void _player_begin(GameObject *this) {
-    OBJECT_AddComponent(this, Color);
+    OBJECT_AddComponentCustom(this, Color);
     Color *color = OBJECT_GetComponent(this, Color);
     color->r = 255;
     color->g = 0;
     color->b = 0;
     color->a = 255;
 
-    OBJECT_AddComponentEx(this, State2D);
-    State2D *state = Object_GetComponent(this, "State2D");
-    state->position.x = 100;
-    state->position.y = 100;
+    OBJECT_AddComponent(this, State2D, {
+        .position = {
+            .x = 200, .y = 200
+        }
+    });
 
-    OBJECT_AddComponent(this, Collider);
-    Collider *collider = OBJECT_GetComponent(this, Collider);
-    collider->type = ColliderRect;
-    collider->rect = (PosRect){0, 0, 50, 50};
+    OBJECT_AddComponent(this, Collider, { 
+        .type = ColliderRect, 
+        .rect = (PosRect){0, 0, 50, 50}
+    });
 }
 
 void _player_step(GameObject *this) {
@@ -87,15 +88,17 @@ void _player_end(GameObject *this) { }
 void _none_begin(GameObject *this) {
     State2D *statePlayer = Object_GetComponent(Object_GetObject("main player"), "State2D");
 
-    OBJECT_AddComponentEx(this, State2D);
-    State2D *state = Object_GetComponent(this, "State2D");
-    state->position.x = statePlayer->position.x;
-    state->position.y = statePlayer->position.y;
+    OBJECT_AddComponent(this, State2D, {
+        .position = {
+                .x = statePlayer->position.x,
+                .y = statePlayer->position.y
+        }
+    });
 
-    OBJECT_AddComponent(this, Collider);
-    Collider *collider = OBJECT_GetComponent(this, Collider);
-    collider->type = ColliderRect;
-    collider->rect = (PosRect){0, 0, 40, 40};
+    OBJECT_AddComponent(this, Collider, {
+        .type = ColliderRect,
+        .rect = (PosRect){0, 0, 40, 40}
+    });
 }
 
 void _none_step(GameObject *this) {

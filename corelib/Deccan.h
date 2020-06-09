@@ -18,3 +18,4 @@
 #include "Timer.h"
 
 #include "Scene/Components/State2D.h"
+#include "Scene/Components/Collider.h"
