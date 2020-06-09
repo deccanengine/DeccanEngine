@@ -101,6 +101,10 @@ void *Object_GetComponent(GameObject *obj, const char *name);
     component *_##obj##_component_##component = DE_NEW(component, 1);   \
     Object_SetComponent(obj, #component, (void*)(_##obj##_component_##component))
 
+#define OBJECT_AddComponentEx(obj, component) \
+    component *_##obj##_component_##component = component##_Init();     \
+    Object_SetComponent(obj, #component, (void*)(_##obj##_component_##component))
+
 #define OBJECT_GetComponent(obj, component) \
     (component*)Object_GetComponent(obj, #component)
 
@@ -153,17 +157,3 @@ void Object_RotateTowardsObject(GameObject *obj, GameObject *target, int speed);
 void Object_RotateTowardsPosition(GameObject *obj, Vector2f pos, int speed);
 
 static inline void NULL_OBJFUNC(GameObject *obj) { }
-
-/////////////////////////////////////////////////
-// Entity Component System
-////////////////////////////////////////////////
-
-int32_t ECSystem_RegisterComponent(const char *name);
-void ECSystem_RegisterSystem(int count, const char *participants[], int32_t when, void (*func)(GameObject *object)); 
-
-int32_t ECSystem_GetComponentID(const char *name);
-const char *ECSystem_GetComponentName(int32_t id);
-
-int32_t ECSystem_GetSystem(int32_t index);
-
-void ECSystem_UpdateSystems(GameObject *obj, int32_t when);

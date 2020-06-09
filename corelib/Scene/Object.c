@@ -8,6 +8,7 @@
 #include "Object.h"
 #include "Scene.h"
 #include "../Core.h"
+#include "ECSystem.h"
 
 static struct {
     int32_t zAccum;
@@ -30,7 +31,7 @@ GameObject *Object_NewObject(const char *name, const char *type) {
     obj->name = DE_NEWSTRING(name);
     obj->type = DE_NEWSTRING(type);
     
-    obj->order.z = Object_Info.zAccum++;
+    obj->order.z = (float)Object_Info.zAccum++;
     //obj->angle   = 0.0f;
 
     obj->visible    = true;

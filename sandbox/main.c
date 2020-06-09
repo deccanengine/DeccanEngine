@@ -10,6 +10,9 @@ void begin() {
     
     /* Register all the components */
     ECSystem_RegisterComponent("NULL");
+
+    State2D_InitInternal();
+
     ECSystem_RegisterComponent("Color");
     ECSystem_RegisterComponent("Scale");
     ECSystem_RegisterComponent("Rotation");
@@ -19,7 +22,7 @@ void begin() {
     ECSystem_RegisterComponent("Velocity");
 
     GameObject *player = Object_NewObject("main player", "player");
-    player->order.z = 10;
+    player->order.z = 5;
     player->AtBeginning = _player_begin;
     player->AtStep = _player_step;
     player->AtRender = _player_render;

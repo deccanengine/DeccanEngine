@@ -5,7 +5,7 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include "Object.h"
+#include "ECSystem.h"
 
 typedef struct ECSComp {
     char *key;

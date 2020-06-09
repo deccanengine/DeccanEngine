@@ -20,10 +20,10 @@ void _player_begin(GameObject *this) {
     color->b = 0;
     color->a = 255;
 
-    OBJECT_AddComponent(this, Position);
-    Position *position = OBJECT_GetComponent(this, Position);
-    position->x = 100;
-    position->y = 100;
+    OBJECT_AddComponentEx(this, State2D);
+    State2D *state = Object_GetComponent(this, "State2D");
+    state->position.x = 100;
+    state->position.y = 100;
 
     OBJECT_AddComponent(this, Collider);
     Collider *collider = OBJECT_GetComponent(this, Collider);
@@ -34,20 +34,18 @@ void _player_begin(GameObject *this) {
 void _player_step(GameObject *this) {
     static int32_t SpeedModifier = 5;
 
-    //Position *position = OBJECT_GetComponent(this, Position);
-    //Color *color = OBJECT_GetComponent(this, Color);
-    Position *position = Object_GetComponent(this, "Position");
+    State2D *state = Object_GetComponent(this, "State2D");
     Color *color = Object_GetComponent(this, "Color");
     
-    if(Input_KeyHeld(KeyCode_W)){ position->y -= SpeedModifier; }
-    else if(Input_KeyHeld(KeyCode_S)){ position->y += SpeedModifier; }
-    else if(Input_KeyHeld(KeyCode_A)){ position->x -= SpeedModifier; }
-    else if(Input_KeyHeld(KeyCode_D)){ position->x += SpeedModifier; }
+    if(Input_KeyHeld(KeyCode_W)){ state->position.y -= SpeedModifier; }
+    else if(Input_KeyHeld(KeyCode_S)){ state->position.y += SpeedModifier; }
+    else if(Input_KeyHeld(KeyCode_A)){ state->position.x -= SpeedModifier; }
+    else if(Input_KeyHeld(KeyCode_D)){ state->position.x += SpeedModifier; }
 
-    if(Input_KeyReleased(KeyCode_Left)) {
+    if(Input_KeyReleased(KeyCode_O)) {
         SpeedModifier -= 1;
     }
-    else if(Input_KeyReleased(KeyCode_Right)) {
+    else if(Input_KeyReleased(KeyCode_P)) {
         SpeedModifier += 1;
     }
 
@@ -59,8 +57,8 @@ void _player_step(GameObject *this) {
         *color = ColorList_Orange;
         if(Input_ButtonDown(ButtonCode_Left)) {
             selected = true;
-            offset.x = pos.x - position->x;
-            offset.y = pos.y - position->y;
+            offset.x = pos.x - state->position.x;
+            offset.y = pos.y - state->position.y;
         }
         else if(Input_ButtonUp(ButtonCode_Left)) { 
             selected = false; 
@@ -68,8 +66,8 @@ void _player_step(GameObject *this) {
     }
     
     if(selected) {
-        position->x = pos.x - offset.x;
-        position->y = pos.y - offset.y;
+        state->position.x = pos.x - offset.x;
+        state->position.y = pos.y - offset.y;
     }
     
     Object_GetObjectOfType("static", action);
@@ -79,20 +77,20 @@ void _player_step(GameObject *this) {
 
 void _player_render(GameObject *this) {
     Color *color = OBJECT_GetComponent(this, Color);
-    Position *position = OBJECT_GetComponent(this, Position);
+    State2D *state = Object_GetComponent(this, "State2D");
     
-    Draw_FilledRect((Rect){position->x, position->y, 50, 50}, *color);
+    Draw_FilledRect((Rect){state->position.x, state->position.y, 50, 50}, *color);
 }
 
 void _player_end(GameObject *this) { }
 
 void _none_begin(GameObject *this) {
-    OBJECT_AddComponent(this, Position);
-    Position *position = OBJECT_GetComponent(this, Position);
+    State2D *statePlayer = Object_GetComponent(Object_GetObject("main player"), "State2D");
 
-    Position *player_pos = OBJECT_GetComponent(Object_GetObject("main player"), Position);
-    position->x = player_pos->x;
-    position->y = player_pos->y;
+    OBJECT_AddComponentEx(this, State2D);
+    State2D *state = Object_GetComponent(this, "State2D");
+    state->position.x = statePlayer->position.x;
+    state->position.y = statePlayer->position.y;
 
     OBJECT_AddComponent(this, Collider);
     Collider *collider = OBJECT_GetComponent(this, Collider);
@@ -100,12 +98,14 @@ void _none_begin(GameObject *this) {
     collider->rect = (PosRect){0, 0, 40, 40};
 }
 
-void _none_step(GameObject *this) { }
+void _none_step(GameObject *this) {
+    ECSystem_UpdateSystems(this, SYSTEM_AT_STEP);
+}
 
 void _none_render(GameObject *this) {
-    Position *position = OBJECT_GetComponent(this, Position);
+    State2D *state = Object_GetComponent(this, "State2D");
     
-    Draw_FilledRect((Rect){position->x, position->y, 40, 40}, ColorList_Red); 
+    Draw_FilledRect((Rect){state->position.x, state->position.y, 40, 40}, ColorList_Red); 
 }
 
 void _none_end(GameObject *this) { }

@@ -16,3 +16,5 @@
 #include "Behaviour/Physics/Physics.h"
 #include "Renderer/Renderer.h"
 #include "Timer.h"
+
+#include "Scene/Components/State2D.h"
