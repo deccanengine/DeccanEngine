@@ -1,3 +1,5 @@
+![Deccan Engine](/resources/deccan-light.png?raw=true)
+
 # Deccan Game Engine
 Cross-platform 2D Game Engine written in C11. Powered by SDL2.  
 [Discord](https://discord.gg/bNwnxwn)  

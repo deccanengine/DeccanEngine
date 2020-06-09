@@ -3,3 +3,5 @@ test
 *.ttf
 *.log
 *.txt
+
+!resources/deccan-light.png
