@@ -6,7 +6,7 @@ Vector2i offset;
 SpriteAsset tar;
 
 void action(GameObject *this) {
-    if(Collision_ObjectObject(Object_GetObject("main player"), this)) { 
+    if(Collider_CheckObject(Object_GetObject("main player"), this)) { 
         Color *c = OBJECT_GetComponent(Object_GetObject("main player"), Color);
         *c = ColorList_Green;
     }
@@ -27,7 +27,7 @@ void _player_begin(GameObject *this) {
     });
 
     OBJECT_AddComponent(this, Collider, { 
-        .type = ColliderRect, 
+        .type = COLLIDER_Rect, 
         .rect = (PosRect){0, 0, 50, 50}
     });
 }
@@ -54,7 +54,7 @@ void _player_step(GameObject *this) {
     //Camera_CenterOn(this);
 
     Vector2f pos = Input_GetRelativeMousePos();
-    if(Collision_ObjectVec(this, &pos)) { 
+    if(Collider_CheckObjectVector(this, &pos)) { 
         *color = ColorList_Orange;
         if(Input_ButtonDown(ButtonCode_Left)) {
             selected = true;
@@ -96,7 +96,7 @@ void _none_begin(GameObject *this) {
     });
 
     OBJECT_AddComponent(this, Collider, {
-        .type = ColliderRect,
+        .type = COLLIDER_Rect,
         .rect = (PosRect){0, 0, 40, 40}
     });
 }

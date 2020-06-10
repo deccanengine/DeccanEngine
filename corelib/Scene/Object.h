@@ -9,7 +9,6 @@
 #include "../Config.h"
 #include "../Message.h"
 #include "../Renderer/Renderer.h"
-#include "../Behaviour/Physics/Physics.h"
 
 #ifndef DECCAN_OBJ_MSG_LENGTH
     #define DECCAN_OBJ_MSG_LENGTH 50
@@ -38,12 +37,6 @@ typedef struct Component {
     int32_t  key;
     void    *value;
 } ObjectComponent;
-
-/* Common components */
-typedef Vector3f Position;
-typedef Vector2f Scale;
-typedef double   Rotation;
-typedef Collider Collider;
 
 typedef struct GameObject GameObject;
 typedef struct GameObject {
@@ -145,8 +138,8 @@ void Object_Hide(GameObject *obj, bool hide);
  * Collider
  ***********/
 
-Collider Object_GetCollider(GameObject *obj);
-void Object_SetCollider(GameObject *obj, Collider collider);
+//Collider Object_GetCollider(GameObject *obj);
+//void Object_SetCollider(GameObject *obj, Collider collider);
 
 /////////////////////////////////////////////////
 // Rotation Functions 

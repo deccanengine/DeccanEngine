@@ -14,29 +14,8 @@
 // Enums
 ////////////////////////////////////////////////
 
-typedef enum {
-    ColliderVec,
-    ColliderRect,
-    ColliderCircle
-} ColliderType;
-
 /////////////////////////////////////////////////
 // Structs
-////////////////////////////////////////////////
-
-typedef struct GameObject GameObject;
-
-typedef struct Collider {
-    ColliderType type;
-    union {
-        struct { Vector2i vec;  };
-        struct { PosRect rect;  };
-        struct { Circle circle; };
-    };
-} Collider;
-
-/////////////////////////////////////////////////
-// Colliders
 ////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
@@ -49,6 +28,3 @@ bool Collision_CircleCircle(Circle *c1, Circle *c2);
 bool Collision_VecRect(Vector2f *vec, PosRect *rect);
 bool Collision_CircleVec(Circle *circle, Vector2f *vec);
 bool Collision_RectCircle(PosRect *rect, Circle *circle);
-bool Collision_ObjectObject(GameObject *obj1, GameObject *obj2);
-bool Collision_ObjectVec(GameObject *obj, Vector2f *vec);
-bool Collision_Test(const char *name1, const char *name2);

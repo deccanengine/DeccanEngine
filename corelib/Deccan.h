@@ -8,13 +8,24 @@
 #pragma once
 #include "Config.h"
 #include "Core.h"
+#include "Message.h"
+#include "Timer.h"
+
 #include "Asset/Importer.h"
 #include "Asset/SpriteAsset.h"
+#include "Asset/FontAsset.h"
+
+#include "Behaviour/Behaviours.h"
+
 #include "Input/Input.h"
+#include "Input/InputCodes.h"
+
+#include "Math/Vector2.h"
+#include "Math/Vector3.h"
+
 #include "Scene/Object.h"
 #include "Scene/Scene.h"
 #include "Scene/ECSystem.h"
 #include "Scene/ComponentList.h"
-#include "Behaviour/Physics/Physics.h"
+
 #include "Renderer/Renderer.h"
-#include "Timer.h"
