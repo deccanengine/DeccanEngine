@@ -54,7 +54,7 @@ void _player_step(GameObject *this) {
     //Camera_CenterOn(this);
 
     Vector2f pos = Input_GetRelativeMousePos();
-    if(Collider_CheckObjectVector(this, &pos)) { 
+    if(Collider_CheckObjectWithVector(this, &pos)) { 
         *color = ColorList_Orange;
         if(Input_ButtonDown(ButtonCode_Left)) {
             selected = true;

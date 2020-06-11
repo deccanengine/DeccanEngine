@@ -41,6 +41,12 @@ void Collider_Register();
 
 Collider *Collider_Init(Collider s);
 
+/////////////////////////////////////////////////
+// Collision checking
+////////////////////////////////////////////////
+
 bool Collider_CheckObject(GameObject *obj1, GameObject *obj2);
-bool Collider_CheckObjectVector(GameObject *obj, Vector2f *vec);
+bool Collider_CheckObjectWithVector(GameObject *obj, Vector2f *vec);
+bool Collider_CheckObjectWithRect(GameObject *obj, PosRect *vec);
+bool Collider_CheckObjectWithCircle(GameObject *obj, Circle *vec);
 bool Collider_Check(const char *name1, const char *name2);
