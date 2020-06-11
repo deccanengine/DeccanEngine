@@ -24,12 +24,12 @@ void Sprite_SetColor(SpriteAsset *texture, Color color) {
 }
 */
 
-void BlitInternal(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, SpriteAsset *texture) {
+void BlitInternal(Rect rect, Rect dim, Vector2 scale, double angle, Flip flip, SpriteAsset *texture) {
     if(texture == NULL) { 
         return; 
     }
     
-    Vector2f camera = Camera_GetPosition();
+    Vector2 camera = Camera_GetPosition();
 
 #ifdef DECCAN_RENDERER_SDL
     SDL_Renderer *renderer = Renderer_GetRenderer();
@@ -53,7 +53,7 @@ void BlitInternal(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, 
     //    DE_REPORT("Cannot query texture: %s :%s", texture->name, SDL_GetError());
     //}
 
-    Vector2i size = Sprite_GetSize(texture);
+    Vector2 size = Sprite_GetSize(texture);
     
     if(!src.w) { src.w = size.x;  }
     if(!src.h) { src.h = size.y; }
@@ -90,17 +90,17 @@ void BlitInternal(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, 
 }
 
 void Sprite_Blit(Rect rect, double angle, Flip flip, SpriteAsset *texture) {
-    BlitInternal(rect, (Rect){0, 0, 0, 0}, (Vector2f){0.0f, 0.0f}, angle, flip, texture);
+    BlitInternal(rect, (Rect){0, 0, 0, 0}, (Vector2){0.0f, 0.0f}, angle, flip, texture);
 }
 
-void Sprite_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, SpriteAsset *texture) {
+void Sprite_BlitScaled(Rect rect, Vector2 scale, double angle, Flip flip, SpriteAsset *texture) {
     BlitInternal(rect, (Rect){0, 0, 0, 0}, scale, angle, flip, texture);
 }
     
 void Sprite_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, SpriteAsset *texture) {
-    BlitInternal(rect, dim, (Vector2f){0, 0}, angle, flip, texture);
+    BlitInternal(rect, dim, (Vector2){0, 0}, angle, flip, texture);
 }
 
-void Sprite_BlitPartialScaled(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, SpriteAsset *texture) {
+void Sprite_BlitPartialScaled(Rect rect, Rect dim, Vector2 scale, double angle, Flip flip, SpriteAsset *texture) {
     BlitInternal(rect, dim, scale, angle, flip, texture);
 }

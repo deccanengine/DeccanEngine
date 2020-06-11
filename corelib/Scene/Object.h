@@ -109,8 +109,8 @@ void *Object_GetComponent(GameObject *obj, const char *name);
  * Position
  ***********/
 
-void Object_SetPosition(GameObject *obj, Vector2f pos);
-Vector2f Object_GetPosition(GameObject *obj);
+void Object_SetPosition(GameObject *obj, Vector2 pos);
+Vector2 Object_GetPosition(GameObject *obj);
 
 /***********
  * Angle
@@ -147,6 +147,6 @@ void Object_Hide(GameObject *obj, bool hide);
 
 void Object_Rotate(GameObject *obj, double angle, int speed);
 void Object_RotateTowardsObject(GameObject *obj, GameObject *target, int speed);
-void Object_RotateTowardsPosition(GameObject *obj, Vector2f pos, int speed);
+void Object_RotateTowardsPosition(GameObject *obj, Vector2 pos, int speed);
 
 static inline void NULL_OBJFUNC(GameObject *obj) { }

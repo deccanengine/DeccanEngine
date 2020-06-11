@@ -44,7 +44,7 @@ SpriteAsset *Sprite_New(const char *name);
 // Setters/Getters
 ////////////////////////////////////////////////
 
-Vector2i Sprite_GetSize(SpriteAsset *texture);
+Vector2 Sprite_GetSize(SpriteAsset *texture);
 
 void Sprite_SetAnimLoop(SpriteAsset *texture, bool loop);
 bool Sprite_GetAnimLoop(SpriteAsset *texture);

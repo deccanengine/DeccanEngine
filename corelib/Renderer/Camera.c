@@ -8,37 +8,37 @@
 #include "Camera.h"
 
 static struct {
-    Vector2f position;
-    PosRect  bounds;
+    Vector2 position;
+    Rect  bounds;
 } Camera_Info = {
-    .position = (Vector2f){ 0,  0},
-    .bounds   = (PosRect ){-1, -1, -1, -1}
+    .position = (Vector2){0,  0},
+    .bounds   = (Rect){-1, -1, -1, -1}
 };
 
 /////////////////////////////////////////////////
 // Camera
 ////////////////////////////////////////////////
 
-void Clamp(Vector2f *pos, PosRect *rect, float *final_x, float *final_y) {
+void Clamp(Vector2 *pos, Rect *rect, float *final_x, float *final_y) {
     /* Bounds are not set */
-    if(rect->x1 == -1) { 
+    if(rect->x == -1) { 
         *final_x = pos->x;
         *final_y = pos->y;
         return; 
     }
 
     /* Clamp the abscissa */
-    if(pos->x < rect->x1) { *final_x = rect->x1; }
-    else if(pos->x > rect->x2) { *final_x = rect->x2; }
+    if(pos->x < rect->x) { *final_x = rect->x; }
+    else if(pos->x > rect->x + rect->w) { *final_x = rect->x + rect->w; }
     else { *final_y = pos->x; }
 
     /* Clamp the ordinate */
-    if(pos->y < rect->y1) { *final_y = rect->y1; }
-    else if(pos->y > rect->y2) { *final_y = rect->y2; }
+    if(pos->y < rect->y) { *final_y = rect->y; }
+    else if(pos->y > rect->y + rect->h) { *final_y = rect->y + rect->h; }
     else { *final_y = pos->y; }
 }
 
-void Camera_Move(Vector2f pos) {
+void Camera_Move(Vector2 pos) {
     float x, y; 
     Clamp(&pos, &Camera_Info.bounds, &x, &y);
 
@@ -65,18 +65,18 @@ void Camera_CenterOn(GameObject *obj) {
 }
 */
 
-void Camera_SetPosition(Vector2f pos) {
+void Camera_SetPosition(Vector2 pos) {
     Camera_Info.position = pos;
 }
 
-void Camera_SetBounds(PosRect rect) {
+void Camera_SetBounds(Rect rect) {
     Camera_Info.bounds = rect;
 }
 
-Vector2f Camera_GetPosition() {
+Vector2 Camera_GetPosition() {
     return Camera_Info.position;
 }
 
-PosRect Camera_GetBounds() {
+Rect Camera_GetBounds() {
     return Camera_Info.bounds;
 }

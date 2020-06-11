@@ -28,6 +28,6 @@ typedef enum {
 //void Sprite_SetColor(SpriteAsset *texture, Color color);
 
 void Sprite_Blit(Rect rect, double angle, Flip flip, SpriteAsset *texture);
-void Sprite_BlitScaled(Rect rect, Vector2f scale, double angle, Flip flip, SpriteAsset *texture);
+void Sprite_BlitScaled(Rect rect, Vector2 scale, double angle, Flip flip, SpriteAsset *texture);
 void Sprite_BlitPartial(Rect rect, Rect dim, double angle, Flip flip, SpriteAsset *texture);
-void Sprite_BlitPartialScaled(Rect rect, Rect dim, Vector2f scale, double angle, Flip flip, SpriteAsset *texture);
+void Sprite_BlitPartialScaled(Rect rect, Rect dim, Vector2 scale, double angle, Flip flip, SpriteAsset *texture);

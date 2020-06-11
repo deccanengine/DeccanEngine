@@ -39,4 +39,4 @@ bool Font_GetKerning(FontAsset *font);
 // Utility functions
 ////////////////////////////////////////////////
 
-Vector2i Font_CalculateTextSize(FontAsset *font, const char *text);
+Vector2 Font_CalculateTextSize(FontAsset *font, const char *text);

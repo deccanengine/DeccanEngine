@@ -50,7 +50,7 @@ void render() {
         Clock_ResetTimer(&timer);
     }
 
-    Sprite_BlitScaled((Rect){10, 10, 0, 0}, (Vector2f){1.0f, 1.0f}, 0, 0, text);
+    Sprite_BlitScaled((Rect){10, 10, 0, 0}, (Vector2){1.0f, 1.0f}, 0, 0, text);
 }
 
 void end() {
@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
     // To do: material component
     ECSystem_RegisterComponent("Color");
     
-    if(Core_Init("Test", (Vector2i){640, 320})) {
+    if(Core_Init("Test", (Vector2){640, 320})) {
         Scene_AddScene(Scene_NewScene("scene0", begin, step, render, end), false);
         Core_Run(120.0f);
     }

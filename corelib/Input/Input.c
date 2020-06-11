@@ -136,16 +136,16 @@ bool Input_ButtonUp(int button_code) {
     }
 }
 
-Vector2i Input_GetMousePos() {
-    Vector2i pos;
-    SDL_GetMouseState(&pos.x, &pos.y);
-    return pos;
+Vector2 Input_GetMousePos() {
+    int32_t x, y;
+    SDL_GetMouseState(&x, &y);
+    return (Vector2){x, y};
 }
 
-Vector2f Input_GetRelativeMousePos() {
+Vector2 Input_GetRelativeMousePos() {
     int32_t x, y;
-    Vector2f pos;
-    Vector2f cam = Camera_GetPosition(); 
+    Vector2 pos;
+    Vector2 cam = Camera_GetPosition(); 
     
     SDL_GetMouseState(&x, &y);
     pos.x = (float)x + cam.x;

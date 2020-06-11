@@ -39,13 +39,16 @@ bool Font_GetKerning(FontAsset *font) {
 // Utility functions
 ////////////////////////////////////////////////
 
-Vector2i Font_CalculateTextSize(FontAsset *font, const char *text) {
-    Vector2i size = {-1, -1};
+Vector2 Font_CalculateTextSize(FontAsset *font, const char *text) {
+    int32_t x = -1;
+    int32_t y = -1;
+
+    Vector2 size = {-1, -1};
     
     PTR_NULLCHECK(font, size);
-    TTF_SizeText(font->font, text, &size.x, &size.y);
+    TTF_SizeText(font->font, text, &x, &y);
     
-    return size;
+    return (Vector2){(float)x, (float)y};
 }
 
 #undef PTR_NULLCHECK

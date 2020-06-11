@@ -18,7 +18,7 @@ static struct {
     int glMajor;
     int glMinor;
 
-    Vector2i winMode;
+    Vector2 winMode;
 
     bool isRunning;
     bool isFullscreen;
@@ -43,7 +43,7 @@ static struct {
 };
 
 /* Core */
-int Core_Init(const char *title, Vector2i mode) {
+int Core_Init(const char *title, Vector2 mode) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
         DE_ERROR("Could not initialize SDL2: %s", SDL_GetError());
@@ -249,7 +249,7 @@ void Core_SetTitle(const char *name) {
     SDL_SetWindowTitle(Core_Info.window, name);
 }
 
-void Core_SetMode(Vector2i mode) {
+void Core_SetMode(Vector2 mode) {
     if(Core_Info.isFullscreen) {
         SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN, mode.x, mode.y, 0, 0};
         
@@ -291,7 +291,7 @@ const char *Core_GetTitle() {
     return SDL_GetWindowTitle(Core_Info.window);
 }
 
-Vector2i Core_GetMode() {
+Vector2 Core_GetMode() {
     return Core_Info.winMode;
 }
 

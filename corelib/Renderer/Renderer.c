@@ -53,8 +53,8 @@ void Renderer_Background() {
     else {
         Renderer_Clear(); // Removing it produces artifacts 
 
-        Vector2i mode = Core_GetMode();
-        Vector2f camera = Camera_GetPosition();
+        Vector2 mode = Core_GetMode();
+        Vector2 camera = Camera_GetPosition();
             
         Rect rect = {
             camera.x, 
@@ -123,7 +123,7 @@ void Renderer_SetColor(Color color) {
 #endif
 }
 
-void Renderer_SetPixelSize(Vector2f size) {
+void Renderer_SetPixelSize(Vector2 size) {
 #ifdef DECCAN_RENDERER_SDL
     SDL_RenderSetScale(Renderer_Info.renderer, size.x, size.y);
 #else
@@ -192,10 +192,9 @@ Color Renderer_GetColor() {
     return color;
 }
 
-Vector2f Renderer_GetPixelSize() {
-    Vector2f size = {
-        0.0f, 0.0f
-    };
+Vector2 Renderer_GetPixelSize() {
+    Vector2 size;
+
 #ifdef DECCAN_RENDERER_SDL
     SDL_RenderGetScale(Renderer_Info.renderer, &size.x, &size.y);
 #else

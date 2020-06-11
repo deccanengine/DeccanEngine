@@ -27,9 +27,9 @@ typedef enum {
 typedef struct Collider {
     COLLIDER type;
     union {
-        struct { Vector2i vec;  };
-        struct { PosRect rect;  };
-        struct { Circle circle; };
+        struct { Vector2 vec;  };
+        struct { Rect    rect;  };
+        struct { Circle  circle; };
     };
 } Collider;
 
@@ -46,7 +46,7 @@ Collider *Collider_Init(Collider s);
 ////////////////////////////////////////////////
 
 bool Collider_CheckObject(GameObject *obj1, GameObject *obj2);
-bool Collider_CheckObjectWithVector(GameObject *obj, Vector2f *vec);
-bool Collider_CheckObjectWithRect(GameObject *obj, PosRect *vec);
-bool Collider_CheckObjectWithCircle(GameObject *obj, Circle *vec);
+bool Collider_CheckObjectWithVector(GameObject *obj, Vector2 vec);
+bool Collider_CheckObjectWithRect(GameObject *obj, Rect vec);
+bool Collider_CheckObjectWithCircle(GameObject *obj, Circle vec);
 bool Collider_Check(const char *name1, const char *name2);

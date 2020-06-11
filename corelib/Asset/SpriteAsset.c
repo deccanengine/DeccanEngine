@@ -33,16 +33,16 @@ SpriteAsset *Sprite_New(const char *name) {
 /*
  * Size
  */
-Vector2i Sprite_GetSize(SpriteAsset *texture) {
-    PTR_NULLCHECK(texture, ((Vector2i){0,0}));
+Vector2 Sprite_GetSize(SpriteAsset *texture) {
+    PTR_NULLCHECK(texture, ((Vector2){0,0}));
 
-    Vector2i size;
+    int32_t x, y;
 
-    if(SDL_QueryTexture(texture->texture[texture->current], NULL, NULL, &size.x, &size.y) > 0) {
+    if(SDL_QueryTexture(texture->texture[texture->current], NULL, NULL, &x, &y) > 0) {
         DE_REPORT("Cannot get texture size of texture: %s : %s", texture->name, SDL_GetError());
     }
 
-    return size;
+    return (Vector2){(float)x, (float)y};
 }
 
 /*

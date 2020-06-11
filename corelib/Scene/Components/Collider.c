@@ -44,7 +44,7 @@ Collider *Collider_Init(Collider c) {
         DE_REPORT("State component not found in object: %s", obj->name);    \
         return false;                                                       \
     }                                                                       \
-    Vector3f p = state->position;
+    Vector3 p = state->position;
 
 bool Collider_CheckObject(GameObject *obj1, GameObject *obj2) {
     if(obj2 == NULL) {
@@ -55,19 +55,18 @@ bool Collider_CheckObject(GameObject *obj1, GameObject *obj2) {
     
     switch(c->type) {
         case COLLIDER_Vec: {
-            Vector2f vec = {p.x + c->vec.x, p.y + c->vec.y};
-            return Collider_CheckObjectWithVector(obj2, &vec);
+            Vector2 vec = {p.x + c->vec.x, p.y + c->vec.y};
+            return Collider_CheckObjectWithVector(obj2, vec);
         }
 
         case COLLIDER_Rect: {
-            PosRect rect = {p.x + c->rect.x1, p.y + c->rect.y1,
-                            p.x + c->rect.x2, p.y + c->rect.y2};
-            return Collider_CheckObjectWithRect(obj2, &rect);
+            Rect rect = {p.x + c->rect.x, p.y + c->rect.y, c->rect.w, c->rect.h};
+            return Collider_CheckObjectWithRect(obj2, rect);
         }
 
         case COLLIDER_Circle: {
             Circle circle = {p.x + c->circle.x, p.y + c->circle.y, c->circle.radius};
-            return Collider_CheckObjectWithCircle(obj2, &circle);
+            return Collider_CheckObjectWithCircle(obj2, circle);
         }
 
         default: {
@@ -76,24 +75,23 @@ bool Collider_CheckObject(GameObject *obj1, GameObject *obj2) {
     }
 }
 
-bool Collider_CheckObjectWithVector(GameObject *obj, Vector2f *vec) {
+bool Collider_CheckObjectWithVector(GameObject *obj, Vector2 vec) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
         case COLLIDER_Vec: {
-            Vector2f vec2 = {p.x + c->vec.x, p.y + c->vec.y};
-            return Collision_VecVec(vec, &vec2);
+            Vector2 vec2 = {p.x + c->vec.x, p.y + c->vec.y};
+            return Collision_VecVec(vec, vec2);
         }
 
         case COLLIDER_Rect: {
-            PosRect rect = {p.x + c->rect.x1, p.y + c->rect.y1,
-                            p.x + c->rect.x2, p.y + c->rect.y2};
-            return Collision_VecRect(vec, &rect);
+            Rect rect = {p.x + c->rect.x, p.y + c->rect.y, c->rect.w, c->rect.h};
+            return Collision_VecRect(vec, rect);
         }
 
         case COLLIDER_Circle: {
             Circle circle = {p.x + c->circle.x, p.y + c->circle.y, c->circle.radius};
-            return Collision_CircleVec(&circle, vec);
+            return Collision_CircleVec(circle, vec);
         }
 
         default: {
@@ -102,24 +100,23 @@ bool Collider_CheckObjectWithVector(GameObject *obj, Vector2f *vec) {
     }
 }
 
-bool Collider_CheckObjectWithRect(GameObject *obj, PosRect *rect) {
+bool Collider_CheckObjectWithRect(GameObject *obj, Rect rect) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
         case COLLIDER_Vec: {
-            Vector2f vec = {p.x + c->vec.x, p.y + c->vec.y};
-            return Collision_VecRect(&vec, rect);
+            Vector2 vec = {p.x + c->vec.x, p.y + c->vec.y};
+            return Collision_VecRect(vec, rect);
         }
 
         case COLLIDER_Rect: {
-            PosRect rect2 = {p.x + c->rect.x1, p.y + c->rect.y1,
-                            p.x + c->rect.x2, p.y + c->rect.y2};
-            return Collision_RectRect(rect, &rect2);
+            Rect rect2 = {p.x + c->rect.x, p.y + c->rect.y, c->rect.w, c->rect.h};
+            return Collision_RectRect(rect, rect2);
         }
 
         case COLLIDER_Circle: {
             Circle circle = {p.x + c->circle.x, p.y + c->circle.y, c->circle.radius};
-            return Collision_RectCircle(rect, &circle);
+            return Collision_RectCircle(rect, circle);
         }
 
         default: {
@@ -128,24 +125,23 @@ bool Collider_CheckObjectWithRect(GameObject *obj, PosRect *rect) {
     }
 }
 
-bool Collider_CheckObjectWithCircle(GameObject *obj, Circle *circle) {
+bool Collider_CheckObjectWithCircle(GameObject *obj, Circle circle) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
         case COLLIDER_Vec: {
-            Vector2f vec = {p.x + c->vec.x, p.y + c->vec.y};
-            return Collision_CircleVec(circle, &vec);
+            Vector2 vec = {p.x + c->vec.x, p.y + c->vec.y};
+            return Collision_CircleVec(circle, vec);
         }
 
         case COLLIDER_Rect: {
-            PosRect rect = {p.x + c->rect.x1, p.y + c->rect.y1,
-                            p.x + c->rect.x2, p.y + c->rect.y2};
-            return Collision_RectCircle(&rect, circle);
+            Rect rect = {p.x + c->rect.x, p.y + c->rect.y, c->rect.w, c->rect.h};
+            return Collision_RectCircle(rect, circle);
         }
 
         case COLLIDER_Circle: {
             Circle circle2 = {p.x + c->circle.x, p.y + c->circle.y, c->circle.radius};
-            return Collision_CircleCircle(circle, &circle2);
+            return Collision_CircleCircle(circle, circle2);
         }
 
         default: {

@@ -14,9 +14,9 @@
 ////////////////////////////////////////////////
 
 typedef struct State2D {
-    Vector3f position;
-    Vector2f scale;
-    double   rotation;
+    Vector3 position;
+    Vector2 scale;
+    double  rotation;
 
     bool is_z_dirty;
 } State2D;

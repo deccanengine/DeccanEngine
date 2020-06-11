@@ -22,9 +22,9 @@
 // Camera
 ////////////////////////////////////////////////
 
-void Camera_Move(Vector2f pos);
+void Camera_Move(Vector2 pos);
 //void Camera_CenterOn(GameObject *obj);
-void Camera_SetPosition(Vector2f pos);
-void Camera_SetBounds(PosRect rect);
-Vector2f Camera_GetPosition();
-PosRect  Camera_GetBounds();
+void Camera_SetPosition(Vector2 pos);
+void Camera_SetBounds(Rect rect);
+Vector2 Camera_GetPosition();
+Rect Camera_GetBounds();

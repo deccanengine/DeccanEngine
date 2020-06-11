@@ -25,13 +25,6 @@ typedef struct Rect {
     float h;
 } Rect;
 
-typedef struct PosRect {
-    float x1;
-    float y1;
-    float x2;
-    float y2;
-} PosRect;
-
 typedef struct Circle {
     float x;
     float y;
@@ -42,8 +35,8 @@ typedef struct Circle {
 // Drawing functions
 ////////////////////////////////////////////////
 
-void Draw_Point(Vector2f pos, Color color);
-void Draw_Line(Vector2f start, Vector2f end, Color color);
+void Draw_Point(Vector2 pos, Color color);
+void Draw_Line(Vector2 start, Vector2 end, Color color);
 void Draw_Rect(Rect rect, Color color);
 void Draw_FilledRect(Rect rect, Color color);
 void Draw_Circle(Circle circle, Color color);

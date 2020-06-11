@@ -56,8 +56,8 @@ MouseState Input_GetMouseButton(int button_code);
 bool Input_ButtonDown(int button_code);
 bool Input_ButtonUp(int button_code);
 
-Vector2i Input_GetMousePos();
-Vector2f Input_GetRelativeMousePos();
+Vector2 Input_GetMousePos();
+Vector2 Input_GetRelativeMousePos();
 
 int Input_MouseScrollHorizontal();
 int Input_MouseScrollVertical();

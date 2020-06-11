@@ -10,7 +10,7 @@
 #include "Camera.h"
 
 #define DE_DRAW_BEGIN()                          \
-Vector2f camera = Camera_GetPosition();          \
+Vector2 camera = Camera_GetPosition();          \
 SDL_Renderer *renderer = Renderer_GetRenderer(); \
 Color def = Renderer_GetColor();                 \
 SDL_BlendMode blend;                             \
@@ -21,7 +21,7 @@ SDL_GetRenderDrawBlendMode(renderer, &blend);
 Renderer_SetColor(def);                          \
 SDL_SetRenderDrawBlendMode(renderer,  blend);
 
-void Draw_Point(Vector2f pos, Color color) {
+void Draw_Point(Vector2 pos, Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_RenderDrawPoint(renderer, pos.x - camera.x, pos.y - camera.y);
@@ -31,7 +31,7 @@ void Draw_Point(Vector2f pos, Color color) {
 #endif
 }
 
-void Draw_Line(Vector2f start, Vector2f end, Color color) {
+void Draw_Line(Vector2 start, Vector2 end, Color color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_RenderDrawLine(renderer, start.x - camera.x, start.y - camera.y, end.x - camera.x, end.y - camera.y);

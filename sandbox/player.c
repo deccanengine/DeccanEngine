@@ -1,7 +1,7 @@
 #include "player.h"
 
 bool selected = false;
-Vector2i offset;
+Vector2 offset;
 
 SpriteAsset tar;
 
@@ -28,7 +28,7 @@ void _player_begin(GameObject *this) {
 
     OBJECT_AddComponent(this, Collider, { 
         .type = COLLIDER_Rect, 
-        .rect = (PosRect){0, 0, 50, 50}
+        .rect = (Rect){0, 0, 50, 50}
     });
 }
 
@@ -53,8 +53,8 @@ void _player_step(GameObject *this) {
     /* Center the camera on player */
     //Camera_CenterOn(this);
 
-    Vector2f pos = Input_GetRelativeMousePos();
-    if(Collider_CheckObjectWithVector(this, &pos)) { 
+    Vector2 pos = Input_GetRelativeMousePos();
+    if(Collider_CheckObjectWithVector(this, pos)) { 
         *color = ColorList_Orange;
         if(Input_ButtonDown(ButtonCode_Left)) {
             selected = true;
@@ -97,7 +97,7 @@ void _none_begin(GameObject *this) {
 
     OBJECT_AddComponent(this, Collider, {
         .type = COLLIDER_Rect,
-        .rect = (PosRect){0, 0, 40, 40}
+        .rect = (Rect){0, 0, 40, 40}
     });
 }
 
