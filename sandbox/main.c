@@ -68,7 +68,13 @@ int main(int argc, char **argv) {
     ECSystem_RegisterComponent("Color");
     
     if(Core_Init("Test", (Vector2){640, 320})) {
-        Scene_AddScene(Scene_NewScene("scene0", begin, step, render, end), false);
+        GameScene *scene = Scene_NewScene("scene0");
+        scene->AtFirstFrame = begin;
+        scene->AtStep = step;
+        scene->AtRender = render;
+        scene->AtEnd = end;
+        Scene_AddScene(scene, false);
+        
         Core_Run(120.0f);
     }
     atexit(Core_Quit);

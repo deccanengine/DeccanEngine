@@ -81,7 +81,6 @@ void Object_DeleteObject(GameObject *obj) {
 
     /* Remove from the array */
     stbds_arrdel(scene->objects, index);
-    scene->object_count--;
 
     /* Free */
     free(obj);
@@ -116,7 +115,6 @@ _push:
             DE_REPORT("Cannot instantiate object: %s", object->name); return;
         }
     }
-    scene->object_count++;
 }
 
 void Object_InstantiateObject(GameObject *object) {
@@ -126,7 +124,7 @@ void Object_InstantiateObject(GameObject *object) {
 
 GameObject *Object_GetObject(const char *name) {
     GameScene *scene = Scene_CurrentScene();
-    for(int i=0; i<scene->object_count; i++) {
+    for(int i=0; i<stbds_arrlen(scene->objects); i++) {
         if(!strcmp(scene->objects[i]->name, name)) {
             return scene->objects[i];
         }
@@ -138,7 +136,7 @@ GameObject *Object_GetObject(const char *name) {
 
 void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj)) {
     GameScene *scene = Scene_CurrentScene();
-    for(int i=0; i<scene->object_count; i++) {
+    for(int i=0; i<stbds_arrlen(scene->objects); i++) {
         if(!strcmp(scene->objects[i]->type, name)) {
             func(scene->objects[i]);
         }

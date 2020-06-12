@@ -66,6 +66,8 @@ typedef struct GameObject {
     void (*AtEnd)(GameObject *object);
 } GameObject;
 
+static inline void NULL_OBJFUNC(GameObject *obj) { }
+
 /////////////////////////////////////////////////
 // Initialization and instantiator functions
 ////////////////////////////////////////////////
@@ -148,5 +150,3 @@ void Object_Hide(GameObject *obj, bool hide);
 void Object_Rotate(GameObject *obj, double angle, int speed);
 void Object_RotateTowardsObject(GameObject *obj, GameObject *target, int speed);
 void Object_RotateTowardsPosition(GameObject *obj, Vector2 pos, int speed);
-
-static inline void NULL_OBJFUNC(GameObject *obj) { }

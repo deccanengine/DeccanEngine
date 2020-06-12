@@ -10,10 +10,8 @@
 
 static struct {
     GameScene **scenes;
-    int sceneCount;
 } SceneInfo = {
-    .scenes = NULL,
-    .sceneCount = 0
+    .scenes = NULL
 };
 
 /////////////////////////////////////////////////
@@ -25,7 +23,7 @@ GameScene **Scene_GetSceneArray() {
 }
 
 int Scene_GetSceneCount() {
-    return SceneInfo.sceneCount;
+    return stbds_arrlen(SceneInfo.scenes);
 }
 
 void Scene_FreeAll() {
@@ -36,21 +34,18 @@ void Scene_FreeAll() {
 // Constructor and destructor
 ////////////////////////////////////////////////
 
-#define void_func(x) void (*x)(void)
-
-GameScene *Scene_NewScene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae)) {
+GameScene *Scene_NewScene(const char *name) {
     GameScene *scene = DE_NEW(GameScene, 1);
     
     scene->name = DE_NEWSTRING(name);
     scene->is_paused = false;
     scene->objects = NULL;
-    scene->object_count = 0;
     
     scene->is_first_frame = true;
-    scene->AtFirstFrame = af;
-    scene->AtStep = as;
-    scene->AtRender = ar;
-    scene->AtEnd = ae;
+    scene->AtFirstFrame = NULL_VOIDFUNC;
+    scene->AtStep = NULL_VOIDFUNC;
+    scene->AtRender = NULL_VOIDFUNC;
+    scene->AtEnd = NULL_VOIDFUNC;
 
     return scene;
 }
@@ -58,24 +53,34 @@ GameScene *Scene_NewScene(const char *name, void_func(af), void_func(as), void_f
 #undef void_func
 
 void Scene_AddScene(GameScene *scene, bool is_replacing) {
-    if(scene == NULL) { DE_REPORT("Invalid scene data"); return; }
+    if(scene == NULL) { 
+        DE_REPORT("Invalid scene data"); 
+        return; 
+    }
 
-    if(SceneInfo.sceneCount != 0) {
-        if(is_replacing) { stbds_arrpop(SceneInfo.scenes); SceneInfo.sceneCount--; }
-        else { SceneInfo.scenes[SceneInfo.sceneCount-1]->is_paused = true; }
+    int32_t sceneCount = stbds_arrlen(SceneInfo.scenes);
+
+    if(sceneCount != 0) {
+        if(is_replacing) { 
+            stbds_arrpop(SceneInfo.scenes); 
+        }
+        else { 
+            SceneInfo.scenes[sceneCount - 1]->is_paused = true; 
+        }
     }
     
     if(stbds_arrput(SceneInfo.scenes, scene) != scene) {
         DE_REPORT("Cannot add scene: %s\n", scene->name);
         return;
     }
-    SceneInfo.sceneCount++;
 }
 
 void Scene_RemoveScene() {
-    if(SceneInfo.sceneCount > 1) { 
+    int32_t sceneCount = stbds_arrlen(SceneInfo.scenes);
+
+    if(sceneCount > 1) { 
         stbds_arrpop(SceneInfo.scenes);
-        SceneInfo.scenes[SceneInfo.sceneCount-1]->is_paused = false;
+        SceneInfo.scenes[sceneCount - 1]->is_paused = false;
     }
 }
 
@@ -84,13 +89,13 @@ void Scene_RemoveScene() {
 ////////////////////////////////////////////////
 
 GameScene *Scene_CurrentScene() {
-    return SceneInfo.scenes[SceneInfo.sceneCount-1];
+    return SceneInfo.scenes[stbds_arrlen(SceneInfo.scenes) - 1];
 }
 
 void Scene_PauseScene(bool pause) {
-    SceneInfo.scenes[SceneInfo.sceneCount-1]->is_paused = pause;
+    SceneInfo.scenes[stbds_arrlen(SceneInfo.scenes) - 1]->is_paused = pause;
 }
 
 bool Scene_IsScenePaused() {
-    return SceneInfo.scenes[SceneInfo.sceneCount-1]->is_paused;
+    return SceneInfo.scenes[stbds_arrlen(SceneInfo.scenes) - 1]->is_paused;
 }

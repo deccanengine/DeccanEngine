@@ -172,14 +172,14 @@ void Core_Run(float fps) {
             scene->is_first_frame = false;
 
             /* First frame of objects */
-            for(int i=0; i<scene->object_count; i++) {
+            for(int i=0; i<stbds_arrlen(scene->objects); i++) {
                 GameObject *obj = scene->objects[i];
                 obj->AtFirstFrame(obj);
             }
         }
 
         /* AtBeginning of objects */
-        for(int i=0; i<scene->object_count; i++) {
+        for(int i=0; i<stbds_arrlen(scene->objects); i++) {
             GameObject *obj = scene->objects[i];
             if(obj->is_beginning) {
                 obj->AtBeginning(obj);
@@ -189,7 +189,7 @@ void Core_Run(float fps) {
 
         /* AtStep of scenes and objects */
         scene->AtStep();
-        for(int i=0; i<scene->object_count; i++) {
+        for(int i=0; i<stbds_arrlen(scene->objects); i++) {
             GameObject *obj = scene->objects[i];
             if(!obj->is_beginning) {
                 obj->AtStep(obj);
@@ -201,7 +201,7 @@ void Core_Run(float fps) {
 
         /* AtRender of scenes and objects */
         scene->AtRender();
-        for(int i=0; i<scene->object_count; i++) {
+        for(int i=0; i<stbds_arrlen(scene->objects); i++) {
             GameObject *obj = scene->objects[i];
             if(!obj->is_beginning) {
                 obj->AtRender(obj);
@@ -234,7 +234,7 @@ void Core_Run(float fps) {
     /* at_end of scenes and objects */
     GameScene *scene = Scene_GetSceneArray()[Scene_GetSceneCount()-1];
     scene->AtEnd();
-    for(int i=0; i<scene->object_count; i++) {
+    for(int i=0; i<stbds_arrlen(scene->objects); i++) {
         GameObject *obj = scene->objects[i];
         obj->AtEnd(obj);
         Msg_Free(&obj->msg);

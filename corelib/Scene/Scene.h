@@ -9,8 +9,6 @@
 #include "../Config.h"
 #include "Object.h"
 
-#define void_func(x) void (*x)(void)
-
 /////////////////////////////////////////////////
 // Enums
 ////////////////////////////////////////////////
@@ -25,13 +23,14 @@ typedef struct GameScene {
     bool is_first_frame;
 
     GameObject **objects;
-    int object_count;
 
-    void_func(AtFirstFrame);
-    void_func(AtStep);
-    void_func(AtRender);
-    void_func(AtEnd);
+    void (*AtFirstFrame)(void);
+    void (*AtStep)(void);
+    void (*AtRender)(void);
+    void (*AtEnd)(void);
 } GameScene;
+
+static inline void NULL_VOIDFUNC() { }
 
 /////////////////////////////////////////////////
 // Scene internals
@@ -45,7 +44,7 @@ void Scene_FreeAll();
 // Constructor and destructor
 ////////////////////////////////////////////////
 
-GameScene *Scene_NewScene(const char *name, void_func(af), void_func(as), void_func(ar), void_func(ae));
+GameScene *Scene_NewScene(const char *name);
 void Scene_AddScene(GameScene *scene, bool is_replacing);
 void Scene_RemoveScene();
 
@@ -56,5 +55,3 @@ void Scene_RemoveScene();
 GameScene *Scene_CurrentScene();
 void Scene_PauseScene(bool pause);
 bool Scene_IsScenePaused();
-
-#undef void_func
