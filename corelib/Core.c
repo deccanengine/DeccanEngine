@@ -120,6 +120,40 @@ void Core_Quit() {
     SDL_Quit();
 }
 
+void UpdateAll() {
+    /* Process Scene(s) and GameObject(s) */
+    GameScene *scene = Scene_CurrentScene();  /* Current scene */
+
+    /* First frame of the scene. Same as at_beginning for scene */
+    if(scene->is_first_frame == true) {
+        scene->AtFirstFrame();
+        scene->is_first_frame = false;
+
+        /* First frame of objects */
+        for(int i=0; i<stbds_arrlen(scene->objects); i++) {
+            GameObject *obj = scene->objects[i];
+            obj->AtFirstFrame(obj);
+        }
+    }
+
+    /* AtStep of scenes and objects */
+    scene->AtStep();
+        
+    for(int i=0; i<stbds_arrlen(scene->objects); i++) {
+        Object_Update(scene->objects[i]);
+    }
+
+    /* Render the background before rendering anything */
+    Renderer_Background();
+
+    /* AtRender of scenes and objects */
+    scene->AtRender();
+        
+    for(int i=0; i<stbds_arrlen(scene->objects); i++) {
+        Object_Render(scene->objects[i]);
+    }
+}
+
 void Core_Run(float fps) {
     Timer fpsTimer;
     Timer frmTimer;
@@ -162,57 +196,11 @@ void Core_Run(float fps) {
             Core_Info.fpsAverage = 0.0f; 
         }
 
-        /* Process Scene(s) and GameObject(s) */
-        int index = Scene_GetSceneCount()-1;        /* Current Scene index */
-        GameScene *scene = Scene_GetSceneArray()[index];  /* Current scene */
-
-        /* First frame of the scene. Same as at_beginning for scene */
-        if(scene->is_first_frame == true) {
-            scene->AtFirstFrame();
-            scene->is_first_frame = false;
-
-            /* First frame of objects */
-            for(int i=0; i<stbds_arrlen(scene->objects); i++) {
-                GameObject *obj = scene->objects[i];
-                obj->AtFirstFrame(obj);
-            }
-        }
-
-        /* AtBeginning of objects */
-        for(int i=0; i<stbds_arrlen(scene->objects); i++) {
-            GameObject *obj = scene->objects[i];
-            if(obj->is_beginning) {
-                obj->AtBeginning(obj);
-                obj->is_beginning = false;
-            }
-        }
-
-        /* AtStep of scenes and objects */
-        scene->AtStep();
-        for(int i=0; i<stbds_arrlen(scene->objects); i++) {
-            GameObject *obj = scene->objects[i];
-            if(!obj->is_beginning) {
-                obj->AtStep(obj);
-            }
-        }
-
-        /* Render the background before rendering anything */
-        Renderer_Background();
-
-        /* AtRender of scenes and objects */
-        scene->AtRender();
-        for(int i=0; i<stbds_arrlen(scene->objects); i++) {
-            GameObject *obj = scene->objects[i];
-            if(!obj->is_beginning) {
-                obj->AtRender(obj);
-            }
-        }
+        /* Update the scene and all objects */
+        UpdateAll();
         
-#ifdef DECCAN_RENDERER_SDL
+        /* Render everything */
         Renderer_Present();
-#else
-
-#endif
 
         /* Update the input key states */
         Input_Update();
@@ -232,12 +220,10 @@ void Core_Run(float fps) {
     }
     
     /* at_end of scenes and objects */
-    GameScene *scene = Scene_GetSceneArray()[Scene_GetSceneCount()-1];
+    GameScene *scene = Scene_CurrentScene();
     scene->AtEnd();
     for(int i=0; i<stbds_arrlen(scene->objects); i++) {
-        GameObject *obj = scene->objects[i];
-        obj->AtEnd(obj);
-        Msg_Free(&obj->msg);
+        Object_DeleteObject(scene->objects[i]);
     }
     
     Msg_Free(&Core_Info.msg);

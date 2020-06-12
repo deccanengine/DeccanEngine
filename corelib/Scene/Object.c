@@ -79,6 +79,9 @@ void Object_DeleteObject(GameObject *obj) {
         obj->type = NULL;
     }
 
+    /* Free the messaging system */
+    Msg_Free(&obj->msg);
+
     /* Remove from the array */
     stbds_arrdel(scene->objects, index);
 
@@ -175,6 +178,26 @@ void *Object_GetComponent(GameObject *obj, const char *name) {
     /* Get the component from its name, using its registered ID */
     int32_t id = ECSystem_GetComponentID(name);
     return stbds_hmget(obj->components, id);
+}
+
+/////////////////////////////////////////////////
+// Update
+////////////////////////////////////////////////
+
+void Object_Update(GameObject *obj) {
+    if(obj->is_beginning == true) {
+        obj->AtBeginning(obj);
+        obj->is_beginning = false;
+    }
+    else {
+        obj->AtStep(obj);
+    }
+}
+
+void Object_Render(GameObject *obj) {
+    if(!obj->is_beginning) {
+        obj->AtRender(obj);
+    }
 }
 
 /////////////////////////////////////////////////
