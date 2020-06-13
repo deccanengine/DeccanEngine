@@ -9,6 +9,7 @@
 
 #include "Config.h"
 #include "Timer.h"
+#include "Settings.h"
 #include "Scene/Scene.h"
 #include "Scene/Object.h"
 
@@ -31,9 +32,9 @@
 // Core functions
 ////////////////////////////////////////////////
 
-int  Core_Init(const char *title, Vector2 mode);
+int  Core_Init(CoreSettings *settings);
 void Core_Quit();
-void Core_Run(float fps);
+void Core_Run();
 void Core_SetTitle(const char *name);
 void Core_SetMode(Vector2 mode);
 void Core_SetFullscreen();

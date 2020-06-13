@@ -66,8 +66,14 @@ int main(int argc, char **argv) {
 
     // To do: material component
     ECSystem_RegisterComponent("Color");
+
+    CoreSettings settings = CoreSettings_New();
     
-    if(Core_Init("Test", (Vector2){640, 320})) {
+    settings.title = "Test";
+    settings.resolution = (Vector2){640, 320};
+    settings.fps = 120.0f;
+    
+    if(Core_Init(&settings)) {
         GameScene *scene = Scene_NewScene("scene0");
         scene->AtFirstFrame = begin;
         scene->AtStep = step;
@@ -75,7 +81,7 @@ int main(int argc, char **argv) {
         scene->AtEnd = end;
         Scene_AddScene(scene, false);
         
-        Core_Run(120.0f);
+        Core_Run();
     }
     atexit(Core_Quit);
 }

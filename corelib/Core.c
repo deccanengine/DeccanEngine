@@ -11,21 +11,17 @@
 #include "Renderer/Renderer.h"
 
 static struct {
-#ifdef DECCAN_RENDERER_SDL
     SDL_Window *window;
-#endif
 
     int glMajor;
     int glMinor;
 
-    Vector2 winMode;
+    CoreSettings settings;
 
     bool isRunning;
-    bool isFullscreen;
-    bool isVsyncEnabled;
+    bool isSettingsDirty;
     
     int32_t frameCount;
-    float fpsRequired;
     float fpsAverage;
     float deltaTime;
 
@@ -36,14 +32,12 @@ static struct {
 #endif
 } Core_Info = {
     .isRunning = true,
-    .isFullscreen = false,
-    .isVsyncEnabled = false,
-    .fpsRequired = 60.0f,
+    .isSettingsDirty = true,
     .frameCount = 0
 };
 
 /* Core */
-int Core_Init(const char *title, Vector2 mode) {
+int Core_Init(CoreSettings *settings) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
         DE_ERROR("Could not initialize SDL2: %s", SDL_GetError());
@@ -58,6 +52,8 @@ int Core_Init(const char *title, Vector2 mode) {
         DE_ERROR("Could not initialize SDL2_ttf: %s", TTF_GetError());
     }
 
+    Core_Info.settings = *settings;
+
 #ifdef DECCAN_RENDERER_SDL
     /* GL Attributes: OpenGL 2.1 with hardware acceleration */
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
@@ -71,7 +67,8 @@ int Core_Init(const char *title, Vector2 mode) {
 
     /* Create window */
     int window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-    if((Core_Info.window = SDL_CreateWindow(title, 0, 0, mode.x, mode.y, window_flags)) == NULL) {
+    if((Core_Info.window = SDL_CreateWindow(Core_Info.settings.title, 0, 0, 
+        Core_Info.settings.resolution.x, Core_Info.settings.resolution.y, window_flags)) == NULL) {
         DE_ERROR("Could not create window: %s", SDL_GetError());
     }
 
@@ -96,8 +93,6 @@ int Core_Init(const char *title, Vector2 mode) {
     if(Core_Info.logfile == NULL) {
         DE_ERROR("Could not create/open log file");
     }
-
-    Core_Info.winMode = mode;
 
     Input_Init();
     Msg_Init(&Core_Info.msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
@@ -154,21 +149,36 @@ void UpdateAll() {
     }
 }
 
-void Core_Run(float fps) {
+void HandleSettings() {
+    SDL_SetWindowTitle(Core_Info.window, Core_Info.settings.title);
+
+    if(Core_Info.settings.fullscreen) {
+        SDL_SetWindowFullscreen(Core_Info.window, true);
+
+        SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN, 
+            Core_Info.settings.resolution.x, Core_Info.settings.resolution.y, 0, 0};
+        
+        if(SDL_SetWindowDisplayMode(Core_Info.window, &disp) > 0) {
+            DE_REPORT("Cannot set fullscreen window mode: %s", SDL_GetError());
+        }
+        
+        SDL_MaximizeWindow(Core_Info.window);
+    }
+    else {
+        SDL_SetWindowFullscreen(Core_Info.window, false);
+        SDL_SetWindowSize(Core_Info.window, Core_Info.settings.resolution.x, Core_Info.settings.resolution.y); 
+    }
+
+    if(SDL_GL_SetSwapInterval(Core_Info.settings.vsync ? 1 : 0) == -1) {
+        DE_REPORT("VSync is not supported: %s", SDL_GetError());
+    }
+}
+
+void Core_Run() {
     Timer fpsTimer;
     Timer frmTimer;
 
     Clock_StartTimer(&fpsTimer);    /* To calculate FPS */
-
-    /* If no FPS limit is set then enable VSync*/
-    if(fps <= 0.0f) 
-         { Core_SetVsyncStatus(true);  }
-    else { Core_SetVsyncStatus(false); }
-    
-    /* Set FPS limit if VSync is not enabled */
-    if(!Core_Info.isVsyncEnabled) { 
-        Core_Info.fpsRequired = fps; 
-    }
 
     SDL_Event *event = Input_GetEventHandler();
 
@@ -178,17 +188,28 @@ void Core_Run(float fps) {
         /* Handle some events */
         if(SDL_PollEvent(event)) {
             switch(event->type) {
-                case SDL_QUIT: { Core_Info.isRunning = false; break; }
+                /* Handle close event */
+                case SDL_QUIT: { 
+                    Core_Info.isRunning = false; 
+                    break; 
+                }
+
+                /* Handle close on escape key event */
                 case SDL_KEYDOWN: {
                     /* Close on Escape Key */
-                    // To do: make it toggleable
-                    if(event->key.keysym.sym == SDLK_ESCAPE) { 
-                        Core_Info.isRunning = false; break;
+                    if(event->key.keysym.sym == SDLK_ESCAPE && 
+                       Core_Info.settings.closeOnEscape) { 
+                        Core_Info.isRunning = false; 
+                        break;
                     }
                 }
             }
         }
 
+        if(Core_Info.isSettingsDirty) {
+            HandleSettings();
+            Core_Info.isSettingsDirty = false;
+        }
 
         /* Calculate FPS */
         Core_Info.fpsAverage = Core_Info.frameCount / Clock_GetTime(&fpsTimer).seconds;
@@ -205,14 +226,16 @@ void Core_Run(float fps) {
         /* Update the input key states */
         Input_Update();
 
-        Core_Info.frameCount++; /* Increment the frame counter */
+        /* Increment the frame counter */
+        Core_Info.frameCount++; 
         
         /* Current ticks per frame i.e delta time */
         Core_Info.deltaTime = Clock_GetTime(&frmTimer).milliseconds;  
 
         /* Limit FPS */
-        if(!Core_Info.isVsyncEnabled && (Core_Info.fpsRequired > 0.0f)) {
-            float ticksPerFrame = (1000.0f / Core_Info.fpsRequired);  /* Required ticks per frame */
+        if((!Core_Info.settings.vsync) && 
+           (Core_Info.settings.fps > 20.0f)) {
+            float ticksPerFrame = (1000.0f / Core_Info.settings.fps);  /* Required ticks per frame */
             if(Core_Info.deltaTime < ticksPerFrame) {
                 Clock_Delay((int)(ticksPerFrame - Core_Info.deltaTime));
             }
@@ -232,65 +255,48 @@ void Core_Run(float fps) {
 
 /* Core Settings Setters */
 void Core_SetTitle(const char *name) {
-    SDL_SetWindowTitle(Core_Info.window, name);
+    Core_Info.settings.title = DE_NEWSTRING(name);
+    Core_Info.isSettingsDirty = true;
 }
 
 void Core_SetMode(Vector2 mode) {
-    if(Core_Info.isFullscreen) {
-        SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN, mode.x, mode.y, 0, 0};
-        
-        if(SDL_SetWindowDisplayMode(Core_Info.window, &disp) > 0) {
-            DE_REPORT("Cannot set fullscreen window mode: %s", SDL_GetError());
-        }
-        
-        SDL_MaximizeWindow(Core_Info.window);
-    }
-    else { 
-        SDL_SetWindowSize(Core_Info.window, mode.x, mode.y); 
-    }
-    Core_Info.winMode = mode;
+    Core_Info.settings.resolution = mode;
+    Core_Info.isSettingsDirty = true;
 }
 
 void Core_SetFullscreen() {
-    SDL_SetWindowFullscreen(Core_Info.window, Core_Info.isFullscreen ? 0 : 1);
-    Core_Info.isFullscreen = !Core_Info.isFullscreen;
+    Core_Info.settings.fullscreen = !Core_Info.settings.fullscreen;
+    Core_Info.isSettingsDirty = true;
 }
 
 void Core_SetVsyncStatus(bool vsync) {
-    // ??: Adaptive vsync
-    if(SDL_GL_SetSwapInterval(vsync ? -1 : 0) == -1) {
-        DE_REPORT("VSync is not supported: %s", SDL_GetError());
-    }
-
-    int status = SDL_GL_GetSwapInterval();
-    if(status == 0) 
-         { Core_Info.isVsyncEnabled = false; }
-    else { Core_Info.isVsyncEnabled = true; }
+    Core_Info.settings.vsync = vsync;
+    Core_Info.isSettingsDirty = true;
 }
 
 void Core_SetFramerateLimit(float fps){
-    Core_Info.fpsRequired = fps;
+    Core_Info.settings.fps = fps;
 }
 
-/* Core Settings Getters */
+/* Core Settings Getters */ 
 const char *Core_GetTitle() {
-    return SDL_GetWindowTitle(Core_Info.window);
+    return Core_Info.settings.title;
 }
 
 Vector2 Core_GetMode() {
-    return Core_Info.winMode;
+    return Core_Info.settings.resolution;
 }
 
 bool Core_GetFullscreenStatus() {
-    return Core_Info.isFullscreen;
+    return Core_Info.settings.fullscreen;
 }
 
 bool Core_GetVsyncStatus() {
-    return Core_Info.isVsyncEnabled;
+    return Core_Info.settings.vsync;
 }
 
 float Core_GetFramerateLimit() {
-    return Core_Info.fpsRequired;
+    return Core_Info.settings.fps;
 }
 
 float Core_GetAverageFramerate() {
