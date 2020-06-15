@@ -7,6 +7,7 @@ typedef struct CoreSettings {
     Vector2 resolution;
     bool fullscreen;
     bool vsync;
+    bool resizable;
     bool closeOnEscape;
     float fps;
 } CoreSettings;
@@ -17,6 +18,7 @@ static inline CoreSettings CoreSettings_New() {
         .resolution = (Vector2){800, 600},
         .fullscreen = false,
         .vsync = false,
+        .resizable = false,
         .closeOnEscape = true,
         .fps = 60.0f
     };

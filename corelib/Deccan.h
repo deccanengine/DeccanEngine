@@ -8,7 +8,7 @@
 #pragma once
 #include "Config.h"
 #include "Core.h"
-#include "CoreSettings.h"
+#include "Settings.h"
 #include "Message.h"
 #include "Timer.h"
 

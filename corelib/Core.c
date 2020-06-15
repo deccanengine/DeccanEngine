@@ -66,7 +66,11 @@ int Core_Init(CoreSettings *settings) {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     /* Create window */
-    int window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+    SDL_WindowFlags window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;
+    
+    if(settings->fullscreen) { window_flags |= SDL_WINDOW_FULLSCREEN; }
+    if(settings->resizable ) { window_flags |= SDL_WINDOW_RESIZABLE;  }
+    
     if((Core_Info.window = SDL_CreateWindow(Core_Info.settings.title, 0, 0, 
         Core_Info.settings.resolution.x, Core_Info.settings.resolution.y, window_flags)) == NULL) {
         DE_ERROR("Could not create window: %s", SDL_GetError());
@@ -259,17 +263,17 @@ void Core_SetTitle(const char *name) {
     Core_Info.isSettingsDirty = true;
 }
 
-void Core_SetMode(Vector2 mode) {
-    Core_Info.settings.resolution = mode;
+void Core_SetResolution(Vector2 resolution) {
+    Core_Info.settings.resolution = resolution;
     Core_Info.isSettingsDirty = true;
 }
 
-void Core_SetFullscreen() {
+void Core_ToogleFullscreen() {
     Core_Info.settings.fullscreen = !Core_Info.settings.fullscreen;
     Core_Info.isSettingsDirty = true;
 }
 
-void Core_SetVsyncStatus(bool vsync) {
+void Core_ToogleVsync(bool vsync) {
     Core_Info.settings.vsync = vsync;
     Core_Info.isSettingsDirty = true;
 }
@@ -283,16 +287,20 @@ const char *Core_GetTitle() {
     return Core_Info.settings.title;
 }
 
-Vector2 Core_GetMode() {
+Vector2 Core_GetResolution() {
     return Core_Info.settings.resolution;
 }
 
-bool Core_GetFullscreenStatus() {
+bool Core_IsFullscreened() {
     return Core_Info.settings.fullscreen;
 }
 
-bool Core_GetVsyncStatus() {
+bool Core_IsVsyncEnabled() {
     return Core_Info.settings.vsync;
+}
+
+bool Core_IsResizable() {
+    return Core_Info.settings.resizable;
 }
 
 float Core_GetFramerateLimit() {
