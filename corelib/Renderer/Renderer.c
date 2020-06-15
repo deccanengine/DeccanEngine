@@ -53,7 +53,7 @@ void Renderer_Background() {
     else {
         Renderer_Clear(); // Removing it produces artifacts 
 
-        Vector2 mode = Core_GetMode();
+        Vector2 mode = Core_GetResolution();
         Vector2 camera = Camera_GetPosition();
             
         Rect rect = {

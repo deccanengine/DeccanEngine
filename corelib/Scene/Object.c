@@ -57,6 +57,12 @@ GameObject *Object_NewObject(const char *name, const char *type) {
 void Object_DeleteObject(GameObject *obj) {
     PTR_NULLCHECK(obj);
 
+    obj->toRemove = true;
+}
+
+void Object_FreeObject(GameObject *obj) {
+    PTR_NULLCHECK(obj);
+
     int32_t index = 0;
     GameScene *scene = Scene_CurrentScene();
 
@@ -147,6 +153,39 @@ void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj)) {
 }
 
 /////////////////////////////////////////////////
+// Update
+////////////////////////////////////////////////
+
+void Object_Update(GameObject *obj) {
+    if(obj->toRemove) {
+        Object_FreeObject(obj);
+        return;
+    }
+
+    if(!obj->active) {
+        return;
+    }
+
+    if(obj->is_beginning == true) {
+        obj->AtBeginning(obj);
+        obj->is_beginning = false;
+    }
+    else {
+        obj->AtStep(obj);
+    }
+}
+
+void Object_Render(GameObject *obj) {
+    if(!obj->visible) {
+        return;
+    }
+
+    if(!obj->is_beginning) {
+        obj->AtRender(obj);
+    }
+}
+
+/////////////////////////////////////////////////
 // Messaging
 ////////////////////////////////////////////////
 
@@ -178,26 +217,6 @@ void *Object_GetComponent(GameObject *obj, const char *name) {
     /* Get the component from its name, using its registered ID */
     int32_t id = ECSystem_GetComponentID(name);
     return stbds_hmget(obj->components, id);
-}
-
-/////////////////////////////////////////////////
-// Update
-////////////////////////////////////////////////
-
-void Object_Update(GameObject *obj) {
-    if(obj->is_beginning == true) {
-        obj->AtBeginning(obj);
-        obj->is_beginning = false;
-    }
-    else {
-        obj->AtStep(obj);
-    }
-}
-
-void Object_Render(GameObject *obj) {
-    if(!obj->is_beginning) {
-        obj->AtRender(obj);
-    }
 }
 
 /////////////////////////////////////////////////
@@ -286,6 +305,14 @@ bool Object_IsHidden(GameObject *obj) {
 
 void Object_Hide(GameObject *obj, bool hide) {
     obj->visible = hide;
+}
+
+bool Object_IsActive(GameObject *obj) {
+    return obj->active;
+}
+
+void Object_Activate(GameObject *obj, bool act) {
+    obj->active = act;
 }
 
 /***********

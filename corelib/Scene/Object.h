@@ -74,9 +74,18 @@ static inline void NULL_OBJFUNC(GameObject *obj) { }
 
 GameObject *Object_NewObject(const char *name, const char *type);
 void Object_DeleteObject(GameObject *obj);
+void Object_FreeObject(GameObject *obj);
+
 void Object_InstantiateObject(GameObject *object);
 GameObject *Object_GetObject(const char *name);
 void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj));
+
+/////////////////////////////////////////////////
+// Update
+////////////////////////////////////////////////
+
+void Object_Update(GameObject *obj);
+void Object_Render(GameObject *obj);
 
 /////////////////////////////////////////////////
 // Messaging
@@ -104,13 +113,6 @@ void *Object_GetComponent(GameObject *obj, const char *name);
     (component*)Object_GetComponent(obj, #component)
 
 /////////////////////////////////////////////////
-// Update
-////////////////////////////////////////////////
-
-void Object_Update(GameObject *obj);
-void Object_Render(GameObject *obj);
-
-/////////////////////////////////////////////////
 // Getters and Setters
 ////////////////////////////////////////////////
 
@@ -118,30 +120,33 @@ void Object_Render(GameObject *obj);
  * Position
  ***********/
 
-void Object_SetPosition(GameObject *obj, Vector2 pos);
-Vector2 Object_GetPosition(GameObject *obj);
+//void Object_SetPosition(GameObject *obj, Vector2 pos);
+//Vector2 Object_GetPosition(GameObject *obj);
 
 /***********
  * Angle
  ***********/
 
-void Object_SetAngle(GameObject *obj, double angle);
-double Object_GetAngle(GameObject *obj);
+//void Object_SetAngle(GameObject *obj, double angle);
+//double Object_GetAngle(GameObject *obj);
 
 /***********
  * Z-Order
  ***********/
 
-void Object_SetZOrder(GameObject *obj, int32_t z);
-int32_t Object_GetZOrder(GameObject *obj);
+//void Object_SetZOrder(GameObject *obj, int32_t z);
+//int32_t Object_GetZOrder(GameObject *obj);
 
 /***********
  * Status
  ***********/
 
-bool Object_IsDead(GameObject *obj);
 bool Object_IsHidden(GameObject *obj);
 void Object_Hide(GameObject *obj, bool hide);
+
+
+bool Object_IsActive(GameObject *obj);
+void Object_Activate(GameObject *obj, bool act);
 
 /***********
  * Collider
@@ -154,6 +159,6 @@ void Object_Hide(GameObject *obj, bool hide);
 // Rotation Functions 
 ////////////////////////////////////////////////
 
-void Object_Rotate(GameObject *obj, double angle, int speed);
-void Object_RotateTowardsObject(GameObject *obj, GameObject *target, int speed);
-void Object_RotateTowardsPosition(GameObject *obj, Vector2 pos, int speed);
+//void Object_Rotate(GameObject *obj, double angle, int speed);
+//void Object_RotateTowardsObject(GameObject *obj, GameObject *target, int speed);
+//void Object_RotateTowardsPosition(GameObject *obj, Vector2 pos, int speed);
