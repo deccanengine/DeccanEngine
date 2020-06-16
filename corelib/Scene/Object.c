@@ -202,6 +202,13 @@ void Object_Render(GameObject *obj) {
     }
 }
 
+void Object_End(GameObject *obj) {
+    PTR_NULLCHECK(obj);
+
+    obj->AtEnd(obj);
+    ECSystem_UpdateSystems(obj, SYSTEM_AT_END);
+}
+
 /////////////////////////////////////////////////
 // Messaging
 ////////////////////////////////////////////////

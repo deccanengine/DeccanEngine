@@ -181,6 +181,40 @@ void HandleSettings() {
     }
 }
 
+void HandleEvents(SDL_Event *event) {
+    /* Handle some events */
+    if(SDL_PollEvent(event)) {
+        switch(event->type) {
+            /* Handle close event */
+            case SDL_QUIT: { 
+                Core_Info.isRunning = false; 
+                break; 
+            }
+
+            /* Handle close on escape key event */
+            case SDL_KEYDOWN: {
+                /* Close on Escape Key */
+                if(event->key.keysym.sym == SDLK_ESCAPE && 
+                   Core_Info.settings.closeOnEscape) { 
+                    Core_Info.isRunning = false; 
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void ProcessEnd() {
+    /* at_end of scenes and objects */
+    GameScene *scene = Scene_CurrentScene();
+
+    scene->AtEnd();
+    for(int i=0; i<stbds_arrlen(scene->objects); i++) {
+        Object_End(scene->objects[i]);
+        Object_DeleteObject(scene->objects[i]);
+    }
+}
+
 void Core_Run() {
     Timer fpsTimer;
     Timer frmTimer;
@@ -192,26 +226,8 @@ void Core_Run() {
     while(Core_Info.isRunning) {
         Clock_StartTimer(&frmTimer);
 
-        /* Handle some events */
-        if(SDL_PollEvent(event)) {
-            switch(event->type) {
-                /* Handle close event */
-                case SDL_QUIT: { 
-                    Core_Info.isRunning = false; 
-                    break; 
-                }
-
-                /* Handle close on escape key event */
-                case SDL_KEYDOWN: {
-                    /* Close on Escape Key */
-                    if(event->key.keysym.sym == SDLK_ESCAPE && 
-                       Core_Info.settings.closeOnEscape) { 
-                        Core_Info.isRunning = false; 
-                        break;
-                    }
-                }
-            }
-        }
+        /* Handle all events */
+        HandleEvents(event);
 
         if(Core_Info.isSettingsDirty) {
             HandleSettings();
@@ -248,14 +264,8 @@ void Core_Run() {
             }
         }
     }
-    /* at_end of scenes and objects */
-    GameScene *scene = Scene_CurrentScene();
-
-    scene->AtEnd();
-    for(int i=0; i<stbds_arrlen(scene->objects); i++) {
-        Object_DeleteObject(scene->objects[i]);
-    }
-
+    
+    ProcessEnd();
     Core_Quit();
 }
 

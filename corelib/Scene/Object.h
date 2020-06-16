@@ -79,6 +79,7 @@ void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj));
 
 void Object_Update(GameObject *obj);
 void Object_Render(GameObject *obj);
+void Object_End(GameObject *obj);
 
 /////////////////////////////////////////////////
 // Messaging
