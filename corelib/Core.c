@@ -9,6 +9,7 @@
 #include "Core.h"
 #include "Input/Input.h"
 #include "Renderer/Renderer.h"
+#include "Scene/ECSystem.h"
 
 static struct {
     SDL_Window *window;
@@ -252,7 +253,10 @@ void Core_Run() {
     for(int i=0; i<stbds_arrlen(scene->objects); i++) {
         Object_DeleteObject(scene->objects[i]);
     }
-    
+
+    ECSystem_FreeAllComponents();
+    ECSystem_FreeAllSystems();
+
     Msg_Free(&Core_Info.msg);
     Core_Quit();
 }

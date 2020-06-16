@@ -29,12 +29,44 @@ static struct {
 };
 
 /////////////////////////////////////////////////
+// ECS Destructor
+////////////////////////////////////////////////
+
+void ECSystem_FreeAllComponents() {
+    for(int i=0; i<stbds_shlen(ECS_Info.componentTable); i++) {
+        ECSComp comp = ECS_Info.componentTable[i];
+        
+        if(comp.key != NULL) {
+            free(comp.key);
+            comp.key = NULL;
+        }
+    }
+
+    stbds_shfree(ECS_Info.componentTable);
+}
+
+void ECSystem_FreeAllSystems() {
+    for(int i=0; i<stbds_arrlen(ECS_Info.systemTable); i++) {
+        ECSystem *sys = ECS_Info.systemTable[i];
+        
+        if(sys != NULL) {
+            stbds_arrfree(sys->components);
+
+            free(sys);
+            sys = NULL;       
+        }
+    }
+
+    stbds_arrfree(ECS_Info.systemTable);
+}
+
+/////////////////////////////////////////////////
 // Entity Component System
 ////////////////////////////////////////////////
 
 int32_t ECSystem_RegisterComponent(const char *name) {
     /* Push the component into the global table */
-    stbds_shput(ECS_Info.componentTable, name, ECS_Info.globalCompCount++);
+    stbds_shput(ECS_Info.componentTable, DE_NEWSTRING(name), ECS_Info.globalCompCount++);
 
     /* Return the ID of the component           */
     /* STB_DS will automatically increment it   */
