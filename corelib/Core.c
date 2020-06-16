@@ -106,15 +106,17 @@ int Core_Init(CoreSettings *settings) {
 }
 
 void Core_Quit() {
+    ECSystem_FreeAllComponents();
+    ECSystem_FreeAllSystems();
+
+    Msg_Free(&Core_Info.msg);
+
     fclose(Core_Info.logfile);
     Scene_FreeAll();
 
-#ifdef DECCAN_RENDERER_SDL
     Renderer_Quit();
-    SDL_DestroyWindow(Core_Info.window);    
-#else
-    
-#endif
+    SDL_DestroyWindow(Core_Info.window);
+
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
@@ -246,18 +248,14 @@ void Core_Run() {
             }
         }
     }
-    
     /* at_end of scenes and objects */
     GameScene *scene = Scene_CurrentScene();
+
     scene->AtEnd();
     for(int i=0; i<stbds_arrlen(scene->objects); i++) {
         Object_DeleteObject(scene->objects[i]);
     }
 
-    ECSystem_FreeAllComponents();
-    ECSystem_FreeAllSystems();
-
-    Msg_Free(&Core_Info.msg);
     Core_Quit();
 }
 

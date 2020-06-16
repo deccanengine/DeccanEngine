@@ -45,8 +45,17 @@ bool Msg_Receive(MsgBuf *buf, const char *msg) {
 }
 
 void Msg_Free(MsgBuf *buf) {
-    for(int i=0; i<buf->count; i++) {
-        free(buf->messages[i]);
+    if(buf == NULL || buf->messages == NULL) {
+        return;
     }
-    free(buf->messages);
+
+    for(int i=0; i<buf->count; i++) {
+        if(buf->messages[i] != NULL) {
+            free(buf->messages[i]);
+            buf->messages[i] = NULL;
+        }
+    }
+
+    free(buf->messages);    
+    buf->messages = NULL;
 }

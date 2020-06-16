@@ -33,6 +33,10 @@ static struct {
 ////////////////////////////////////////////////
 
 void ECSystem_FreeAllComponents() {
+    if(ECS_Info.componentTable == NULL) {
+        return;
+    }
+
     for(int i=0; i<stbds_shlen(ECS_Info.componentTable); i++) {
         ECSComp comp = ECS_Info.componentTable[i];
         
@@ -46,6 +50,10 @@ void ECSystem_FreeAllComponents() {
 }
 
 void ECSystem_FreeAllSystems() {
+    if(ECS_Info.systemTable == NULL) {
+        return;
+    }
+
     for(int i=0; i<stbds_arrlen(ECS_Info.systemTable); i++) {
         ECSystem *sys = ECS_Info.systemTable[i];
         
