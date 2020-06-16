@@ -85,6 +85,17 @@ void Object_FreeObject(GameObject *obj) {
         obj->type = NULL;
     }
 
+    /* Free all components */
+    for(int i=0; i<stbds_hmlen(obj->components); i++) {
+        void *addr = obj->components[i].value;
+        if(addr != NULL) {
+            free(addr);
+            addr = NULL;
+        }
+    }
+
+    stbds_hmfree(obj->components);
+
     /* Free the messaging system */
     Msg_Free(&obj->msg);
 
@@ -169,9 +180,13 @@ void Object_Update(GameObject *obj) {
     if(obj->is_beginning == true) {
         obj->AtBeginning(obj);
         obj->is_beginning = false;
+
+        ECSystem_UpdateSystems(obj, SYSTEM_AT_BEGINING);
     }
     else {
         obj->AtStep(obj);
+
+        ECSystem_UpdateSystems(obj, SYSTEM_AT_STEP);
     }
 }
 
@@ -182,6 +197,8 @@ void Object_Render(GameObject *obj) {
 
     if(!obj->is_beginning) {
         obj->AtRender(obj);
+
+        ECSystem_UpdateSystems(obj, SYSTEM_AT_RENDER);
     }
 }
 

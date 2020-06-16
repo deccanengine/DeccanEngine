@@ -72,8 +72,6 @@ void _player_step(GameObject *this) {
     }
     
     Object_GetObjectOfType("static", action);
-    
-    ECSystem_UpdateSystems(this, SYSTEM_AT_STEP);
 }
 
 void _player_render(GameObject *this) {
@@ -101,9 +99,7 @@ void _none_begin(GameObject *this) {
     });
 }
 
-void _none_step(GameObject *this) {
-    ECSystem_UpdateSystems(this, SYSTEM_AT_STEP);
-}
+void _none_step(GameObject *this) { }
 
 void _none_render(GameObject *this) {
     State2D *state = Object_GetComponent(this, "State2D");
