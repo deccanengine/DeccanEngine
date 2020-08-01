@@ -9,7 +9,7 @@
 
 #include "Config.h"
 #include "Timer.h"
-#include "Settings.h"
+#include "Structures.h"
 #include "Scene/Scene.h"
 #include "Scene/Object.h"
 

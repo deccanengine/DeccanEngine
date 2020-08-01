@@ -69,10 +69,13 @@ int main(int argc, char **argv) {
     // To do: material component
     ECSystem_RegisterComponent("Color");
 
-    CoreSettings settings = CoreSettings_New();
-    
+    CoreSettings settings = {0};
     settings.title = "Test";
     settings.resolution = (Vector2){640, 320};
+	settings.fullscreen = false;
+	settings.vsync = true;
+	settings.resizable = false;
+	settings.closeOnEscape = true;
     settings.fps = 120.0f;
     
     if(Core_Init(&settings)) {
