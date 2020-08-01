@@ -5,6 +5,13 @@ Vector2 offset;
 
 SpriteAsset tar;
 
+Color
+    ColorList_White     = (Color){255, 255, 255, 255}, 
+    ColorList_Black     = (Color){  0,   0,   0, 255},
+	ColorList_Red       = (Color){255,   0,   0, 255}, 
+	ColorList_Green     = (Color){  0, 255,   0, 255}, 
+	ColorList_Orange    = (Color){255, 165,   0, 255};
+	
 void action(GameObject *this) {
     if(Collider_CheckObject(Object_GetObject("main player"), this)) { 
         Color *c = OBJECT_GetComponent(Object_GetObject("main player"), Color);
@@ -81,7 +88,7 @@ void _player_render(GameObject *this) {
     Draw_FilledRect((Rect){state->position.x, state->position.y, 50, 50}, *color);
 }
 
-void _player_end(GameObject *this) { }
+void _player_end(GameObject *this) { DE_UNUSED(this); }
 
 void _none_begin(GameObject *this) {
     State2D *statePlayer = Object_GetComponent(Object_GetObject("main player"), "State2D");
@@ -99,7 +106,7 @@ void _none_begin(GameObject *this) {
     });
 }
 
-void _none_step(GameObject *this) { }
+void _none_step(GameObject *this) { DE_UNUSED(this); }
 
 void _none_render(GameObject *this) {
     State2D *state = Object_GetComponent(this, "State2D");
@@ -107,4 +114,4 @@ void _none_render(GameObject *this) {
     Draw_FilledRect((Rect){state->position.x, state->position.y, 40, 40}, ColorList_Red); 
 }
 
-void _none_end(GameObject *this) { }
+void _none_end(GameObject *this) { DE_UNUSED(this); }

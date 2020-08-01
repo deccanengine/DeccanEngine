@@ -23,6 +23,11 @@ typedef struct Color {
     uint8_t a;
 } Color;
 
+// TODO: Need a better solution to handle colours (or)
+// do not provide these at all, as these should not be
+// part of core, rather, it should be part of runtime.
+#if 0
+
 static Color
     ColorList_Blank     = (Color){  0,   0,   0,   0},
     ColorList_White     = (Color){255, 255, 255, 255}, 
@@ -41,3 +46,5 @@ static Color
     ColorList_Orange    = (Color){255, 165,   0, 255},
     ColorList_Violet    = (Color){238, 130, 238, 255}, 
     ColorList_Fuchsia   = (Color){255,   0, 255, 255};
+	
+#endif

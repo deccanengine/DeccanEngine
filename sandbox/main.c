@@ -26,9 +26,9 @@ void begin() {
 
     Clock_StartTimer(&timer);
 
-    Renderer_SetBackgroundColor(ColorList_White);
+    Renderer_SetBackgroundColor((Color){255, 255, 255, 255});
 
-    text = Font_Text(Asset_GetFont("arial"), "Hello! This is Deccan Game Engine", 0, ColorList_Black);
+    text = Font_Text(Asset_GetFont("arial"), "Hello! This is Deccan Game Engine", 0, (Color){0, 0, 0, 0});
 }
 
 void step() {

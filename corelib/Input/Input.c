@@ -31,8 +31,8 @@ void Input_Init() {
 }
 
 void Input_Update() {
-    memcpy(Input_Info.prevKeys, Input_Info.currKeys, sizeof(uint8_t)*SDL_NUM_SCANCODES);
-    memcpy(Input_Info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(Input_Info.prevKeys, Input_Info.currKeys, sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
+    memcpy(Input_Info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
 
     Input_Info.event.wheel.x = 0;
     Input_Info.event.wheel.y = 0;

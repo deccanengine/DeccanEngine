@@ -72,7 +72,7 @@ int Core_Init(CoreSettings *settings) {
     if(settings->fullscreen) { window_flags |= SDL_WINDOW_FULLSCREEN; }
     if(settings->resizable ) { window_flags |= SDL_WINDOW_RESIZABLE;  }
     
-    if((Core_Info.window = SDL_CreateWindow(Core_Info.settings.title, 0, 0, 
+    if((Core_Info.window = SDL_CreateWindow(Core_Info.settings.title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
         Core_Info.settings.resolution.x, Core_Info.settings.resolution.y, window_flags)) == NULL) {
         DE_ERROR("Could not create window: %s", SDL_GetError());
     }
