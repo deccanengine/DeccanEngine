@@ -176,9 +176,10 @@ void HandleSettings() {
         SDL_SetWindowSize(Core_Info.window, Core_Info.settings.resolution.x, Core_Info.settings.resolution.y); 
     }
 
-    if(SDL_GL_SetSwapInterval(Core_Info.settings.vsync ? 1 : 0) == -1) {
-        DE_REPORT("VSync is not supported: %s", SDL_GetError());
-    }
+	// Issue: Not working in some Windows environment
+	if(SDL_GL_SetSwapInterval(Core_Info.settings.vsync ? 1 : 0) == -1) {
+		DE_REPORT("VSync is not supported: %s", SDL_GetError());
+	}
 }
 
 void HandleEvents(SDL_Event *event) {

@@ -71,9 +71,9 @@ int main(int argc, char **argv) {
 
     CoreSettings settings = {0};
     settings.title = "Test";
-    settings.resolution = (Vector2){640, 320};
+    settings.resolution = (Vector2){640, 640};
 	settings.fullscreen = false;
-	settings.vsync = true;
+	settings.vsync = false;		// Probably not working in some environments, report
 	settings.resizable = false;
 	settings.closeOnEscape = true;
     settings.fps = 120.0f;
