@@ -29,6 +29,8 @@
 #define DEG2RAD (PI/180.0000)
 #define RAD2DEG (180.0000/PI)
 
+#define DE_UNUSED(x) (void)(x)
+
 /* Texture structure depends on backend */
 #ifdef DECCAN_RENDERER_SDL
     typedef SDL_Texture RawTexture;

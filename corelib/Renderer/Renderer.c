@@ -99,7 +99,7 @@ void Renderer_SetBackgroundTexture(SpriteAsset *texture) {
 void Renderer_SetTarget(SpriteAsset *target) { 
     RawTexture *texture;
     
-    if(texture == NULL) { 
+    if(target == NULL) { 
         texture = Renderer_Info.target; 
     }
     else {

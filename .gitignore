@@ -1,7 +1,9 @@
 test
+test.exe
 *.png
 *.ttf
 *.log
 *.txt
+*.dll
 
 !resources/deccan-light.png

@@ -251,7 +251,8 @@ void *Object_GetComponent(GameObject *obj, const char *name) {
  * Position
  ***********/
 
-/*
+#if 0
+
 void Object_SetPosition(GameObject *obj, Vector2f pos) {
     Position *p = OBJECT_GetComponent(obj, Position);
     p->x = pos.x;
@@ -263,11 +264,11 @@ void Object_SetPosition(GameObject *obj, Vector2f pos) {
 Vector2f Object_GetPosition(GameObject *obj) {
     return obj->position;
 }
-*/
+
 /***********
  * Angle
  ***********/
-/*
+
 void _clamp_angle(double *angle) {
     while(*angle > 360) { *angle -= 360; }
     while(*angle <   0) { *angle += 360; }
@@ -286,11 +287,11 @@ double Object_GetAngle(GameObject *obj) {
     _clamp_angle(&obj->angle);
     return obj->angle;
 }
-*/
+
 /***********
  * Z-Order
  ***********/
-/*
+
 void Object_SetZOrder(GameObject *obj, int32_t z) {
     PTR_NULLCHECK(obj);
 
@@ -302,13 +303,13 @@ void Object_SetZOrder(GameObject *obj, int32_t z) {
 
     for(int i=0; i<stbds_arrlen(scene->objects); i++) {
         /* Finding itself */
-        //if(scene->objects[i] == obj) {
+        if(scene->objects[i] == obj) {
             /* Remove the old object */
-            /*stbds_arrdel(scene->objects, i);
+            stbds_arrdel(scene->objects, i);
             scene->object_count--;
 
             /* Add the same object with different Z-order */
-            /*obj->order.z = z;
+            obj->order.z = z;
             AddObjectToArray(obj);
             return;
         }
@@ -318,7 +319,9 @@ void Object_SetZOrder(GameObject *obj, int32_t z) {
 int32_t Object_GetZOrder(GameObject *obj) {
     return obj->order.z;
 }
-*/
+
+#endif
+
 /***********
  * Status
  ***********/
@@ -342,7 +345,9 @@ void Object_Activate(GameObject *obj, bool act) {
 /***********
  * Collider
  ***********/
-/*
+
+#if 0
+
 Collider Object_GetCollider(GameObject *obj) {
     return obj->collider;
 }
@@ -350,18 +355,21 @@ Collider Object_GetCollider(GameObject *obj) {
 void Object_SetCollider(GameObject *obj, Collider collider) {
     obj->collider = collider;
 }
-*/
+
+#endif
+
 /////////////////////////////////////////////////
 // Rotation functions
 ////////////////////////////////////////////////
 
-/*
+#if 0
+
 int _angle_diff(double a1, double a2) {
     return ((((int)(a1 - a2) % 360) + 180) % 360) - 180;
 }
 
 /* WIP */
-/*void Object_Rotate(GameObject *obj, double angle, int speed) {
+void Object_Rotate(GameObject *obj, double angle, int speed) {
     PTR_NULLCHECK(obj);
 
     if(speed <= 0) { 
@@ -378,7 +386,7 @@ int _angle_diff(double a1, double a2) {
     if(doaa == 0 || doaa == (speed * -1)) { return; }
     else {
         bool is_positive = (doaa >= 0);
-        double new_angle = obj->angle + ((is_positive ? -1.0f : 1.0f) * (speed)); //* (Core_GetDeltaTime()));
+        double new_angle = obj->angle + ((is_positive ? -1.0f : 1.0f) * (speed)); // (Core_GetDeltaTime()));
     
         //double dnaa = 180.0f - abs(abs(new_angle - angle) - 180.0f);
         int dnaa = _angle_diff(new_angle, angle);
@@ -407,5 +415,7 @@ void Object_RotateTowardsPosition(GameObject *obj, Vector2f pos, int speed) {
     obj->angle = angle;
     // Object_Rotate(obj, angle, speed);
 }
-*/
+
+#endif
+
 #undef PTR_NULLCHECK

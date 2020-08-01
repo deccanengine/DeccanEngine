@@ -39,7 +39,7 @@ SpriteAsset *Font_FastText(FontAsset *font, const char *text, Color color) {
 }
 
 SpriteAsset *Font_Text(FontAsset *font, const char *text, FontStyle style, Color color) {
-    Font_OutlinedText(font, text, style, -1, color);
+    return Font_OutlinedText(font, text, style, -1, color);
 }
 
 SpriteAsset *Font_OutlinedText(FontAsset *font, const char *text, FontStyle style, int32_t outline, Color color) {

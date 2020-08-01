@@ -26,8 +26,8 @@ SDL_Event *Input_GetEventHandler() {
 }
 
 void Input_Init() {
-    memcpy(Input_Info.prevKeys, "\0", sizeof(uint8_t)*SDL_NUM_SCANCODES);
-    memcpy(Input_Info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t)*SDL_NUM_SCANCODES);
+    memcpy(Input_Info.prevKeys, "\0", sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
+    memcpy(Input_Info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
 }
 
 void Input_Update() {

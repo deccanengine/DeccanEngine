@@ -4,7 +4,7 @@
 
 Timer timer;
 SpriteAsset *text;
-
+	
 void begin() {
     /* Start here */
     GameObject *player = Object_NewObject("main player", "player");
@@ -58,6 +58,8 @@ void end() {
 }
 
 int main(int argc, char **argv) {
+	DE_UNUSED(argc); DE_UNUSED(argv);
+	
     /* Register all the components */
     ECSystem_RegisterComponent("NULL");
 
@@ -84,4 +86,6 @@ int main(int argc, char **argv) {
         Core_Run();
     }
     atexit(Core_Quit);
+	
+	return 0;
 }

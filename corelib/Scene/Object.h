@@ -59,7 +59,7 @@ typedef struct GameObject {
     void (*AtEnd)(GameObject *object);
 } GameObject;
 
-static inline void NULL_OBJFUNC(GameObject *obj) { }
+static inline void NULL_OBJFUNC(GameObject *obj) { DE_UNUSED(obj); }
 
 /////////////////////////////////////////////////
 // Initialization and instantiator functions

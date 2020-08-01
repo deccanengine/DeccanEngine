@@ -106,9 +106,9 @@ int32_t ECSystem_GetComponentID(const char *name) {
     if(index != -1) {
         return ECS_Info.componentTable[index].value;
     }
-    else {
-        DE_ERROR("Not a valid registered component: %s", name);
-    }
+    
+	DE_ERROR("Not a valid registered component: %s", name);
+    return -1;
 }
 
 void ECSystem_UpdateSystems(GameObject *obj, int32_t when) {
