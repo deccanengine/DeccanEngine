@@ -45,11 +45,6 @@ int Core_Init(CoreSettings *settings) {
         DE_ERROR("Could not initialize SDL2: %s", SDL_GetError());
     }
 
-    int image_flags = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF;
-    if(!IMG_Init(image_flags) & !image_flags) {
-        DE_ERROR("Could not initialize SDL2_image: %s", IMG_GetError());
-    }
-
     if(TTF_Init() != 0) {
         DE_ERROR("Could not initialize SDL2_ttf: %s", TTF_GetError());
     }
@@ -119,7 +114,6 @@ void Core_Quit() {
     SDL_DestroyWindow(Core_Info.window);
 
     TTF_Quit();
-    IMG_Quit();
     SDL_Quit();
 }
 
