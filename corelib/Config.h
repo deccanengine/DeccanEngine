@@ -19,7 +19,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#include "../depends/stb_ds.h"
+#include "../depends/stb/stb_ds.h"
 
 /* Define basic constants */
 #ifndef PI 
