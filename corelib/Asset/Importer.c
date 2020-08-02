@@ -32,18 +32,31 @@ int32_t Asset_GetSpriteIndex(const char *name) {
 RawTexture *LoadSprite(const char *path) {
     SDL_Surface *img;
     SDL_Texture *tex;
+	
+	int32_t w, h, channels;
+	unsigned char *data;
+	
+	data = stbi_load(path, &w, &h, &channels, 0);
 
-    img = IMG_Load(path);
-    if(img == NULL) {
-        DE_REPORT("Cannot load image: %s: %s", path, IMG_GetError());
-    }
+	if(data == NULL) {
+		DE_REPORT("Cannot load image: %s\n", path);
+	}
 
-#ifdef DECCAN_RENDERER_SDL
-    tex = SDL_CreateTextureFromSurface(Renderer_GetRenderer(), img);
-#else
+	img = SDL_CreateRGBSurfaceWithFormatFrom((void*)data, w, h, 32, w * 4, SDL_PIXELFORMAT_RGBA32);
+	if(img == NULL) {
+		DE_REPORT("Cannot process image: %s\n", path);
+		stbi_image_free(data);
+	}
 
-#endif
+    //img = IMG_Load(path);
+    //if(img == NULL) {
+    //    DE_REPORT("Cannot load image: %s: %s", path, IMG_GetError());
+    //}
+
+	tex = SDL_CreateTextureFromSurface(Renderer_GetRenderer(), img);
+
     SDL_FreeSurface(img);
+	stbi_image_free(data);
 
     return tex;
 }

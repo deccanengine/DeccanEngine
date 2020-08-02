@@ -84,7 +84,7 @@ void _player_step(GameObject *this) {
 void _player_render(GameObject *this) {
     Color *color = OBJECT_GetComponent(this, Color);
     State2D *state = Object_GetComponent(this, "State2D");
-    
+	
     Draw_FilledRect((Rect){state->position.x, state->position.y, 50, 50}, *color);
 }
 

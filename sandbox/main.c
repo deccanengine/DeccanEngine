@@ -49,6 +49,8 @@ void render() {
 
         Clock_ResetTimer(&timer);
     }
+	
+	Sprite_Blit((Rect){100, 100, 0, 0}, 0, 0, Asset_GetSprite("arrow0"));
 
     Sprite_BlitScaled((Rect){10, 10, 0, 0}, (Vector2){1.0f, 1.0f}, 0, 0, text);
 }

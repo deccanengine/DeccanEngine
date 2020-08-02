@@ -5,6 +5,7 @@
  * See LICENSE.md included with this package for more info.
  */
 
+#define STB_IMAGE_IMPLEMENTATION
 #define STB_DS_IMPLEMENTATION
 #include "Core.h"
 #include "Input/Input.h"
