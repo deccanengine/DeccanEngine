@@ -33,25 +33,37 @@ RawTexture *LoadSprite(const char *path) {
     SDL_Surface *img;
     SDL_Texture *tex;
 	
-	int32_t w, h, channels;
+	int32_t width, height, fmt = STBI_rgb_alpha;
 	unsigned char *data;
 	
-	data = stbi_load(path, &w, &h, &channels, 0);
-
+	/* We dont need to collect the number of channels
+	 * Just ask for 4 channels here. If alpha is absent
+	 * stb_image will handle it. */
+	data = stbi_load(path, &width, &height, NULL, fmt);
 	if(data == NULL) {
 		DE_REPORT("Cannot load image: %s\n", path);
 	}
+	
+	/* 3-channel calculation is never used but, 
+	 * let it be here for future */
+	int32_t depth, pitch;
+	uint32_t pixel_fmt;
+	if(fmt == STBI_rgb) {
+		depth = 24;
+		pitch = 3 * width;
+		pixel_fmt = SDL_PIXELFORMAT_RGB24;
+	}
+	else {
+		depth = 32;
+		pitch = 4 * width;
+		pixel_fmt = SDL_PIXELFORMAT_RGBA32;
+	}
 
-	img = SDL_CreateRGBSurfaceWithFormatFrom((void*)data, w, h, 32, w * 4, SDL_PIXELFORMAT_RGBA32);
+	img = SDL_CreateRGBSurfaceWithFormatFrom((void*)data, width, height, depth, pitch, pixel_fmt);
 	if(img == NULL) {
 		DE_REPORT("Cannot process image: %s\n", path);
 		stbi_image_free(data);
 	}
-
-    //img = IMG_Load(path);
-    //if(img == NULL) {
-    //    DE_REPORT("Cannot load image: %s: %s", path, IMG_GetError());
-    //}
 
 	tex = SDL_CreateTextureFromSurface(Renderer_GetRenderer(), img);
 
