@@ -5,12 +5,19 @@
  * See LICENSE.md included with this package for more info.
  */
 
+#include "Importer.h"
 #include "../Core.h"
 #include "../Renderer/Renderer.h"
 
 static struct {
-    SpriteAsset **textures;
-    FontAsset **fonts;
+    struct AssetTextureStorage { 
+		const char *key;
+		SpriteAsset *value;
+	} *textures;
+    struct { 
+		const char *key;
+		FontAsset *value;
+	} *fonts;
 } Asset_Info = {
     .textures = NULL,
     .fonts = NULL
@@ -20,6 +27,7 @@ static struct {
 // SpriteAsset
 ////////////////////////////////////////////////
 
+/*
 int32_t Asset_GetSpriteIndex(const char *name) {
     for(int32_t i=0; i<stbds_arrlen(Asset_Info.textures); i++) {
         if(!strcmp(name, Asset_Info.textures[i]->name)) {
@@ -28,6 +36,7 @@ int32_t Asset_GetSpriteIndex(const char *name) {
     }
     return -1;            
 }
+*/
 
 RawTexture *LoadSprite(const char *path) {
     SDL_Surface *img;
@@ -82,11 +91,9 @@ SpriteAsset *Asset_LoadSprite(const char *name, const char *path) {
         return asset;
     }
 
-    int32_t index = Asset_GetSpriteIndex(name);
-    if(index != -1) {
+    asset = Asset_GetSprite(name);
+	if(asset) {
         /* Found the texture */
-        asset = Asset_Info.textures[index];
-
         stbds_arrput(asset->texture, tex);
         asset->count++;
     }
@@ -94,7 +101,7 @@ SpriteAsset *Asset_LoadSprite(const char *name, const char *path) {
         /* Create new texture */
         asset = Sprite_New(name);
         stbds_arrput(asset->texture, tex);
-        stbds_arrput(Asset_Info.textures, asset);
+        stbds_shput(Asset_Info.textures, asset->name, asset);
     }
 
     return asset;
@@ -118,17 +125,14 @@ SpriteAsset *Asset_LoadAnimatedSprite(const char *name, const char *path, ...) {
 }
 
 SpriteAsset *Asset_GetSprite(const char *name) {
-    int index = Asset_GetSpriteIndex(name);
-    if(index == -1) {
-        DE_REPORT("Sprite not found: %s", name);
-    }
-    return Asset_Info.textures[index];    
+	return stbds_shget(Asset_Info.textures, name);
 }
 
 /////////////////////////////////////////////////
 // FontAsset
 ////////////////////////////////////////////////
 
+/*
 int32_t Asset_GetFontIndex(const char *name) {
     for(int32_t i=0; i<stbds_arrlen(Asset_Info.fonts); i++) {
         if(!strcmp(name, Asset_Info.fonts[i]->name)) {
@@ -137,6 +141,7 @@ int32_t Asset_GetFontIndex(const char *name) {
     }
     return -1;
 }
+*/
 
 FontAsset *Asset_LoadFont(const char *name, const char *path) {
     FontAsset *asset = NULL;
@@ -148,24 +153,19 @@ FontAsset *Asset_LoadFont(const char *name, const char *path) {
         return asset;
     }
 
-    int32_t index = Asset_GetFontIndex(name);
-    if(index != -1) {
-        asset = Asset_Info.fonts[index];
+    asset = Asset_GetFont(name);
+    if(asset) {
         asset->font = font;
     }
     else {
         asset = Font_New(name);
         asset->font = font;
-        stbds_arrput(Asset_Info.fonts, asset);
+        stbds_shput(Asset_Info.fonts, asset->name, asset);
     }
 
     return asset;
 }
 
 FontAsset *Asset_GetFont(const char *name) {
-    int32_t index = Asset_GetFontIndex(name);
-    if(index == -1) {
-        DE_REPORT("Font not found: %s", name);
-    }
-    return Asset_Info.fonts[index];
+    return stbds_shget(Asset_Info.fonts, name);
 }
