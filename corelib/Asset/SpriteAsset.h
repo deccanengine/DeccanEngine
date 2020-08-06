@@ -23,7 +23,7 @@ typedef enum {
 ////////////////////////////////////////////////
 
 typedef struct SpriteAsset {
-    const char *name;
+    char *name;
     RawTexture **texture;
     uint32_t count;
     uint32_t current;
@@ -39,6 +39,7 @@ typedef struct SpriteAsset {
 ////////////////////////////////////////////////
 
 SpriteAsset *Sprite_New(const char *name);
+void Sprite_Delete(SpriteAsset *asset);
 
 /////////////////////////////////////////////////
 // Setters/Getters

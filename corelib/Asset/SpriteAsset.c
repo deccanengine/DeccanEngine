@@ -26,6 +26,17 @@ SpriteAsset *Sprite_New(const char *name) {
     return asset;
 }
 
+void Sprite_Delete(SpriteAsset *asset) {
+	if(!asset) return;
+	if(asset->name) free(asset->name);
+	
+	for(int i=0; i<stbds_arrlen(asset->texture); i++) {
+		SDL_DestroyTexture(asset->texture[i]);
+	}
+	
+	free(asset);
+}
+
 /////////////////////////////////////////////////
 // Setters/Getters
 ////////////////////////////////////////////////

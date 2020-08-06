@@ -57,6 +57,8 @@ void render() {
 
 void end() {
     /* Start here */
+	Sprite_Delete(Asset_GetSprite("arrow0"));
+	Font_Delete(Asset_GetFont("arial"));
 }
 
 int main(int argc, char **argv) {

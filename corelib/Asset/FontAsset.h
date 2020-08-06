@@ -18,7 +18,7 @@
 ////////////////////////////////////////////////
 
 typedef struct FontAsset {
-    const char *name;
+    char *name;
     TTF_Font *font;
 } FontAsset;
 
@@ -27,6 +27,7 @@ typedef struct FontAsset {
 ////////////////////////////////////////////////
 
 FontAsset *Font_New(const char *name);
+void Font_Delete(FontAsset *asset);
 
 /////////////////////////////////////////////////
 // Setters/Getters
