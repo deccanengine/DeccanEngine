@@ -27,16 +27,9 @@ static struct {
 // SpriteAsset
 ////////////////////////////////////////////////
 
-/*
 int32_t Asset_GetSpriteIndex(const char *name) {
-    for(int32_t i=0; i<stbds_arrlen(Asset_Info.textures); i++) {
-        if(!strcmp(name, Asset_Info.textures[i]->name)) {
-            return i;
-        }
-    }
-    return -1;            
+    return stbds_shgeti(Asset_Info.textures, name);
 }
-*/
 
 RawTexture *LoadSprite(const char *path) {
     SDL_Surface *img;
@@ -132,16 +125,9 @@ SpriteAsset *Asset_GetSprite(const char *name) {
 // FontAsset
 ////////////////////////////////////////////////
 
-/*
 int32_t Asset_GetFontIndex(const char *name) {
-    for(int32_t i=0; i<stbds_arrlen(Asset_Info.fonts); i++) {
-        if(!strcmp(name, Asset_Info.fonts[i]->name)) {
-            return i;
-        }
-    }
-    return -1;
+    return stbds_shgeti(Asset_Info.fonts, name);
 }
-*/
 
 FontAsset *Asset_LoadFont(const char *name, const char *path) {
     FontAsset *asset = NULL;
@@ -155,6 +141,8 @@ FontAsset *Asset_LoadFont(const char *name, const char *path) {
 
     asset = Asset_GetFont(name);
     if(asset) {
+		/* First dellocate the existsing font and then replace with new one */
+		TTF_CloseFont(asset->font);
         asset->font = font;
     }
     else {
