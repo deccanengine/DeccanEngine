@@ -60,7 +60,7 @@ void _player_step(GameObject *this) {
     /* Center the camera on player */
     //Camera_CenterOn(this);
 
-    Vector2 pos = Input_GetRelativeMousePos();
+    Vector2 pos = Input_GetMousePos();
     if(Collider_CheckObjectWithVector(this, pos)) { 
         *color = ColorList_Orange;
         if(Input_ButtonDown(ButtonCode_Left)) {

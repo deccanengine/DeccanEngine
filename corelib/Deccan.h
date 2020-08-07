@@ -30,3 +30,5 @@
 #include "Scene/ComponentList.h"
 
 #include "Renderer/Renderer.h"
+#include "Renderer/Texture.h"
+#include "Renderer/TextRendering.h"

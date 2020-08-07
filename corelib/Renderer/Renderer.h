@@ -9,8 +9,6 @@
 #include "../Config.h"
 #include "Primitives.h"
 #include "Color.h"
-#include "Texture.h"
-#include "TextRendering.h"
 #include "../Asset/FontAsset.h"
 #include "../Asset/SpriteAsset.h"
 #include "../Math/Vector2.h"

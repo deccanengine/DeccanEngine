@@ -6,7 +6,6 @@
  */
 
 #include "Input.h"
-#include "../Renderer/Camera.h"
 
 static struct { 
     SDL_Event event;
@@ -140,17 +139,6 @@ Vector2 Input_GetMousePos() {
     int32_t x, y;
     SDL_GetMouseState(&x, &y);
     return (Vector2){x, y};
-}
-
-Vector2 Input_GetRelativeMousePos() {
-    int32_t x, y;
-    Vector2 pos;
-    Vector2 cam = Camera_GetPosition(); 
-    
-    SDL_GetMouseState(&x, &y);
-    pos.x = (float)x + cam.x;
-    pos.y = (float)y + cam.y;
-    return pos;
 }
 
 int Input_MouseScrollHorizontal() {

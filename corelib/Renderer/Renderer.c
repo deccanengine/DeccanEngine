@@ -7,6 +7,8 @@
 
 #include "Renderer.h"
 #include "Camera.h"
+#include "Texture.h"
+#include "TextRendering.h"
 #include "../Core.h"
 
 static struct {

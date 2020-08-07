@@ -8,7 +8,8 @@
 #pragma once
 #include "../Config.h"
 #include "../Message.h"
-#include "../Renderer/Renderer.h"
+#include "../Math/Vector2.h"
+#include "../Math/Vector3.h"
 
 #ifndef DECCAN_OBJ_MSG_LENGTH
     #define DECCAN_OBJ_MSG_LENGTH 50

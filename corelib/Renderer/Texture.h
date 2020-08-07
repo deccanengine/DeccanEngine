@@ -7,6 +7,7 @@
 
 #pragma once
 #include "../Config.h"
+#include "Renderer.h"
 #include "Color.h"
 #include "Primitives.h"
 #include "../Asset/SpriteAsset.h"
