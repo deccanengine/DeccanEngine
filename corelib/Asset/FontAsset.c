@@ -21,9 +21,19 @@ FontAsset *Font_New(const char *name) {
 
 void Font_Delete(FontAsset *asset) {
 	if(!asset) return;
-	if(asset->name) free((char*)asset->name);
-	if(asset->font) TTF_CloseFont(asset->font);
+	
+	if(asset->name) {
+		free((char*)asset->name);
+		asset->name = NULL;
+	}
+	
+	if(asset->font) {
+		TTF_CloseFont(asset->font);
+		asset->font = NULL;
+	}
+	
 	free(asset);
+	asset = NULL;
 }
 
 /////////////////////////////////////////////////

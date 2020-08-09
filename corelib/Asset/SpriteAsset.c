@@ -28,13 +28,19 @@ SpriteAsset *Sprite_New(const char *name) {
 
 void Sprite_Delete(SpriteAsset *asset) {
 	if(!asset) return;
-	if(asset->name) free(asset->name);
+
+	if(asset->name) {
+		free(asset->name);
+		asset->name = NULL;
+	}
 	
 	for(int i=0; i<stbds_arrlen(asset->texture); i++) {
-		SDL_DestroyTexture(asset->texture[i]);
+		if(asset->texture[i]) 
+			SDL_DestroyTexture(asset->texture[i]);
 	}
 	
 	free(asset);
+	asset = NULL;
 }
 
 /////////////////////////////////////////////////

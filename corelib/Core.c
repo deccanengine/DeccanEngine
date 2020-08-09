@@ -210,7 +210,7 @@ void HandleEvents(SDL_Event *event) {
 void ProcessEnd() {
     /* at_end of scenes and objects */
     GameScene *scene = Scene_CurrentScene();
-
+	
     scene->AtEnd();
     for(int i=0; i<stbds_arrlen(scene->objects); i++) {
         Object_End(scene->objects[i]);
@@ -267,7 +267,7 @@ void Core_Run() {
             }
         }
     }
-    
+	
     ProcessEnd();
     Core_Quit();
 }
