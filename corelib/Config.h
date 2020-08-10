@@ -42,10 +42,10 @@
 #endif
 
 static inline char *DE_NEWSTRING(const char *source) {
-    size_t len = strlen(source) + 2;
-	char *string = DE_NEW(char, len);
-    strcpy(string, source);
-	string[len - 1] = '\0';
+    size_t len = strlen(source);
+	char *string = DE_NEW(char, len + 1);
+    strncpy(string, source, len);
+	string[len] = '\0';
     return string;
 }
 
