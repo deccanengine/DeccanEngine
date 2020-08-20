@@ -2,7 +2,9 @@
 
 # Deccan Game Engine
 Cross-platform 2D Game Engine written in C11. Powered by SDL2.  
-[Discord](https://discord.gg/bNwnxwn)  
+
+![GitHub](https://img.shields.io/github/license/iddev5/DeccanEngine)
+![Discord](https://img.shields.io/discord/681837246567022609?label=discord)  
 
 ## Features so far
 - Lightweight and simple framework design
