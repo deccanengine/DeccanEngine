@@ -4,7 +4,7 @@
 
 Timer timer;
 SpriteAsset *text;
-	
+
 void begin() {
     /* Start here */
     GameObject *player = Object_NewObject("main player", "player");
@@ -14,12 +14,12 @@ void begin() {
     player->AtRender = _player_render;
     player->AtEnd = _player_end;
     Object_InstantiateObject(player);
-    
-    Asset_LoadAnimatedSprite("arrow0", 
-        "arrow0.png", 
-        "arrow1.png", 
-        "arrow2.png", 
-        "arrow3.png", 
+
+    Asset_LoadAnimatedSprite("arrow0",
+        "arrow0.png",
+        "arrow1.png",
+        "arrow2.png",
+        "arrow3.png",
         NULL
     );
     Asset_LoadFont("arial", "arial.ttf");
@@ -49,7 +49,7 @@ void render() {
 
         Clock_ResetTimer(&timer);
     }
-	
+
 	Sprite_Blit((Rect){100, 100, 0, 0}, 0, 0, Asset_GetSprite("arrow0"));
 
     Sprite_BlitScaled((Rect){10, 10, 0, 0}, (Vector2){1.0f, 1.0f}, 0, 0, text);
@@ -63,7 +63,7 @@ void end() {
 
 int main(int argc, char **argv) {
 	DE_UNUSED(argc); DE_UNUSED(argv);
-	
+
     /* Register all the components */
     ECSystem_RegisterComponent("NULL");
 
@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
 	settings.resizable = false;
 	settings.closeOnEscape = true;
     settings.fps = 120.0f;
-    
+
     if(Core_Init(&settings)) {
         GameScene *scene = Scene_NewScene("scene0");
         scene->AtFirstFrame = begin;
@@ -89,10 +89,10 @@ int main(int argc, char **argv) {
         scene->AtRender = render;
         scene->AtEnd = end;
         Scene_AddScene(scene, false);
-        
+
         Core_Run();
     }
     atexit(Core_Quit);
-	
+
 	return 0;
 }

@@ -18,29 +18,29 @@ static struct {
     .defaultObj = {0}
 };
 
-#define PTR_NULLCHECK(x) if(x == NULL) { return; }  
+#define PTR_NULLCHECK(x) if(x == NULL) { return; }
 
 /////////////////////////////////////////////////
 // Initialization and instantiator functions
 ////////////////////////////////////////////////
 
 GameObject *Object_NewObject(const char *name, const char *type) {
-    
+
     GameObject *obj = DE_NEW(GameObject, 1);
-    
+
     obj->name = DE_NEWSTRING(name);
     obj->type = DE_NEWSTRING(type);
-    
+
     obj->order.z = (float)Object_Info.zAccum++;
     //obj->angle   = 0.0f;
 
     obj->visible    = true;
     obj->active     = true;
     obj->toRemove   = false;
-    
+
     /* Initialize messaging system */
-    Msg_Init(&obj->msg, DECCAN_OBJ_MSG_COUNT, DECCAN_OBJ_MSG_LENGTH);
-    
+    //DE_Var_Init(&obj->vars);
+
     obj->is_beginning = true;
     obj->AtFirstFrame = NULL_OBJFUNC;
     obj->AtBeginning = NULL_OBJFUNC;
@@ -97,7 +97,7 @@ void Object_FreeObject(GameObject *obj) {
     stbds_hmfree(obj->components);
 
     /* Free the messaging system */
-    Msg_Free(&obj->msg);
+    //Msg_Free(&obj->msg); ---- HERE
 
     /* Remove from the array */
     stbds_arrdel(scene->objects, index);
@@ -108,7 +108,7 @@ void Object_FreeObject(GameObject *obj) {
 }
 
 void AddObjectToArray(GameObject *object) {
-    GameScene *scene = Scene_CurrentScene(); 
+    GameScene *scene = Scene_CurrentScene();
     int length = stbds_arrlen(scene->objects);
 
     if(length > 0 && object->order.z != -1) {
@@ -149,7 +149,7 @@ GameObject *Object_GetObject(const char *name) {
             return scene->objects[i];
         }
     }
-    
+
     DE_REPORT("GameObject not found: %s", name);
     return &Object_Info.defaultObj;
 }
@@ -213,6 +213,7 @@ void Object_End(GameObject *obj) {
 // Messaging
 ////////////////////////////////////////////////
 
+/*
 void Object_SendMessage(GameObject *obj, const char *msg) {
     Msg_Send(&obj->msg, msg);
 }
@@ -220,6 +221,7 @@ void Object_SendMessage(GameObject *obj, const char *msg) {
 bool Object_ReceiveMessage(GameObject *obj, const char *msg) {
     return Msg_Receive(&obj->msg, msg);
 }
+*/
 
 /////////////////////////////////////////////////
 // Component
@@ -276,14 +278,14 @@ void _clamp_angle(double *angle) {
 
 void Object_SetAngle(GameObject *obj, double angle) {
     PTR_NULLCHECK(obj);
-    
+
     _clamp_angle(&angle);
     obj->angle = angle;
 }
 
 double Object_GetAngle(GameObject *obj) {
     PTR_NULLCHECK(obj);
-    
+
     _clamp_angle(&obj->angle);
     return obj->angle;
 }
@@ -372,8 +374,8 @@ int _angle_diff(double a1, double a2) {
 void Object_Rotate(GameObject *obj, double angle, int speed) {
     PTR_NULLCHECK(obj);
 
-    if(speed <= 0) { 
-        obj->angle = angle; 
+    if(speed <= 0) {
+        obj->angle = angle;
         return;
     }
 
@@ -382,12 +384,12 @@ void Object_Rotate(GameObject *obj, double angle, int speed) {
 
     //double doaa = 180.0f - abs(abs(obj->angle - angle) - 180.0f);
     int doaa = _angle_diff(obj->angle, angle);
-    
+
     if(doaa == 0 || doaa == (speed * -1)) { return; }
     else {
         bool is_positive = (doaa >= 0);
         double new_angle = obj->angle + ((is_positive ? -1.0f : 1.0f) * (speed)); // (Core_GetDeltaTime()));
-    
+
         //double dnaa = 180.0f - abs(abs(new_angle - angle) - 180.0f);
         int dnaa = _angle_diff(new_angle, angle);
         //printf("angle_diff = %d is_positive = %d\n", dnaa, is_positive);
@@ -395,7 +397,7 @@ void Object_Rotate(GameObject *obj, double angle, int speed) {
         if((dnaa >= 0) ^ is_positive) {
             new_angle = angle;
         }
-        
+
         obj->angle = new_angle;
     }
 }

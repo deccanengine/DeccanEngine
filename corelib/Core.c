@@ -29,12 +29,13 @@ static struct {
 
     bool isRunning;
     bool isSettingsDirty;
-    
+
     int32_t frameCount;
     float fpsAverage;
     float deltaTime;
 
-    MsgBuf msg;
+    //MsgBuf msg;
+    DeccanVarManager vars;
 
 #ifdef DECCAN_REPORTS_ENABLED
     FILE *logfile;
@@ -71,11 +72,11 @@ int Core_Init(CoreSettings *settings) {
 
     /* Create window */
     SDL_WindowFlags window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;
-    
+
     if(settings->fullscreen) { window_flags |= SDL_WINDOW_FULLSCREEN; }
     if(settings->resizable ) { window_flags |= SDL_WINDOW_RESIZABLE;  }
-    
-    if((Core_Info.window = SDL_CreateWindow(Core_Info.settings.title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
+
+    if((Core_Info.window = SDL_CreateWindow(Core_Info.settings.title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         Core_Info.settings.resolution.x, Core_Info.settings.resolution.y, window_flags)) == NULL) {
         DE_ERROR("Could not create window: %s", SDL_GetError());
     }
@@ -88,7 +89,7 @@ int Core_Init(CoreSettings *settings) {
     /* Create renderer */
     Renderer_Init(Core_Info.window);
 #else
-    
+
 #endif
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &Core_Info.glMajor);
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &Core_Info.glMinor);
@@ -103,7 +104,7 @@ int Core_Init(CoreSettings *settings) {
     }
 
     Input_Init();
-    Msg_Init(&Core_Info.msg, DECCAN_MSG_COUNT, DECCAN_MSG_LENGTH);
+    //DE_Var_Init(&Core_Info.vars);
 
     return 1;
 }
@@ -112,7 +113,7 @@ void Core_Quit() {
     ECSystem_FreeAllComponents();
     ECSystem_FreeAllSystems();
 
-    Msg_Free(&Core_Info.msg);
+    //Msg_Free(&Core_Info.msg); -- HERE
 
     fclose(Core_Info.logfile);
     Scene_FreeAll();
@@ -142,7 +143,7 @@ void UpdateAll() {
 
     /* AtStep of scenes and objects */
     scene->AtStep();
-        
+
     for(int i=0; i<stbds_arrlen(scene->objects); i++) {
         Object_Update(scene->objects[i]);
     }
@@ -152,7 +153,7 @@ void UpdateAll() {
 
     /* AtRender of scenes and objects */
     scene->AtRender();
-        
+
     for(int i=0; i<stbds_arrlen(scene->objects); i++) {
         Object_Render(scene->objects[i]);
     }
@@ -164,18 +165,18 @@ void HandleSettings() {
     if(Core_Info.settings.fullscreen) {
         SDL_SetWindowFullscreen(Core_Info.window, true);
 
-        SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN, 
+        SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN,
             Core_Info.settings.resolution.x, Core_Info.settings.resolution.y, 0, 0};
-        
+
         if(SDL_SetWindowDisplayMode(Core_Info.window, &disp) > 0) {
             DE_REPORT("Cannot set fullscreen window mode: %s", SDL_GetError());
         }
-        
+
         SDL_MaximizeWindow(Core_Info.window);
     }
     else {
         SDL_SetWindowFullscreen(Core_Info.window, false);
-        SDL_SetWindowSize(Core_Info.window, Core_Info.settings.resolution.x, Core_Info.settings.resolution.y); 
+        SDL_SetWindowSize(Core_Info.window, Core_Info.settings.resolution.x, Core_Info.settings.resolution.y);
     }
 
 	// Issue: Not working in some Windows environment
@@ -189,17 +190,17 @@ void HandleEvents(SDL_Event *event) {
     if(SDL_PollEvent(event)) {
         switch(event->type) {
             /* Handle close event */
-            case SDL_QUIT: { 
-                Core_Info.isRunning = false; 
-                break; 
+            case SDL_QUIT: {
+                Core_Info.isRunning = false;
+                break;
             }
 
             /* Handle close on escape key event */
             case SDL_KEYDOWN: {
                 /* Close on Escape Key */
-                if(event->key.keysym.sym == SDLK_ESCAPE && 
-                   Core_Info.settings.closeOnEscape) { 
-                    Core_Info.isRunning = false; 
+                if(event->key.keysym.sym == SDLK_ESCAPE &&
+                   Core_Info.settings.closeOnEscape) {
+                    Core_Info.isRunning = false;
                     break;
                 }
             }
@@ -210,7 +211,7 @@ void HandleEvents(SDL_Event *event) {
 void ProcessEnd() {
     /* at_end of scenes and objects */
     GameScene *scene = Scene_CurrentScene();
-	
+
     scene->AtEnd();
     for(int i=0; i<stbds_arrlen(scene->objects); i++) {
         Object_End(scene->objects[i]);
@@ -239,13 +240,13 @@ void Core_Run() {
 
         /* Calculate FPS */
         Core_Info.fpsAverage = Core_Info.frameCount / Clock_GetTime(&fpsTimer).seconds;
-        if(Core_Info.fpsAverage > 20000) { 
-            Core_Info.fpsAverage = 0.0f; 
+        if(Core_Info.fpsAverage > 20000) {
+            Core_Info.fpsAverage = 0.0f;
         }
 
         /* Update the scene and all objects */
         UpdateAll();
-        
+
         /* Render everything */
         Renderer_Present();
 
@@ -253,13 +254,13 @@ void Core_Run() {
         Input_Update();
 
         /* Increment the frame counter */
-        Core_Info.frameCount++; 
-        
+        Core_Info.frameCount++;
+
         /* Current ticks per frame i.e delta time */
-        Core_Info.deltaTime = Clock_GetTime(&frmTimer).milliseconds;  
+        Core_Info.deltaTime = Clock_GetTime(&frmTimer).milliseconds;
 
         /* Limit FPS */
-        if((!Core_Info.settings.vsync) && 
+        if((!Core_Info.settings.vsync) &&
            (Core_Info.settings.fps > 20.0f)) {
             float ticksPerFrame = (1000.0f / Core_Info.settings.fps);  /* Required ticks per frame */
             if(Core_Info.deltaTime < ticksPerFrame) {
@@ -267,7 +268,7 @@ void Core_Run() {
             }
         }
     }
-	
+
     ProcessEnd();
     Core_Quit();
 }
@@ -297,7 +298,7 @@ void Core_SetFramerateLimit(float fps){
     Core_Info.settings.fps = fps;
 }
 
-/* Core Settings Getters */ 
+/* Core Settings Getters */
 const char *Core_GetTitle() {
     return Core_Info.settings.title;
 }
@@ -334,22 +335,14 @@ float Core_GetDeltaTime() {
     return Core_Info.deltaTime;
 }
 
-void Core_SendMessage(const char *msg) {
-    Msg_Send(&Core_Info.msg, msg);
-}
-
-bool Core_ReceiveMessage(const char *msg) {
-    return Msg_Receive(&Core_Info.msg, msg);
-}
-
 void DE_ERROR(const char *str, ...) {
     printf("Fatal Error: ");
-    
+
     va_list args;
     va_start(args, str);
     vprintf(str, args);
     va_end(args);
-    
+
     printf("\n");
     exit(-1);
 }
@@ -357,11 +350,11 @@ void DE_ERROR(const char *str, ...) {
 void DE_REPORT(const char *str, ...) {
 #ifdef DECCAN_REPORTS_ENABLED
     va_list args;
-    
+
     va_start(args, str);
     vfprintf(Core_Info.logfile, str, args);
     va_end(args);
-    
+
     fprintf(Core_Info.logfile, "\n");
 #endif
 }

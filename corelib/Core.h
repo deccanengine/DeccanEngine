@@ -49,5 +49,4 @@ float Core_GetFramerateLimit();
 float Core_GetAverageFramerate();
 int32_t Core_GetTotalFrameCount();
 float Core_GetDeltaTime();
-void Core_SendMessage(const char *msg);
-bool Core_ReceiveMessage(const char *msg);
+//DeccanVarManager *DE_Core_GetVarManager();

@@ -7,7 +7,7 @@
 
 #pragma once
 #include "../Config.h"
-#include "../Message.h"
+#include "../Variable.h"
 #include "../Math/Vector2.h"
 #include "../Math/Vector3.h"
 
@@ -50,7 +50,7 @@ typedef struct GameObject {
 
     ObjectComponent *components;
 
-    MsgBuf msg;
+    //DeccanVarManager vars;
 
     bool is_beginning;
     void (*AtFirstFrame)(GameObject *object);
@@ -85,9 +85,6 @@ void Object_End(GameObject *obj);
 /////////////////////////////////////////////////
 // Messaging
 ////////////////////////////////////////////////
-
-void Object_SendMessage(GameObject *obj, const char *msg);
-bool Object_ReceiveMessage(GameObject *obj, const char *msg);
 
 /////////////////////////////////////////////////
 // Component
@@ -151,7 +148,7 @@ void Object_Activate(GameObject *obj, bool act);
 //void Object_SetCollider(GameObject *obj, Collider collider);
 
 /////////////////////////////////////////////////
-// Rotation Functions 
+// Rotation Functions
 ////////////////////////////////////////////////
 
 //void Object_Rotate(GameObject *obj, double angle, int speed);
