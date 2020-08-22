@@ -39,7 +39,7 @@ GameObject *Object_NewObject(const char *name, const char *type) {
     obj->toRemove   = false;
 
     /* Initialize messaging system */
-    //DE_Var_Init(&obj->vars);
+    DE_Var_Init(&obj->vars);
 
     obj->is_beginning = true;
     obj->AtFirstFrame = NULL_OBJFUNC;

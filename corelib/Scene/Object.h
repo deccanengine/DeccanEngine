@@ -50,7 +50,7 @@ typedef struct GameObject {
 
     ObjectComponent *components;
 
-    //DeccanVarManager vars;
+    DeccanVarManager vars;
 
     bool is_beginning;
     void (*AtFirstFrame)(GameObject *object);

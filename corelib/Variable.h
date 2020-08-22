@@ -33,15 +33,16 @@ typedef struct DeccanVarManager {
     } *vars;
 } DeccanVarManager;
 
-//void DE_Var_Init(DeccanVarManager *manager);
+void DE_Var_Init(DeccanVarManager *manager);
 void DE_Var_New(DeccanVarManager *manager, const char *name, DeccanVarType type);
+void DE_Var_Delete(DeccanVarManager *manaer, const char *name);
+
 void DE_Var_SetBool(DeccanVarManager *manager, const char *name, bool value);
 void DE_Var_SetNumber(DeccanVarManager *manager, const char *name, double value);
 void DE_Var_SetString(DeccanVarManager *manager, const char *name, const char *value);
 
-/*
-void Msg_Init(MsgBuf *buf, int count, int length);
-void Msg_Send(MsgBuf *buf, const char *msg);
-bool Msg_Receive(MsgBuf *buf, const char *msg);
-void Msg_Free(MsgBuf *buf);
-*/
+bool DE_Var_GetBool(DeccanVarManager *manager, const char *name);
+double DE_Var_GetNumber(DeccanVarManager *manager, const char *name);
+char *DE_Var_GetString(DeccanVarManager *manager, const char *name);
+
+
