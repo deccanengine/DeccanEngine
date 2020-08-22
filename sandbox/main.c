@@ -29,6 +29,9 @@ void begin() {
     Renderer_SetBackgroundColor((Color){255, 255, 255, 255});
 
     text = Font_Text(Asset_GetFont("arial"), "Hello! This is Deccan Game Engine", 0, (Color){0, 0, 0, 0});
+
+    DE_Var_New(DE_Core_GetVarManager(), "hola", DECCAN_VARTYPE_STRING);
+    DE_Var_SetString(DE_Core_GetVarManager(), "hola", "test string");
 }
 
 void step() {

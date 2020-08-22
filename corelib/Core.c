@@ -335,6 +335,10 @@ float Core_GetDeltaTime() {
     return Core_Info.deltaTime;
 }
 
+DeccanVarManager *DE_Core_GetVarManager() {
+    return &Core_Info.vars;
+}
+
 void DE_ERROR(const char *str, ...) {
     printf("Fatal Error: ");
 

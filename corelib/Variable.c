@@ -43,7 +43,7 @@ void DE_Var_SetString(DeccanVarManager *manager, const char *name, const char *v
     }
 }
 
-bool DE_Var_GetNumber(DeccanVarManager *manager, const char *name) {
+bool DE_Var_GetBool(DeccanVarManager *manager, const char *name) {
     DeccanVar *var = stbds_shget(manager->vars, name);
     if(var->type != DECCAN_VARTYPE_LOGICAL) {
 
@@ -61,7 +61,7 @@ double DE_Var_GetNumber(DeccanVarManager *manager, const char *name) {
     return var->value.number;
 };
 
-char *DE_Var_GetNumber(DeccanVarManager *manager, const char *name) {
+char *DE_Var_GetString(DeccanVarManager *manager, const char *name) {
     DeccanVar *var = stbds_shget(manager->vars, name);
     if(var->type != DECCAN_VARTYPE_STRING) {
 
@@ -69,53 +69,3 @@ char *DE_Var_GetNumber(DeccanVarManager *manager, const char *name) {
 
     return var->value.string;
 };
-
-/*
-void Msg_Init(MsgBuf *buf, int count, int length) {
-    buf->num = 0;
-    buf->count = count;
-    buf->length = length;
-    buf->messages = DE_NEW(char*, count);
-    for(int i=0; i<count; i++) {
-        buf->messages[i] = DE_NEW(char, length);
-        memset(buf->messages[i], '\0', sizeof(char) * length);
-    }
-}
-
-void Msg_Send(MsgBuf *buf, const char *msg) {
-    for(int i=0; i<buf->count; i++) {
-        if(!strcmp(buf->messages[i], "\0")) {
-            strncpy(buf->messages[i], msg, buf->length);
-            buf->num++; return;
-        }
-    }
-
-    if(buf->num++ > buf->count) { buf->num = 0; }
-    strncpy(buf->messages[buf->num], msg, buf->length);
-}
-
-bool Msg_Receive(MsgBuf *buf, const char *msg) {
-    for(int i=0; i<buf->count; i++) {
-        if(!strcmp(buf->messages[i], msg)) {
-            strcpy(buf->messages[i], "\0");
-            return true;
-        }
-    }
-    return false;
-}
-
-void Msg_Free(MsgBuf *buf) {
-    if(buf == NULL || buf->messages == NULL) {
-        return;
-    }
-
-    for(int i=0; i<buf->count; i++) {
-        if(buf->messages[i] != NULL) {
-            free(buf->messages[i]);
-            buf->messages[i] = NULL;
-        }
-    }
-
-    free(buf->messages);
-    buf->messages = NULL;
-}*/
