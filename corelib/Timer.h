@@ -1,3 +1,10 @@
+/* Deccan Game Engine - C11 2D SDL Game Engine.
+ * Copyright 2020 Ayush Bardhan Tripathy
+ *
+ * This software is licensed under MIT License.
+ * See LICENSE.md included with this package for more info.
+ */
+
 #pragma once
 #include "Config.h"
 
@@ -13,8 +20,8 @@ typedef struct Timer {
     bool isPaused;
 } Timer;
 
-static inline void Clock_Delay(int32_t ms) { 
-    SDL_Delay(ms); 
+static inline void Clock_Delay(int32_t ms) {
+    SDL_Delay(ms);
 }
 
 void Clock_StartTimer(Timer *timer);

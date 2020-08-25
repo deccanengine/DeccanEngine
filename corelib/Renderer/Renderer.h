@@ -11,8 +11,6 @@
 #include "Color.h"
 #include "../Asset/FontAsset.h"
 #include "../Asset/SpriteAsset.h"
-//#include "../Math/vec2.h"
-//#include "../Math/Vector3.h"
 
 /////////////////////////////////////////////////
 // Enums

@@ -8,7 +8,6 @@
 #pragma once
 #include "../Config.h"
 #include "Color.h"
-//#include "../Math/vec2.h"
 
 /////////////////////////////////////////////////
 // Enums
@@ -17,21 +16,6 @@
 /////////////////////////////////////////////////
 // Structs
 ////////////////////////////////////////////////
-
-/*
-typedef struct vec4 {
-    float x;
-    float y;
-    float w;
-    float h;
-} vec4;
-
-typedef struct vec3 {
-    float x;
-    float y;
-    float radius;
-} vec3;
-*/
 
 /////////////////////////////////////////////////
 // Drawing functions

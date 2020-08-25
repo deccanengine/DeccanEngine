@@ -1,6 +1,12 @@
+/* Deccan Game Engine - C11 2D SDL Game Engine.
+ * Copyright 2020 Ayush Bardhan Tripathy
+ *
+ * This software is licensed under MIT License.
+ * See LICENSE.md included with this package for more info.
+ */
+
 #pragma once
 #include "Config.h"
-//#include "Math/Vector2.h"
 
 typedef struct CoreSettings {
     char *title;
@@ -11,17 +17,3 @@ typedef struct CoreSettings {
     bool closeOnEscape;
     float fps;
 } CoreSettings;
-
-/*static inline CoreSettings CoreSettings_New() {
-    CoreSettings settings = {
-        .title = "Deccan App",
-        .resolution = (vec2){800, 600},
-        .fullscreen = false,
-        .vsync = false,
-        .resizable = false,
-        .closeOnEscape = true,
-        .fps = 60.0f
-    };
-
-    return settings;
-}*/
