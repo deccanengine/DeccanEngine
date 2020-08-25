@@ -8,42 +8,42 @@
 #include "Camera.h"
 
 static struct {
-    Vector2 position;
-    Rect  bounds;
+    vec2 position;
+    vec4  bounds;
 } Camera_Info = {
-    .position = (Vector2){0,  0},
-    .bounds   = (Rect){-1, -1, -1, -1}
+    .position = {0,  0},
+    .bounds   = {-1, -1, -1, -1}
 };
 
 /////////////////////////////////////////////////
 // Camera
 ////////////////////////////////////////////////
 
-void Clamp(Vector2 *pos, Rect *rect, float *final_x, float *final_y) {
+void Clamp(vec2 pos, vec4 rect, float *final_x, float *final_y) {
     /* Bounds are not set */
-    if(rect->x == -1) { 
-        *final_x = pos->x;
-        *final_y = pos->y;
-        return; 
+    if(rect[0] == -1) {
+        *final_x = pos[0];
+        *final_y = pos[1];
+        return;
     }
 
     /* Clamp the abscissa */
-    if(pos->x < rect->x) { *final_x = rect->x; }
-    else if(pos->x > rect->x + rect->w) { *final_x = rect->x + rect->w; }
-    else { *final_y = pos->x; }
+    if(pos[0] < rect[0]) { *final_x = rect[0]; }
+    else if(pos[0] > rect[0] + rect[2]) { *final_x = rect[0] + rect[2]; }
+    else { *final_y = pos[0]; }
 
     /* Clamp the ordinate */
-    if(pos->y < rect->y) { *final_y = rect->y; }
-    else if(pos->y > rect->y + rect->h) { *final_y = rect->y + rect->h; }
-    else { *final_y = pos->y; }
+    if(pos[1] < rect[1]) { *final_y = rect[1]; }
+    else if(pos[1] > rect[1] + rect[3]) { *final_y = rect[1] + rect[3]; }
+    else { *final_y = pos[1]; }
 }
 
-void Camera_Move(Vector2 pos) {
-    float x, y; 
-    Clamp(&pos, &Camera_Info.bounds, &x, &y);
+void Camera_Move(vec2 pos) {
+    float x, y;
+    Clamp(pos, Camera_Info.bounds, &x, &y);
 
-    Camera_Info.position.x += x;
-    Camera_Info.position.y += y;
+    Camera_Info.position[0] += x;
+    Camera_Info.position[1] += y;
 }
 
 /* New function needed */
@@ -53,30 +53,30 @@ void Camera_CenterOn(GameObject *obj) {
         DE_REPORT("Invalid object used with camera"); return;
     }
 
-    Vector2i mode = Core_GetMode();
-    Vector2f pixel = Renderer_GetPixelSize();
+    vec2i mode = Core_GetMode();
+    vec2f pixel = Renderer_GetPixelSize();
 
-    float x = (obj->position.x) + (obj->size.x)/2 - (mode.x/pixel.x)/2; 
+    float x = (obj->position.x) + (obj->size.x)/2 - (mode.x/pixel.x)/2;
     float y = (obj->position.y) + (obj->size.y)/2 - (mode.y/pixel.y)/2;
 
-    Vector2f pos = {x, y};
+    vec2f pos = {x, y};
     _clamp(&pos, &Camera_Info.bounds, &x, &y);
-    Camera_SetPosition((Vector2f){x, y});
+    Camera_SetPosition((vec2f){x, y});
 }
 */
 
-void Camera_SetPosition(Vector2 pos) {
-    Camera_Info.position = pos;
+void Camera_SetPosition(vec2 pos) {
+    glm_vec2_copy(pos, Camera_Info.position);
 }
 
-void Camera_SetBounds(Rect rect) {
-    Camera_Info.bounds = rect;
+void Camera_SetBounds(vec4 rect) {
+    glm_vec2_copy(rect, Camera_Info.bounds);
 }
 
-Vector2 Camera_GetPosition() {
-    return Camera_Info.position;
+void Camera_GetPosition(vec2 pos) {
+    glm_vec2_copy(Camera_Info.position, pos);
 }
 
-Rect Camera_GetBounds() {
-    return Camera_Info.bounds;
+void Camera_GetBounds(vec4 bounds) {
+    glm_vec4_copy(Camera_Info.bounds, bounds);
 }

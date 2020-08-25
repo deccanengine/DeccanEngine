@@ -7,7 +7,7 @@
 
 #include "Input.h"
 
-static struct { 
+static struct {
     SDL_Event event;
     uint8_t currKeys [SDL_NUM_SCANCODES];
     uint8_t prevKeys [SDL_NUM_SCANCODES];
@@ -47,15 +47,15 @@ KeyState Input_GetKey(int key_code) {
     };
 
     if(KEY_IN_BOUNDS(key_code)) {
-        if(Input_Info.currKeys[key_code]) { 
-            if(!Input_Info.prevKeys[key_code]) { 
-                key.IsPressed = true; 
+        if(Input_Info.currKeys[key_code]) {
+            if(!Input_Info.prevKeys[key_code]) {
+                key.IsPressed = true;
             }
-            key.IsHeld = true; 
+            key.IsHeld = true;
         }
         else {
-            if(Input_Info.prevKeys[key_code]) { 
-                key.IsReleased = true; 
+            if(Input_Info.prevKeys[key_code]) {
+                key.IsReleased = true;
             }
         }
     }
@@ -65,7 +65,7 @@ KeyState Input_GetKey(int key_code) {
 
 bool Input_KeyPressed(int key_code) {
     if(KEY_IN_BOUNDS(key_code)) {
-        return Input_Info.currKeys[key_code] && 
+        return Input_Info.currKeys[key_code] &&
               !Input_Info.prevKeys[key_code];
     }
     else {
@@ -75,7 +75,7 @@ bool Input_KeyPressed(int key_code) {
 
 bool Input_KeyReleased(int key_code) {
     if(KEY_IN_BOUNDS(key_code)) {
-        return !Input_Info.currKeys[key_code] && 
+        return !Input_Info.currKeys[key_code] &&
                 Input_Info.prevKeys[key_code];
     }
     else {
@@ -103,11 +103,11 @@ MouseState Input_GetMouseButton(int button_code) {
 
     if(BUTTON_IN_BOUNDS(button_code)) {
         if(Input_Info.event.button.button == button_code) {
-            if(Input_Info.event.type == SDL_MOUSEBUTTONDOWN) { 
-                button.IsDown = true; 
+            if(Input_Info.event.type == SDL_MOUSEBUTTONDOWN) {
+                button.IsDown = true;
             }
-            else if(Input_Info.event.type == SDL_MOUSEBUTTONUP) { 
-                button.IsUp = true; 
+            else if(Input_Info.event.type == SDL_MOUSEBUTTONUP) {
+                button.IsUp = true;
             }
         }
     }
@@ -135,19 +135,20 @@ bool Input_ButtonUp(int button_code) {
     }
 }
 
-Vector2 Input_GetMousePos() {
+void Input_GetMousePos(vec2 pos) {
     int32_t x, y;
     SDL_GetMouseState(&x, &y);
-    return (Vector2){x, y};
+    pos[0] = (float)x;
+    pos[1] = (float)y;
 }
 
 int Input_MouseScrollHorizontal() {
     if(Input_Info.event.type == SDL_MOUSEWHEEL) {
-        if(Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) { 
-            return Input_Info.event.wheel.x; 
+        if(Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) {
+            return Input_Info.event.wheel.x;
         }
-        else { 
-            return -Input_Info.event.wheel.x; 
+        else {
+            return -Input_Info.event.wheel.x;
         }
     }
     return 0;
@@ -155,10 +156,10 @@ int Input_MouseScrollHorizontal() {
 
 int Input_MouseScrollVertical() {
     if(Input_Info.event.type == SDL_MOUSEWHEEL) {
-        if(Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) { 
-            return Input_Info.event.wheel.y; 
+        if(Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) {
+            return Input_Info.event.wheel.y;
         }
-        else { 
+        else {
             return -Input_Info.event.wheel.y;
         }
     }

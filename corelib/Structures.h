@@ -1,10 +1,10 @@
 #pragma once
 #include "Config.h"
-#include "Math/Vector2.h"
+//#include "Math/Vector2.h"
 
 typedef struct CoreSettings {
     char *title;
-    Vector2 resolution;
+    vec2 resolution;
     bool fullscreen;
     bool vsync;
     bool resizable;
@@ -12,10 +12,10 @@ typedef struct CoreSettings {
     float fps;
 } CoreSettings;
 
-static inline CoreSettings CoreSettings_New() {
+/*static inline CoreSettings CoreSettings_New() {
     CoreSettings settings = {
         .title = "Deccan App",
-        .resolution = (Vector2){800, 600},
+        .resolution = (vec2){800, 600},
         .fullscreen = false,
         .vsync = false,
         .resizable = false,
@@ -24,4 +24,4 @@ static inline CoreSettings CoreSettings_New() {
     };
 
     return settings;
-}
+}*/

@@ -21,17 +21,17 @@ FontAsset *Font_New(const char *name) {
 
 void Font_Delete(FontAsset *asset) {
 	if(!asset) return;
-	
+
 	if(asset->name) {
 		free((char*)asset->name);
 		asset->name = NULL;
 	}
-	
+
 	if(asset->font) {
 		TTF_CloseFont(asset->font);
 		asset->font = NULL;
 	}
-	
+
 	free(asset);
 	asset = NULL;
 }
@@ -42,7 +42,7 @@ void Font_Delete(FontAsset *asset) {
 
 void Font_SetKerning(FontAsset *font, bool kerning) {
     PTR_NULLCHECK(font,);
-    
+
     TTF_SetFontKerning(font->font, kerning ? 1 : 0);
 }
 
@@ -56,16 +56,17 @@ bool Font_GetKerning(FontAsset *font) {
 // Utility functions
 ////////////////////////////////////////////////
 
-Vector2 Font_CalculateTextSize(FontAsset *font, const char *text) {
+void Font_CalculateTextSize(FontAsset *font, const char *text, vec2 size) {
     int32_t x = -1;
     int32_t y = -1;
+    size[0] = -1;
+    size[1] = -1;
 
-    Vector2 size = {-1, -1};
-    
-    PTR_NULLCHECK(font, size);
+    PTR_NULLCHECK(font,);
     TTF_SizeText(font->font, text, &x, &y);
-    
-    return (Vector2){(float)x, (float)y};
+
+    size[0] = (float)x;
+    size[1] = (float)y;
 }
 
 #undef PTR_NULLCHECK

@@ -1,7 +1,7 @@
 #include "player.h"
 
 bool selected = false;
-Vector2 offset;
+vec2 offset;
 
 SpriteAsset tar;
 
@@ -29,7 +29,8 @@ void _player_begin(GameObject *this) {
 
     OBJECT_AddComponent(this, State2D, {
         .position = {
-            .x = 200, .y = 200
+            [0] = 200,
+            [1] = 200
         }
     });
 
@@ -38,7 +39,12 @@ void _player_begin(GameObject *this) {
 
     OBJECT_AddComponent(this, Collider, {
         .type = COLLIDER_Rect,
-        .rect = (Rect){0, 0, 50, 50}
+        .rect = {
+            [0] = 0,
+            [1] = 0,
+            [2] = 50,
+            [3] = 50
+        }
     });
 }
 
@@ -48,10 +54,10 @@ void _player_step(GameObject *this) {
     State2D *state = Object_GetComponent(this, "State2D");
     Color *color = Object_GetComponent(this, "Color");
 
-    if(Input_KeyHeld(KeyCode_W)){ state->position.y -= SpeedModifier; }
-    else if(Input_KeyHeld(KeyCode_S)){ state->position.y += SpeedModifier; }
-    else if(Input_KeyHeld(KeyCode_A)){ state->position.x -= SpeedModifier; }
-    else if(Input_KeyHeld(KeyCode_D)){ state->position.x += SpeedModifier; }
+    if(Input_KeyHeld(KeyCode_W)){ state->position[1] -= SpeedModifier; }
+    else if(Input_KeyHeld(KeyCode_S)){ state->position[1] += SpeedModifier; }
+    else if(Input_KeyHeld(KeyCode_A)){ state->position[0] -= SpeedModifier; }
+    else if(Input_KeyHeld(KeyCode_D)){ state->position[0] += SpeedModifier; }
 
     if(Input_KeyReleased(KeyCode_O)) {
         SpeedModifier -= 1;
@@ -63,13 +69,14 @@ void _player_step(GameObject *this) {
     /* Center the camera on player */
     //Camera_CenterOn(this);
 
-    Vector2 pos = Input_GetMousePos();
+    vec2 pos;
+    Input_GetMousePos(pos);
     if(Collider_CheckObjectWithVector(this, pos)) {
         *color = ColorList_Orange;
         if(Input_ButtonDown(ButtonCode_Left)) {
             selected = true;
-            offset.x = pos.x - state->position.x;
-            offset.y = pos.y - state->position.y;
+            offset[0] = pos[0] - state->position[0];
+            offset[1] = pos[1] - state->position[1];
         }
         else if(Input_ButtonUp(ButtonCode_Left)) {
             selected = false;
@@ -77,8 +84,8 @@ void _player_step(GameObject *this) {
     }
 
     if(selected) {
-        state->position.x = pos.x - offset.x;
-        state->position.y = pos.y - offset.y;
+        state->position[0] = pos[0] - offset[0];
+        state->position[1] = pos[1] - offset[1];
     }
 
     Object_GetObjectOfType("static", action);
@@ -88,7 +95,7 @@ void _player_render(GameObject *this) {
     Color *color = OBJECT_GetComponent(this, Color);
     State2D *state = Object_GetComponent(this, "State2D");
 
-    Draw_FilledRect((Rect){state->position.x, state->position.y, 50, 50}, *color);
+    Draw_FilledRect((vec4){state->position[0], state->position[1], 50, 50}, *color);
 }
 
 void _player_end(GameObject *this) { DE_UNUSED(this); }
@@ -98,14 +105,19 @@ void _none_begin(GameObject *this) {
 
     OBJECT_AddComponent(this, State2D, {
         .position = {
-                .x = statePlayer->position.x,
-                .y = statePlayer->position.y
+            [0] = statePlayer->position[0],
+            [1] = statePlayer->position[1]
         }
     });
 
     OBJECT_AddComponent(this, Collider, {
         .type = COLLIDER_Rect,
-        .rect = (Rect){0, 0, 40, 40}
+        .rect = {
+            [0] = 0,
+            [1] = 0,
+            [2] = 40,
+            [3] = 40
+        }
     });
 }
 
@@ -114,7 +126,7 @@ void _none_step(GameObject *this) { DE_UNUSED(this); }
 void _none_render(GameObject *this) {
     State2D *state = Object_GetComponent(this, "State2D");
 
-    Draw_FilledRect((Rect){state->position.x, state->position.y, 40, 40}, ColorList_Red);
+    Draw_FilledRect((vec4){state->position[0], state->position[1], 40, 40}, ColorList_Red);
 }
 
 void _none_end(GameObject *this) { DE_UNUSED(this); }

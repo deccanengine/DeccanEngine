@@ -11,52 +11,52 @@
 // Collisions
 ////////////////////////////////////////////////
 
-bool Collision_VecVec(Vector2 v1, Vector2 v2) {
-    return v1.x == v2.x && 
-           v1.y == v2.y;
+bool Collision_VecVec(vec2 v1, vec2 v2) {
+    return v1[0] == v2[1] &&
+           v1[0] == v2[1];
 }
 
-bool Collision_RectRect(Rect r1, Rect r2) {
-    return r1.x < r2.x + r2.w && 
-           r1.x + r1.w > r2.x && 
-           r1.y < r2.y + r2.h && 
-           r1.y + r1.h > r2.y;
+bool Collision_RectRect(vec4 r1, vec4 r2) {
+    return r1[0] < r2[0] + r2[2] &&
+           r1[0] + r1[2] > r2[0] &&
+           r1[1] < r2[1] + r2[3] &&
+           r1[1] + r1[3] > r2[1];
 }
 
-bool Collision_CircleCircle(Circle c1, Circle c2) {
-    double distance = ((c1.x - c2.x) * (c1.x - c2.x)) + 
-                      ((c1.y - c2.y) * (c1.y - c2.y));
-    return distance < (c1.radius + c2.radius) * (c1.radius + c2.radius);
+bool Collision_CircleCircle(vec3 c1, vec3 c2) {
+    double distance = ((c1[0] - c2[0]) * (c1[0] - c2[0])) +
+                      ((c1[1] - c2[1]) * (c1[1] - c2[1]));
+    return distance < (c1[2] + c2[2]) * (c1[2] + c2[2]);
 }
 
-bool Collision_VecRect(Vector2 vec, Rect rect) {
-    return vec.x > rect.x          && 
-           vec.x < rect.x + rect.w && 
-           vec.y > rect.y          && 
-           vec.y < rect.y + rect.h;
+bool Collision_VecRect(vec2 vec, vec4 rect) {
+    return vec[0] > rect[0]           &&
+           vec[0] < rect[0] + rect[2] &&
+           vec[1] > rect[1]           &&
+           vec[1] < rect[1] + rect[3];
 }
 
-bool Collision_CircleVec(Circle circle, Vector2 vec) {
-    double distance = ((circle.x - vec.x) * (circle.x - vec.x)) + 
-                      ((circle.y - vec.y) * (circle.y - vec.y));
-    return distance < circle.radius * circle.radius;
+bool Collision_CircleVec(vec3 circle, vec2 vec) {
+    double distance = ((circle[0] - vec[0]) * (circle[0] - vec[0])) +
+                      ((circle[1] - vec[1]) * (circle[1] - vec[1]));
+    return distance < circle[2] * circle[2];
 }
 
 
-bool Collision_RectCircle(Rect rect, Circle circle) {
+bool Collision_RectCircle(vec4 rect, vec3 circle) {
     float cx, cy;     /* Closest X and Y of rect */
-    
+
     /* Find the abscissa of nearest point to the abscissa center of circle */
-    if(circle.x < rect.x) { cx = rect.x; }
-    else if(circle.x > rect.x + rect.w) { cx = rect.x + rect.w; }
-    else { cx = circle.x; }       /* Special case: the x coord of rect is same as x coord of center */
+    if(circle[0] < rect[0]) { cx = rect[0]; }
+    else if(circle[0] > rect[0] + rect[2]) { cx = rect[0] + rect[2]; }
+    else { cx = circle[0]; }       /* Special case: the x coord of rect is same as x coord of center */
 
     /* Find the ordinate of nearest point to the ordinate center of circle */
-    if(circle.y < rect.y) { cy = rect.y; }
-    else if(circle.y > rect.y + rect.h) { cy = rect.y + rect.w; }
-    else { cy = circle.y; }       /* Special case: the y coord of rect is same as y coord of center */
+    if(circle[1] < rect[1]) { cy = rect[1]; }
+    else if(circle[1] > rect[1] + rect[3]) { cy = rect[1] + rect[2]; }
+    else { cy = circle[1]; }       /* Special case: the y coord of rect is same as y coord of center */
 
-    double distance = ((cx - circle.x) * (cx - circle.x)) + 
-                      ((cy - circle.y) * (cy - circle.y));
-    return distance < circle.radius * circle.radius;
+    double distance = ((cx - circle[0]) * (cx - circle[0])) +
+                      ((cy - circle[1]) * (cy - circle[1]));
+    return distance < circle[2] * circle[2];
 }

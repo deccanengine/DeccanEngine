@@ -11,8 +11,8 @@
 #include "Color.h"
 #include "../Asset/FontAsset.h"
 #include "../Asset/SpriteAsset.h"
-#include "../Math/Vector2.h"
-#include "../Math/Vector3.h"
+//#include "../Math/vec2.h"
+//#include "../Math/Vector3.h"
 
 /////////////////////////////////////////////////
 // Enums
@@ -44,11 +44,11 @@ void Renderer_SetBackgroundColor(Color color);
 void Renderer_SetBackgroundTexture(SpriteAsset *texture);
 void Renderer_SetTarget(SpriteAsset *target);
 void Renderer_SetColor(Color color);
-void Renderer_SetPixelSize(Vector2 size);
+void Renderer_SetPixelSize(vec2 size);
 void Renderer_SetBlendMode(int blend_mode);
 Color Renderer_GetBackgroundColor();
 SpriteAsset *Renderer_GetBackgroundTexture();
 SpriteAsset *Renderer_GetTarget();
 Color Renderer_GetColor();
-Vector2 Renderer_GetPixelSize();
+void Renderer_GetPixelSize(vec2 size);
 BlendMode Renderer_GetBlendMode();

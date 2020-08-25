@@ -7,7 +7,7 @@
 
 #pragma once
 #include "../Config.h"
-#include "../Math/Vector2.h"
+//#include "../Math/Vector2.h"
 
 /////////////////////////////////////////////////
 // Enums
@@ -40,4 +40,4 @@ bool Font_GetKerning(FontAsset *font);
 // Utility functions
 ////////////////////////////////////////////////
 
-Vector2 Font_CalculateTextSize(FontAsset *font, const char *text);
+void Font_CalculateTextSize(FontAsset *font, const char *text, vec2 size);

@@ -77,7 +77,7 @@ int Core_Init(CoreSettings *settings) {
     if(settings->resizable ) { window_flags |= SDL_WINDOW_RESIZABLE;  }
 
     if((Core_Info.window = SDL_CreateWindow(Core_Info.settings.title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        Core_Info.settings.resolution.x, Core_Info.settings.resolution.y, window_flags)) == NULL) {
+        Core_Info.settings.resolution[0], Core_Info.settings.resolution[1], window_flags)) == NULL) {
         DE_ERROR("Could not create window: %s", SDL_GetError());
     }
 
@@ -166,7 +166,7 @@ void HandleSettings() {
         SDL_SetWindowFullscreen(Core_Info.window, true);
 
         SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN,
-            Core_Info.settings.resolution.x, Core_Info.settings.resolution.y, 0, 0};
+            Core_Info.settings.resolution[0], Core_Info.settings.resolution[1], 0, 0};
 
         if(SDL_SetWindowDisplayMode(Core_Info.window, &disp) > 0) {
             DE_REPORT("Cannot set fullscreen window mode: %s", SDL_GetError());
@@ -176,7 +176,7 @@ void HandleSettings() {
     }
     else {
         SDL_SetWindowFullscreen(Core_Info.window, false);
-        SDL_SetWindowSize(Core_Info.window, Core_Info.settings.resolution.x, Core_Info.settings.resolution.y);
+        SDL_SetWindowSize(Core_Info.window, Core_Info.settings.resolution[0], Core_Info.settings.resolution[1]);
     }
 
 	// Issue: Not working in some Windows environment
@@ -279,8 +279,8 @@ void Core_SetTitle(const char *name) {
     Core_Info.isSettingsDirty = true;
 }
 
-void Core_SetResolution(Vector2 resolution) {
-    Core_Info.settings.resolution = resolution;
+void Core_SetResolution(vec2 resolution) {
+    glm_vec2_copy(resolution, Core_Info.settings.resolution);
     Core_Info.isSettingsDirty = true;
 }
 
@@ -303,8 +303,8 @@ const char *Core_GetTitle() {
     return Core_Info.settings.title;
 }
 
-Vector2 Core_GetResolution() {
-    return Core_Info.settings.resolution;
+void Core_GetResolution(vec2 res) {
+    glm_vec2_copy(Core_Info.settings.resolution, res);
 }
 
 bool Core_IsFullscreened() {

@@ -7,7 +7,7 @@
 
 #pragma once
 #include "../Config.h"
-#include "../Math/Vector2.h"
+// #include "../Math/Vector2.h"
 #include "InputCodes.h"
 
 /////////////////////////////////////////////////
@@ -56,6 +56,6 @@ MouseState Input_GetMouseButton(int button_code);
 bool Input_ButtonDown(int button_code);
 bool Input_ButtonUp(int button_code);
 
-Vector2 Input_GetMousePos();
+void Input_GetMousePos(vec2 pos);
 int Input_MouseScrollHorizontal();
 int Input_MouseScrollVertical();

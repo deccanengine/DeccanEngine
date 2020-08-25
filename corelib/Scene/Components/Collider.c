@@ -21,7 +21,7 @@ void Collider_Register() {
 Collider *Collider_Init(Collider c) {
     Collider *collider = DE_NEW(Collider, 1);
     *collider = c;
-    
+
     return collider;
 }
 
@@ -44,7 +44,7 @@ Collider *Collider_Init(Collider c) {
         DE_REPORT("State component not found in object: %s", obj->name);    \
         return false;                                                       \
     }                                                                       \
-    Vector3 p = state->position;
+    vec3 p; glm_vec3_copy(state->position, p);
 
 bool Collider_CheckObject(GameObject *obj1, GameObject *obj2) {
     if(obj2 == NULL) {
@@ -52,45 +52,45 @@ bool Collider_CheckObject(GameObject *obj1, GameObject *obj2) {
     }
 
     COLLISION_CHECK_HEADER(obj1);
-    
+
     switch(c->type) {
         case COLLIDER_Vec: {
-            Vector2 vec = {p.x + c->vec.x, p.y + c->vec.y};
+            vec2 vec = {p[0] + c->vec[0], p[1] + c->vec[1]};
             return Collider_CheckObjectWithVector(obj2, vec);
         }
 
         case COLLIDER_Rect: {
-            Rect rect = {p.x + c->rect.x, p.y + c->rect.y, c->rect.w, c->rect.h};
+            vec4 rect = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
             return Collider_CheckObjectWithRect(obj2, rect);
         }
 
         case COLLIDER_Circle: {
-            Circle circle = {p.x + c->circle.x, p.y + c->circle.y, c->circle.radius};
+            vec3 circle = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
             return Collider_CheckObjectWithCircle(obj2, circle);
         }
 
         default: {
             return false;
-        } 
+        }
     }
 }
 
-bool Collider_CheckObjectWithVector(GameObject *obj, Vector2 vec) {
+bool Collider_CheckObjectWithVector(GameObject *obj, vec2 vec) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
         case COLLIDER_Vec: {
-            Vector2 vec2 = {p.x + c->vec.x, p.y + c->vec.y};
+            vec2 vec2 = {p[0] + c->vec[0], p[1] + c->vec[1]};
             return Collision_VecVec(vec, vec2);
         }
 
         case COLLIDER_Rect: {
-            Rect rect = {p.x + c->rect.x, p.y + c->rect.y, c->rect.w, c->rect.h};
+            vec4 rect = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
             return Collision_VecRect(vec, rect);
         }
 
         case COLLIDER_Circle: {
-            Circle circle = {p.x + c->circle.x, p.y + c->circle.y, c->circle.radius};
+            vec3 circle = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
             return Collision_CircleVec(circle, vec);
         }
 
@@ -100,22 +100,22 @@ bool Collider_CheckObjectWithVector(GameObject *obj, Vector2 vec) {
     }
 }
 
-bool Collider_CheckObjectWithRect(GameObject *obj, Rect rect) {
+bool Collider_CheckObjectWithRect(GameObject *obj, vec4 rect) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
         case COLLIDER_Vec: {
-            Vector2 vec = {p.x + c->vec.x, p.y + c->vec.y};
+            vec2 vec = {p[0] + c->vec[0], p[1] + c->vec[1]};
             return Collision_VecRect(vec, rect);
         }
 
         case COLLIDER_Rect: {
-            Rect rect2 = {p.x + c->rect.x, p.y + c->rect.y, c->rect.w, c->rect.h};
+            vec4 rect2 = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
             return Collision_RectRect(rect, rect2);
         }
 
         case COLLIDER_Circle: {
-            Circle circle = {p.x + c->circle.x, p.y + c->circle.y, c->circle.radius};
+            vec3 circle = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
             return Collision_RectCircle(rect, circle);
         }
 
@@ -125,22 +125,22 @@ bool Collider_CheckObjectWithRect(GameObject *obj, Rect rect) {
     }
 }
 
-bool Collider_CheckObjectWithCircle(GameObject *obj, Circle circle) {
+bool Collider_CheckObjectWithCircle(GameObject *obj, vec3 circle) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
         case COLLIDER_Vec: {
-            Vector2 vec = {p.x + c->vec.x, p.y + c->vec.y};
+            vec2 vec = {p[0] + c->vec[0], p[1] + c->vec[1]};
             return Collision_CircleVec(circle, vec);
         }
 
         case COLLIDER_Rect: {
-            Rect rect = {p.x + c->rect.x, p.y + c->rect.y, c->rect.w, c->rect.h};
+            vec4 rect = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
             return Collision_RectCircle(rect, circle);
         }
 
         case COLLIDER_Circle: {
-            Circle circle2 = {p.x + c->circle.x, p.y + c->circle.y, c->circle.radius};
+            vec3 circle2 = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
             return Collision_CircleCircle(circle, circle2);
         }
 

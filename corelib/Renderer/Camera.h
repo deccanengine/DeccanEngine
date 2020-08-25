@@ -8,7 +8,7 @@
 #pragma once
 #include "../Config.h"
 #include "Primitives.h"
-#include "../Math/Vector2.h"
+//#include "../Math/vec2.h"
 
 /////////////////////////////////////////////////
 // Enums
@@ -22,9 +22,9 @@
 // Camera
 ////////////////////////////////////////////////
 
-void Camera_Move(Vector2 pos);
+void Camera_Move(vec2 pos);
 //void Camera_CenterOn(GameObject *obj);
-void Camera_SetPosition(Vector2 pos);
-void Camera_SetBounds(Rect rect);
-Vector2 Camera_GetPosition();
-Rect Camera_GetBounds();
+void Camera_SetPosition(vec2 pos);
+void Camera_SetBounds(vec4 rect);
+void Camera_GetPosition(vec2 pos);
+void Camera_GetBounds(vec4 bounds);

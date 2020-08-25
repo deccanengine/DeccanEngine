@@ -18,11 +18,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
+#include "../depends/cglm/include/cglm/cglm.h"
+
 #include "../depends/stb/stb_image.h"
 #include "../depends/stb/stb_ds.h"
 
 /* Define basic constants */
-#ifndef PI 
+#ifndef PI
     #define PI 3.14159265358979323846
 #endif
 

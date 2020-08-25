@@ -53,9 +53,9 @@ void render() {
         Clock_ResetTimer(&timer);
     }
 
-	Sprite_Blit((Rect){100, 100, 0, 0}, 0, 0, Asset_GetSprite("arrow0"));
+	Sprite_Blit((vec4){100, 100, 0, 0}, 0, 0, Asset_GetSprite("arrow0"));
 
-    Sprite_BlitScaled((Rect){10, 10, 0, 0}, (Vector2){1.0f, 1.0f}, 0, 0, text);
+    Sprite_BlitScaled((vec4){10, 10, 0, 0}, (vec2){1.0f, 1.0f}, 0, 0, text);
 }
 
 void end() {
@@ -78,7 +78,7 @@ int main(int argc, char **argv) {
 
     CoreSettings settings = {0};
     settings.title = "Test";
-    settings.resolution = (Vector2){640, 640};
+    settings.resolution[0] = settings.resolution[1] = 640.0f;
 	settings.fullscreen = false;
 	settings.vsync = false;		// Probably not working in some environments, report
 	settings.resizable = false;

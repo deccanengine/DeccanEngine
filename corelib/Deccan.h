@@ -21,8 +21,8 @@
 #include "Input/Input.h"
 #include "Input/InputCodes.h"
 
-#include "Math/Vector2.h"
-#include "Math/Vector3.h"
+//#include "Math/Vector2.h"
+//#include "Math/Vector3.h"
 
 #include "Scene/Object.h"
 #include "Scene/Scene.h"

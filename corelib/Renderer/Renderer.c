@@ -18,7 +18,7 @@ static struct {
     RawTexture *target;
 
     struct {
-        int type; 
+        int type;
         union {
             SpriteAsset *texture;
             Color color;
@@ -50,22 +50,22 @@ void Renderer_Present() {
 
 void Renderer_Background() {
     if(Renderer_Info.background.type == 0) {
-        Renderer_ClearColor(Renderer_Info.background.color); 
+        Renderer_ClearColor(Renderer_Info.background.color);
     }
     else {
-        Renderer_Clear(); // Removing it produces artifacts 
+        Renderer_Clear(); // Removing it produces artifacts
 
-        Vector2 mode = Core_GetResolution();
-        Vector2 camera = Camera_GetPosition();
-            
-        Rect rect = {
-            camera.x, 
-            camera.y, 
-            mode.x, 
-            mode.y
+        vec2 mode; Core_GetResolution(mode);
+        vec2 camera; Camera_GetPosition(camera);
+
+        vec4 rect = {
+            camera[0],
+            camera[1],
+            mode[0],
+            mode[1]
         };
 
-        Sprite_Blit(rect, 0, 0, Renderer_Info.background.texture); 
+        Sprite_Blit(rect, 0, 0, Renderer_Info.background.texture);
     }
 }
 
@@ -98,11 +98,11 @@ void Renderer_SetBackgroundTexture(SpriteAsset *texture) {
     Renderer_Info.background.texture = texture;
 }
 
-void Renderer_SetTarget(SpriteAsset *target) { 
+void Renderer_SetTarget(SpriteAsset *target) {
     RawTexture *texture;
-    
-    if(target == NULL) { 
-        texture = Renderer_Info.target; 
+
+    if(target == NULL) {
+        texture = Renderer_Info.target;
     }
     else {
         texture = target->texture[0];
@@ -125,9 +125,9 @@ void Renderer_SetColor(Color color) {
 #endif
 }
 
-void Renderer_SetPixelSize(Vector2 size) {
+void Renderer_SetPixelSize(vec2 size) {
 #ifdef DECCAN_RENDERER_SDL
-    SDL_RenderSetScale(Renderer_Info.renderer, size.x, size.y);
+    SDL_RenderSetScale(Renderer_Info.renderer, size[0], size[1]);
 #else
 
 #endif
@@ -150,8 +150,8 @@ Color Renderer_GetBackgroundColor() {
         0, 0, 0, 0
     };
 
-    if(Renderer_Info.background.type == 0) { 
-        color = Renderer_Info.background.color; 
+    if(Renderer_Info.background.type == 0) {
+        color = Renderer_Info.background.color;
     }
 
     return color;
@@ -160,8 +160,8 @@ Color Renderer_GetBackgroundColor() {
 SpriteAsset *Renderer_GetBackgroundTexture() {
     SpriteAsset *texture = NULL;
 
-    if(Renderer_Info.background.type == 1) { 
-        texture = Renderer_Info.background.texture; 
+    if(Renderer_Info.background.type == 1) {
+        texture = Renderer_Info.background.texture;
     }
 
     return texture;
@@ -194,15 +194,12 @@ Color Renderer_GetColor() {
     return color;
 }
 
-Vector2 Renderer_GetPixelSize() {
-    Vector2 size;
-
+void Renderer_GetPixelSize(vec2 size) {
 #ifdef DECCAN_RENDERER_SDL
-    SDL_RenderGetScale(Renderer_Info.renderer, &size.x, &size.y);
+    SDL_RenderGetScale(Renderer_Info.renderer, &size[0], &size[1]);
 #else
 
 #endif
-    return size;
 }
 
 BlendMode Renderer_GetBlendMode() {
@@ -213,4 +210,4 @@ BlendMode Renderer_GetBlendMode() {
 
 #endif
     return blend;
-} 
+}

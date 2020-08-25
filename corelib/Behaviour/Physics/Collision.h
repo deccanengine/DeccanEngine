@@ -7,8 +7,8 @@
 
 #pragma once
 #include "../../Config.h"
-#include "../../Math/Vector2.h"
-#include "../../Renderer/Primitives.h"
+//#include "../../Math/vec2.h"
+//#include "../../Renderer/Primitives.h"
 
 /////////////////////////////////////////////////
 // Enums
@@ -22,9 +22,9 @@
 // Collisions
 ////////////////////////////////////////////////
 
-bool Collision_VecVec(Vector2 v1, Vector2 v2);
-bool Collision_RectRect(Rect r1, Rect r2);
-bool Collision_CircleCircle(Circle c1, Circle c2);
-bool Collision_VecRect(Vector2 vec, Rect rect);
-bool Collision_CircleVec(Circle circle, Vector2 vec);
-bool Collision_RectCircle(Rect rect, Circle circle);
+bool Collision_VecVec(vec2 v1, vec2 v2);
+bool Collision_RectRect(vec4 r1, vec4 r2);
+bool Collision_CircleCircle(vec3 c1, vec3 c2);
+bool Collision_VecRect(vec2 vec, vec4 rect);
+bool Collision_CircleVec(vec3 circle, vec2 vec);
+bool Collision_RectCircle(vec4 rect, vec3 circle);

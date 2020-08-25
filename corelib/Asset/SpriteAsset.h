@@ -7,7 +7,7 @@
 
 #pragma once
 #include "../Config.h"
-#include "../Math/Vector2.h"
+//#include "../Math/Vector2.h"
 
 /////////////////////////////////////////////////
 // Enums
@@ -45,7 +45,7 @@ void Sprite_Delete(SpriteAsset *asset);
 // Setters/Getters
 ////////////////////////////////////////////////
 
-Vector2 Sprite_GetSize(SpriteAsset *texture);
+void Sprite_GetSize(SpriteAsset *texture, vec2 size);
 
 void Sprite_SetAnimLoop(SpriteAsset *texture, bool loop);
 bool Sprite_GetAnimLoop(SpriteAsset *texture);

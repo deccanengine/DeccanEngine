@@ -14,7 +14,7 @@
 ////////////////////////////////////////////////
 
 SpriteAsset *Sprite_New(const char *name) {
-    SpriteAsset *asset = DE_NEW(SpriteAsset, 1); 
+    SpriteAsset *asset = DE_NEW(SpriteAsset, 1);
     asset->name  = DE_NEWSTRING(name);
     asset->delay = 100.0f;
     asset->current = 0;
@@ -33,12 +33,12 @@ void Sprite_Delete(SpriteAsset *asset) {
 		free(asset->name);
 		asset->name = NULL;
 	}
-	
+
 	for(int i=0; i<stbds_arrlen(asset->texture); i++) {
-		if(asset->texture[i]) 
+		if(asset->texture[i])
 			SDL_DestroyTexture(asset->texture[i]);
 	}
-	
+
 	free(asset);
 	asset = NULL;
 }
@@ -50,16 +50,19 @@ void Sprite_Delete(SpriteAsset *asset) {
 /*
  * Size
  */
-Vector2 Sprite_GetSize(SpriteAsset *texture) {
-    PTR_NULLCHECK(texture, ((Vector2){0,0}));
-
+void Sprite_GetSize(SpriteAsset *texture, vec2 size) {
     int32_t x, y;
+    size[0] = 0;
+    size[1] = 0;
+
+    PTR_NULLCHECK(texture,);
 
     if(SDL_QueryTexture(texture->texture[texture->current], NULL, NULL, &x, &y) > 0) {
         DE_REPORT("Cannot get texture size of texture: %s : %s", texture->name, SDL_GetError());
     }
 
-    return (Vector2){(float)x, (float)y};
+    size[0] = (float)x;
+    size[1] = (float)y;
 }
 
 /*
@@ -67,7 +70,7 @@ Vector2 Sprite_GetSize(SpriteAsset *texture) {
  */
 void Sprite_SetAnimLoop(SpriteAsset *texture, bool loop) {
     PTR_NULLCHECK(texture,);
-    
+
     int32_t flags = 0;
 
     if(texture->flags & AnimActive) { flags |= AnimActive; }
