@@ -9,6 +9,7 @@
 #include "Config.h"
 #include "Core.h"
 #include "Structures.h"
+#include "Asset.h"
 #include "Variable.h"
 #include "Timer.h"
 

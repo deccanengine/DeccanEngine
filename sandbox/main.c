@@ -67,6 +67,16 @@ void end() {
 int main(int argc, char **argv) {
 	DE_UNUSED(argc); DE_UNUSED(argv);
 
+#if 0
+	DE_Asset_RegisterAssetType("test");
+
+	const char *text = DE_NEWSTRING("hello");
+	DE_Asset_LoadAsset("test", "hi", (void*)text);
+
+	char *hi = DE_Asset_GetAsset("test", "hi");
+	printf("text after: %s\n", hi);
+#endif
+
     /* Register all the components */
     ECSystem_RegisterComponent("NULL");
 

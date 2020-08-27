@@ -40,7 +40,7 @@
 
 /* Memory management functions */
 #ifndef DE_NEW
-    #define DE_NEW(type,size) (type*)malloc(sizeof(type)*size);
+    #define DE_NEW(type,size) (type*)malloc(sizeof(type)*size)
 #endif
 
 static inline char *DE_NEWSTRING(const char *source) {
