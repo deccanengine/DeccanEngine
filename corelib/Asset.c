@@ -7,28 +7,30 @@
 
 #include "Asset.h"
 
-static DeccanAssetManager *mngr = NULL;
+struct AssetManager {
+    const char *key;
+    DeccanAsset *value;
+};
 
-void DE_Asset_RegisterAssetType(const char *type) {
-    DeccanAssetManager asset;
-    asset.key = DE_NEWSTRING(type);
-    asset.value = NULL;
-    stbds_arrput(mngr, asset);
-}
+static struct AssetManager *manager = NULL;
 
 void DE_Asset_LoadAsset(const char *type, const char *name, void *asset) {
-    for(int i = 0; i < stbds_arrlen(mngr); i++) {
-        if(!strcmp(mngr[i].key, type)) {
-            stbds_shput(mngr[i].value, name, asset);
-        }
+    int32_t index = stbds_shgeti(manager, type);
+    struct AssetManager assets;
+
+    if(index == -1) {
+        assets.key = DE_NEWSTRING(type);
+        assets.value = NULL;
     }
+    else {
+        assets = manager[index];
+    }
+
+    stbds_shput(assets.value, name, asset);
+    stbds_shputs(manager, assets);
 }
 
 void* DE_Asset_GetAsset(const char *type, const char *name) {
-    for(int i = 0; i < stbds_arrlen(mngr); i++) {
-        if(!strcmp(mngr[i].key, type)) {
-            return stbds_shget(mngr[i].value, name);
-        }
-    }
-    return NULL;
+    struct AssetManager assets = stbds_shgets(manager, type);
+    return stbds_shget(assets.value, name);
 }

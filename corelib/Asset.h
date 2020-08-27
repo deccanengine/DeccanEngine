@@ -14,12 +14,5 @@ typedef struct DeccanAsset {
     void *value;
 } DeccanAsset;
 
-typedef struct DeccanAssetManager {
-    const char *key;
-    DeccanAsset *value;
-} DeccanAssetManager;
-
-void DE_Asset_RegisterAssetType(const char *type);
-
 void  DE_Asset_LoadAsset(const char *type, const char *name, void *asset);
 void* DE_Asset_GetAsset(const char *type, const char *name);

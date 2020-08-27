@@ -68,8 +68,6 @@ int main(int argc, char **argv) {
 	DE_UNUSED(argc); DE_UNUSED(argv);
 
 #if 0
-	DE_Asset_RegisterAssetType("test");
-
 	const char *text = DE_NEWSTRING("hello");
 	DE_Asset_LoadAsset("test", "hi", (void*)text);
 
