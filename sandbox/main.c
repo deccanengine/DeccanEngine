@@ -75,16 +75,7 @@ int main(int argc, char **argv) {
 	printf("text after: %s\n", hi);
 #endif
 
-    /* Register all the components */
-    ECSystem_RegisterComponent("NULL");
-
-    State2D_Register();
-    Collider_Register();
-
-    // To do: material component
-    ECSystem_RegisterComponent("Color");
-
-    CoreSettings settings = {0};
+    DeccanSettings settings = {0};
     settings.title = "Test";
     settings.resolution[0] = settings.resolution[1] = 640.0f;
 	settings.fullscreen = false;
@@ -93,7 +84,7 @@ int main(int argc, char **argv) {
 	settings.closeOnEscape = true;
     settings.fps = 120.0f;
 
-    if(Core_Init(&settings)) {
+    if(DE_App_Init(&settings)) {
         GameScene *scene = Scene_NewScene("scene0");
         scene->AtFirstFrame = begin;
         scene->AtStep = step;
@@ -101,9 +92,9 @@ int main(int argc, char **argv) {
         scene->AtEnd = end;
         Scene_AddScene(scene, false);
 
-        Core_Run();
+        DE_App_Update();
     }
-    atexit(Core_Quit);
+    atexit(DE_App_Quit);
 
 	return 0;
 }

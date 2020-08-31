@@ -1,5 +1,6 @@
 test
 test.exe
+.lite_*.lua
 *.png
 *.ttf
 *.log

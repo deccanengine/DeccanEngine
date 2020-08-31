@@ -7,7 +7,7 @@
 
 #pragma once
 #include "../Config.h"
-#include "../Variable.h"
+#include "../Core/Variable.h"
 
 #ifndef DECCAN_OBJ_MSG_LENGTH
     #define DECCAN_OBJ_MSG_LENGTH 50

@@ -6,15 +6,15 @@
  */
 
 #include "Importer.h"
-#include "../Core.h"
+#include "../Core/Core.h"
 #include "../Renderer/Renderer.h"
 
 static struct {
-    struct AssetTextureStorage { 
+    struct AssetTextureStorage {
 		const char *key;
 		SpriteAsset *value;
 	} *textures;
-    struct { 
+    struct {
 		const char *key;
 		FontAsset *value;
 	} *fonts;
@@ -34,10 +34,10 @@ int32_t Asset_GetSpriteIndex(const char *name) {
 RawTexture *LoadSprite(const char *path) {
     SDL_Surface *img;
     SDL_Texture *tex;
-	
+
 	int32_t width, height, fmt = STBI_rgb_alpha;
 	unsigned char *data;
-	
+
 	/* We dont need to collect the number of channels
 	 * Just ask for 4 channels here. If alpha is absent
 	 * stb_image will handle it. */
@@ -45,8 +45,8 @@ RawTexture *LoadSprite(const char *path) {
 	if(data == NULL) {
 		DE_REPORT("Cannot load image: %s\n", path);
 	}
-	
-	/* 3-channel calculation is never used but, 
+
+	/* 3-channel calculation is never used but,
 	 * let it be here for future */
 	int32_t depth, pitch;
 	uint32_t pixel_fmt;
@@ -78,7 +78,7 @@ RawTexture *LoadSprite(const char *path) {
 SpriteAsset *Asset_LoadSprite(const char *name, const char *path) {
     SpriteAsset *asset = NULL;
     RawTexture *tex = LoadSprite(path);
-    
+
     if(tex == NULL) {
         DE_REPORT("Cannot create texture: %s: %s", name, SDL_GetError());
         return asset;
@@ -105,9 +105,9 @@ SpriteAsset *Asset_LoadAnimatedSprite(const char *name, const char *path, ...) {
     SpriteAsset *asset;
 
     va_start(args, path);
-    
+
     char *this = (char*)path; /* Current path */
-    
+
     do {
         asset = Asset_LoadSprite(name, this); /* Load the current frame */
         this  = va_arg(args, char *);         /* Next frame path */

@@ -7,11 +7,9 @@
 
 #pragma once
 
-#include "Config.h"
+#include "../Config.h"
 #include "Timer.h"
-#include "Structures.h"
-#include "Scene/Scene.h"
-#include "Scene/Object.h"
+#include "Variable.h"
 
 #ifndef DECCAN_MSG_LENGTH
     #define DECCAN_MSG_LENGTH 50
@@ -28,13 +26,23 @@
 // Structs
 ////////////////////////////////////////////////
 
+typedef struct DeccanSettings {
+    char *title;
+    vec2 resolution;
+    bool fullscreen;
+    bool vsync;
+    bool resizable;
+    bool closeOnEscape;
+    float fps;
+} DeccanSettings;
+
 /////////////////////////////////////////////////
 // Core functions
 ////////////////////////////////////////////////
 
-int  Core_Init(CoreSettings *settings);
+int  Core_Init(DeccanSettings *settings);
 void Core_Quit();
-void Core_Run();
+void DE_Core_Update(float fpsAverage, float deltaTime);
 void Core_SetTitle(const char *name);
 void Core_SetResolution(vec2 mode);
 void Core_ToogleFullscreen();
@@ -45,8 +53,11 @@ void Core_GetResolution(vec2 res);
 bool Core_IsFullscreened();
 bool Core_IsVsyncEnabled();
 bool Core_IsResizable();
+bool Core_IsRunning();
 float Core_GetFramerateLimit();
 float Core_GetAverageFramerate();
-int32_t Core_GetTotalFrameCount();
 float Core_GetDeltaTime();
+SDL_Window *DE_Core_GetWindowHandle();
 DeccanVarManager *DE_Core_GetVarManager();
+DeccanSettings *DE_Core_GetSettings();
+

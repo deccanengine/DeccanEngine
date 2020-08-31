@@ -39,6 +39,8 @@ static inline void NULL_VOIDFUNC() { }
 GameScene **Scene_GetSceneArray();
 int Scene_GetSceneCount();
 void Scene_FreeAll();
+void Scene_Update();
+void Scene_Quit();
 
 /////////////////////////////////////////////////
 // Constructor and destructor

@@ -9,13 +9,16 @@
 #include "Camera.h"
 #include "Texture.h"
 #include "TextRendering.h"
-#include "../Core.h"
+#include "../Core/Core.h"
 
 static struct {
 #ifdef DECCAN_RENDERER_SDL
     SDL_Renderer *renderer;
 #endif
     RawTexture *target;
+
+    int glMajor;
+    int glMinor;
 
     struct {
         int type;
@@ -32,9 +35,32 @@ SDL_Renderer *Renderer_GetRenderer() {
 }
 
 void Renderer_Init(SDL_Window *window) {
+    if(!window) return;
+
+    /* GL Attributes: OpenGL 2.1 with hardware acceleration */
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE,   8);
+    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,  8);
+    SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+    /* Set the renderer to OpenGL */
+    if(SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl") != SDL_TRUE) {
+        DE_ERROR("OpenGL cannot be enabled");
+    }
+
     int render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     if((Renderer_Info.renderer = SDL_CreateRenderer(window, -1, render_flags)) == NULL) {
         DE_ERROR("Could not create renderer: %s", SDL_GetError());
+    }
+
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &Renderer_Info.glMajor);
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &Renderer_Info.glMinor);
+    if(Renderer_Info.glMajor < 2 || (Renderer_Info.glMajor == 2 && Renderer_Info.glMinor < 1)) {
+        DE_ERROR("OpenGL 2.1 support needed at minimum. Consider upgrading your hardware.");
     }
 
     Renderer_Info.target = SDL_GetRenderTarget(Renderer_Info.renderer);

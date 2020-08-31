@@ -7,7 +7,7 @@
 
 #include "Collider.h"
 #include "State2D.h"
-#include "../../Behaviour/Physics/Collision.h"
+#include "../../Modules/Physics/Collision.h"
 
 
 /////////////////////////////////////////////////

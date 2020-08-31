@@ -6,7 +6,7 @@
  */
 
 #pragma once
-#include "Config.h"
+#include "../Config.h"
 
 typedef struct Time {
     float seconds;

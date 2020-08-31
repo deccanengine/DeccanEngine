@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Config.h"
+#include "../Config.h"
 
 typedef struct DeccanAsset {
     const char *key;

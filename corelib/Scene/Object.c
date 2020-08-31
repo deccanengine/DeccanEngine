@@ -7,7 +7,7 @@
 
 #include "Object.h"
 #include "Scene.h"
-#include "../Core.h"
+#include "../Core/Core.h"
 #include "ECSystem.h"
 
 static struct {

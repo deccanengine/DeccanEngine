@@ -8,7 +8,7 @@
 #include "Texture.h"
 #include "Camera.h"
 #include "../Asset/SpriteAsset.h"
-#include "../Core.h"
+#include "../Core/Core.h"
 
 // To be replaced with better and practical functions
 /*
