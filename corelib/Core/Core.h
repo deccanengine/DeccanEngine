@@ -8,6 +8,7 @@
 #pragma once
 
 #include "../Config.h"
+#include "Memory.h"
 #include "Timer.h"
 #include "Variable.h"
 

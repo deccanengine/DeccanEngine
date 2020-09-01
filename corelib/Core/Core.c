@@ -148,7 +148,8 @@ void DE_Core_Update(float fpsAverage, float deltaTime) {
 
 /* Core Settings Setters */
 void Core_SetTitle(const char *name) {
-    Core_Info.settings.title = DE_NEWSTRING(name);
+    DE_Mem_Delete(Core_Info.settings.title);
+    Core_Info.settings.title = DE_String_New(name);
     Core_Info.isSettingsDirty = true;
 }
 

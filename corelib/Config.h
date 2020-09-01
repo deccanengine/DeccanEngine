@@ -38,19 +38,6 @@
     typedef SDL_Texture RawTexture;
 #endif
 
-/* Memory management functions */
-#ifndef DE_NEW
-    #define DE_NEW(type,size) (type*)malloc(sizeof(type)*size)
-#endif
-
-static inline char *DE_NEWSTRING(const char *source) {
-    size_t len = strlen(source);
-	char *string = DE_NEW(char, len + 1);
-    strncpy(string, source, len);
-	string[len] = '\0';
-    return string;
-}
-
 /* Error handling/logging */
 extern void DE_ERROR (const char *str, ...);
 extern void DE_REPORT(const char *str, ...);

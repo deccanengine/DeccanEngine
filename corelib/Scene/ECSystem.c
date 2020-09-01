@@ -39,7 +39,7 @@ void ECSystem_FreeAllComponents() {
 
     for(int i=0; i<stbds_shlen(ECS_Info.componentTable); i++) {
         ECSComp comp = ECS_Info.componentTable[i];
-        
+
         if(comp.key != NULL) {
             free(comp.key);
             comp.key = NULL;
@@ -56,12 +56,11 @@ void ECSystem_FreeAllSystems() {
 
     for(int i=0; i<stbds_arrlen(ECS_Info.systemTable); i++) {
         ECSystem *sys = ECS_Info.systemTable[i];
-        
+
         if(sys != NULL) {
             stbds_arrfree(sys->components);
 
-            free(sys);
-            sys = NULL;       
+            DE_Mem_Delete(sys);
         }
     }
 
@@ -74,7 +73,7 @@ void ECSystem_FreeAllSystems() {
 
 int32_t ECSystem_RegisterComponent(const char *name) {
     /* Push the component into the global table */
-    stbds_shput(ECS_Info.componentTable, DE_NEWSTRING(name), ECS_Info.globalCompCount++);
+    stbds_shput(ECS_Info.componentTable, DE_String_New(name), ECS_Info.globalCompCount++);
 
     /* Return the ID of the component           */
     /* STB_DS will automatically increment it   */
@@ -83,11 +82,11 @@ int32_t ECSystem_RegisterComponent(const char *name) {
 }
 
 void ECSystem_RegisterSystem(int count, const char *participants[], int32_t when, void (*func)(GameObject *object)) {
-    if(!count) { 
+    if(!count) {
         return;
     }
-    
-    ECSystem *system = DE_NEW(ECSystem, 1);
+
+    ECSystem *system = DE_Mem_New(sizeof(ECSystem), 1);
     system->components = NULL;
     system->when = when;
     system->func = func;
@@ -106,7 +105,7 @@ int32_t ECSystem_GetComponentID(const char *name) {
     if(index != -1) {
         return ECS_Info.componentTable[index].value;
     }
-    
+
 	DE_ERROR("Not a valid registered component: %s", name);
     return -1;
 }
@@ -118,9 +117,9 @@ void ECSystem_UpdateSystems(GameObject *obj, int32_t when) {
     for(int i=0; i<systemCount; i++) {
         if(ECS_Info.systemTable[i]->when == when) {
             int systemComponentCount = stbds_arrlen(ECS_Info.systemTable[i]->components);
-            
+
             for(int j=0; j<systemComponentCount; j++) {
-                int32_t component = ECS_Info.systemTable[i]->components[j];    
+                int32_t component = ECS_Info.systemTable[i]->components[j];
                 if(stbds_hmgeti(obj->components, component) == -1) {
                     loopStatus = false;
                     break;
@@ -132,5 +131,5 @@ void ECSystem_UpdateSystems(GameObject *obj, int32_t when) {
             }
         }
     }
-    
+
 }

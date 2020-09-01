@@ -8,6 +8,7 @@
 #pragma once
 #include "../Config.h"
 #include "../Core/Variable.h"
+#include "../Core/Memory.h"
 
 #ifndef DECCAN_OBJ_MSG_LENGTH
     #define DECCAN_OBJ_MSG_LENGTH 50
@@ -92,7 +93,7 @@ void  Object_SetComponent(GameObject *obj, const char *name, void *component);
 void *Object_GetComponent(GameObject *obj, const char *name);
 
 #define OBJECT_AddComponentCustom(obj, component) \
-    component *_##obj##_component_##component = DE_NEW(component, 1);   \
+    component *_##obj##_component_##component = DE_Mem_New(sizeof(component), 1);   \
     Object_SetComponent(obj, #component, (void*)(_##obj##_component_##component))
 
 #define OBJECT_AddComponent(obj, component, ...) \

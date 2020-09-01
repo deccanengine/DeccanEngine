@@ -194,8 +194,8 @@ SpriteAsset *Renderer_GetBackgroundTexture() {
 }
 
 SpriteAsset *Renderer_GetTarget() {
-    SpriteAsset *target = DE_NEW(SpriteAsset, 1);
-    target->name = DE_NEWSTRING("DE_Renderer_Target");
+    SpriteAsset *target = DE_Mem_New(sizeof(SpriteAsset), 1);
+    target->name = DE_String_New("DE_Renderer_Target");
 
 #ifdef DECCAN_RENDERER_SDL
     target->texture[0] = SDL_GetRenderTarget(Renderer_Info.renderer);

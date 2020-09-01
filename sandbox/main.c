@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
 	DE_UNUSED(argc); DE_UNUSED(argv);
 
 #if 0
-	const char *text = DE_NEWSTRING("hello");
+	const char *text = DE_String_New("hello");
 	DE_Asset_LoadAsset("test", "hi", (void*)text);
 
 	char *hi = DE_Asset_GetAsset("test", "hi");

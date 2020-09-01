@@ -19,7 +19,7 @@ void Collider_Register() {
 }
 
 Collider *Collider_Init(Collider c) {
-    Collider *collider = DE_NEW(Collider, 1);
+    Collider *collider = DE_Mem_New(sizeof(Collider), 1);
     *collider = c;
 
     return collider;

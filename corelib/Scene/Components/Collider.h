@@ -10,6 +10,7 @@
 #include "../Object.h"
 #include "../ECSystem.h"
 #include "../../Renderer/Primitives.h"
+#include "../../Core/Memory.h"
 
 /////////////////////////////////////////////////
 // Enums

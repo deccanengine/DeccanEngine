@@ -8,6 +8,7 @@
 #pragma once
 #include "../Config.h"
 #include "Object.h"
+#include "../Core/Memory.h"
 
 /////////////////////////////////////////////////
 // Enums
@@ -32,7 +33,7 @@ void ECSystem_FreeAllSystems();
 ////////////////////////////////////////////////
 
 int32_t ECSystem_RegisterComponent(const char *name);
-void ECSystem_RegisterSystem(int count, const char *participants[], int32_t when, void (*func)(GameObject *object)); 
+void ECSystem_RegisterSystem(int count, const char *participants[], int32_t when, void (*func)(GameObject *object));
 
 int32_t ECSystem_GetComponentID(const char *name);
 const char *ECSystem_GetComponentName(int32_t id);

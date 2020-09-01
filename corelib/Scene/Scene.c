@@ -77,9 +77,9 @@ void Scene_Quit() {
 ////////////////////////////////////////////////
 
 GameScene *Scene_NewScene(const char *name) {
-    GameScene *scene = DE_NEW(GameScene, 1);
+    GameScene *scene = DE_Mem_New(sizeof(GameScene), 1);
 
-    scene->name = DE_NEWSTRING(name);
+    scene->name = DE_String_New(name);
     scene->is_paused = false;
     scene->objects = NULL;
 

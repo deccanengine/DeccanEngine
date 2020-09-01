@@ -16,8 +16,8 @@ void State2D_Register() {
 }
 
 State2D *State2D_Init(State2D s) {
-    State2D *state = DE_NEW(State2D, 1);
+    State2D *state = DE_Mem_New(sizeof(State2D), 1);
     *state = s;
-    
+
     return state;
 }

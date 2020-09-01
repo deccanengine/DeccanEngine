@@ -7,6 +7,7 @@
 
 #pragma once
 #include "../Config.h"
+#include "Memory.h"
 
 typedef enum DeccanVarType {
     DECCAN_VARTYPE_UNDEFINED = 0,

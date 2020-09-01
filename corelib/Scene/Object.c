@@ -25,11 +25,10 @@ static struct {
 ////////////////////////////////////////////////
 
 GameObject *Object_NewObject(const char *name, const char *type) {
+    GameObject *obj = DE_Mem_New(sizeof(GameObject), 1);
 
-    GameObject *obj = DE_NEW(GameObject, 1);
-
-    obj->name = DE_NEWSTRING(name);
-    obj->type = DE_NEWSTRING(type);
+    obj->name = DE_String_New(name);
+    obj->type = DE_String_New(type);
 
     obj->order.z = (float)Object_Info.zAccum++;
     //obj->angle   = 0.0f;
@@ -74,24 +73,15 @@ void Object_FreeObject(GameObject *obj) {
     obj->AtEnd(obj);
 
     /* Free the name */
-    if(obj->name != NULL) {
-        free(obj->name);
-        obj->name = NULL;
-    }
+    DE_Mem_Delete(obj->name);
 
     /* Free the type */
-    if(obj->type != NULL) {
-        free(obj->type);
-        obj->type = NULL;
-    }
+    DE_Mem_Delete(obj->type);
 
     /* Free all components */
     for(int i=0; i<stbds_hmlen(obj->components); i++) {
         void *addr = obj->components[i].value;
-        if(addr != NULL) {
-            free(addr);
-            addr = NULL;
-        }
+        DE_Mem_Delete(addr);
     }
 
     stbds_hmfree(obj->components);
@@ -103,8 +93,7 @@ void Object_FreeObject(GameObject *obj) {
     stbds_arrdel(scene->objects, index);
 
     /* Free */
-    free(obj);
-    obj = NULL;
+    DE_Mem_Delete(obj);
 }
 
 void AddObjectToArray(GameObject *object) {

@@ -14,26 +14,17 @@
 ////////////////////////////////////////////////
 
 FontAsset *Font_New(const char *name) {
-    FontAsset *asset = DE_NEW(FontAsset, 1);
-    asset->name = DE_NEWSTRING(name);
+    FontAsset *asset = DE_Mem_New(sizeof(FontAsset), 1);
+    asset->name = DE_String_New(name);
     return asset;
 }
 
 void Font_Delete(FontAsset *asset) {
 	if(!asset) return;
 
-	if(asset->name) {
-		free((char*)asset->name);
-		asset->name = NULL;
-	}
-
-	if(asset->font) {
-		TTF_CloseFont(asset->font);
-		asset->font = NULL;
-	}
-
-	free(asset);
-	asset = NULL;
+    DE_Mem_Delete(asset->name);
+    DE_Mem_Delete(asset->font);
+    DE_Mem_Delete(asset);
 }
 
 /////////////////////////////////////////////////

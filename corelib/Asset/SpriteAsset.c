@@ -14,8 +14,8 @@
 ////////////////////////////////////////////////
 
 SpriteAsset *Sprite_New(const char *name) {
-    SpriteAsset *asset = DE_NEW(SpriteAsset, 1);
-    asset->name  = DE_NEWSTRING(name);
+    SpriteAsset *asset = DE_Mem_New(sizeof(SpriteAsset), 1);
+    asset->name  = DE_String_New(name);
     asset->delay = 100.0f;
     asset->current = 0;
     asset->count   = 1;
@@ -29,18 +29,13 @@ SpriteAsset *Sprite_New(const char *name) {
 void Sprite_Delete(SpriteAsset *asset) {
 	if(!asset) return;
 
-	if(asset->name) {
-		free(asset->name);
-		asset->name = NULL;
-	}
-
 	for(int i=0; i<stbds_arrlen(asset->texture); i++) {
 		if(asset->texture[i])
 			SDL_DestroyTexture(asset->texture[i]);
 	}
 
-	free(asset);
-	asset = NULL;
+    DE_Mem_Delete(asset->name);
+    DE_Mem_Delete(asset);
 }
 
 /////////////////////////////////////////////////

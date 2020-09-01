@@ -8,6 +8,7 @@
 #pragma once
 #include "../../Config.h"
 #include "../ECSystem.h"
+#include "../../Core/Memory.h"
 
 /////////////////////////////////////////////////
 // Structs
