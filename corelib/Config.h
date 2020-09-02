@@ -15,13 +15,13 @@
 #include <stdarg.h>
 #include <math.h>
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
+/////////////////////////////////////////////////
+/* Common macros */
+/////////////////////////////////////////////////
 
-#include "../depends/cglm/include/cglm/cglm.h"
-
-#include "../depends/stb/stb_image.h"
-#include "../depends/stb/stb_ds.h"
+#define DE_STRINGIFY(x) #x
+#define DE_CONCAT(x,y) x##y
+#define DE_UNUSED(x) (void)(x)
 
 /////////////////////////////////////////////////
 /* Detect C Version */
@@ -87,6 +87,36 @@
     #error This Operating System is not supported
 #endif
 
+/////////////////////////////////////////////////
+/* Disable warnings */
+/////////////////////////////////////////////////
+// See: https://www.fluentcpp.com/2019/08/30/how-to-disable-a-warning-in-cpp/
+#if defined(DE_COMPILER_MSVC)
+    #define DE_DISABLE_WARNING        __pragma(warning(push))
+    #define DE_ENABLE_WARNING         __pragma(warning(pop))
+    #define DE_WARNING(warningNumber) __pragma(warning(disable: warningNumber))
+
+    // TODO
+    #define DE_DISABLE_WARNING_NO_UNUSED_VALUE
+    #define DE_DISABLE_WARNING_NO_UNUSED_PARAM
+    #define DE_DISABLE_WARNING_IMPLICIT_FALLTHROUGH
+#elif defined(DE_COMPILER_GCC) || defined(DE_COMPILER_MINGW) || defined(DE_COMPILER_CLANG)
+    #define DE_DISABLE_WARNING      _Pragma("GCC diagnostic push")
+    #define DE_ENABLE_WARNING       _Pragma("GCC diagnostic pop")
+    #define DE_WARNING(warningName) _Pragma("GCC diagnostic ignored \"warningName\"")
+
+    #define DE_DISABLE_WARNING_NO_UNUSED_VALUE      DE_WARNING(-Wno-unused-value)
+    #define DE_DISABLE_WARNING_NO_UNUSED_PARAM      DE_WARNING(-Wno-unused-parameter)
+    #define DE_DISABLE_WARNING_IMPLICIT_FALLTHROUGH DE_WARNING(-Wno-implicit-fallthrough)
+ #else
+    #define DE_DISABLE_WARNING
+    #define DE_ENABLE_WARNING
+    #define DE_WARNING
+
+    #define DE_DISABLE_WARNING_NO_UNUSED_VALUE
+    #define DE_DISABLE_WARNING_NO_UNUSED_PARAM
+    #define DE_DISABLE_WARNING_IMPLICIT_FALLTHROUGH
+ #endif
 
 /////////////////////////////////////////////////
 /* Define basic constants */
@@ -96,7 +126,17 @@
 #define DEG2RAD (PI/180.0000)
 #define RAD2DEG (180.0000/PI)
 
-#define DE_UNUSED(x) (void)(x)
+/////////////////////////////////////////////////
+/* External library includes */
+/////////////////////////////////////////////////
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+
+#include "../depends/cglm/include/cglm/cglm.h"
+
+#include "../depends/stb/stb_image.h"
+#include "../depends/stb/stb_ds.h"
 
 /* Texture structure depends on backend */
 #ifdef DECCAN_RENDERER_SDL
