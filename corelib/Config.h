@@ -26,6 +26,7 @@
 /////////////////////////////////////////////////
 /* Detect C Version */
 /////////////////////////////////////////////////
+// See: https://sourceforge.net/p/predef/wiki/Standards/
 #if __STDC_VERSION__ < 201112L
     #error Use a modern C compiler(C11 or greater)
 #endif
@@ -33,6 +34,7 @@
 /////////////////////////////////////////////////
 /* Detect C Compiler */
 /////////////////////////////////////////////////
+// See: https://sourceforge.net/p/predef/wiki/Compilers/
 #if defined(__clang__)
     #define DE_COMPILER_CLANG
 #elif defined(_MSC_VER_)
@@ -56,33 +58,52 @@
 /////////////////////////////////////////////////
 /* Detect OS */
 /////////////////////////////////////////////////
+// See: https://sourceforge.net/p/predef/wiki/OperatingSystems/
 #if defined(__ANDROID__)
+    /* Android must be checked first because
+     * android defined both __ANDROID__ and __linux__
+     */
     #define DE_OS_ANDROID
+
 #elif defined(__linux__)
     #define DE_OS_LINUX
+
 #elif defined(__FreeBSD__) && defined(__NetBSD__) && \
     defined(__OpenBSD__) && defined(__DragonFly__)
     #define DE_OS_BSD
+
 #elif defined(__APPLE__) && defined(__MACH__)
+    /* Defines all Apple platform */
     #include <TargetConditionals.h>
+
     #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
         #define DE_OS_IOS
+
     #elif TARGET_OS_MAC
         #define DE_OS_MAC
+
     #else
         #error "This Apple operating system is not supported"
     #endif
+
 #elif defined(_WIN32)
+    // See: https://docs.microsoft.com/en-us/cpp/preprocessor/predefined-macros
     #if defined(DE_COMPILER_MSVC) && defined(_WINRT_DLL)
+        /* UWP would only work with MSVC */
         #define DE_OS_UWP
+
     #else
         #define DE_OS_WIN
+
     #endif
+
     #ifndef NOMINMAX
         #define NOMINMAX
     #endif
+
 #elif defined(__EMSCRIPTEN__)
     #define DE_OS_WEB
+
 #else
     #error This Operating System is not supported
 #endif
@@ -100,6 +121,7 @@
     #define DE_DISABLE_WARNING_NO_UNUSED_VALUE
     #define DE_DISABLE_WARNING_NO_UNUSED_PARAM
     #define DE_DISABLE_WARNING_IMPLICIT_FALLTHROUGH
+
 #elif defined(DE_COMPILER_GCC) || defined(DE_COMPILER_MINGW) || defined(DE_COMPILER_CLANG)
     #define DE_DISABLE_WARNING      _Pragma("GCC diagnostic push")
     #define DE_ENABLE_WARNING       _Pragma("GCC diagnostic pop")
@@ -108,7 +130,8 @@
     #define DE_DISABLE_WARNING_NO_UNUSED_VALUE      DE_WARNING(-Wno-unused-value)
     #define DE_DISABLE_WARNING_NO_UNUSED_PARAM      DE_WARNING(-Wno-unused-parameter)
     #define DE_DISABLE_WARNING_IMPLICIT_FALLTHROUGH DE_WARNING(-Wno-implicit-fallthrough)
- #else
+
+#else
     #define DE_DISABLE_WARNING
     #define DE_ENABLE_WARNING
     #define DE_WARNING
