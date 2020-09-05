@@ -4,3 +4,6 @@
 [submodule "depends/cglm"]
 	path = depends/cglm
 	url = https://github.com/recp/cglm
+[submodule "depends/log.c"]
+	path = depends/log.c
+	url = https://github.com/rxi/log.c.git

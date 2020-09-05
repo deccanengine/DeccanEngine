@@ -156,10 +156,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
+#include "../depends/log.c/src/log.h"
+
 #include "../depends/cglm/include/cglm/cglm.h"
 
 #include "../depends/stb/stb_image.h"
 #include "../depends/stb/stb_ds.h"
+
 
 /* Texture structure depends on backend */
 #ifdef DECCAN_RENDERER_SDL
@@ -167,5 +170,10 @@
 #endif
 
 /* Error handling/logging */
-extern void DE_ERROR (const char *str, ...);
-extern void DE_REPORT(const char *str, ...);
+#define DE_FATAL(...) (log_fatal(__VA_ARGS__), exit(-1))
+#define DE_ERROR(...) (log_error(__VA_ARGS__))
+#define DE_WARN(...)  (log_warn (__VA_ARGS__))
+#define DE_INFO(...)  (log_info (__VA_ARGS__))
+
+// For backward compatibility, to be removed
+#define DE_REPORT(...) DE_WARN(__VA_ARGS__)

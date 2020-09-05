@@ -41,11 +41,11 @@ static struct {
 int Core_Init(DeccanSettings *settings) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
-        DE_ERROR("Could not initialize SDL2: %s", SDL_GetError());
+        DE_FATAL("Could not initialize SDL2: %s", SDL_GetError());
     }
 
     if(TTF_Init() != 0) {
-        DE_ERROR("Could not initialize SDL2_ttf: %s", TTF_GetError());
+        DE_FATAL("Could not initialize SDL2_ttf: %s", TTF_GetError());
     }
 
     Core_Info.settings = *settings;
@@ -58,15 +58,19 @@ int Core_Init(DeccanSettings *settings) {
 
     if((Core_Info.window = SDL_CreateWindow(Core_Info.settings.title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         Core_Info.settings.resolution[0], Core_Info.settings.resolution[1], window_flags)) == NULL) {
-        DE_ERROR("Could not create window: %s", SDL_GetError());
+        DE_FATAL("Could not create window: %s", SDL_GetError());
     }
 
 #ifdef DECCAN_REPORTS_ENABLED
     /* Open the log file */
+
     Core_Info.logfile = fopen("report.log", "w");
     if(Core_Info.logfile == NULL) {
         DE_ERROR("Could not create/open log file");
     }
+
+    log_add_fp(Core_Info.logfile, 0);
+
 #endif
 
     Input_Init();
@@ -219,28 +223,4 @@ DeccanVarManager *DE_Core_GetVarManager() {
 
 DeccanSettings *DE_Core_GetSettings() {
     return &Core_Info.settings;
-}
-
-void DE_ERROR(const char *str, ...) {
-    printf("Fatal Error: ");
-
-    va_list args;
-    va_start(args, str);
-    vprintf(str, args);
-    va_end(args);
-
-    printf("\n");
-    exit(-1);
-}
-
-void DE_REPORT(const char *str, ...) {
-#ifdef DECCAN_REPORTS_ENABLED
-    va_list args;
-
-    va_start(args, str);
-    vfprintf(Core_Info.logfile, str, args);
-    va_end(args);
-
-    fprintf(Core_Info.logfile, "\n");
-#endif
 }
