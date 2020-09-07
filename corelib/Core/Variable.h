@@ -26,13 +26,14 @@ typedef struct DeccanVar {
 } DeccanVar;
 
 typedef struct DeccanVarManager {
-    struct vars {
+    struct {
         char *key;
         DeccanVar *value;
     } *vars;
 } DeccanVarManager;
 
 void DE_Var_Init(DeccanVarManager *manager);
+void DE_Var_Quit(DeccanVarManager *manager);
 void DE_Var_New(DeccanVarManager *manager, const char *name, DeccanVarType type);
 void DE_Var_Delete(DeccanVarManager *manaer, const char *name);
 

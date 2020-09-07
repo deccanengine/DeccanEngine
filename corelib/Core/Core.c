@@ -63,14 +63,12 @@ int Core_Init(DeccanSettings *settings) {
 
 #ifdef DECCAN_REPORTS_ENABLED
     /* Open the log file */
-
     Core_Info.logfile = fopen("report.log", "w");
     if(Core_Info.logfile == NULL) {
         DE_ERROR("Could not create/open log file");
     }
 
     log_add_fp(Core_Info.logfile, 0);
-
 #endif
 
     Input_Init();
@@ -83,8 +81,7 @@ void Core_Quit() {
 #ifdef DECCAN_REPORTS_ENABLED
     fclose(Core_Info.logfile);
 #endif
-    //Msg_Free(&Core_Info.msg); -- HERE
-
+    DE_Var_Quit(&Core_Info.vars);
     SDL_DestroyWindow(Core_Info.window);
 
     TTF_Quit();

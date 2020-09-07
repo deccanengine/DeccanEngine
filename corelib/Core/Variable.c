@@ -11,6 +11,20 @@ void DE_Var_Init(DeccanVarManager *manager) {
     manager->vars = NULL;
 }
 
+void DE_Var_Quit(DeccanVarManager *manager) {
+    for(int i = 0; i < stbds_shlen(manager->vars); i++) {
+        DeccanVar *var = manager->vars[i].value;
+
+        if(var->type == DECCAN_VARTYPE_STRING) {
+            DE_Mem_Delete(var->value.string);
+        }
+        
+        DE_Mem_Delete(var);
+    }
+
+    stbds_shfree(manager->vars);
+}
+
 void DE_Var_New(DeccanVarManager *manager, const char *name, DeccanVarType type) {
     DeccanVar *var = DE_Mem_New(sizeof(DeccanVar), 1);
     var->type = type;
