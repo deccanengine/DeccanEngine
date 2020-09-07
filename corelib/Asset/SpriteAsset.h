@@ -9,6 +9,11 @@
 #include "../Config.h"
 #include "../Core/Memory.h"
 
+/* Texture structure depends on backend */
+#ifdef DECCAN_RENDERER_SDL
+    typedef SDL_Texture DeccanRawTexture;
+#endif
+
 /////////////////////////////////////////////////
 // Enums
 ////////////////////////////////////////////////
@@ -24,7 +29,7 @@ typedef enum {
 
 typedef struct SpriteAsset {
     char *name;
-    RawTexture **texture;
+    DeccanRawTexture **texture;
     uint32_t count;
     uint32_t current;
     float delay;

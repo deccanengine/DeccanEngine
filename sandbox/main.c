@@ -1,4 +1,3 @@
-#define DECCAN_SHORT_NAMES
 #include "../corelib/Deccan.h"
 #include "player.h"
 

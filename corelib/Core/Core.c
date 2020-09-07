@@ -29,7 +29,7 @@ static struct {
     DeccanSettings settings;
     DeccanVarManager vars;
 
-#ifdef DECCAN_REPORTS_ENABLED
+#ifdef DE_DEBUG
     FILE *logfile;
 #endif
 } Core_Info = {
@@ -61,7 +61,7 @@ int Core_Init(DeccanSettings *settings) {
         DE_FATAL("Could not create window: %s", SDL_GetError());
     }
 
-#ifdef DECCAN_REPORTS_ENABLED
+#ifdef DE_DEBUG
     /* Open the log file */
     Core_Info.logfile = fopen("report.log", "w");
     if(Core_Info.logfile == NULL) {
@@ -78,7 +78,7 @@ int Core_Init(DeccanSettings *settings) {
 }
 
 void Core_Quit() {
-#ifdef DECCAN_REPORTS_ENABLED
+#ifdef DE_DEBUG
     fclose(Core_Info.logfile);
 #endif
     DE_Var_Quit(&Core_Info.vars);

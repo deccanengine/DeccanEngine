@@ -15,7 +15,7 @@ static struct {
 #ifdef DECCAN_RENDERER_SDL
     SDL_Renderer *renderer;
 #endif
-    RawTexture *target;
+    DeccanRawTexture *target;
 
     int glMajor;
     int glMinor;
@@ -125,7 +125,7 @@ void Renderer_SetBackgroundTexture(SpriteAsset *texture) {
 }
 
 void Renderer_SetTarget(SpriteAsset *target) {
-    RawTexture *texture;
+    DeccanRawTexture *texture;
 
     if(target == NULL) {
         texture = Renderer_Info.target;

@@ -1,6 +1,5 @@
-#define DECCAN_SHORT_NAMES
 #include "../corelib/Deccan.h"
-	
+
 void _player_begin(GameObject *this);
 void _player_step(GameObject *this);
 void _player_render(GameObject *this);

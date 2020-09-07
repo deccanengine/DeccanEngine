@@ -163,17 +163,21 @@
 #include "../depends/stb/stb_image.h"
 #include "../depends/stb/stb_ds.h"
 
-
-/* Texture structure depends on backend */
-#ifdef DECCAN_RENDERER_SDL
-    typedef SDL_Texture RawTexture;
-#endif
-
+/////////////////////////////////////////////////
 /* Error handling/logging */
-#define DE_FATAL(...) (log_fatal(__VA_ARGS__), exit(-1))
-#define DE_ERROR(...) (log_error(__VA_ARGS__))
-#define DE_WARN(...)  (log_warn (__VA_ARGS__))
-#define DE_INFO(...)  (log_info (__VA_ARGS__))
+/////////////////////////////////////////////////
+
+#if defined(DE_DEBUG)
+    #define DE_FATAL(...) (log_fatal(__VA_ARGS__), exit(-1))
+    #define DE_ERROR(...) (log_error(__VA_ARGS__))
+    #define DE_WARN(...)  (log_warn (__VA_ARGS__))
+    #define DE_INFO(...)  (log_info (__VA_ARGS__))
+#else
+    #define DE_FATAL(...) (exit(-1))
+    #define DE_ERROR(...)
+    #define DE_WARN(...)
+    #define DE_INFO(...)
+#endif
 
 // For backward compatibility, to be removed
 #define DE_REPORT(...) DE_WARN(__VA_ARGS__)

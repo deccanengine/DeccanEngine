@@ -31,7 +31,7 @@ int32_t Asset_GetSpriteIndex(const char *name) {
     return stbds_shgeti(Asset_Info.textures, name);
 }
 
-RawTexture *LoadSprite(const char *path) {
+DeccanRawTexture *LoadSprite(const char *path) {
     SDL_Surface *img;
     SDL_Texture *tex;
 
@@ -77,7 +77,7 @@ RawTexture *LoadSprite(const char *path) {
 
 SpriteAsset *Asset_LoadSprite(const char *name, const char *path) {
     SpriteAsset *asset = NULL;
-    RawTexture *tex = LoadSprite(path);
+    DeccanRawTexture *tex = LoadSprite(path);
 
     if(tex == NULL) {
         DE_REPORT("Cannot create texture: %s: %s", name, SDL_GetError());
