@@ -63,12 +63,23 @@ void Scene_Update() {
 
 void Scene_Quit() {
     /* at_end of scenes and objects */
-    GameScene *scene = Scene_CurrentScene();
+    GameScene *currentScene = Scene_CurrentScene();
+    currentScene->AtEnd();
 
-    scene->AtEnd();
-    for(int i=0; i<stbds_arrlen(scene->objects); i++) {
-        Object_End(scene->objects[i]);
-        Object_DeleteObject(scene->objects[i]);
+    for(int i = 0; i < stbds_arrlen(currentScene->objects); i++) {
+        Object_End(currentScene->objects[i]);
+    }
+
+    /* Dellocate everything */
+    for(int i = 0; i < stbds_arrlen(SceneInfo.scenes); i++) {
+        GameScene *scene = SceneInfo.scenes[i];
+
+        for(int j = 0; j < stbds_arrlen(scene->objects); j++) {
+            Object_DeleteObject(scene->objects[i]);
+        }
+
+        DE_Mem_Delete(scene->name);
+        DE_Mem_Delete(scene);
     }
 }
 
@@ -91,8 +102,6 @@ GameScene *Scene_NewScene(const char *name) {
 
     return scene;
 }
-
-#undef void_func
 
 void Scene_AddScene(GameScene *scene, bool is_replacing) {
     if(scene == NULL) {
