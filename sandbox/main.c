@@ -6,7 +6,7 @@ SpriteAsset *text;
 
 void begin() {
     /* Start here */
-    GameObject *player = Object_NewObject("main player", "player");
+    GameObject *player = Object_NewObject("main player");
     player->order.z = 5;
     player->AtBeginning = _player_begin;
     player->AtStep = _player_step;
@@ -31,6 +31,12 @@ void begin() {
 
     DE_Var_New(DE_Core_GetVarManager(), "hola", DECCAN_VARTYPE_STRING);
     DE_Var_SetString(DE_Core_GetVarManager(), "hola", "test string");
+
+    State2D_Register();
+    Collider_Register();
+
+    GameScene *scene = Scene_CurrentScene();
+    ecs_entity_t FLECS__EColor = ecs_new_component(scene->world, 0, "Color", sizeof(Color), ECS_ALIGNOF(Color));
 }
 
 void step() {
@@ -41,7 +47,7 @@ void render() {
     /* Start here */
 
     if(Input_KeyReleased(KeyCode_Space) && Clock_GetTime(&timer).milliseconds > 200) {
-        GameObject *s = Object_NewObject("circle", "static");
+        GameObject *s = Object_NewObject("circle");
         s->AtBeginning = _none_begin;
         s->AtStep = _none_step;
         s->AtRender = _none_render;

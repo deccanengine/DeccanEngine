@@ -33,8 +33,6 @@ typedef struct Component {
 
 typedef struct GameObject GameObject;
 typedef struct GameObject {
-    char *name;
-    char *type;
     int32_t layer;   // To do
 
     // To do: use these
@@ -47,7 +45,7 @@ typedef struct GameObject {
     // To do: mark and remove system
     bool toRemove;
 
-    ObjectComponent *components;
+    ecs_entity_t entity;
 
     DeccanVarManager vars;
 
@@ -65,7 +63,7 @@ static inline void NULL_OBJFUNC(GameObject *obj) { DE_UNUSED(obj); }
 // Initialization and instantiator functions
 ////////////////////////////////////////////////
 
-GameObject *Object_NewObject(const char *name, const char *type);
+GameObject *Object_NewObject(const char *name);
 void Object_DeleteObject(GameObject *obj);
 void Object_FreeObject(GameObject *obj);
 
@@ -89,67 +87,15 @@ void Object_End(GameObject *obj);
 // Component
 ////////////////////////////////////////////////
 
-void  Object_SetComponent(GameObject *obj, const char *name, void *component);
+void Object_SetComponent(GameObject *obj, const char *name, size_t size, void *component);
 void *Object_GetComponent(GameObject *obj, const char *name);
-
-#define OBJECT_AddComponentCustom(obj, component) \
-    component *_##obj##_component_##component = DE_Mem_New(sizeof(component), 1);   \
-    Object_SetComponent(obj, #component, (void*)(_##obj##_component_##component))
-
-#define OBJECT_AddComponent(obj, component, ...) \
-    component *_##obj##_component_##component = component##_Init((component)__VA_ARGS__);     \
-    Object_SetComponent(obj, #component, (void*)(_##obj##_component_##component))
-
-#define OBJECT_GetComponent(obj, component) \
-    (component*)Object_GetComponent(obj, #component)
 
 /////////////////////////////////////////////////
 // Getters and Setters
 ////////////////////////////////////////////////
 
-/***********
- * Position
- ***********/
-
-//void Object_SetPosition(GameObject *obj, Vector2 pos);
-//Vector2 Object_GetPosition(GameObject *obj);
-
-/***********
- * Angle
- ***********/
-
-//void Object_SetAngle(GameObject *obj, double angle);
-//double Object_GetAngle(GameObject *obj);
-
-/***********
- * Z-Order
- ***********/
-
-//void Object_SetZOrder(GameObject *obj, int32_t z);
-//int32_t Object_GetZOrder(GameObject *obj);
-
-/***********
- * Status
- ***********/
-
 bool Object_IsHidden(GameObject *obj);
 void Object_Hide(GameObject *obj, bool hide);
 
-
 bool Object_IsActive(GameObject *obj);
 void Object_Activate(GameObject *obj, bool act);
-
-/***********
- * Collider
- ***********/
-
-//Collider Object_GetCollider(GameObject *obj);
-//void Object_SetCollider(GameObject *obj, Collider collider);
-
-/////////////////////////////////////////////////
-// Rotation Functions
-////////////////////////////////////////////////
-
-//void Object_Rotate(GameObject *obj, double angle, int speed);
-//void Object_RotateTowardsObject(GameObject *obj, GameObject *target, int speed);
-//void Object_RotateTowardsPosition(GameObject *obj, Vector2 pos, int speed);

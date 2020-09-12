@@ -7,3 +7,6 @@
 [submodule "depends/log.c"]
 	path = depends/log.c
 	url = https://github.com/rxi/log.c.git
+[submodule "depends/flecs"]
+	path = depends/flecs
+	url = https://github.com/SanderMertens/flecs.git

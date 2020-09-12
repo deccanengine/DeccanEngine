@@ -27,5 +27,3 @@ typedef struct State2D {
 ////////////////////////////////////////////////
 
 void State2D_Register();
-
-State2D *State2D_Init(State2D s);

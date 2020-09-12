@@ -6,18 +6,13 @@
  */
 
 #include "State2D.h"
+#include "../Scene.h"
 
 /////////////////////////////////////////////////
 // Registers/Constructors/Destructors
 ////////////////////////////////////////////////
 
 void State2D_Register() {
-    ECSystem_RegisterComponent("State2D");
-}
-
-State2D *State2D_Init(State2D s) {
-    State2D *state = DE_Mem_New(sizeof(State2D), 1);
-    *state = s;
-
-    return state;
+    GameScene *scene = Scene_CurrentScene();
+    ecs_entity_t FLECS__EState2D = ecs_new_component(scene->world, 0, "State2D", sizeof(State2D), ECS_ALIGNOF(State2D));
 }

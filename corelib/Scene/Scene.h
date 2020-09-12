@@ -23,6 +23,8 @@ typedef struct GameScene {
     bool is_paused;
     bool is_first_frame;
 
+    ecs_world_t *world;
+
     GameObject **objects;
 
     void (*AtFirstFrame)(void);

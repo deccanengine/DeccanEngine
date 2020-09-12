@@ -12,38 +12,35 @@ Color
 	ColorList_Green     = (Color){  0, 255,   0, 255},
 	ColorList_Orange    = (Color){255, 165,   0, 255};
 
+/*
 void action(GameObject *this) {
     if(Collider_CheckObject(Object_GetObject("main player"), this)) {
         Color *c = OBJECT_GetComponent(Object_GetObject("main player"), Color);
         *c = ColorList_Green;
     }
 }
+*/
 
 void _player_begin(GameObject *this) {
-    OBJECT_AddComponentCustom(this, Color);
-    Color *color = OBJECT_GetComponent(this, Color);
-    color->r = 255;
-    color->g = 0;
-    color->b = 0;
-    color->a = 255;
-
-    OBJECT_AddComponent(this, State2D, {
-        .position = {
-            [0] = 200,
-            [1] = 200
-        }
-    });
-
     DE_Var_New(&this->vars, "test", DECCAN_VARTYPE_NUMBER);
     DE_Var_SetNumber(&this->vars, "test", 10080.0f);
 
-    OBJECT_AddComponent(this, Collider, {
+    Object_SetComponent(this, "Color", sizeof(Color), &(Color){255, 0, 0, 255});
+
+    Object_SetComponent(this, "Collider", sizeof(Collider), &(Collider){
         .type = COLLIDER_Rect,
         .rect = {
             [0] = 0,
             [1] = 0,
             [2] = 50,
             [3] = 50
+        }
+    });
+
+    Object_SetComponent(this, "State2D", sizeof(State2D), &(State2D){
+        .position = {
+            [0] = 200,
+            [1] = 200
         }
     });
 }
@@ -88,11 +85,11 @@ void _player_step(GameObject *this) {
         state->position[1] = pos[1] - offset[1];
     }
 
-    Object_GetObjectOfType("static", action);
+//     Object_GetObjectOfType("static", action);
 }
 
 void _player_render(GameObject *this) {
-    Color *color = OBJECT_GetComponent(this, Color);
+    Color *color = Object_GetComponent(this, "Color");
     State2D *state = Object_GetComponent(this, "State2D");
 
     Draw_FilledRect((vec4){state->position[0], state->position[1], 50, 50}, *color);
@@ -103,14 +100,15 @@ void _player_end(GameObject *this) { DE_UNUSED(this); }
 void _none_begin(GameObject *this) {
     State2D *statePlayer = Object_GetComponent(Object_GetObject("main player"), "State2D");
 
-    OBJECT_AddComponent(this, State2D, {
+    Object_SetComponent(this, "State2D", sizeof(State2D), &(State2D){
         .position = {
             [0] = statePlayer->position[0],
             [1] = statePlayer->position[1]
         }
     });
 
-    OBJECT_AddComponent(this, Collider, {
+
+    Object_SetComponent(this, "Collider", sizeof(Collider), &(Collider){
         .type = COLLIDER_Rect,
         .rect = {
             [0] = 0,

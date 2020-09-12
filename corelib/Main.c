@@ -9,13 +9,12 @@
 
 bool DE_App_Init(DeccanSettings *settings) {
     /* Register all the components */
-    ECSystem_RegisterComponent("NULL");
+//     ECSystem_RegisterComponent("NULL");
 
-    State2D_Register();
-    Collider_Register();
+//     Collider_Register();
 
     // To do: material component
-    ECSystem_RegisterComponent("Color");
+//     ECSystem_RegisterComponent("Color");
 
     Core_Init(settings);
 
@@ -74,9 +73,6 @@ void DE_App_Update() {
 
 void DE_App_Quit() {
     Scene_Quit();
-
-    ECSystem_FreeAllComponents();
-    ECSystem_FreeAllSystems();
 
     Scene_FreeAll();
 

@@ -160,6 +160,8 @@
 
 #include "../depends/cglm/include/cglm/cglm.h"
 
+#include "../depends/flecs/flecs.h"
+
 #include "../depends/stb/stb_image.h"
 #include "../depends/stb/stb_ds.h"
 

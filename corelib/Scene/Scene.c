@@ -78,6 +78,7 @@ void Scene_Quit() {
             Object_DeleteObject(scene->objects[i]);
         }
 
+        ecs_fini(scene->world);
         DE_Mem_Delete(scene->name);
         DE_Mem_Delete(scene);
     }
@@ -93,12 +94,15 @@ GameScene *Scene_NewScene(const char *name) {
     scene->name = DE_String_New(name);
     scene->is_paused = false;
     scene->objects = NULL;
+    scene->world = ecs_init();
 
     scene->is_first_frame = true;
     scene->AtFirstFrame = NULL_VOIDFUNC;
     scene->AtStep = NULL_VOIDFUNC;
     scene->AtRender = NULL_VOIDFUNC;
     scene->AtEnd = NULL_VOIDFUNC;
+
+    ecs_entity_t FLECS_EEcsGameObject = ecs_new_component(scene->world, 0, "GameObject", sizeof(GameObject), ECS_ALIGNOF(GameObject));
 
     return scene;
 }

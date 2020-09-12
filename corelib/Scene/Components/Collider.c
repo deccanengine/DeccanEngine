@@ -8,21 +8,15 @@
 #include "Collider.h"
 #include "State2D.h"
 #include "../../Modules/Physics/Collision.h"
-
+#include "../Scene.h"
 
 /////////////////////////////////////////////////
 // Registers/Constructors/Destructors
 ////////////////////////////////////////////////
 
 void Collider_Register() {
-    ECSystem_RegisterComponent("Collider");
-}
-
-Collider *Collider_Init(Collider c) {
-    Collider *collider = DE_Mem_New(sizeof(Collider), 1);
-    *collider = c;
-
-    return collider;
+    GameScene *scene = Scene_CurrentScene();
+    ecs_entity_t FLECS__ECollider = ecs_new_component(scene->world, 0, "Collider", sizeof(Collider), ECS_ALIGNOF(Collider));
 }
 
 /////////////////////////////////////////////////
@@ -34,14 +28,14 @@ Collider *Collider_Init(Collider c) {
         DE_REPORT("Invalid object passed to collision system");             \
         return false;                                                       \
     }                                                                       \
-    Collider *c = OBJECT_GetComponent(obj, Collider);                       \
+    Collider *c = Object_GetComponent(obj, "Collider");                     \
     if(c == NULL) {                                                         \
-        DE_REPORT("Collider component not found in object: %s", obj->name); \
+        DE_REPORT("Collider component not found in object: %s", "obj->name");\
         return false;                                                       \
     }                                                                       \
     State2D *state = Object_GetComponent(obj, "State2D");                   \
     if(state == NULL) {                                                     \
-        DE_REPORT("State component not found in object: %s", obj->name);    \
+        DE_REPORT("State component not found in object: %s", "obj->name");  \
         return false;                                                       \
     }                                                                       \
     vec3 p; glm_vec3_copy(state->position, p);
