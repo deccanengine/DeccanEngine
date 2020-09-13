@@ -61,40 +61,25 @@ void Object_DeleteObject(GameObject *obj) {
 
 void Object_FreeObject(GameObject *obj) {
     PTR_NULLCHECK(obj);
-#if 0
-    int32_t index = 0;
-    GameScene *scene = Scene_CurrentScene();
 
-    /* Index of the object in the array */
-    while(obj != scene->objects[index] && index < stbds_arrlen(scene->objects)) {
-        index++;
-    }
+    GameScene *scene = Scene_CurrentScene();
 
     obj->AtEnd(obj);
 
-    /* Free the name */
-    DE_Mem_Delete(obj->name);
+    /* Free the messaging system */
+    DE_Var_Quit(&obj->vars);
 
-    /* Free the type */
-    DE_Mem_Delete(obj->type);
-
-    /* Free all components */
-    for(int i=0; i<stbds_hmlen(obj->components); i++) {
-        void *addr = obj->components[i].value;
-        DE_Mem_Delete(addr);
+    /* Index of the object in the array */
+    for(int i = 0; i < stbds_arrlen(scene->objects); i++) {
+        if(scene->objects[i] == obj) {
+            /* Remove from the array */
+            stbds_arrdel(scene->objects, i);
+        }
     }
 
-    stbds_hmfree(obj->components);
-
-    /* Free the messaging system */
-    //Msg_Free(&obj->msg); ---- HERE
-
-    /* Remove from the array */
-    stbds_arrdel(scene->objects, index);
-
     /* Free */
+    ecs_delete(scene->world, obj->entity);
     DE_Mem_Delete(obj);
-#endif
 }
 
 void AddObjectToArray(GameObject *object) {
