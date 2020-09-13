@@ -25,9 +25,9 @@ void _player_begin(GameObject *this) {
     DE_Var_New(&this->vars, "test", DECCAN_VARTYPE_NUMBER);
     DE_Var_SetNumber(&this->vars, "test", 10080.0f);
 
-    Object_SetComponent(this, "Color", sizeof(Color), &(Color){255, 0, 0, 255});
+    Object_SetComponent(this, "Color", &(Color){255, 0, 0, 255});
 
-    Object_SetComponent(this, "Collider", sizeof(Collider), &(Collider){
+    Object_SetComponent(this, "Collider", &(Collider){
         .type = COLLIDER_Rect,
         .rect = {
             [0] = 0,
@@ -37,7 +37,7 @@ void _player_begin(GameObject *this) {
         }
     });
 
-    Object_SetComponent(this, "State2D", sizeof(State2D), &(State2D){
+    Object_SetComponent(this, "State2D", &(State2D){
         .position = {
             [0] = 200,
             [1] = 200
@@ -100,15 +100,14 @@ void _player_end(GameObject *this) { DE_UNUSED(this); }
 void _none_begin(GameObject *this) {
     State2D *statePlayer = Object_GetComponent(Object_GetObject("main player"), "State2D");
 
-    Object_SetComponent(this, "State2D", sizeof(State2D), &(State2D){
+    Object_SetComponent(this, "State2D", &(State2D){
         .position = {
             [0] = statePlayer->position[0],
             [1] = statePlayer->position[1]
         }
     });
 
-
-    Object_SetComponent(this, "Collider", sizeof(Collider), &(Collider){
+    Object_SetComponent(this, "Collider", &(Collider){
         .type = COLLIDER_Rect,
         .rect = {
             [0] = 0,

@@ -8,6 +8,7 @@
 #include "Object.h"
 #include "Scene.h"
 #include "../Core/Core.h"
+#include "Flecs.h"
 
 static struct {
     int32_t zAccum;
@@ -171,9 +172,10 @@ void Object_End(GameObject *obj) {
 // Component
 ////////////////////////////////////////////////
 
-void Object_SetComponent(GameObject *obj, const char *name, size_t size, void *component) {
+void Object_SetComponent(GameObject *obj, const char *name, void *component) {
     GameScene *scene = Scene_CurrentScene();
-    ecs_set_ptr_w_entity(scene->world, obj->entity, ecs_lookup(scene->world, name), size, component);
+    DeccanComponent comp = DE_Flecs_LookupComponent(name);
+    ecs_set_ptr_w_entity(scene->world, obj->entity, comp.id, comp.size, component);
 }
 
 void *Object_GetComponent(GameObject *obj, const char *name) {

@@ -87,7 +87,7 @@ void Object_End(GameObject *obj);
 // Component
 ////////////////////////////////////////////////
 
-void Object_SetComponent(GameObject *obj, const char *name, size_t size, void *component);
+void Object_SetComponent(GameObject *obj, const char *name, void *component);
 void *Object_GetComponent(GameObject *obj, const char *name);
 
 /////////////////////////////////////////////////

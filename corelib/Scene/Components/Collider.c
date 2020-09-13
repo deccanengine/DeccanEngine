@@ -8,15 +8,13 @@
 #include "Collider.h"
 #include "State2D.h"
 #include "../../Modules/Physics/Collision.h"
-#include "../Scene.h"
 
 /////////////////////////////////////////////////
 // Registers/Constructors/Destructors
 ////////////////////////////////////////////////
 
 void Collider_Register() {
-    GameScene *scene = Scene_CurrentScene();
-    ecs_entity_t FLECS__ECollider = ecs_new_component(scene->world, 0, "Collider", sizeof(Collider), ECS_ALIGNOF(Collider));
+    DE_Flecs_RegisterComponent("Collider", sizeof(Collider), ECS_ALIGNOF(Collider));
 }
 
 /////////////////////////////////////////////////

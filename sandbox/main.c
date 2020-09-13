@@ -35,8 +35,7 @@ void begin() {
     State2D_Register();
     Collider_Register();
 
-    GameScene *scene = Scene_CurrentScene();
-    ecs_entity_t FLECS__EColor = ecs_new_component(scene->world, 0, "Color", sizeof(Color), ECS_ALIGNOF(Color));
+    DE_Flecs_RegisterComponent("Color", sizeof(Color), ECS_ALIGNOF(Color));
 }
 
 void step() {

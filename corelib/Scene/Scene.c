@@ -7,6 +7,7 @@
 
 #include "Scene.h"
 #include "../Core/Core.h"
+#include "Flecs.h"
 
 static struct {
     GameScene **scenes;
@@ -103,6 +104,7 @@ GameScene *Scene_NewScene(const char *name) {
     scene->AtEnd = NULL_VOIDFUNC;
 
     ecs_entity_t FLECS_EEcsGameObject = ecs_new_component(scene->world, 0, "GameObject", sizeof(GameObject), ECS_ALIGNOF(GameObject));
+//     DE_Flecs_NewComponent("GameObject", sizeof(GameObject), ECS_ALIGNOF(GameObject));
 
     return scene;
 }

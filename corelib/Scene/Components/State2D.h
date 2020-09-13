@@ -8,6 +8,7 @@
 #pragma once
 #include "../../Config.h"
 #include "../../Core/Memory.h"
+#include "../Flecs.h"
 
 /////////////////////////////////////////////////
 // Structs
