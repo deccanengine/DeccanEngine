@@ -175,6 +175,11 @@ void Object_End(GameObject *obj) {
 void Object_SetComponent(GameObject *obj, const char *name, void *component) {
     GameScene *scene = Scene_CurrentScene();
     DeccanComponent comp = DE_Flecs_LookupComponent(name);
+    if(comp.key == NULL) {
+        DE_WARN("Component %s is not a valid registered component in the scene", name);
+        return;
+    }
+
     ecs_set_ptr_w_entity(scene->world, obj->entity, comp.id, comp.size, component);
 }
 

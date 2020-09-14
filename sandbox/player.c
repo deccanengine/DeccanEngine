@@ -8,9 +8,9 @@ SpriteAsset tar;
 Color
     ColorList_White     = (Color){255, 255, 255, 255},
     ColorList_Black     = (Color){  0,   0,   0, 255},
-	ColorList_Red       = (Color){255,   0,   0, 255},
-	ColorList_Green     = (Color){  0, 255,   0, 255},
-	ColorList_Orange    = (Color){255, 165,   0, 255};
+    ColorList_Red       = (Color){255,   0,   0, 255},
+    ColorList_Green     = (Color){  0, 255,   0, 255},
+    ColorList_Orange    = (Color){255, 165,   0, 255};
 
 /*
 void action(GameObject *this) {
