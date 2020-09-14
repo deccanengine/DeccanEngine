@@ -7,8 +7,8 @@
 
 #pragma once
 #include "../Config.h"
-#include "Object.h"
 #include "../Core/Memory.h"
+#include "Object.h"
 
 /////////////////////////////////////////////////
 // Enums
@@ -18,6 +18,12 @@
 // Structs
 ////////////////////////////////////////////////
 
+typedef struct DeccanComponent {
+    char *key;
+    ecs_entity_t id;
+    size_t size;
+} DeccanComponent;
+
 typedef struct GameScene {
     char *name;
     bool is_paused;
@@ -26,6 +32,7 @@ typedef struct GameScene {
     ecs_world_t *world;
 
     GameObject **objects;
+    DeccanComponent *components;
 
     void (*AtFirstFrame)(void);
     void (*AtStep)(void);

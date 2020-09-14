@@ -95,6 +95,7 @@ GameScene *Scene_NewScene(const char *name) {
     scene->name = DE_String_New(name);
     scene->is_paused = false;
     scene->objects = NULL;
+    scene->components = NULL;
     scene->world = ecs_init();
 
     scene->is_first_frame = true;

@@ -7,12 +7,6 @@
 
 #include "Flecs.h"
 
-static struct {
-    DeccanComponent *components;
-} Flecs_Info = {
-    .components = NULL
-};
-
 void DE_Flecs_RegisterComponent(const char *name, size_t size, size_t alignment) {
     GameScene *scene = Scene_CurrentScene();
 
@@ -21,9 +15,10 @@ void DE_Flecs_RegisterComponent(const char *name, size_t size, size_t alignment)
     component.size = size;
     component.id  = ecs_new_component(scene->world, 0, component.key, component.size, alignment);
 
-    stbds_shputs(Flecs_Info.components, component);
+    stbds_shputs(scene->components, component);
 }
 
 DeccanComponent DE_Flecs_LookupComponent(const char *name) {
-    return stbds_shgets(Flecs_Info.components, name);
+    GameScene *scene = Scene_CurrentScene();
+    return stbds_shgets(scene->components, name);
 }
