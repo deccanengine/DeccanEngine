@@ -188,6 +188,14 @@ void *Object_GetComponent(GameObject *obj, const char *name) {
     return ecs_get_mut_w_entity(scene->world, obj->entity, ecs_lookup(scene->world, name), NULL);
 }
 
+void Object_SetTag(GameObject *obj, const char *name) {
+    DE_Flecs_SetTag(obj->entity, name);
+}
+
+bool Object_HasTag(GameObject *obj, const char *name) {
+    return DE_Flecs_HasTag(obj->entity, name);
+}
+
 /////////////////////////////////////////////////
 // Setters and Getters
 ////////////////////////////////////////////////
