@@ -22,3 +22,29 @@ DeccanComponent DE_Flecs_LookupComponent(const char *name) {
     GameScene *scene = Scene_CurrentScene();
     return stbds_shgets(scene->components, name);
 }
+
+uint64_t DE_Flecs_RegisterTag(const char *name) {
+    GameScene *scene = Scene_CurrentScene();
+    ecs_entity_t id = ecs_new_entity(scene->world, 0, name, "0");
+    return id;
+}
+
+void DE_Flecs_SetTag(ecs_entity_t entity, const char *name) {
+    GameScene *scene = Scene_CurrentScene();
+    ecs_entity_t tag = ecs_lookup(scene->world, name);
+    if(tag == 0)
+        tag = DE_Flecs_RegisterTag(name);
+
+    ecs_type_t type = ecs_type_from_entity(scene->world, tag);
+    ecs_add_type(scene->world, entity, type);
+}
+
+bool DE_Flecs_HasTag(ecs_entity_t entity, const char *name) {
+    GameScene *scene = Scene_CurrentScene();
+    ecs_entity_t tag = ecs_lookup(scene->world, name);
+    if(tag == 0)
+        return false;
+
+    ecs_type_t type = ecs_type_from_entity(scene->world, tag);
+    return ecs_has_type(scene->world, entity, type);
+}

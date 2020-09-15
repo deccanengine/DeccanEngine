@@ -15,3 +15,7 @@
 
 void DE_Flecs_RegisterComponent(const char *name, size_t size, size_t alignment);
 DeccanComponent DE_Flecs_LookupComponent(const char *name);
+
+uint64_t DE_Flecs_RegisterTag(const char *name);
+void DE_Flecs_SetTag(ecs_entity_t entity, const char *name);
+bool DE_Flecs_HasTag(ecs_entity_t entity, const char *name);

@@ -116,6 +116,8 @@ void _none_begin(GameObject *this) {
             [3] = 40
         }
     });
+
+    DE_Flecs_SetTag(this->entity, "isEnemy");
 }
 
 void _none_step(GameObject *this) { DE_UNUSED(this); }
