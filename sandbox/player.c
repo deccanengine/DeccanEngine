@@ -85,6 +85,19 @@ void _player_step(GameObject *this) {
         state->position[1] = pos[1] - offset[1];
     }
 
+    GameScene *scene = Scene_CurrentScene();
+
+    ecs_query_t *query = ecs_query_new(scene->world, "GameObject");
+    ecs_iter_t it = ecs_query_iter(query);
+    while(ecs_query_next(&it)) {
+        GameObject *obj = ecs_column_w_size(&it, sizeof(GameObject), 1);
+        for(int i = 0; i < it.count; i++) {
+            if(Object_HasTag(&obj[i], "isEnemy") && Collider_CheckObject(&obj[i], this)) {
+                *color = ColorList_Green;
+            }
+        }
+    }
+
 //     Object_GetObjectOfType("static", action);
 }
 

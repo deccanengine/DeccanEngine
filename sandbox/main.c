@@ -1,6 +1,7 @@
 #include "../corelib/Deccan.h"
 #include "player.h"
 
+uint64_t count;
 Timer timer;
 SpriteAsset *text;
 
@@ -46,7 +47,10 @@ void render() {
     /* Start here */
 
     if(Input_KeyReleased(KeyCode_Space) && Clock_GetTime(&timer).milliseconds > 200) {
-        GameObject *s = Object_NewObject("circle");
+        char *name = DE_Mem_New(sizeof(char), 11);
+        sprintf(name, "circle: %I64d", count++);
+
+        GameObject *s = Object_NewObject(name);
         s->AtBeginning = _none_begin;
         s->AtStep = _none_step;
         s->AtRender = _none_render;
@@ -55,6 +59,7 @@ void render() {
         Object_InstantiateObject(s);
 
         Clock_ResetTimer(&timer);
+//         DE_Mem_Delete(name);
     }
 
 	Sprite_Blit((vec4){100, 100, 0, 0}, 0, 0, Asset_GetSprite("arrow0"));
