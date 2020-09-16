@@ -12,14 +12,13 @@ Color
     ColorList_Green     = (Color){  0, 255,   0, 255},
     ColorList_Orange    = (Color){255, 165,   0, 255};
 
-/*
 void action(GameObject *this) {
-    if(Collider_CheckObject(Object_GetObject("main player"), this)) {
-        Color *c = OBJECT_GetComponent(Object_GetObject("main player"), Color);
-        *c = ColorList_Green;
+    GameObject *player = Object_GetObject("main player");
+    if(Object_HasTag(this, "isEnemy") && Collider_CheckObject(player, this)) {
+        Color *color = Object_GetComponent(player, "Color");
+        *color = ColorList_Green;
     }
 }
-*/
 
 void _player_begin(GameObject *this) {
     DE_Var_New(&this->vars, "test", DECCAN_VARTYPE_NUMBER);
@@ -85,20 +84,7 @@ void _player_step(GameObject *this) {
         state->position[1] = pos[1] - offset[1];
     }
 
-    GameScene *scene = Scene_CurrentScene();
-
-    ecs_query_t *query = ecs_query_new(scene->world, "GameObject");
-    ecs_iter_t it = ecs_query_iter(query);
-    while(ecs_query_next(&it)) {
-        GameObject *obj = ecs_column_w_size(&it, sizeof(GameObject), 1);
-        for(int i = 0; i < it.count; i++) {
-            if(Object_HasTag(&obj[i], "isEnemy") && Collider_CheckObject(&obj[i], this)) {
-                *color = ColorList_Green;
-            }
-        }
-    }
-
-//     Object_GetObjectOfType("static", action);
+    Scene_IterateObject(action);
 }
 
 void _player_render(GameObject *this) {

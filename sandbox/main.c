@@ -59,7 +59,7 @@ void render() {
         Object_InstantiateObject(s);
 
         Clock_ResetTimer(&timer);
-//         DE_Mem_Delete(name);
+        DE_Mem_Delete(name);
     }
 
 	Sprite_Blit((vec4){100, 100, 0, 0}, 0, 0, Asset_GetSprite("arrow0"));

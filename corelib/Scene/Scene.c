@@ -143,6 +143,25 @@ void Scene_RemoveScene() {
 }
 
 /////////////////////////////////////////////////
+// Object handling
+////////////////////////////////////////////////
+
+void Scene_IterateObject(void (*func)(GameObject *this)) {
+    GameScene *scene = Scene_CurrentScene();
+
+    ecs_query_t *query = ecs_query_new(scene->world, "GameObject");
+    ecs_iter_t it = ecs_query_iter(query);
+
+    while(ecs_query_next(&it)) {
+        GameObject *obj = ecs_column_w_size(&it, sizeof(GameObject), 1);
+
+        for(int i = 0; i < it.count; i++) {
+            func(&obj[i]);
+        }
+    }
+}
+
+/////////////////////////////////////////////////
 // Scene status
 ////////////////////////////////////////////////
 
