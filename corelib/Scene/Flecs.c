@@ -53,3 +53,7 @@ bool DE_Flecs_HasTag(ecs_entity_t entity, const char *name) {
     ecs_type_t type = ecs_type_from_entity(scene->world, tag);
     return ecs_has_type(scene->world, entity, type);
 }
+
+void *DE_Flecs_IterColumn(DeccanSysIter *it, const char *name, int index) {
+    return ecs_column_w_size(it, DE_Flecs_LookupComponent(name).size, index);
+}

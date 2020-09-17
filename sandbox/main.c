@@ -5,9 +5,9 @@ uint64_t count;
 Timer timer;
 SpriteAsset *text;
 
-void color_mod(ecs_iter_t *it) {
-    Color *color = ecs_column_w_size(it, sizeof(Color), 1);
-    State2D *state = ecs_column_w_size(it, sizeof(State2D), 2);
+void color_mod(DeccanSysIter *it) {
+    Color *color = DE_Flecs_IterColumn(it, "Color", 1);
+    State2D *state = DE_Flecs_IterColumn(it, "State2D", 2);
 
     for(int i = 0; i < it->count; i++) {
         color[i].r += 1;
@@ -15,8 +15,8 @@ void color_mod(ecs_iter_t *it) {
     }
 }
 
-void x_mod(ecs_iter_t *it) {
-    State2D *state = ecs_column_w_size(it, sizeof(State2D), 1);
+void x_mod(DeccanSysIter *it) {
+    State2D *state = DE_Flecs_IterColumn(it, "State2D", 1);
 
     for(int i = 0; i < it->count; i++) {
         state[i].position[0] += 1;
