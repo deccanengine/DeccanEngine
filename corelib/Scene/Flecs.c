@@ -29,6 +29,11 @@ uint64_t DE_Flecs_RegisterTag(const char *name) {
     return id;
 }
 
+void DE_Flecs_System(DeccanSysFunc iter, const char *name, const char *sign, DeccanEcsType type) {
+    GameScene *scene = Scene_CurrentScene();
+    ecs_entity_t sys = ecs_new_system(scene->world, 0, name ? name : "system", type, sign, iter);
+}
+
 void DE_Flecs_SetTag(ecs_entity_t entity, const char *name) {
     GameScene *scene = Scene_CurrentScene();
     ecs_entity_t tag = ecs_lookup(scene->world, name);

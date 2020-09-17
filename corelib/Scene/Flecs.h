@@ -13,8 +13,16 @@
 // Structs
 ////////////////////////////////////////////////
 
+typedef ecs_iter_action_t DeccanSysFunc;
+
+typedef enum DeccanEcsType {
+    DECCAN_ECS_TYPE_ON_UPDATE = EcsOnUpdate
+} DeccanEcsType;
+
 void DE_Flecs_RegisterComponent(const char *name, size_t size, size_t alignment);
 DeccanComponent DE_Flecs_LookupComponent(const char *name);
+
+void DE_Flecs_System(DeccanSysFunc iter, const char *name, const char *sign, DeccanEcsType type);
 
 uint64_t DE_Flecs_RegisterTag(const char *name);
 void DE_Flecs_SetTag(ecs_entity_t entity, const char *name);

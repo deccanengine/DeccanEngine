@@ -5,6 +5,24 @@ uint64_t count;
 Timer timer;
 SpriteAsset *text;
 
+void color_mod(ecs_iter_t *it) {
+    Color *color = ecs_column_w_size(it, sizeof(Color), 1);
+    State2D *state = ecs_column_w_size(it, sizeof(State2D), 2);
+
+    for(int i = 0; i < it->count; i++) {
+        color[i].r += 1;
+        state[i].position[1] += 1;
+    }
+}
+
+void x_mod(ecs_iter_t *it) {
+    State2D *state = ecs_column_w_size(it, sizeof(State2D), 1);
+
+    for(int i = 0; i < it->count; i++) {
+        state[i].position[0] += 1;
+    }
+}
+
 void begin() {
     /* Start here */
     GameObject *player = Object_NewObject("main player");
@@ -37,6 +55,8 @@ void begin() {
     Collider_Register();
 
     DE_Flecs_RegisterComponent("Color", sizeof(Color), ECS_ALIGNOF(Color));
+    DE_Flecs_System(color_mod, "color_mod", "Color, State2D", DECCAN_ECS_TYPE_ON_UPDATE);
+    DE_Flecs_System(x_mod, "x_mod", "State2D", DECCAN_ECS_TYPE_ON_UPDATE);
 }
 
 void step() {

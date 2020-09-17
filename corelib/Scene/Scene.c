@@ -49,10 +49,12 @@ void Scene_Update() {
 
     /* AtStep of scenes and objects */
     scene->AtStep();
+    ecs_progress(scene->world, 0);
 
     for(int i=0; i<stbds_arrlen(scene->objects); i++) {
         Object_Update(scene->objects[i]);
     }
+
 
     /* AtRender of scenes and objects */
     scene->AtRender();
