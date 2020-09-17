@@ -83,52 +83,6 @@ void Object_FreeObject(GameObject *obj) {
     DE_Mem_Delete(obj);
 }
 
-void AddObjectToArray(GameObject *object) {
-    GameScene *scene = Scene_CurrentScene();
-    int length = stbds_arrlen(scene->objects);
-
-    if(length > 0 && object->order.z != -1) {
-        for(int i=0; i<length; i++) {
-            if(object->order.z >= scene->objects[i]->order.z) {
-                if(i+1 >= length) {
-                    goto _push;
-                }
-
-                if(object->order.z < scene->objects[i+1]->order.z) {
-                    stbds_arrins(scene->objects, i+1, object);
-                    break;
-                }
-            }
-            else {
-                stbds_arrins(scene->objects, i, object);
-                break;
-            }
-        }
-    }
-    else {
-_push:
-        if(stbds_arrput(scene->objects, object) != object) {
-            DE_REPORT("Cannot instantiate object: %s", ecs_get_name(scene->world, object->entity));
-            return;
-        }
-    }
-}
-
-void Object_InstantiateObject(GameObject *object) {
-    PTR_NULLCHECK(object);
-    AddObjectToArray(object);
-}
-
-GameObject *Object_GetObject(const char *name) {
-    GameScene *scene = Scene_CurrentScene();
-    ecs_entity_t obj = ecs_lookup(scene->world, name);
-    return ecs_get_mut_w_entity(scene->world, obj, ecs_lookup(scene->world, "GameObject"), NULL);
-}
-
-void Object_GetObjectOfType(const char *name, void(*func)(GameObject *obj)) {
-
-}
-
 /////////////////////////////////////////////////
 // Update
 ////////////////////////////////////////////////

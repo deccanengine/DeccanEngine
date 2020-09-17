@@ -13,7 +13,7 @@ void begin() {
     player->AtStep = _player_step;
     player->AtRender = _player_render;
     player->AtEnd = _player_end;
-    Object_InstantiateObject(player);
+    Scene_InstantiateObject(player);
 
     Asset_LoadAnimatedSprite("arrow0",
         "arrow0.png",
@@ -56,7 +56,7 @@ void render() {
         s->AtRender = _none_render;
         s->AtEnd = _none_end;
 
-        Object_InstantiateObject(s);
+        Scene_InstantiateObject(s);
 
         Clock_ResetTimer(&timer);
         DE_Mem_Delete(name);

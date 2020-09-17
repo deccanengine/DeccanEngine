@@ -146,6 +146,19 @@ void Scene_RemoveScene() {
 // Object handling
 ////////////////////////////////////////////////
 
+void Scene_InstantiateObject(GameObject *object) {
+    if(object == NULL) return;
+
+    GameScene *scene = Scene_CurrentScene();
+    stbds_arrput(scene->objects, object);
+}
+
+GameObject *Scene_GetObject(const char *name) {
+    GameScene *scene = Scene_CurrentScene();
+    ecs_entity_t obj = ecs_lookup(scene->world, name);
+    return ecs_get_mut_w_entity(scene->world, obj, ecs_lookup(scene->world, "GameObject"), NULL);
+}
+
 void Scene_IterateObject(void (*func)(GameObject *this)) {
     GameScene *scene = Scene_CurrentScene();
 
@@ -157,6 +170,23 @@ void Scene_IterateObject(void (*func)(GameObject *this)) {
 
         for(int i = 0; i < it.count; i++) {
             func(&obj[i]);
+        }
+    }
+}
+
+void Scene_IterateObjectOfType(const char *tag, void (*func)(GameObject *this)) {
+    GameScene *scene = Scene_CurrentScene();
+
+    ecs_query_t *query = ecs_query_new(scene->world, "GameObject");
+    ecs_iter_t it = ecs_query_iter(query);
+
+    while(ecs_query_next(&it)) {
+        GameObject *obj = ecs_column_w_size(&it, sizeof(GameObject), 1);
+
+        for(int i = 0; i < it.count; i++) {
+            if(Object_HasTag(&obj[i], tag)) {
+                func(&obj[i]);
+            }
         }
     }
 }

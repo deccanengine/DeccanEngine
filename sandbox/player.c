@@ -13,8 +13,8 @@ Color
     ColorList_Orange    = (Color){255, 165,   0, 255};
 
 void action(GameObject *this) {
-    GameObject *player = Object_GetObject("main player");
-    if(Object_HasTag(this, "isEnemy") && Collider_CheckObject(player, this)) {
+    GameObject *player = Scene_GetObject("main player");
+    if(Collider_CheckObject(player, this)) {
         Color *color = Object_GetComponent(player, "Color");
         *color = ColorList_Green;
     }
@@ -84,7 +84,7 @@ void _player_step(GameObject *this) {
         state->position[1] = pos[1] - offset[1];
     }
 
-    Scene_IterateObject(action);
+    Scene_IterateObjectOfType("isEnemy", action);
 }
 
 void _player_render(GameObject *this) {
@@ -97,7 +97,7 @@ void _player_render(GameObject *this) {
 void _player_end(GameObject *this) { DE_UNUSED(this); }
 
 void _none_begin(GameObject *this) {
-    State2D *statePlayer = Object_GetComponent(Object_GetObject("main player"), "State2D");
+    State2D *statePlayer = Object_GetComponent(Scene_GetObject("main player"), "State2D");
 
     Object_SetComponent(this, "State2D", &(State2D){
         .position = {

@@ -143,7 +143,7 @@ bool Collider_CheckObjectWithCircle(GameObject *obj, vec3 circle) {
 }
 
 bool Collider_Check(const char *name1, const char *name2) {
-    GameObject *obj1 = Object_GetObject(name1);
-    GameObject *obj2 = Object_GetObject(name2);
+    GameObject *obj1 = Scene_GetObject(name1);
+    GameObject *obj2 = Scene_GetObject(name2);
     return Collider_CheckObject(obj1, obj2);
 }
