@@ -65,10 +65,10 @@ void step() {
 
 void render() {
     /* Start here */
-
     if(Input_KeyReleased(KeyCode_Space) && Clock_GetTime(&timer).milliseconds > 200) {
-        char *name = DE_Mem_New(sizeof(char), 11);
-        sprintf(name, "circle: %I64d", count++);
+        size_t memory_needed = snprintf(NULL, 0, "circle: %I64ld", count++) + 1;
+        char *name = DE_Mem_New(memory_needed, 1);
+        sprintf(name, "circle%I64ld", count++);
 
         GameObject *s = Object_NewObject(name);
         s->AtBeginning = _none_begin;
