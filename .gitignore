@@ -7,4 +7,6 @@ test.exe
 *.txt
 *.dll
 
+builddir/*
+
 !resources/deccan-light.png
