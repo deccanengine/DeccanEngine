@@ -156,14 +156,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
-#include "../depends/log.c/src/log.h"
+#include <depends/log.c/src/log.h>
 
-#include "../depends/cglm/include/cglm/cglm.h"
+#include <depends/cglm/include/cglm/cglm.h>
 
-#include "../depends/flecs/flecs.h"
+#include <depends/flecs/flecs.h>
 
-#include "../depends/stb/stb_image.h"
-#include "../depends/stb/stb_ds.h"
+#include <depends/stb/stb_image.h>
+#include <depends/stb/stb_ds.h>
 
 /////////////////////////////////////////////////
 /* Error handling/logging */

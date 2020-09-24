@@ -1,9 +1,13 @@
-project('deccan-engine', 'c')
+project('deccan-engine', 'c', license: 'mit')
 
 cc = meson.get_compiler('c')
 m_dep = cc.find_library('m')
 
-deps = [dependency('SDL2'), dependency('SDL2_ttf'), m_dep]
+dep_incdir = include_directories('proj')
+log_dep    = declare_dependency(include_directories: dep_incdir, sources: 'depends/log.c/src/log.c')
+flecs_dep  = declare_dependency(include_directories: dep_incdir, sources: 'depends/flecs/flecs.c')
+deps = [dependency('SDL2'), dependency('SDL2_ttf'), flecs_dep, log_dep, m_dep]
+
 
 src = [
     'corelib/Core/Asset.c',
@@ -33,16 +37,17 @@ src = [
 
     'corelib/Main.c',
 
-    'depends/flecs/flecs.c',
-    'depends/log.c/src/log.c',
-
     'sandbox/main.c',
     'sandbox/player.c'
 ]
 
-executable('demo', src, dependencies: deps, c_args: ['-D_REENTRANT', '-DLOG_USE_COLOR', '-DDE_DEBUG', '-DDECCAN_RENDERER_SDL'])
-
-
-
-
-
+executable('demo', src,
+    dependencies: deps,
+    include_directories: dep_incdir,
+    c_args: [
+        '-D_REENTRANT',
+        '-DLOG_USE_COLOR',
+        '-DDE_DEBUG',
+        '-DDECCAN_RENDERER_SDL'
+    ]
+)
