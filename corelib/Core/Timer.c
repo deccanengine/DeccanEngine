@@ -26,9 +26,9 @@ void Clock_ResetTimer(Timer *timer) {
 }
 
 void Clock_PauseTimer(Timer *timer) {
-    if(timer->isRunning && timer->isPaused) {
+    if(timer->isRunning && !timer->isPaused) {
         timer->isPaused = true;
-        
+
         /* Calculate the paused ticks */
         timer->pausedTicks = SDL_GetTicks() - timer->startTicks;
         timer->startTicks = 0;
@@ -39,14 +39,14 @@ Time Clock_GetTime(Timer *timer) {
     float timeMS = 0.0f;
 
     if(timer->isRunning) {
-        if(timer->isPaused) { 
-            timeMS = timer->pausedTicks; 
+        if(timer->isPaused) {
+            timeMS = timer->pausedTicks;
         }
-        else { 
-            timeMS = SDL_GetTicks() - timer->startTicks; 
+        else {
+            timeMS = SDL_GetTicks() - timer->startTicks;
         }
     }
-    
+
     Time time;
     time.milliseconds = timeMS;
     time.seconds = timeMS / 1000.0f;

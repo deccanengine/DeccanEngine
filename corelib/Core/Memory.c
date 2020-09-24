@@ -1,13 +1,21 @@
 #include "Memory.h"
 
 void *DE_Mem_New(size_t size, int count) {
-    return malloc(size * count);
+    return SDL_malloc(size * count);
+}
+
+void *DE_Mem_Alloc(size_t size, int count) {
+    return SDL_calloc(count, size);
+}
+
+void *DE_Mem_Realloc(void *mem, size_t size) {
+    return SDL_realloc(mem, size);
 }
 
 void DE_Mem_Delete(void *mem) {
     if(!mem) return;
     else {
-        free(mem);
+        SDL_free(mem);
         mem = NULL;
     }
 }

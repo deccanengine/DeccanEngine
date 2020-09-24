@@ -8,14 +8,6 @@
 #include "Deccan.h"
 
 bool DE_App_Init(DeccanSettings *settings) {
-    /* Register all the components */
-//     ECSystem_RegisterComponent("NULL");
-
-//     Collider_Register();
-
-    // To do: material component
-//     ECSystem_RegisterComponent("Color");
-
     Core_Init(settings);
 
     /* Create renderer */
