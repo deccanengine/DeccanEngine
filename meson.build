@@ -4,10 +4,7 @@ cc = meson.get_compiler('c')
 m_dep = cc.find_library('m')
 
 dep_incdir = include_directories('proj')
-log_dep    = declare_dependency(include_directories: dep_incdir, sources: 'depends/log.c/src/log.c')
-flecs_dep  = declare_dependency(include_directories: dep_incdir, sources: 'depends/flecs/flecs.c')
-deps = [dependency('SDL2'), dependency('SDL2_ttf'), flecs_dep, log_dep, m_dep]
-
+deps = [dependency('SDL2'), dependency('SDL2_ttf'), m_dep]
 
 src = [
     'corelib/Core/Asset.c',

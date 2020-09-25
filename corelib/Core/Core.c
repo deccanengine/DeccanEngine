@@ -14,8 +14,12 @@
 
 #define STB_DS_IMPLEMENTATION
 
+#include <depends/flecs/flecs.c>
+#include <depends/log.c/src/log.c>
+
 #include "Core.h"
 #include "Input/Input.h"
+
 
 static struct {
     SDL_Window *window;
