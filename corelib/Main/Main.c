@@ -5,7 +5,7 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include "Deccan.h"
+#include "../Deccan.h"
 
 bool DE_App_Init(DeccanSettings *settings) {
     Core_Init(settings);

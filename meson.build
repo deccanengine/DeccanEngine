@@ -35,7 +35,7 @@ src = [
     'corelib/Scene/Components/State2D.c',
     'corelib/Scene/Components/Collider.c',
 
-    'corelib/Main.c',
+    'corelib/Main/Main.c',
 
     'sandbox/main.c',
     'sandbox/player.c'
