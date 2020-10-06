@@ -35,14 +35,9 @@ GameObject *Object_NewObject(const char *name) {
     ecs_set_ptr_w_entity(scene->world, obj->entity, FLECS__EEcsName,
         sizeof(EcsName), &(EcsName){DE_String_New(name)});
 
-    obj->order.z = (float)Object_Info.zAccum++;
-
-    obj->visible    = true;
-    obj->active     = true;
-    obj->toRemove   = false;
-
-    /* Initialize messaging system */
-    DE_Var_Init(&obj->vars);
+    obj->visible  = true;
+    obj->active   = true;
+    obj->toRemove = false;
 
     obj->is_beginning = true;
     obj->AtFirstFrame = NULL_OBJFUNC;
@@ -98,6 +93,9 @@ void Object_Update(GameObject *obj) {
     }
 
     if(obj->is_beginning == true) {
+        /* Initialize messaging system */
+        DE_Var_Init(&obj->vars);
+
         obj->AtBeginning(obj);
         obj->is_beginning = false;
     }

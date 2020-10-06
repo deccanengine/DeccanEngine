@@ -64,7 +64,7 @@ void Scene_RemoveScene();
 // Object handling
 ////////////////////////////////////////////////
 
-void Scene_InstantiateObject(GameObject *object);
+void Scene_InstantiateObject(GameObject *object, const char *name, bool is_prefab);
 GameObject *Scene_GetObject(const char *name);
 void Scene_IterateObject(void (*func)(GameObject *this));
 void Scene_IterateObjectOfType(const char *type, void (*func)(GameObject *this));

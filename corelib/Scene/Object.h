@@ -33,20 +33,11 @@ typedef struct Component {
 
 typedef struct GameObject GameObject;
 typedef struct GameObject {
-    int32_t layer;   // To do
-
-    // To do: use these
-    bool active;
     bool visible;
-
-    // Temporary
-    struct { int32_t z; } order;
-
-    // To do: mark and remove system
+    bool active;
     bool toRemove;
 
     ecs_entity_t entity;
-
     DeccanVarManager vars;
 
     bool is_beginning;

@@ -5,6 +5,8 @@ uint64_t count;
 Timer timer;
 SpriteAsset *text;
 
+GameObject *s;
+
 void color_mod(DeccanSysIter *it) {
     Color *color = DE_Flecs_IterColumn(it, "Color", 1);
     State2D *state = DE_Flecs_IterColumn(it, "State2D", 2);
@@ -26,12 +28,18 @@ void x_mod(DeccanSysIter *it) {
 void begin() {
     /* Start here */
     GameObject *player = Object_NewObject("main player");
-    player->order.z = 5;
+//     player->order.z = 5;
     player->AtBeginning = _player_begin;
     player->AtStep = _player_step;
     player->AtRender = _player_render;
     player->AtEnd = _player_end;
-    Scene_InstantiateObject(player);
+    Scene_InstantiateObject(player, "main player", false);
+
+    s = Object_NewObject("Circle");
+    s->AtBeginning = _none_begin;
+    s->AtStep = _none_step;
+    s->AtRender = _none_render;
+    s->AtEnd = _none_end;
 
     Asset_LoadAnimatedSprite("arrow0",
         "arrow0.png",
@@ -70,13 +78,7 @@ void render() {
         char *name = DE_Mem_New(memory_needed, 1);
         sprintf(name, "circle%I64ld", count++);
 
-        GameObject *s = Object_NewObject(name);
-        s->AtBeginning = _none_begin;
-        s->AtStep = _none_step;
-        s->AtRender = _none_render;
-        s->AtEnd = _none_end;
-
-        Scene_InstantiateObject(s);
+        Scene_InstantiateObject(s, name, true);
 
         Clock_ResetTimer(&timer);
         DE_Mem_Delete(name);
