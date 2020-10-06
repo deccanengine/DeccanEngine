@@ -33,9 +33,10 @@ GameObject *Object_NewObject(const char *name) {
 
     ecs_set_ptr_w_entity(scene->world, obj->entity,
         ecs_lookup(scene->world, "GameObject"), sizeof(GameObject), obj);
-    ecs_set_ptr_w_entity(scene->world, obj->entity, FLECS__EEcsName,
-        sizeof(EcsName), &(EcsName){DE_String_New(name)});
-//     Object_SetComponent(obj, "Name", &(Name){ DE_String_New(name) });
+//     ecs_set_ptr_w_entity(scene->world, obj->entity, FLECS__EEcsName,
+//         sizeof(EcsName), &(EcsName){DE_String_New(name)});
+
+    Object_SetName(obj, name);
 
     obj->visible  = true;
     obj->active   = true;
@@ -132,6 +133,18 @@ void Object_SetComponent(GameObject *obj, const char *name, void *component) {
 
 void *Object_GetComponent(GameObject *obj, const char *name) {
     return DE_Flecs_GetComponent(obj->entity, name);
+}
+
+void Object_SetName(GameObject *obj, const char *name) {
+    GameScene *scene = Scene_CurrentScene();
+    ecs_set_ptr_w_entity(scene->world, obj->entity, FLECS__EEcsName,
+        sizeof(EcsName), &(EcsName){DE_String_New(name)});
+}
+
+const char *Object_GetName(GameObject *obj) {
+    GameScene *scene = Scene_CurrentScene();
+    EcsName *name = ecs_get_mut_w_entity(scene->world, obj->entity, FLECS__EEcsName, NULL);
+    return name->value;
 }
 
 void Object_SetTag(GameObject *obj, const char *name) {

@@ -77,6 +77,9 @@ void Object_End(GameObject *obj);
 void Object_SetComponent(GameObject *obj, const char *name, void *component);
 void *Object_GetComponent(GameObject *obj, const char *name);
 
+void Object_SetName(GameObject *obj, const char *name);
+const char *Object_GetName(GameObject *obj);
+
 void Object_SetTag(GameObject *obj, const char *name);
 bool Object_HasTag(GameObject *obj, const char *name);
 

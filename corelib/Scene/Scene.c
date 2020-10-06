@@ -157,14 +157,16 @@ void Scene_InstantiateObject(GameObject *object, const char *name, bool is_prefa
     if(is_prefab) {
         object_inst = Object_NewObject(name);
         object_inst->entity = ecs_new_w_entity(scene->world, object->entity);
+        object_inst->visible = object->visible;
         object_inst->active = object->active;
+        object_inst->is_beginning = true;
         object_inst->AtFirstFrame = object->AtFirstFrame;
         object_inst->AtBeginning = object->AtBeginning;
         object_inst->AtStep = object->AtStep;
         object_inst->AtRender = object->AtRender;
         object_inst->AtEnd = object->AtEnd;
 
-//         DE_Flecs_SetComponent(object_inst, "Name", &(Name){ DE_String_New(name) });
+        Object_SetName(object_inst, name);
 
         ecs_set_ptr_w_entity(scene->world, object_inst->entity,
             ecs_lookup(scene->world, "GameObject"), sizeof(GameObject), object_inst);
