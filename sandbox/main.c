@@ -27,9 +27,6 @@ void x_mod(DeccanSysIter *it) {
 
 void begin() {
     /* Start here */
-
-//     State2D_Register();
-//     Collider_Register();
     DE_Components_RegisterAll();
 
     GameObject *player = Object_NewObject("main player");

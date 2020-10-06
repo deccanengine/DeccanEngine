@@ -31,7 +31,6 @@ src = [
     'corelib/Scene/Scene.c',
     'corelib/Scene/Components.c',
     'corelib/Scene/Components/Collider.c',
-    'corelib/Scene/Components/Name.c',
     'corelib/Scene/Components/State2D.c',
 
     'corelib/Main/Main.c',

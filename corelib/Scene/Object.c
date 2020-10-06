@@ -9,15 +9,6 @@
 #include "Scene.h"
 #include "../Core/Core.h"
 #include "Flecs.h"
-#include "Components/Name.h"
-
-static struct {
-    int32_t zAccum;
-    GameObject defaultObj;
-} Object_Info = {
-    .zAccum = 0,
-    .defaultObj = {0}
-};
 
 #define PTR_NULLCHECK(x) if(x == NULL) { return; }
 
@@ -33,8 +24,6 @@ GameObject *Object_NewObject(const char *name) {
 
     ecs_set_ptr_w_entity(scene->world, obj->entity,
         ecs_lookup(scene->world, "GameObject"), sizeof(GameObject), obj);
-//     ecs_set_ptr_w_entity(scene->world, obj->entity, FLECS__EEcsName,
-//         sizeof(EcsName), &(EcsName){DE_String_New(name)});
 
     Object_SetName(obj, name);
 

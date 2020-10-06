@@ -9,6 +9,5 @@
 
 void DE_Components_RegisterAll() {
     Collider_Register();
-    Name_Register();
     State2D_Register();
 }
