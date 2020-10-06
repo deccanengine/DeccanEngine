@@ -9,6 +9,7 @@
 #include "Scene.h"
 #include "../Core/Core.h"
 #include "Flecs.h"
+#include "Components/Name.h"
 
 static struct {
     int32_t zAccum;
@@ -34,6 +35,7 @@ GameObject *Object_NewObject(const char *name) {
         ecs_lookup(scene->world, "GameObject"), sizeof(GameObject), obj);
     ecs_set_ptr_w_entity(scene->world, obj->entity, FLECS__EEcsName,
         sizeof(EcsName), &(EcsName){DE_String_New(name)});
+//     Object_SetComponent(obj, "Name", &(Name){ DE_String_New(name) });
 
     obj->visible  = true;
     obj->active   = true;
@@ -125,19 +127,11 @@ void Object_End(GameObject *obj) {
 ////////////////////////////////////////////////
 
 void Object_SetComponent(GameObject *obj, const char *name, void *component) {
-    GameScene *scene = Scene_CurrentScene();
-    DeccanComponent comp = DE_Flecs_LookupComponent(name);
-    if(comp.key == NULL) {
-        DE_WARN("Component %s is not a valid registered component in the scene", name);
-        return;
-    }
-
-    ecs_set_ptr_w_entity(scene->world, obj->entity, comp.id, comp.size, component);
+    DE_Flecs_SetComponent(obj->entity, name, component);
 }
 
 void *Object_GetComponent(GameObject *obj, const char *name) {
-    GameScene *scene = Scene_CurrentScene();
-    return ecs_get_mut_w_entity(scene->world, obj->entity, ecs_lookup(scene->world, name), NULL);
+    return DE_Flecs_GetComponent(obj->entity, name);
 }
 
 void Object_SetTag(GameObject *obj, const char *name) {

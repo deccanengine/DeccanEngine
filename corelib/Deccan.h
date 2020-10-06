@@ -25,7 +25,7 @@
 #include "Scene/Object.h"
 #include "Scene/Scene.h"
 #include "Scene/Flecs.h"
-#include "Scene/ComponentList.h"
+#include "Scene/Components.h"
 
 #include "Renderer/Renderer.h"
 #include "Renderer/Texture.h"

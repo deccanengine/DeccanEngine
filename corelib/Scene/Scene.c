@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "../Core/Core.h"
 #include "Flecs.h"
+#include "Components/Name.h"
 
 static struct {
     GameScene **scenes;
@@ -106,7 +107,7 @@ GameScene *Scene_NewScene(const char *name) {
     scene->AtEnd = NULL_VOIDFUNC;
 
     ecs_entity_t FLECS_EEcsGameObject = ecs_new_component(scene->world, 0, "GameObject", sizeof(GameObject), ECS_ALIGNOF(GameObject));
-//     DE_Flecs_NewComponent("GameObject", sizeof(GameObject), ECS_ALIGNOF(GameObject));
+//     DE_Flecs_RegisterComponent("GameObject", sizeof(GameObject), ECS_ALIGNOF(GameObject));
 
     return scene;
 }
@@ -150,26 +151,26 @@ void Scene_RemoveScene() {
 void Scene_InstantiateObject(GameObject *object, const char *name, bool is_prefab) {
     if(object == NULL) return;
 
+    GameObject *object_inst = object;
     GameScene *scene = Scene_CurrentScene();
 
     if(is_prefab) {
-        GameObject *new_object = Object_NewObject(name);
-        new_object->entity = ecs_new_w_entity(scene->world, object->entity);
-        new_object->active = object->active;
-        new_object->AtFirstFrame = object->AtFirstFrame;
-        new_object->AtBeginning = object->AtBeginning;
-        new_object->AtStep = object->AtStep;
-        new_object->AtRender = object->AtRender;
-        new_object->AtEnd = object->AtEnd;
+        object_inst = Object_NewObject(name);
+        object_inst->entity = ecs_new_w_entity(scene->world, object->entity);
+        object_inst->active = object->active;
+        object_inst->AtFirstFrame = object->AtFirstFrame;
+        object_inst->AtBeginning = object->AtBeginning;
+        object_inst->AtStep = object->AtStep;
+        object_inst->AtRender = object->AtRender;
+        object_inst->AtEnd = object->AtEnd;
 
-        ecs_set_ptr_w_entity(scene->world, new_object->entity,
-            ecs_lookup(scene->world, "GameObject"), sizeof(GameObject), new_object);
+//         DE_Flecs_SetComponent(object_inst, "Name", &(Name){ DE_String_New(name) });
 
-        stbds_arrput(scene->objects, new_object);
+        ecs_set_ptr_w_entity(scene->world, object_inst->entity,
+            ecs_lookup(scene->world, "GameObject"), sizeof(GameObject), object_inst);
     }
-    else {
-        stbds_arrput(scene->objects, object);
-    }
+
+    stbds_arrput(scene->objects, object_inst);
 }
 
 GameObject *Scene_GetObject(const char *name) {

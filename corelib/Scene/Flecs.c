@@ -34,6 +34,22 @@ void DE_Flecs_System(DeccanSysFunc iter, const char *name, const char *sign, Dec
     ecs_entity_t sys = ecs_new_system(scene->world, 0, name ? name : "system", type, sign, iter);
 }
 
+void DE_Flecs_SetComponent(ecs_entity_t entity, const char *name, void *component) {
+    GameScene *scene = Scene_CurrentScene();
+    DeccanComponent comp = DE_Flecs_LookupComponent(name);
+    if(comp.key == NULL) {
+        DE_WARN("Component %s is not a valid registered component in the scene", name);
+        return;
+    }
+
+    ecs_set_ptr_w_entity(scene->world, entity, comp.id, comp.size, component);
+}
+
+void *DE_Flecs_GetComponent(ecs_entity_t entity, const char *name) {
+    GameScene *scene = Scene_CurrentScene();
+    return ecs_get_mut_w_entity(scene->world, entity, ecs_lookup(scene->world, name), NULL);
+}
+
 void DE_Flecs_SetTag(ecs_entity_t entity, const char *name) {
     GameScene *scene = Scene_CurrentScene();
     ecs_entity_t tag = ecs_lookup(scene->world, name);

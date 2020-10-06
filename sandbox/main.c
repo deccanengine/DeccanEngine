@@ -27,6 +27,11 @@ void x_mod(DeccanSysIter *it) {
 
 void begin() {
     /* Start here */
+
+//     State2D_Register();
+//     Collider_Register();
+    DE_Components_RegisterAll();
+
     GameObject *player = Object_NewObject("main player");
 //     player->order.z = 5;
     player->AtBeginning = _player_begin;
@@ -59,8 +64,6 @@ void begin() {
     DE_Var_New(DE_Core_GetVarManager(), "hola", DECCAN_VARTYPE_STRING);
     DE_Var_SetString(DE_Core_GetVarManager(), "hola", "test string");
 
-    State2D_Register();
-    Collider_Register();
 
     DE_Flecs_RegisterComponent("Color", sizeof(Color), ECS_ALIGNOF(Color));
     DE_Flecs_System(color_mod, "color_mod", "Color, State2D", DECCAN_ECS_TYPE_ON_UPDATE);

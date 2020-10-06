@@ -8,4 +8,7 @@
 #pragma once
 
 #include "Components/Collider.h"
+#include "Components/Name.h"
 #include "Components/State2D.h"
+
+void DE_Components_RegisterAll();
