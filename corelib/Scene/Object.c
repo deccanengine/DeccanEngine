@@ -20,7 +20,7 @@ GameObject *Object_NewObject(const char *name) {
     GameScene *scene = Scene_CurrentScene();
     GameObject *obj = DE_Mem_New(sizeof(GameObject), 1);
 
-    obj->entity = ecs_new_w_type(scene->world, 0);
+    obj->entity = ecs_new_w_entity(scene->world, ECS_CHILDOF | 0);
 
     ecs_set_ptr_w_entity(scene->world, obj->entity,
         ecs_lookup(scene->world, "GameObject"), sizeof(GameObject), obj);
