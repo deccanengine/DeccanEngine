@@ -55,6 +55,7 @@ static inline void NULL_OBJFUNC(GameObject *obj) { DE_UNUSED(obj); }
 ////////////////////////////////////////////////
 
 GameObject *Object_NewObject(const char *name);
+GameObject *Object_MakeCopy(GameObject *object);
 void Object_DeleteObject(GameObject *obj);
 void Object_FreeObject(GameObject *obj);
 

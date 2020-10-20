@@ -41,6 +41,27 @@ GameObject *Object_NewObject(const char *name) {
     return obj;
 }
 
+GameObject *Object_MakeCopy(GameObject *object) {
+    GameScene *scene = Scene_CurrentScene();
+    GameObject *object_inst = Object_NewObject(Object_GetName(object));
+
+    object_inst->entity = ecs_new_w_entity(scene->world, ECS_INSTANCEOF | object->entity);
+
+    object_inst->visible = object->visible;
+    object_inst->active = object->active;
+
+    object_inst->AtFirstFrame = object->AtFirstFrame;
+    object_inst->AtBeginning = object->AtBeginning;
+    object_inst->AtStep = object->AtStep;
+    object_inst->AtRender = object->AtRender;
+    object_inst->AtEnd = object->AtEnd;
+
+    ecs_set_ptr_w_entity(scene->world, object_inst->entity,
+        ecs_lookup(scene->world, "GameObject"), sizeof(GameObject), object_inst);
+
+    return object_inst;
+}
+
 void Object_DeleteObject(GameObject *obj) {
     PTR_NULLCHECK(obj);
 

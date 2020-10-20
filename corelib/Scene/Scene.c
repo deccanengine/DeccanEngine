@@ -146,30 +146,10 @@ void Scene_RemoveScene() {
 // Object handling
 ////////////////////////////////////////////////
 
-void Scene_InstantiateObject(GameObject *object, const char *name, bool is_prefab) {
+void Scene_InstantiateObject(GameObject *object) {
     if(object == NULL) return;
-
-    GameObject *object_inst = object;
     GameScene *scene = Scene_CurrentScene();
-
-    if(is_prefab) {
-        object_inst = Object_NewObject(name);
-        object_inst->entity = ecs_new_w_entity(scene->world, ECS_INSTANCEOF | object->entity);
-        object_inst->visible = object->visible;
-        object_inst->active = object->active;
-        object_inst->AtFirstFrame = object->AtFirstFrame;
-        object_inst->AtBeginning = object->AtBeginning;
-        object_inst->AtStep = object->AtStep;
-        object_inst->AtRender = object->AtRender;
-        object_inst->AtEnd = object->AtEnd;
-
-        ecs_set_ptr_w_entity(scene->world, object_inst->entity,
-            ecs_lookup(scene->world, "GameObject"), sizeof(GameObject), object_inst);
-    }
-    
-    Object_SetName(object_inst, name);
-
-    stbds_arrput(scene->objects, object_inst);
+    stbds_arrput(scene->objects, object);
 }
 
 GameObject *Scene_GetObject(const char *name) {

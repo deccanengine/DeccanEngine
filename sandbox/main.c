@@ -35,7 +35,7 @@ void begin() {
     player->AtStep = _player_step;
     player->AtRender = _player_render;
     player->AtEnd = _player_end;
-    Scene_InstantiateObject(player, "main player", false);
+    Scene_InstantiateObject(player);
 
     s = Object_NewObject("Circle");
     s->AtBeginning = _none_begin;
@@ -61,7 +61,6 @@ void begin() {
     DE_Var_New(DE_Core_GetVarManager(), "hola", DECCAN_VARTYPE_STRING);
     DE_Var_SetString(DE_Core_GetVarManager(), "hola", "test string");
 
-
     DE_Flecs_RegisterComponent("Color", sizeof(Color), ECS_ALIGNOF(Color));
     DE_Flecs_System(color_mod, "color_mod", "Color, State2D", DECCAN_ECS_TYPE_ON_UPDATE);
     DE_Flecs_System(x_mod, "x_mod", "State2D", DECCAN_ECS_TYPE_ON_UPDATE);
@@ -78,7 +77,9 @@ void render() {
         char *name = DE_Mem_New(memory_needed, 1);
         sprintf(name, "circle%I64ld", count++);
 
-        Scene_InstantiateObject(s, name, true);
+        GameObject *object_to_push = Object_MakeCopy(s);
+        Object_SetName(object_to_push, name);
+        Scene_InstantiateObject(object_to_push);
 
         Clock_ResetTimer(&timer);
         DE_Mem_Delete(name);
