@@ -21,9 +21,9 @@
 // Drawing functions
 ////////////////////////////////////////////////
 
-void Draw_Point(vec2 pos, Color color);
-void Draw_Line(vec2 start, vec2 end, Color color);
-void Draw_Rect(vec4 rect, Color color);
-void Draw_FilledRect(vec4 rect, Color color);
-void Draw_Circle(vec3 circle, Color color);
-void Draw_FilledCircle(vec3 circle, Color color);
+void Draw_Point(vec2 pos, DeccanColor color);
+void Draw_Line(vec2 start, vec2 end, DeccanColor color);
+void Draw_Rect(vec4 rect, DeccanColor color);
+void Draw_FilledRect(vec4 rect, DeccanColor color);
+void Draw_Circle(vec3 circle, DeccanColor color);
+void Draw_FilledCircle(vec3 circle, DeccanColor color);

@@ -38,7 +38,7 @@ void Clamp(vec2 pos, vec4 rect, float *final_x, float *final_y) {
     else { *final_y = pos[1]; }
 }
 
-void Camera_Move(vec2 pos) {
+void DE_CameraMove(vec2 pos) {
     float x, y;
     Clamp(pos, Camera_Info.bounds, &x, &y);
 
@@ -65,18 +65,18 @@ void Camera_CenterOn(GameObject *obj) {
 }
 */
 
-void Camera_SetPosition(vec2 pos) {
+void DE_CameraSetPosition(vec2 pos) {
     glm_vec2_copy(pos, Camera_Info.position);
 }
 
-void Camera_SetBounds(vec4 rect) {
+void DE_CameraSetBounds(vec4 rect) {
     glm_vec2_copy(rect, Camera_Info.bounds);
 }
 
-void Camera_GetPosition(vec2 pos) {
+void DE_CameraGetPosition(vec2 pos) {
     glm_vec2_copy(Camera_Info.position, pos);
 }
 
-void Camera_GetBounds(vec4 bounds) {
+void DE_CameraGetBounds(vec4 bounds) {
     glm_vec4_copy(Camera_Info.bounds, bounds);
 }

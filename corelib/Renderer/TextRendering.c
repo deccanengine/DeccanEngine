@@ -10,7 +10,7 @@
 
 #define PTR_NULLCHECK(x,y) if(!x) { return y; }
 
-DeccanSpriteAsset *Font_FastText(DeccanFontAsset *font, const char *text, Color color) {
+DeccanSpriteAsset *DE_FontFastText(DeccanFontAsset *font, const char *text, DeccanColor color) {
     PTR_NULLCHECK(font, NULL);
 
 	SDL_Renderer *renderer = Renderer_GetRenderer();
@@ -38,11 +38,11 @@ DeccanSpriteAsset *Font_FastText(DeccanFontAsset *font, const char *text, Color 
     return asset;
 }
 
-DeccanSpriteAsset *Font_Text(DeccanFontAsset *font, const char *text, FontStyle style, Color color) {
-    return Font_OutlinedText(font, text, style, -1, color);
+DeccanSpriteAsset *DE_FontText(DeccanFontAsset *font, const char *text, FontStyle style, DeccanColor color) {
+    return DE_FontOutlinedText(font, text, style, -1, color);
 }
 
-DeccanSpriteAsset *Font_OutlinedText(DeccanFontAsset *font, const char *text, FontStyle style, int32_t outline, Color color) {
+DeccanSpriteAsset *DE_FontOutlinedText(DeccanFontAsset *font, const char *text, FontStyle style, int32_t outline, DeccanColor color) {
     PTR_NULLCHECK(font, NULL);
 
     SDL_Renderer *renderer = Renderer_GetRenderer();

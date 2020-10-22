@@ -8,7 +8,7 @@ DeccanSpriteAsset *text;
 GameObject *s;
 
 void color_mod(DeccanSysIter *it) {
-    Color *color = DE_Flecs_IterColumn(it, "Color", 1);
+    DeccanColor *color = DE_Flecs_IterColumn(it, "Color", 1);
     State2D *state = DE_Flecs_IterColumn(it, "State2D", 2);
 
     for(int i = 0; i < it->count; i++) {
@@ -54,14 +54,14 @@ void begin() {
 
     Clock_StartTimer(&timer);
 
-    Renderer_SetBackgroundColor((Color){255, 255, 255, 255});
+    Renderer_SetBackgroundColor((DeccanColor){255, 255, 255, 255});
 
-    text = Font_Text(DE_AssetGetFont("arial"), "Hello! This is Deccan Game Engine", 0, (Color){0, 0, 0, 0});
+    text = DE_FontText(DE_AssetGetFont("arial"), "Hello! This is Deccan Game Engine", 0, (DeccanColor){0, 0, 0, 0});
 
     DE_Var_New(DE_Core_GetVarManager(), "hola", DECCAN_VARTYPE_STRING);
     DE_Var_SetString(DE_Core_GetVarManager(), "hola", "test string");
 
-    DE_Flecs_RegisterComponent("Color", sizeof(Color), ECS_ALIGNOF(Color));
+    DE_Flecs_RegisterComponent("Color", sizeof(DeccanColor), ECS_ALIGNOF(DeccanColor));
     DE_Flecs_System(color_mod, "color_mod", "Color, State2D", DECCAN_ECS_TYPE_ON_UPDATE);
     DE_Flecs_System(x_mod, "x_mod", "State2D", DECCAN_ECS_TYPE_ON_UPDATE);
 }
@@ -85,9 +85,9 @@ void render() {
         DE_Mem_Delete(name);
     }
 
-	Sprite_Blit((vec4){100, 100, 0, 0}, 0, 0, DE_AssetGetSprite("arrow0"));
+	DE_SpriteBlit((vec4){100, 100, 0, 0}, 0, 0, DE_AssetGetSprite("arrow0"));
 
-    Sprite_BlitScaled((vec4){10, 10, 0, 0}, (vec2){1.0f, 1.0f}, 0, 0, text);
+    DE_SpriteBlitScaled((vec4){10, 10, 0, 0}, (vec2){1.0f, 1.0f}, 0, 0, text);
 }
 
 void end() {

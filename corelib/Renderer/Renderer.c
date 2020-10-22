@@ -24,7 +24,7 @@ static struct {
         int type;
         union {
             DeccanSpriteAsset *texture;
-            Color color;
+            DeccanColor color;
         };
     } background;
 
@@ -82,7 +82,7 @@ void Renderer_Background() {
         Renderer_Clear(); // Removing it produces artifacts
 
         vec2 mode; Core_GetResolution(mode);
-        vec2 camera; Camera_GetPosition(camera);
+        vec2 camera; DE_CameraGetPosition(camera);
 
         vec4 rect = {
             camera[0],
@@ -91,21 +91,21 @@ void Renderer_Background() {
             mode[1]
         };
 
-        Sprite_Blit(rect, 0, 0, Renderer_Info.background.texture);
+        DE_SpriteBlit(rect, 0, 0, Renderer_Info.background.texture);
     }
 }
 
 /* Setters */
 
 void Renderer_Clear() {
-    Color blank = {
+    DeccanColor blank = {
         0, 0, 0, 0
     };
 
     Renderer_ClearColor(blank);
 }
 
-void Renderer_ClearColor(Color color) {
+void Renderer_ClearColor(DeccanColor color) {
     Renderer_SetColor(color);
 #ifdef DECCAN_RENDERER_SDL
     SDL_RenderClear(Renderer_Info.renderer);
@@ -114,7 +114,7 @@ void Renderer_ClearColor(Color color) {
 #endif
 }
 
-void Renderer_SetBackgroundColor(Color color) {
+void Renderer_SetBackgroundColor(DeccanColor color) {
     Renderer_Info.background.type = 0;
     Renderer_Info.background.color = color;
 }
@@ -143,7 +143,7 @@ void Renderer_SetTarget(DeccanSpriteAsset *target) {
 #endif
 }
 
-void Renderer_SetColor(Color color) {
+void Renderer_SetColor(DeccanColor color) {
 #ifdef DECCAN_RENDERER_SDL
     SDL_SetRenderDrawColor(Renderer_Info.renderer, color.r, color.g, color.b, color.a);
 #else
@@ -171,8 +171,8 @@ void Renderer_SetBlendMode(int blend_mode) {
 
 /* Getters */
 
-Color Renderer_GetBackgroundColor() {
-    Color color = {
+DeccanColor Renderer_GetBackgroundColor() {
+    DeccanColor color = {
         0, 0, 0, 0
     };
 
@@ -208,8 +208,8 @@ DeccanSpriteAsset *Renderer_GetTarget() {
     return target;
 }
 
-Color Renderer_GetColor() {
-    Color color = {
+DeccanColor Renderer_GetColor() {
+    DeccanColor color = {
         0, 0, 0, 0
     };
 #ifdef DECCAN_RENDERER_SDL

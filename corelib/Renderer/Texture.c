@@ -12,12 +12,12 @@
 
 // To be replaced with better and practical functions
 /*
-void DE_SpriteSetColor(DeccanSpriteAsset *texture, Color color) {
+void DE_SpriteSetDeccanColor(DeccanSpriteAsset *texture, DeccanColor color) {
     if(texture == NULL) {
         return;
     }
 #ifdef DECCAN_RENDERER_SDL
-    SDL_SetTextureColorMod(texture->texture[0], color.r, color.g, color.b);
+    SDL_SetTextureDeccanColorMod(texture->texture[0], color.r, color.g, color.b);
 #else
 
 #endif
@@ -29,7 +29,7 @@ void BlitInternal(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, Decc
         return;
     }
 
-    vec2 camera; Camera_GetPosition(camera);
+    vec2 camera; DE_CameraGetPosition(camera);
 
 #ifdef DECCAN_RENDERER_SDL
     SDL_Renderer *renderer = Renderer_GetRenderer();
@@ -89,18 +89,18 @@ void BlitInternal(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, Decc
     }
 }
 
-void Sprite_Blit(vec4 rect, double angle, Flip flip, DeccanSpriteAsset *texture) {
+void DE_SpriteBlit(vec4 rect, double angle, Flip flip, DeccanSpriteAsset *texture) {
     BlitInternal(rect, (vec4){0, 0, 0, 0}, (vec2){0.0f, 0.0f}, angle, flip, texture);
 }
 
-void Sprite_BlitScaled(vec4 rect, vec2 scale, double angle, Flip flip, DeccanSpriteAsset *texture) {
+void DE_SpriteBlitScaled(vec4 rect, vec2 scale, double angle, Flip flip, DeccanSpriteAsset *texture) {
     BlitInternal(rect, (vec4){0, 0, 0, 0}, scale, angle, flip, texture);
 }
 
-void Sprite_BlitPartial(vec4 rect, vec4 dim, double angle, Flip flip, DeccanSpriteAsset *texture) {
+void DE_SpriteBlitPartial(vec4 rect, vec4 dim, double angle, Flip flip, DeccanSpriteAsset *texture) {
     BlitInternal(rect, dim, (vec2){0, 0}, angle, flip, texture);
 }
 
-void Sprite_BlitPartialScaled(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, DeccanSpriteAsset *texture) {
+void DE_SpriteBlitPartialScaled(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, DeccanSpriteAsset *texture) {
     BlitInternal(rect, dim, scale, angle, flip, texture);
 }
