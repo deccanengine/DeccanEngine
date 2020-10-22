@@ -3,7 +3,7 @@
 bool selected = false;
 vec2 offset;
 
-SpriteAsset tar;
+DeccanSpriteAsset tar;
 
 Color
     ColorList_White     = (Color){255, 255, 255, 255},

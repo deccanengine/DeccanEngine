@@ -12,7 +12,7 @@
 
 // To be replaced with better and practical functions
 /*
-void Sprite_SetColor(SpriteAsset *texture, Color color) {
+void DE_SpriteSetColor(DeccanSpriteAsset *texture, Color color) {
     if(texture == NULL) {
         return;
     }
@@ -24,7 +24,7 @@ void Sprite_SetColor(SpriteAsset *texture, Color color) {
 }
 */
 
-void BlitInternal(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, SpriteAsset *texture) {
+void BlitInternal(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, DeccanSpriteAsset *texture) {
     if(texture == NULL) {
         return;
     }
@@ -53,7 +53,7 @@ void BlitInternal(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, Spri
     //    DE_REPORT("Cannot query texture: %s :%s", texture->name, SDL_GetError());
     //}
 
-    vec2 size; Sprite_GetSize(texture, size);
+    vec2 size; DE_SpriteGetSize(texture, size);
 
     if(!src.w) { src.w = size[0]; }
     if(!src.h) { src.h = size[1]; }
@@ -89,18 +89,18 @@ void BlitInternal(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, Spri
     }
 }
 
-void Sprite_Blit(vec4 rect, double angle, Flip flip, SpriteAsset *texture) {
+void Sprite_Blit(vec4 rect, double angle, Flip flip, DeccanSpriteAsset *texture) {
     BlitInternal(rect, (vec4){0, 0, 0, 0}, (vec2){0.0f, 0.0f}, angle, flip, texture);
 }
 
-void Sprite_BlitScaled(vec4 rect, vec2 scale, double angle, Flip flip, SpriteAsset *texture) {
+void Sprite_BlitScaled(vec4 rect, vec2 scale, double angle, Flip flip, DeccanSpriteAsset *texture) {
     BlitInternal(rect, (vec4){0, 0, 0, 0}, scale, angle, flip, texture);
 }
 
-void Sprite_BlitPartial(vec4 rect, vec4 dim, double angle, Flip flip, SpriteAsset *texture) {
+void Sprite_BlitPartial(vec4 rect, vec4 dim, double angle, Flip flip, DeccanSpriteAsset *texture) {
     BlitInternal(rect, dim, (vec2){0, 0}, angle, flip, texture);
 }
 
-void Sprite_BlitPartialScaled(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, SpriteAsset *texture) {
+void Sprite_BlitPartialScaled(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, DeccanSpriteAsset *texture) {
     BlitInternal(rect, dim, scale, angle, flip, texture);
 }

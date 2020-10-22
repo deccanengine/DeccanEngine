@@ -21,21 +21,21 @@
 typedef enum {
     AnimActive = 1,
     AnimLoop = 2
-} AnimFlag;
+} DeccanSpriteAnimFlag;
 
 /////////////////////////////////////////////////
 // Structs
 ////////////////////////////////////////////////
 
-typedef struct SpriteAsset {
+typedef struct DeccanSpriteAsset {
     char *name;
     DeccanRawTexture **texture;
     uint32_t count;
     uint32_t current;
     float delay;
     float clock;
-    AnimFlag flags;
-} SpriteAsset;
+    DeccanSpriteAnimFlag flags;
+} DeccanSpriteAsset;
 
 // To do: destructor
 
@@ -43,20 +43,20 @@ typedef struct SpriteAsset {
 // Constructor/Destructor
 ////////////////////////////////////////////////
 
-SpriteAsset *Sprite_New(const char *name);
-void Sprite_Delete(SpriteAsset *asset);
+DeccanSpriteAsset *DE_SpriteNew(const char *name);
+void DE_SpriteDelete(DeccanSpriteAsset *asset);
 
 /////////////////////////////////////////////////
 // Setters/Getters
 ////////////////////////////////////////////////
 
-void Sprite_GetSize(SpriteAsset *texture, vec2 size);
+void DE_SpriteGetSize(DeccanSpriteAsset *texture, vec2 size);
 
-void Sprite_SetAnimLoop(SpriteAsset *texture, bool loop);
-bool Sprite_GetAnimLoop(SpriteAsset *texture);
+void DE_SpriteSetAnimLoop(DeccanSpriteAsset *texture, bool loop);
+bool DE_SpriteGetAnimLoop(DeccanSpriteAsset *texture);
 
-void Sprite_SetAnimActive(SpriteAsset *texture, bool active);
-bool Sprite_GetAnimActive(SpriteAsset *texture);
+void DE_SpriteSetAnimActive(DeccanSpriteAsset *texture, bool active);
+bool DE_SpriteGetAnimActive(DeccanSpriteAsset *texture);
 
-void Sprite_SetAnimDelay(SpriteAsset *texture, float ms);
-float Sprite_GetAnimDelay(SpriteAsset *texture);
+void DE_SpriteSetAnimDelay(DeccanSpriteAsset *texture, float ms);
+float DE_SpriteGetAnimDelay(DeccanSpriteAsset *texture);

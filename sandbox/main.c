@@ -3,7 +3,7 @@
 
 uint64_t count;
 Timer timer;
-SpriteAsset *text;
+DeccanSpriteAsset *text;
 
 GameObject *s;
 
@@ -43,20 +43,20 @@ void begin() {
     s->AtRender = _none_render;
     s->AtEnd = _none_end;
 
-    Asset_LoadAnimatedSprite("arrow0",
+    DE_AssetLoadAnimatedSprite("arrow0",
         "arrow0.png",
         "arrow1.png",
         "arrow2.png",
         "arrow3.png",
         NULL
     );
-    Asset_LoadFont("arial", "arial.ttf");
+    DE_AssetLoadFont("arial", "arial.ttf");
 
     Clock_StartTimer(&timer);
 
     Renderer_SetBackgroundColor((Color){255, 255, 255, 255});
 
-    text = Font_Text(Asset_GetFont("arial"), "Hello! This is Deccan Game Engine", 0, (Color){0, 0, 0, 0});
+    text = Font_Text(DE_AssetGetFont("arial"), "Hello! This is Deccan Game Engine", 0, (Color){0, 0, 0, 0});
 
     DE_Var_New(DE_Core_GetVarManager(), "hola", DECCAN_VARTYPE_STRING);
     DE_Var_SetString(DE_Core_GetVarManager(), "hola", "test string");
@@ -85,15 +85,15 @@ void render() {
         DE_Mem_Delete(name);
     }
 
-	Sprite_Blit((vec4){100, 100, 0, 0}, 0, 0, Asset_GetSprite("arrow0"));
+	Sprite_Blit((vec4){100, 100, 0, 0}, 0, 0, DE_AssetGetSprite("arrow0"));
 
     Sprite_BlitScaled((vec4){10, 10, 0, 0}, (vec2){1.0f, 1.0f}, 0, 0, text);
 }
 
 void end() {
     /* Start here */
-	Sprite_Delete(Asset_GetSprite("arrow0"));
-	Font_Delete(Asset_GetFont("arial"));
+	DE_SpriteDelete(DE_AssetGetSprite("arrow0"));
+	DE_FontDelete(DE_AssetGetFont("arial"));
 }
 
 int main(int argc, char **argv) {
@@ -101,9 +101,9 @@ int main(int argc, char **argv) {
 
 #if 0
 	const char *text = DE_String_New("hello");
-	DE_Asset_LoadAsset("test", "hi", (void*)text);
+	DE_DE_AssetLoadAsset("test", "hi", (void*)text);
 
-	char *hi = DE_Asset_GetAsset("test", "hi");
+	char *hi = DE_DE_AssetGetAsset("test", "hi");
 	printf("text after: %s\n", hi);
 #endif
 

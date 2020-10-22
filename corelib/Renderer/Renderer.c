@@ -23,7 +23,7 @@ static struct {
     struct {
         int type;
         union {
-            SpriteAsset *texture;
+            DeccanSpriteAsset *texture;
             Color color;
         };
     } background;
@@ -119,12 +119,12 @@ void Renderer_SetBackgroundColor(Color color) {
     Renderer_Info.background.color = color;
 }
 
-void Renderer_SetBackgroundTexture(SpriteAsset *texture) {
+void Renderer_SetBackgroundTexture(DeccanSpriteAsset *texture) {
     Renderer_Info.background.type = 1;
     Renderer_Info.background.texture = texture;
 }
 
-void Renderer_SetTarget(SpriteAsset *target) {
+void Renderer_SetTarget(DeccanSpriteAsset *target) {
     DeccanRawTexture *texture;
 
     if(target == NULL) {
@@ -183,8 +183,8 @@ Color Renderer_GetBackgroundColor() {
     return color;
 }
 
-SpriteAsset *Renderer_GetBackgroundTexture() {
-    SpriteAsset *texture = NULL;
+DeccanSpriteAsset *Renderer_GetBackgroundTexture() {
+    DeccanSpriteAsset *texture = NULL;
 
     if(Renderer_Info.background.type == 1) {
         texture = Renderer_Info.background.texture;
@@ -193,8 +193,8 @@ SpriteAsset *Renderer_GetBackgroundTexture() {
     return texture;
 }
 
-SpriteAsset *Renderer_GetTarget() {
-    SpriteAsset *target = DE_Mem_New(sizeof(SpriteAsset), 1);
+DeccanSpriteAsset *Renderer_GetTarget() {
+    DeccanSpriteAsset *target = DE_Mem_New(sizeof(DeccanSpriteAsset), 1);
     target->name = DE_String_New("DE_Renderer_Target");
 
 #ifdef DECCAN_RENDERER_SDL

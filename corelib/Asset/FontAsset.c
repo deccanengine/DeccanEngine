@@ -13,13 +13,13 @@
 // Constructor/Destructor
 ////////////////////////////////////////////////
 
-FontAsset *Font_New(const char *name) {
-    FontAsset *asset = DE_Mem_New(sizeof(FontAsset), 1);
+DeccanFontAsset *DE_FontNew(const char *name) {
+    DeccanFontAsset *asset = DE_Mem_New(sizeof(DeccanFontAsset), 1);
     asset->name = DE_String_New(name);
     return asset;
 }
 
-void Font_Delete(FontAsset *asset) {
+void DE_FontDelete(DeccanFontAsset *asset) {
 	if(!asset) return;
 
     DE_Mem_Delete(asset->name);
@@ -31,13 +31,13 @@ void Font_Delete(FontAsset *asset) {
 // Setters/Getters
 ////////////////////////////////////////////////
 
-void Font_SetKerning(FontAsset *font, bool kerning) {
+void DE_FontSetKerning(DeccanFontAsset *font, bool kerning) {
     PTR_NULLCHECK(font,);
 
     TTF_SetFontKerning(font->font, kerning ? 1 : 0);
 }
 
-bool Font_GetKerning(FontAsset *font) {
+bool DE_FontGetKerning(DeccanFontAsset *font) {
     PTR_NULLCHECK(font, false);
 
     return (bool)TTF_GetFontKerning(font->font);
@@ -47,7 +47,7 @@ bool Font_GetKerning(FontAsset *font) {
 // Utility functions
 ////////////////////////////////////////////////
 
-void Font_CalculateTextSize(FontAsset *font, const char *text, vec2 size) {
+void DE_FontCalculateTextSize(DeccanFontAsset *font, const char *text, vec2 size) {
     int32_t x = -1;
     int32_t y = -1;
     size[0] = -1;

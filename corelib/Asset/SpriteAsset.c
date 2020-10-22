@@ -13,8 +13,8 @@
 // Constructor/Destructor
 ////////////////////////////////////////////////
 
-SpriteAsset *Sprite_New(const char *name) {
-    SpriteAsset *asset = DE_Mem_New(sizeof(SpriteAsset), 1);
+DeccanSpriteAsset *DE_SpriteNew(const char *name) {
+    DeccanSpriteAsset *asset = DE_Mem_New(sizeof(DeccanSpriteAsset), 1);
     asset->name  = DE_String_New(name);
     asset->delay = 100.0f;
     asset->current = 0;
@@ -26,7 +26,7 @@ SpriteAsset *Sprite_New(const char *name) {
     return asset;
 }
 
-void Sprite_Delete(SpriteAsset *asset) {
+void DE_SpriteDelete(DeccanSpriteAsset *asset) {
 	if(!asset) return;
 
 	for(int i=0; i<stbds_arrlen(asset->texture); i++) {
@@ -45,7 +45,7 @@ void Sprite_Delete(SpriteAsset *asset) {
 /*
  * Size
  */
-void Sprite_GetSize(SpriteAsset *texture, vec2 size) {
+void DE_SpriteGetSize(DeccanSpriteAsset *texture, vec2 size) {
     int32_t x, y;
     size[0] = 0;
     size[1] = 0;
@@ -63,7 +63,7 @@ void Sprite_GetSize(SpriteAsset *texture, vec2 size) {
 /*
  * Animation loop
  */
-void Sprite_SetAnimLoop(SpriteAsset *texture, bool loop) {
+void DE_SpriteSetAnimLoop(DeccanSpriteAsset *texture, bool loop) {
     PTR_NULLCHECK(texture,);
 
     int32_t flags = 0;
@@ -74,7 +74,7 @@ void Sprite_SetAnimLoop(SpriteAsset *texture, bool loop) {
     texture->flags = flags;
 }
 
-bool Sprite_GetAnimLoop(SpriteAsset *texture) {
+bool DE_SpriteGetAnimLoop(DeccanSpriteAsset *texture) {
     PTR_NULLCHECK(texture, false);
     return (bool)(texture->flags & AnimLoop);
 }
@@ -82,7 +82,7 @@ bool Sprite_GetAnimLoop(SpriteAsset *texture) {
 /*
  * Animation status
  */
-void Sprite_SetAnimActive(SpriteAsset *texture, bool active) {
+void DE_SpriteSetAnimActive(DeccanSpriteAsset *texture, bool active) {
     PTR_NULLCHECK(texture,);
 
     int32_t flags = 0;
@@ -93,7 +93,7 @@ void Sprite_SetAnimActive(SpriteAsset *texture, bool active) {
     texture->flags = flags;
 }
 
-bool Sprite_GetAnimActive(SpriteAsset *texture) {
+bool DE_SpriteGetAnimActive(DeccanSpriteAsset *texture) {
     PTR_NULLCHECK(texture, false);
     return (bool)(texture->flags & AnimActive);
 }
@@ -101,12 +101,12 @@ bool Sprite_GetAnimActive(SpriteAsset *texture) {
 /*
  * Animation delay
  */
-void Sprite_SetAnimDelay(SpriteAsset *texture, float ms) {
+void DE_SpriteSetAnimDelay(DeccanSpriteAsset *texture, float ms) {
     PTR_NULLCHECK(texture,);
     texture->delay = ms;
 }
 
-float Sprite_GetAnimDelay(SpriteAsset *texture) {
+float DE_SpriteGetAnimDelay(DeccanSpriteAsset *texture) {
     PTR_NULLCHECK(texture, -1.0f);
     return texture->delay;
 }

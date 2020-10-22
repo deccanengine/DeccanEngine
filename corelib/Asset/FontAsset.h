@@ -17,27 +17,27 @@
 // Structs
 ////////////////////////////////////////////////
 
-typedef struct FontAsset {
+typedef struct DeccanFontAsset {
     char *name;
     TTF_Font *font;
-} FontAsset;
+} DeccanFontAsset;
 
 /////////////////////////////////////////////////
 // Constructor/Destructor
 ////////////////////////////////////////////////
 
-FontAsset *Font_New(const char *name);
-void Font_Delete(FontAsset *asset);
+DeccanFontAsset *DE_FontNew(const char *name);
+void DE_FontDelete(DeccanFontAsset *asset);
 
 /////////////////////////////////////////////////
 // Setters/Getters
 ////////////////////////////////////////////////
 
-void Font_SetKerning(FontAsset *font, bool kerning);
-bool Font_GetKerning(FontAsset *font);
+void DE_FontSetKerning(DeccanFontAsset *font, bool kerning);
+bool DE_FontGetKerning(DeccanFontAsset *font);
 
 /////////////////////////////////////////////////
 // Utility functions
 ////////////////////////////////////////////////
 
-void Font_CalculateTextSize(FontAsset *font, const char *text, vec2 size);
+void DE_FontCalculateTextSize(DeccanFontAsset *font, const char *text, vec2 size);

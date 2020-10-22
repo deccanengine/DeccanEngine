@@ -12,11 +12,11 @@
 static struct {
     struct AssetTextureStorage {
 		const char *key;
-		SpriteAsset *value;
+		DeccanSpriteAsset *value;
 	} *textures;
     struct {
 		const char *key;
-		FontAsset *value;
+		DeccanFontAsset *value;
 	} *fonts;
 } Asset_Info = {
     .textures = NULL,
@@ -24,10 +24,10 @@ static struct {
 };
 
 /////////////////////////////////////////////////
-// SpriteAsset
+// DeccanSpriteAsset
 ////////////////////////////////////////////////
 
-int32_t Asset_GetSpriteIndex(const char *name) {
+int32_t DE_AssetGetSpriteIndex(const char *name) {
     return stbds_shgeti(Asset_Info.textures, name);
 }
 
@@ -75,8 +75,8 @@ DeccanRawTexture *LoadSprite(const char *path) {
     return tex;
 }
 
-SpriteAsset *Asset_LoadSprite(const char *name, const char *path) {
-    SpriteAsset *asset = NULL;
+DeccanSpriteAsset *DE_AssetLoadSprite(const char *name, const char *path) {
+    DeccanSpriteAsset *asset = NULL;
     DeccanRawTexture *tex = LoadSprite(path);
 
     if(tex == NULL) {
@@ -84,7 +84,7 @@ SpriteAsset *Asset_LoadSprite(const char *name, const char *path) {
         return asset;
     }
 
-    asset = Asset_GetSprite(name);
+    asset = DE_AssetGetSprite(name);
 	if(asset) {
         /* Found the texture */
         stbds_arrput(asset->texture, tex);
@@ -92,7 +92,7 @@ SpriteAsset *Asset_LoadSprite(const char *name, const char *path) {
     }
     else {
         /* Create new texture */
-        asset = Sprite_New(name);
+        asset = DE_SpriteNew(name);
         stbds_arrput(asset->texture, tex);
         stbds_shput(Asset_Info.textures, asset->name, asset);
     }
@@ -100,16 +100,16 @@ SpriteAsset *Asset_LoadSprite(const char *name, const char *path) {
     return asset;
 }
 
-SpriteAsset *Asset_LoadAnimatedSprite(const char *name, const char *path, ...) {
+DeccanSpriteAsset *DE_AssetLoadAnimatedSprite(const char *name, const char *path, ...) {
     va_list args;
-    SpriteAsset *asset;
+    DeccanSpriteAsset *asset;
 
     va_start(args, path);
 
     char *this = (char*)path; /* Current path */
 
     do {
-        asset = Asset_LoadSprite(name, this); /* Load the current frame */
+        asset = DE_AssetLoadSprite(name, this); /* Load the current frame */
         this  = va_arg(args, char *);         /* Next frame path */
     } while(this != NULL);
     va_end(args);
@@ -117,20 +117,20 @@ SpriteAsset *Asset_LoadAnimatedSprite(const char *name, const char *path, ...) {
     return asset;
 }
 
-SpriteAsset *Asset_GetSprite(const char *name) {
+DeccanSpriteAsset *DE_AssetGetSprite(const char *name) {
 	return stbds_shget(Asset_Info.textures, name);
 }
 
 /////////////////////////////////////////////////
-// FontAsset
+// DeccanFontAsset
 ////////////////////////////////////////////////
 
-int32_t Asset_GetFontIndex(const char *name) {
+int32_t DE_AssetGetFontIndex(const char *name) {
     return stbds_shgeti(Asset_Info.fonts, name);
 }
 
-FontAsset *Asset_LoadFont(const char *name, const char *path) {
-    FontAsset *asset = NULL;
+DeccanFontAsset *DE_AssetLoadFont(const char *name, const char *path) {
+    DeccanFontAsset *asset = NULL;
     TTF_Font *font;
 
     font = TTF_OpenFont(path, 20);
@@ -139,14 +139,14 @@ FontAsset *Asset_LoadFont(const char *name, const char *path) {
         return asset;
     }
 
-    asset = Asset_GetFont(name);
+    asset = DE_AssetGetFont(name);
     if(asset) {
 		/* First dellocate the existsing font and then replace with new one */
 		TTF_CloseFont(asset->font);
         asset->font = font;
     }
     else {
-        asset = Font_New(name);
+        asset = DE_FontNew(name);
         asset->font = font;
         stbds_shput(Asset_Info.fonts, asset->name, asset);
     }
@@ -154,6 +154,6 @@ FontAsset *Asset_LoadFont(const char *name, const char *path) {
     return asset;
 }
 
-FontAsset *Asset_GetFont(const char *name) {
+DeccanFontAsset *DE_AssetGetFont(const char *name) {
     return stbds_shget(Asset_Info.fonts, name);
 }
