@@ -76,7 +76,7 @@ void Object_FreeObject(GameObject *obj) {
     obj->AtEnd(obj);
 
     /* Free the messaging system */
-    DE_Var_Quit(&obj->vars);
+    DE_VarQuit(&obj->vars);
 
     /* Index of the object in the array */
     for(int i = 0; i < stbds_arrlen(scene->objects); i++) {
@@ -107,7 +107,7 @@ void Object_Update(GameObject *obj) {
 
     if(obj->is_beginning == true) {
         /* Initialize messaging system */
-        DE_Var_Init(&obj->vars);
+        DE_VarInit(&obj->vars);
 
         obj->AtBeginning(obj);
         obj->is_beginning = false;

@@ -32,17 +32,17 @@ typedef struct DeccanVarManager {
     } *vars;
 } DeccanVarManager;
 
-void DE_Var_Init(DeccanVarManager *manager);
-void DE_Var_Quit(DeccanVarManager *manager);
-void DE_Var_New(DeccanVarManager *manager, const char *name, DeccanVarType type);
-void DE_Var_Delete(DeccanVarManager *manaer, const char *name);
+void DE_VarInit(DeccanVarManager *manager);
+void DE_VarQuit(DeccanVarManager *manager);
+void DE_VarNew(DeccanVarManager *manager, const char *name, DeccanVarType type);
+void DE_VarDelete(DeccanVarManager *manaer, const char *name);
 
-void DE_Var_SetBool(DeccanVarManager *manager, const char *name, bool value);
-void DE_Var_SetNumber(DeccanVarManager *manager, const char *name, double value);
-void DE_Var_SetString(DeccanVarManager *manager, const char *name, const char *value);
+void DE_VarSetBool(DeccanVarManager *manager, const char *name, bool value);
+void DE_VarSetNumber(DeccanVarManager *manager, const char *name, double value);
+void DE_VarSetString(DeccanVarManager *manager, const char *name, const char *value);
 
-bool DE_Var_GetBool(DeccanVarManager *manager, const char *name);
-double DE_Var_GetNumber(DeccanVarManager *manager, const char *name);
-char *DE_Var_GetString(DeccanVarManager *manager, const char *name);
+bool DE_VarGetBool(DeccanVarManager *manager, const char *name);
+double DE_VarGetNumber(DeccanVarManager *manager, const char *name);
+char *DE_VarGetString(DeccanVarManager *manager, const char *name);
 
 

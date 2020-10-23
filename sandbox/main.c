@@ -2,7 +2,7 @@
 #include "player.h"
 
 uint64_t count;
-Timer timer;
+DeccanTimer timer;
 DeccanSpriteAsset *text;
 
 GameObject *s;
@@ -52,14 +52,14 @@ void begin() {
     );
     DE_AssetLoadFont("arial", "arial.ttf");
 
-    Clock_StartTimer(&timer);
+    DE_TimerStart(&timer);
 
     Renderer_SetBackgroundColor((DeccanColor){255, 255, 255, 255});
 
     text = DE_FontText(DE_AssetGetFont("arial"), "Hello! This is Deccan Game Engine", 0, (DeccanColor){0, 0, 0, 0});
 
-    DE_Var_New(DE_Core_GetVarManager(), "hola", DECCAN_VARTYPE_STRING);
-    DE_Var_SetString(DE_Core_GetVarManager(), "hola", "test string");
+    DE_VarNew(DE_Core_GetVarManager(), "hola", DECCAN_VARTYPE_STRING);
+    DE_VarSetString(DE_Core_GetVarManager(), "hola", "test string");
 
     DE_Flecs_RegisterComponent("Color", sizeof(DeccanColor), ECS_ALIGNOF(DeccanColor));
     DE_Flecs_System(color_mod, "color_mod", "Color, State2D", DECCAN_ECS_TYPE_ON_UPDATE);
@@ -72,7 +72,7 @@ void step() {
 
 void render() {
     /* Start here */
-    if(Input_KeyReleased(KeyCode_Space) && Clock_GetTime(&timer).milliseconds > 200) {
+    if(Input_KeyReleased(KeyCode_Space) && DE_TimerGetTime(&timer).milliseconds > 2000) {
         size_t memory_needed = snprintf(NULL, 0, "circle: %I64ld", count++) + 1;
         char *name = DE_Mem_New(memory_needed, 1);
         sprintf(name, "circle%I64ld", count++);
@@ -81,7 +81,7 @@ void render() {
         Object_SetName(object_to_push, name);
         Scene_InstantiateObject(object_to_push);
 
-        Clock_ResetTimer(&timer);
+        DE_TimerReset(&timer);
         DE_Mem_Delete(name);
     }
 

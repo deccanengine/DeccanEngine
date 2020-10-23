@@ -21,8 +21,8 @@ void action(GameObject *this) {
 }
 
 void _player_begin(GameObject *this) {
-    DE_Var_New(&this->vars, "test", DECCAN_VARTYPE_NUMBER);
-    DE_Var_SetNumber(&this->vars, "test", 10080.0f);
+    DE_VarNew(&this->vars, "test", DECCAN_VARTYPE_NUMBER);
+    DE_VarSetNumber(&this->vars, "test", 10080.0f);
 
     Object_SetComponent(this, "Color", &(DeccanColor){255, 0, 0, 255});
 

@@ -76,7 +76,7 @@ int Core_Init(DeccanSettings *settings) {
 #endif
 
     Input_Init();
-    DE_Var_Init(&Core_Info.vars);
+    DE_VarInit(&Core_Info.vars);
 
     return 1;
 }
@@ -85,7 +85,7 @@ void Core_Quit() {
 #ifdef DE_DEBUG
     fclose(Core_Info.logfile);
 #endif
-    DE_Var_Quit(&Core_Info.vars);
+    DE_VarQuit(&Core_Info.vars);
     SDL_DestroyWindow(Core_Info.window);
 
     TTF_Quit();

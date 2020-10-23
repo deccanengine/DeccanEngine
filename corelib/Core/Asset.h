@@ -15,5 +15,5 @@ typedef struct DeccanAsset {
     void *value;
 } DeccanAsset;
 
-void  DE_Asset_LoadAsset(const char *type, const char *name, void *asset);
-void* DE_Asset_GetAsset(const char *type, const char *name);
+void  DE_AssetLoadAsset(const char *type, const char *name, void *asset);
+void* DE_AssetGetAsset(const char *type, const char *name);

@@ -7,32 +7,32 @@
 
 #include "Variable.h"
 
-void DE_Var_Init(DeccanVarManager *manager) {
+void DE_VarInit(DeccanVarManager *manager) {
     manager->vars = NULL;
 }
 
-void DE_Var_Quit(DeccanVarManager *manager) {
+void DE_VarQuit(DeccanVarManager *manager) {
     for(int i = 0; i < stbds_shlen(manager->vars); i++) {
         DeccanVar *var = manager->vars[i].value;
 
         if(var->type == DECCAN_VARTYPE_STRING) {
             DE_Mem_Delete(var->value.string);
         }
-        
+
         DE_Mem_Delete(var);
     }
 
     stbds_shfree(manager->vars);
 }
 
-void DE_Var_New(DeccanVarManager *manager, const char *name, DeccanVarType type) {
+void DE_VarNew(DeccanVarManager *manager, const char *name, DeccanVarType type) {
     DeccanVar *var = DE_Mem_New(sizeof(DeccanVar), 1);
     var->type = type;
 
     stbds_shput(manager->vars, name, var);
 }
 
-void DE_Var_Delete(DeccanVarManager *manager, const char *name) {
+void DE_VarDelete(DeccanVarManager *manager, const char *name) {
     DeccanVar *var = stbds_shget(manager->vars, name);
     if(var->type == DECCAN_VARTYPE_STRING) {
         if(var->value.string != NULL) {
@@ -47,28 +47,28 @@ void DE_Var_Delete(DeccanVarManager *manager, const char *name) {
     var = NULL;
 }
 
-void DE_Var_SetBool(DeccanVarManager *manager, const char *name, bool value) {
+void DE_VarSetBool(DeccanVarManager *manager, const char *name, bool value) {
     DeccanVar *var = stbds_shget(manager->vars, name);
     if(var->type == DECCAN_VARTYPE_LOGICAL) {
         var->value.logical = value;
     }
 }
 
-void DE_Var_SetNumber(DeccanVarManager *manager, const char *name, double value) {
+void DE_VarSetNumber(DeccanVarManager *manager, const char *name, double value) {
     DeccanVar *var = stbds_shget(manager->vars, name);
     if(var->type == DECCAN_VARTYPE_NUMBER) {
         var->value.number = value;
     }
 }
 
-void DE_Var_SetString(DeccanVarManager *manager, const char *name, const char *value) {
+void DE_VarSetString(DeccanVarManager *manager, const char *name, const char *value) {
     DeccanVar *var = stbds_shget(manager->vars, name);
     if(var->type == DECCAN_VARTYPE_STRING) {
         var->value.string = DE_String_New(value);
     }
 }
 
-bool DE_Var_GetBool(DeccanVarManager *manager, const char *name) {
+bool DE_VarGetBool(DeccanVarManager *manager, const char *name) {
     DeccanVar *var = stbds_shget(manager->vars, name);
     if(var->type != DECCAN_VARTYPE_LOGICAL) {
         return false;
@@ -76,7 +76,7 @@ bool DE_Var_GetBool(DeccanVarManager *manager, const char *name) {
     return var->value.logical;
 };
 
-double DE_Var_GetNumber(DeccanVarManager *manager, const char *name) {
+double DE_VarGetNumber(DeccanVarManager *manager, const char *name) {
     DeccanVar *var = stbds_shget(manager->vars, name);
     if(var->type != DECCAN_VARTYPE_NUMBER) {
         return 0.0f;
@@ -84,7 +84,7 @@ double DE_Var_GetNumber(DeccanVarManager *manager, const char *name) {
     return var->value.number;
 };
 
-char *DE_Var_GetString(DeccanVarManager *manager, const char *name) {
+char *DE_VarGetString(DeccanVarManager *manager, const char *name) {
     DeccanVar *var = stbds_shget(manager->vars, name);
     if(var->type != DECCAN_VARTYPE_STRING) {
         return NULL;

@@ -8,24 +8,24 @@
 #pragma once
 #include "../Config.h"
 
-typedef struct Time {
+typedef struct DeccanTime {
     float seconds;
     float milliseconds;
-} Time;
+} DeccanTime;
 
-typedef struct Timer {
+typedef struct DeccanTimer {
     float startTicks;
     float pausedTicks;
     bool isRunning;
     bool isPaused;
-} Timer;
+} DeccanTimer;
 
-static inline void Clock_Delay(int32_t ms) {
+static inline void DE_ClockDelay(int32_t ms) {
     SDL_Delay(ms);
 }
 
-void Clock_StartTimer(Timer *timer);
-void Clock_StopTimer (Timer *timer);
-void Clock_PauseTimer(Timer *timer);
-void Clock_ResetTimer(Timer *timer);
-Time Clock_GetTime(Timer *timer);
+void DE_TimerStart(DeccanTimer *timer);
+void DE_TimerStop(DeccanTimer *timer);
+void DE_TimerPause(DeccanTimer *timer);
+void DE_TimerReset(DeccanTimer *timer);
+DeccanTime DE_TimerGetTime(DeccanTimer *timer);
