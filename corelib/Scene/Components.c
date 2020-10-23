@@ -8,6 +8,6 @@
 #include "Components.h"
 
 void DE_Components_RegisterAll() {
-    Collider_Register();
-    State2D_Register();
+    DE_CompColliderRegister();
+    DE_CompState2DRegister();
 }

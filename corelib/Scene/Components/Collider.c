@@ -13,8 +13,8 @@
 // Registers/Constructors/Destructors
 ////////////////////////////////////////////////
 
-void Collider_Register() {
-    DE_Flecs_RegisterComponent("Collider", sizeof(Collider), ECS_ALIGNOF(Collider));
+void DE_CompColliderRegister() {
+    DE_Flecs_RegisterComponent("Collider", sizeof(DeccanCompCollider), ECS_ALIGNOF(DeccanCompCollider));
 }
 
 /////////////////////////////////////////////////
@@ -26,19 +26,19 @@ void Collider_Register() {
         DE_REPORT("Invalid object passed to collision system");             \
         return false;                                                       \
     }                                                                       \
-    Collider *c = Object_GetComponent(obj, "Collider");                     \
+    DeccanCompCollider *c = Object_GetComponent(obj, "Collider");           \
     if(c == NULL) {                                                         \
-        DE_REPORT("Collider component not found in object: %s", "obj->name");\
+        DE_REPORT("Collider component not found in object: %s", "obj->name"); \
         return false;                                                       \
     }                                                                       \
-    State2D *state = Object_GetComponent(obj, "State2D");                   \
+    DeccanCompState2D *state = Object_GetComponent(obj, "State2D");         \
     if(state == NULL) {                                                     \
         DE_REPORT("State component not found in object: %s", "obj->name");  \
         return false;                                                       \
     }                                                                       \
     vec3 p; glm_vec3_copy(state->position, p);
 
-bool Collider_CheckObject(GameObject *obj1, GameObject *obj2) {
+bool DE_CompColliderCheckObject(GameObject *obj1, GameObject *obj2) {
     if(obj2 == NULL) {
         DE_REPORT("Invalid object passed to collision system");
     }
@@ -48,17 +48,17 @@ bool Collider_CheckObject(GameObject *obj1, GameObject *obj2) {
     switch(c->type) {
         case COLLIDER_Vec: {
             vec2 vec = {p[0] + c->vec[0], p[1] + c->vec[1]};
-            return Collider_CheckObjectWithVector(obj2, vec);
+            return DE_CompColliderCheckObjectWithVector(obj2, vec);
         }
 
         case COLLIDER_Rect: {
             vec4 rect = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
-            return Collider_CheckObjectWithRect(obj2, rect);
+            return DE_CompColliderCheckObjectWithRect(obj2, rect);
         }
 
         case COLLIDER_Circle: {
             vec3 circle = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
-            return Collider_CheckObjectWithCircle(obj2, circle);
+            return DE_CompColliderCheckObjectWithCircle(obj2, circle);
         }
 
         default: {
@@ -67,23 +67,23 @@ bool Collider_CheckObject(GameObject *obj1, GameObject *obj2) {
     }
 }
 
-bool Collider_CheckObjectWithVector(GameObject *obj, vec2 vec) {
+bool DE_CompColliderCheckObjectWithVector(GameObject *obj, vec2 vec) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
         case COLLIDER_Vec: {
             vec2 vec2 = {p[0] + c->vec[0], p[1] + c->vec[1]};
-            return Collision_VecVec(vec, vec2);
+            return DE_CollisionVecVec(vec, vec2);
         }
 
         case COLLIDER_Rect: {
             vec4 rect = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
-            return Collision_VecRect(vec, rect);
+            return DE_CollisionVecRect(vec, rect);
         }
 
         case COLLIDER_Circle: {
             vec3 circle = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
-            return Collision_CircleVec(circle, vec);
+            return DE_CollisionCircleVec(circle, vec);
         }
 
         default: {
@@ -92,23 +92,23 @@ bool Collider_CheckObjectWithVector(GameObject *obj, vec2 vec) {
     }
 }
 
-bool Collider_CheckObjectWithRect(GameObject *obj, vec4 rect) {
+bool DE_CompColliderCheckObjectWithRect(GameObject *obj, vec4 rect) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
         case COLLIDER_Vec: {
             vec2 vec = {p[0] + c->vec[0], p[1] + c->vec[1]};
-            return Collision_VecRect(vec, rect);
+            return DE_CollisionVecRect(vec, rect);
         }
 
         case COLLIDER_Rect: {
             vec4 rect2 = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
-            return Collision_RectRect(rect, rect2);
+            return DE_CollisionRectRect(rect, rect2);
         }
 
         case COLLIDER_Circle: {
             vec3 circle = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
-            return Collision_RectCircle(rect, circle);
+            return DE_CollisionRectCircle(rect, circle);
         }
 
         default: {
@@ -117,23 +117,23 @@ bool Collider_CheckObjectWithRect(GameObject *obj, vec4 rect) {
     }
 }
 
-bool Collider_CheckObjectWithCircle(GameObject *obj, vec3 circle) {
+bool DE_CompColliderCheckObjectWithCircle(GameObject *obj, vec3 circle) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
         case COLLIDER_Vec: {
             vec2 vec = {p[0] + c->vec[0], p[1] + c->vec[1]};
-            return Collision_CircleVec(circle, vec);
+            return DE_CollisionCircleVec(circle, vec);
         }
 
         case COLLIDER_Rect: {
             vec4 rect = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
-            return Collision_RectCircle(rect, circle);
+            return DE_CollisionRectCircle(rect, circle);
         }
 
         case COLLIDER_Circle: {
             vec3 circle2 = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
-            return Collision_CircleCircle(circle, circle2);
+            return DE_CollisionCircleCircle(circle, circle2);
         }
 
         default: {
@@ -142,8 +142,8 @@ bool Collider_CheckObjectWithCircle(GameObject *obj, vec3 circle) {
     }
 }
 
-bool Collider_Check(const char *name1, const char *name2) {
+bool DE_CompColliderCheck(const char *name1, const char *name2) {
     GameObject *obj1 = Scene_GetObject(name1);
     GameObject *obj2 = Scene_GetObject(name2);
-    return Collider_CheckObject(obj1, obj2);
+    return DE_CompColliderCheckObject(obj1, obj2);
 }

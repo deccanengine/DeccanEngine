@@ -20,9 +20,9 @@
 // Collisions
 ////////////////////////////////////////////////
 
-bool Collision_VecVec(vec2 v1, vec2 v2);
-bool Collision_RectRect(vec4 r1, vec4 r2);
-bool Collision_CircleCircle(vec3 c1, vec3 c2);
-bool Collision_VecRect(vec2 vec, vec4 rect);
-bool Collision_CircleVec(vec3 circle, vec2 vec);
-bool Collision_RectCircle(vec4 rect, vec3 circle);
+bool DE_CollisionVecVec(vec2 v1, vec2 v2);
+bool DE_CollisionRectRect(vec4 r1, vec4 r2);
+bool DE_CollisionCircleCircle(vec3 c1, vec3 c2);
+bool DE_CollisionVecRect(vec2 vec, vec4 rect);
+bool DE_CollisionCircleVec(vec3 circle, vec2 vec);
+bool DE_CollisionRectCircle(vec4 rect, vec3 circle);

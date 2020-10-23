@@ -9,7 +9,7 @@ GameObject *s;
 
 void color_mod(DeccanSysIter *it) {
     DeccanColor *color = DE_Flecs_IterColumn(it, "Color", 1);
-    State2D *state = DE_Flecs_IterColumn(it, "State2D", 2);
+    DeccanCompState2D *state = DE_Flecs_IterColumn(it, "State2D", 2);
 
     for(int i = 0; i < it->count; i++) {
         color[i].r += 1;
@@ -18,7 +18,7 @@ void color_mod(DeccanSysIter *it) {
 }
 
 void x_mod(DeccanSysIter *it) {
-    State2D *state = DE_Flecs_IterColumn(it, "State2D", 1);
+    DeccanCompState2D *state = DE_Flecs_IterColumn(it, "State2D", 1);
 
     for(int i = 0; i < it->count; i++) {
         state[i].position[0] += 1;
@@ -116,7 +116,7 @@ int main(int argc, char **argv) {
 	settings.closeOnEscape = true;
     settings.fps = 120.0f;
 
-    if(DE_App_Init(&settings)) {
+    if(DE_AppInit(&settings)) {
         GameScene *scene = Scene_NewScene("scene0");
         scene->AtFirstFrame = begin;
         scene->AtStep = step;
@@ -124,9 +124,9 @@ int main(int argc, char **argv) {
         scene->AtEnd = end;
         Scene_AddScene(scene, false);
 
-        DE_App_Update();
+        DE_AppUpdate();
     }
-    atexit(DE_App_Quit);
+    atexit(DE_AppQuit);
 
 	return 0;
 }

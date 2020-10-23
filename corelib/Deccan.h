@@ -31,6 +31,6 @@
 #include "Renderer/Texture.h"
 #include "Renderer/TextRendering.h"
 
-bool DE_App_Init(DeccanSettings *settings);
-void DE_App_Update();
-void DE_App_Quit();
+bool DE_AppInit(DeccanSettings *settings);
+void DE_AppUpdate();
+void DE_AppQuit();

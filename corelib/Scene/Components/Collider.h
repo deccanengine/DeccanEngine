@@ -19,33 +19,33 @@ typedef enum {
     COLLIDER_Vec,
     COLLIDER_Rect,
     COLLIDER_Circle
-} COLLIDER;
+} DeccanCompColliderType;
 
 /////////////////////////////////////////////////
 // Structs
 ////////////////////////////////////////////////
 
-typedef struct Collider {
-    COLLIDER type;
+typedef struct DeccanCompCollider {
+    DeccanCompColliderType type;
     union {
         struct { vec2 vec; };
         struct { vec4 rect; };
         struct { vec3 circle; };
     };
-} Collider;
+} DeccanCompCollider;
 
 /////////////////////////////////////////////////
 // Registers/Constructors/Destructors
 ////////////////////////////////////////////////
 
-void Collider_Register();
+void DE_CompColliderRegister();
 
 /////////////////////////////////////////////////
 // Collision checking
 ////////////////////////////////////////////////
 
-bool Collider_CheckObject(GameObject *obj1, GameObject *obj2);
-bool Collider_CheckObjectWithVector(GameObject *obj, vec2 vec);
-bool Collider_CheckObjectWithRect(GameObject *obj, vec4 vec);
-bool Collider_CheckObjectWithCircle(GameObject *obj, vec3 vec);
-bool Collider_Check(const char *name1, const char *name2);
+bool DE_CompColliderCheckObject(GameObject *obj1, GameObject *obj2);
+bool DE_CompColliderCheckObjectWithVector(GameObject *obj, vec2 vec);
+bool DE_CompColliderCheckObjectWithRect(GameObject *obj, vec4 vec);
+bool DE_CompColliderCheckObjectWithCircle(GameObject *obj, vec3 vec);
+bool DE_CompColliderCheck(const char *name1, const char *name2);

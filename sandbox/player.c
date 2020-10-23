@@ -14,7 +14,7 @@ DeccanColor
 
 void action(GameObject *this) {
     GameObject *player = Scene_GetObject("main player");
-    if(Collider_CheckObject(player, this)) {
+    if(DE_CompColliderCheckObject(player, this)) {
         DeccanColor *color = Object_GetComponent(player, "Color");
         *color = ColorList_Green;
     }
@@ -26,7 +26,7 @@ void _player_begin(GameObject *this) {
 
     Object_SetComponent(this, "Color", &(DeccanColor){255, 0, 0, 255});
 
-    Object_SetComponent(this, "Collider", &(Collider){
+    Object_SetComponent(this, "Collider", &(DeccanCompCollider){
         .type = COLLIDER_Rect,
         .rect = {
             [0] = 0,
@@ -36,7 +36,7 @@ void _player_begin(GameObject *this) {
         }
     });
 
-    Object_SetComponent(this, "State2D", &(State2D){
+    Object_SetComponent(this, "State2D", &(DeccanCompState2D){
         .position = {
             [0] = 200,
             [1] = 200
@@ -47,7 +47,7 @@ void _player_begin(GameObject *this) {
 void _player_step(GameObject *this) {
     static int32_t SpeedModifier = 5;
 
-    State2D *state = Object_GetComponent(this, "State2D");
+    DeccanCompState2D *state = Object_GetComponent(this, "State2D");
     DeccanColor *color = Object_GetComponent(this, "Color");
 
     if(Input_KeyHeld(KeyCode_W)){ state->position[1] -= SpeedModifier; }
@@ -67,7 +67,7 @@ void _player_step(GameObject *this) {
 
     vec2 pos;
     Input_GetMousePos(pos);
-    if(Collider_CheckObjectWithVector(this, pos)) {
+    if(DE_CompColliderCheckObjectWithVector(this, pos)) {
         *color = ColorList_Orange;
         if(Input_ButtonDown(ButtonCode_Left)) {
             selected = true;
@@ -88,8 +88,8 @@ void _player_step(GameObject *this) {
 }
 
 void _player_render(GameObject *this) {
+    DeccanCompState2D *state = Object_GetComponent(this, "State2D");
     DeccanColor *color = Object_GetComponent(this, "Color");
-    State2D *state = Object_GetComponent(this, "State2D");
 
     Draw_FilledRect((vec4){state->position[0], state->position[1], 50, 50}, *color);
 }
@@ -97,16 +97,16 @@ void _player_render(GameObject *this) {
 void _player_end(GameObject *this) { DE_UNUSED(this); }
 
 void _none_begin(GameObject *this) {
-    State2D *statePlayer = Object_GetComponent(Scene_GetObject("main player"), "State2D");
+    DeccanCompState2D *statePlayer = Object_GetComponent(Scene_GetObject("main player"), "State2D");
 
-    Object_SetComponent(this, "State2D", &(State2D){
+    Object_SetComponent(this, "State2D", &(DeccanCompState2D){
         .position = {
             [0] = statePlayer->position[0],
             [1] = statePlayer->position[1]
         }
     });
 
-    Object_SetComponent(this, "Collider", &(Collider){
+    Object_SetComponent(this, "Collider", &(DeccanCompCollider){
         .type = COLLIDER_Rect,
         .rect = {
             [0] = 0,
@@ -122,7 +122,7 @@ void _none_begin(GameObject *this) {
 void _none_step(GameObject *this) { DE_UNUSED(this); }
 
 void _none_render(GameObject *this) {
-    State2D *state = Object_GetComponent(this, "State2D");
+    DeccanCompState2D *state = Object_GetComponent(this, "State2D");
 
     Draw_FilledRect((vec4){state->position[0], state->position[1], 40, 40}, ColorList_Red);
 }

@@ -7,7 +7,7 @@
 
 #include "../Deccan.h"
 
-bool DE_App_Init(DeccanSettings *settings) {
+bool DE_AppInit(DeccanSettings *settings) {
     Core_Init(settings);
 
     /* Create renderer */
@@ -16,7 +16,7 @@ bool DE_App_Init(DeccanSettings *settings) {
     return true;
 }
 
-void DE_App_Update() {
+void DE_AppUpdate() {
     Timer fpsTimer;
     Timer frmTimer;
 
@@ -63,7 +63,7 @@ void DE_App_Update() {
     }
 }
 
-void DE_App_Quit() {
+void DE_AppQuit() {
     Scene_Quit();
 
     Scene_FreeAll();
