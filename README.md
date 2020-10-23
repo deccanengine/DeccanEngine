@@ -1,31 +1,38 @@
-![Deccan Engine](/resources/deccan-light.png?raw=true)
-
 # Deccan Game Engine
-Cross-platform 2D Game Engine written in C11. Powered by SDL2.  
+![Deccan Engine](/resources/deccan_logo.svg?raw=true)
 
 [![GitHub](https://img.shields.io/github/license/iddev5/DeccanEngine)](LICENSE.md)
 [![Discord](https://img.shields.io/discord/681837246567022609?label=discord)](https://discord.gg/bNwnxwn)
 
-## Features so far
+Deccan Engine is an Open-Source Cross-Platform 2D Game Engine written in C11. Powered by SDL2.
 - Lightweight and simple framework design
 - Basic scene manager
+- Versatile and easy-to-use Entity Component System
 - Input system supporting keyboard and mouse states and events
 - Asset management system
 - Flexible helper structs and functions, such as Vectors, Timers etc.
 
-## Building
+## Getting Started
 Clone the repository using git:
-```git clone --recursive https://www.github.com/iddev5/DeccanEngine```
+```
+git clone --recursive https://www.github.com/iddev5/DeccanEngine
+```
 
-The dependencies are: SDL2, SDL2_image, SDL2_ttf and stb_ds.h(Included)
+Recursively getting the repository automatically downloads the submodule dependencies.
+The external dependencies are SDL2 and SDL2_ttf only which has to be installed separately from your vendor
 
-For Linux, run the build.sh Bash script which compiles the engine with main.c example file.
+Then build using:
+```
+meson builddir
+cd builddir
+ninja
+```
 
-For Windows, download and install MinGW and compile with build1.bat.  
-Make sure that the path of gcc is added to %PATH%
+For Windows, only POSIX environments are supported for now. Support for non-POSIX Windows will be added soon. Or temporarily, ``proj/build1.bat`` can be used.
 
-*A proper build system will be added soon*
+## Example
+Currently not much is available in terms of demo/example as the project is in heavy progress, however you can check out ``sandbox`` which is automatically built when the engine is built.
 
 ## License
-This software is license under the terms of MIT License(See LICENSE.md)  
+This software is licensed under the terms of MIT License(See LICENSE.md)  
 Copyright 2020 Ayush Bardhan Tripathy
