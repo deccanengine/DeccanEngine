@@ -81,7 +81,7 @@ void DE_RendererBackground() {
     else {
         DE_RendererClear(); // Removing it produces artifacts
 
-        vec2 mode; Core_GetResolution(mode);
+        vec2 mode; DE_CoreGetResolution(mode);
         vec2 camera; DE_CameraGetPosition(camera);
 
         vec4 rect = {

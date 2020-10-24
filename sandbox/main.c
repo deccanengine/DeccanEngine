@@ -58,8 +58,8 @@ void begin() {
 
     text = DE_FontText(DE_AssetGetFont("arial"), "Hello! This is Deccan Game Engine", 0, (DeccanColor){0, 0, 0, 0});
 
-    DE_VarNew(DE_Core_GetVarManager(), "hola", DECCAN_VARTYPE_STRING);
-    DE_VarSetString(DE_Core_GetVarManager(), "hola", "test string");
+    DE_VarNew(DE_CoreGetVarManager(), "hola", DECCAN_VARTYPE_STRING);
+    DE_VarSetString(DE_CoreGetVarManager(), "hola", "test string");
 
     DE_FlecsRegisterComponent("Color", sizeof(DeccanColor), ECS_ALIGNOF(DeccanColor));
     DE_FlecsSystem(color_mod, "color_mod", "Color, State2D", DECCAN_ECS_TYPE_ON_UPDATE);
@@ -101,9 +101,9 @@ int main(int argc, char **argv) {
 
 #if 0
 	const char *text = DE_String_New("hello");
-	DE_DE_AssetLoadAsset("test", "hi", (void*)text);
+	DE_AssetLoadAsset("test", "hi", (void*)text);
 
-	char *hi = DE_DE_AssetGetAsset("test", "hi");
+	char *hi = DE_AssetGetAsset("test", "hi");
 	printf("text after: %s\n", hi);
 #endif
 

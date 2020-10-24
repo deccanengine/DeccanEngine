@@ -7,7 +7,6 @@
 
 #include "Object.h"
 #include "Scene.h"
-#include "../Core/Core.h"
 #include "Flecs.h"
 
 #define PTR_NULLCHECK(x) if(x == NULL) { return; }

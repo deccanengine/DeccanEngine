@@ -20,7 +20,6 @@
 #include "Core.h"
 #include "Input/Input.h"
 
-
 static struct {
     SDL_Window *window;
 
@@ -42,7 +41,7 @@ static struct {
 };
 
 /* Core */
-int Core_Init(DeccanSettings *settings) {
+int DE_CoreInit(DeccanSettings *settings) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
         DE_FATAL("Could not initialize SDL2: %s", SDL_GetError());
@@ -81,7 +80,7 @@ int Core_Init(DeccanSettings *settings) {
     return 1;
 }
 
-void Core_Quit() {
+void DE_CoreQuit() {
 #ifdef DE_DEBUG
     fclose(Core_Info.logfile);
 #endif
@@ -92,7 +91,7 @@ void Core_Quit() {
     SDL_Quit();
 }
 
-void DE_Core_Update(float fpsAverage, float deltaTime) {
+void DE_CoreUpdate(float fpsAverage, float deltaTime) {
     /* Handle some events */
     SDL_Event *event = DE_InputGetEventHandler();
 
@@ -152,76 +151,76 @@ void DE_Core_Update(float fpsAverage, float deltaTime) {
 }
 
 /* Core Settings Setters */
-void Core_SetTitle(const char *name) {
+void DE_CoreSetTitle(const char *name) {
     DE_Mem_Delete(Core_Info.settings.title);
     Core_Info.settings.title = DE_String_New(name);
     Core_Info.isSettingsDirty = true;
 }
 
-void Core_SetResolution(vec2 resolution) {
+void DE_CoreSetResolution(vec2 resolution) {
     glm_vec2_copy(resolution, Core_Info.settings.resolution);
     Core_Info.isSettingsDirty = true;
 }
 
-void Core_ToogleFullscreen() {
+void DE_CoreToogleFullscreen() {
     Core_Info.settings.fullscreen = !Core_Info.settings.fullscreen;
     Core_Info.isSettingsDirty = true;
 }
 
-void Core_ToogleVsync(bool vsync) {
+void DE_CoreToogleVsync(bool vsync) {
     Core_Info.settings.vsync = vsync;
     Core_Info.isSettingsDirty = true;
 }
 
-void Core_SetFramerateLimit(float fps){
+void DE_CoreSetFramerateLimit(float fps){
     Core_Info.settings.fps = fps;
 }
 
 /* Core Settings Getters */
-const char *Core_GetTitle() {
+const char *DE_CoreGetTitle() {
     return Core_Info.settings.title;
 }
 
-void Core_GetResolution(vec2 res) {
+void DE_CoreGetResolution(vec2 res) {
     glm_vec2_copy(Core_Info.settings.resolution, res);
 }
 
-bool Core_IsFullscreened() {
+bool DE_CoreIsFullscreened() {
     return Core_Info.settings.fullscreen;
 }
 
-bool Core_IsVsyncEnabled() {
+bool DE_CoreIsVsyncEnabled() {
     return Core_Info.settings.vsync;
 }
 
-bool Core_IsResizable() {
+bool DE_CoreIsResizable() {
     return Core_Info.settings.resizable;
 }
 
-bool Core_IsRunning() {
+bool DE_CoreIsRunning() {
     return Core_Info.isRunning;
 }
 
-float Core_GetFramerateLimit() {
+float DE_CoreGetFramerateLimit() {
     return Core_Info.settings.fps;
 }
 
-float Core_GetAverageFramerate() {
+float DE_CoreGetAverageFramerate() {
     return Core_Info.fpsAverage;
 }
 
-float Core_GetDeltaTime() {
+float DE_CoreGetDeltaTime() {
     return Core_Info.deltaTime;
 }
 
-SDL_Window *DE_Core_GetWindowHandle() {
+SDL_Window *DE_CoreGetWindowHandle() {
     return Core_Info.window;
 }
 
-DeccanVarManager *DE_Core_GetVarManager() {
+DeccanVarManager *DE_CoreGetVarManager() {
     return &Core_Info.vars;
 }
 
-DeccanSettings *DE_Core_GetSettings() {
+DeccanSettings *DE_CoreGetSettings() {
     return &Core_Info.settings;
 }

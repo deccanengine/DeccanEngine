@@ -6,7 +6,6 @@
  */
 
 #include "Scene.h"
-#include "../Core/Core.h"
 #include "Flecs.h"
 
 static struct {

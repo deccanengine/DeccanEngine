@@ -8,10 +8,10 @@
 #include "../Deccan.h"
 
 bool DE_AppInit(DeccanSettings *settings) {
-    Core_Init(settings);
+    DE_CoreInit(settings);
 
     /* Create renderer */
-    DE_RendererInit(DE_Core_GetWindowHandle());
+    DE_RendererInit(DE_CoreGetWindowHandle());
 
     return true;
 }
@@ -26,9 +26,9 @@ void DE_AppUpdate() {
     float fpsAverage = 0.0f;
     float deltaTime = 0.0f;
 
-    DeccanSettings *settings = DE_Core_GetSettings();
+    DeccanSettings *settings = DE_CoreGetSettings();
 
-    while(Core_IsRunning()) {
+    while(DE_CoreIsRunning()) {
         DE_TimerStart(&frmTimer);
 
         /* Calculate FPS */
@@ -37,7 +37,7 @@ void DE_AppUpdate() {
             fpsAverage = 0.0f;
         }
 
-        DE_Core_Update(fpsAverage, deltaTime);
+        DE_CoreUpdate(fpsAverage, deltaTime);
 
         /* Render the background before rendering anything */
         DE_RendererBackground();
@@ -70,5 +70,5 @@ void DE_AppQuit() {
 
     DE_RendererQuit();
 
-    Core_Quit();
+    DE_CoreQuit();
 }
