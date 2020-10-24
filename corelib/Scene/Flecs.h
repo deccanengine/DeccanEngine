@@ -13,8 +13,8 @@
 // Structs
 ////////////////////////////////////////////////
 
-typedef ecs_iter_t DeccanSysIter;
-typedef ecs_iter_action_t DeccanSysFunc;
+typedef ecs_iter_t DeccanFlecsIter;
+typedef ecs_iter_action_t DeccanFlecsActionFunc;
 
 typedef enum DeccanEcsType {
     DECCAN_ECS_TYPE_PRE_FRAME   = EcsPreFrame,
@@ -26,18 +26,18 @@ typedef enum DeccanEcsType {
     DECCAN_ECS_TYPE_PRE_STORE   = EcsPreStore,
     DECCAN_ECS_TYPE_ON_STORE    = EcsOnStore,
     DECCAN_ECS_TYPE_POST_FRAME  = EcsPostFrame
-} DeccanEcsType;
+} DeccanFlecsType;
 
-void DE_Flecs_RegisterComponent(const char *name, size_t size, size_t alignment);
-DeccanComponent DE_Flecs_LookupComponent(const char *name);
+void DE_FlecsRegisterComponent(const char *name, size_t size, size_t alignment);
+DeccanComponent DE_FlecsLookupComponent(const char *name);
 
-void DE_Flecs_System(DeccanSysFunc iter, const char *name, const char *sign, DeccanEcsType type);
+void DE_FlecsSystem(DeccanFlecsActionFunc iter, const char *name, const char *sign, DeccanFlecsType type);
 
-void DE_Flecs_SetComponent(ecs_entity_t entity, const char *name, void *component);
-void *DE_Flecs_GetComponent(ecs_entity_t entity, const char *name);
+void DE_FlecsSetComponent(ecs_entity_t entity, const char *name, void *component);
+void *DE_FlecsGetComponent(ecs_entity_t entity, const char *name);
 
-uint64_t DE_Flecs_RegisterTag(const char *name);
-void DE_Flecs_SetTag(ecs_entity_t entity, const char *name);
-bool DE_Flecs_HasTag(ecs_entity_t entity, const char *name);
+uint64_t DE_FlecsRegisterTag(const char *name);
+void DE_FlecsSetTag(ecs_entity_t entity, const char *name);
+bool DE_FlecsHasTag(ecs_entity_t entity, const char *name);
 
-void *DE_Flecs_IterColumn(DeccanSysIter *it, const char *name, int index);
+void *DE_FlecsIterColumn(DeccanFlecsIter *it, const char *name, int index);

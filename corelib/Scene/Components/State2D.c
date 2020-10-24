@@ -12,5 +12,5 @@
 ////////////////////////////////////////////////
 
 void DE_CompState2DRegister() {
-    DE_Flecs_RegisterComponent("State2D", sizeof(DeccanCompState2D), ECS_ALIGNOF(DeccanCompState2D));
+    DE_FlecsRegisterComponent("State2D", sizeof(DeccanCompState2D), ECS_ALIGNOF(DeccanCompState2D));
 }

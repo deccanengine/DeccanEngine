@@ -75,7 +75,7 @@ int Core_Init(DeccanSettings *settings) {
     log_add_fp(Core_Info.logfile, 0);
 #endif
 
-    Input_Init();
+    DE_InputInit();
     DE_VarInit(&Core_Info.vars);
 
     return 1;
@@ -94,7 +94,7 @@ void Core_Quit() {
 
 void DE_Core_Update(float fpsAverage, float deltaTime) {
     /* Handle some events */
-    SDL_Event *event = Input_GetEventHandler();
+    SDL_Event *event = DE_InputGetEventHandler();
 
     if(SDL_PollEvent(event)) {
         switch(event->type) {
@@ -145,7 +145,7 @@ void DE_Core_Update(float fpsAverage, float deltaTime) {
     }
 
     /* Update the input key states */
-    Input_Update();
+    DE_InputUpdate();
 
     Core_Info.fpsAverage = fpsAverage;
     Core_Info.deltaTime  = deltaTime;

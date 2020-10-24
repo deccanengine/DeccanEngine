@@ -10,4 +10,4 @@
 #include "Components/Collider.h"
 #include "Components/State2D.h"
 
-void DE_Components_RegisterAll();
+void DE_ComponentsRegisterAll();

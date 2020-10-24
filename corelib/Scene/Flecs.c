@@ -7,7 +7,7 @@
 
 #include "Flecs.h"
 
-void DE_Flecs_RegisterComponent(const char *name, size_t size, size_t alignment) {
+void DE_FlecsRegisterComponent(const char *name, size_t size, size_t alignment) {
     GameScene *scene = Scene_CurrentScene();
 
     DeccanComponent component = {0};
@@ -18,25 +18,25 @@ void DE_Flecs_RegisterComponent(const char *name, size_t size, size_t alignment)
     stbds_shputs(scene->components, component);
 }
 
-DeccanComponent DE_Flecs_LookupComponent(const char *name) {
+DeccanComponent DE_FlecsLookupComponent(const char *name) {
     GameScene *scene = Scene_CurrentScene();
     return stbds_shgets(scene->components, name);
 }
 
-uint64_t DE_Flecs_RegisterTag(const char *name) {
+uint64_t DE_FlecsRegisterTag(const char *name) {
     GameScene *scene = Scene_CurrentScene();
     ecs_entity_t id = ecs_new_entity(scene->world, 0, name, "0");
     return id;
 }
 
-void DE_Flecs_System(DeccanSysFunc iter, const char *name, const char *sign, DeccanEcsType type) {
+void DE_FlecsSystem(DeccanFlecsActionFunc iter, const char *name, const char *sign, DeccanFlecsType type) {
     GameScene *scene = Scene_CurrentScene();
     ecs_entity_t sys = ecs_new_system(scene->world, 0, name ? name : "system", type, sign, iter);
 }
 
-void DE_Flecs_SetComponent(ecs_entity_t entity, const char *name, void *component) {
+void DE_FlecsSetComponent(ecs_entity_t entity, const char *name, void *component) {
     GameScene *scene = Scene_CurrentScene();
-    DeccanComponent comp = DE_Flecs_LookupComponent(name);
+    DeccanComponent comp = DE_FlecsLookupComponent(name);
     if(comp.key == NULL) {
         DE_WARN("Component %s is not a valid registered component in the scene", name);
         return;
@@ -45,22 +45,22 @@ void DE_Flecs_SetComponent(ecs_entity_t entity, const char *name, void *componen
     ecs_set_ptr_w_entity(scene->world, entity, comp.id, comp.size, component);
 }
 
-void *DE_Flecs_GetComponent(ecs_entity_t entity, const char *name) {
+void *DE_FlecsGetComponent(ecs_entity_t entity, const char *name) {
     GameScene *scene = Scene_CurrentScene();
     return ecs_get_mut_w_entity(scene->world, entity, ecs_lookup(scene->world, name), NULL);
 }
 
-void DE_Flecs_SetTag(ecs_entity_t entity, const char *name) {
+void DE_FlecsSetTag(ecs_entity_t entity, const char *name) {
     GameScene *scene = Scene_CurrentScene();
     ecs_entity_t tag = ecs_lookup(scene->world, name);
     if(tag == 0)
-        tag = DE_Flecs_RegisterTag(name);
+        tag = DE_FlecsRegisterTag(name);
 
     ecs_type_t type = ecs_type_from_entity(scene->world, tag);
     ecs_add_type(scene->world, entity, type);
 }
 
-bool DE_Flecs_HasTag(ecs_entity_t entity, const char *name) {
+bool DE_FlecsHasTag(ecs_entity_t entity, const char *name) {
     GameScene *scene = Scene_CurrentScene();
     ecs_entity_t tag = ecs_lookup(scene->world, name);
     if(tag == 0)
@@ -70,6 +70,6 @@ bool DE_Flecs_HasTag(ecs_entity_t entity, const char *name) {
     return ecs_has_type(scene->world, entity, type);
 }
 
-void *DE_Flecs_IterColumn(DeccanSysIter *it, const char *name, int index) {
-    return ecs_column_w_size(it, DE_Flecs_LookupComponent(name).size, index);
+void *DE_FlecsIterColumn(DeccanFlecsIter *it, const char *name, int index) {
+    return ecs_column_w_size(it, DE_FlecsLookupComponent(name).size, index);
 }

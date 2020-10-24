@@ -21,40 +21,40 @@ typedef struct {
     bool IsPressed;
     bool IsReleased;
     bool IsHeld;
-} KeyState;
+} DeccanKeyState;
 
 typedef struct {
     bool IsDown;
     bool IsUp;
-} MouseState;
+} DeccanMouseState;
 
 /////////////////////////////////////////////////
 // Input management
 ////////////////////////////////////////////////
 
-SDL_Event *Input_GetEventHandler();
-void Input_Init();
-void Input_Update();
+SDL_Event *DE_InputGetEventHandler();
+void DE_InputInit();
+void DE_InputUpdate();
 
 /////////////////////////////////////////////////
 // Keyboard functions
 ////////////////////////////////////////////////
 
-KeyState Input_GetKey(int key_code);
+DeccanKeyState DE_InputGetKey(int key_code);
 
-bool Input_KeyPressed(int key_code);
-bool Input_KeyReleased(int key_code);
-bool Input_KeyHeld(int key_code);
+bool DE_InputKeyPressed(int key_code);
+bool DE_InputKeyReleased(int key_code);
+bool DE_InputKeyHeld(int key_code);
 
 /////////////////////////////////////////////////
 // Mouse functions
 ////////////////////////////////////////////////
 
-MouseState Input_GetMouseButton(int button_code);
+DeccanMouseState DE_InputGetMouseButton(int button_code);
 
-bool Input_ButtonDown(int button_code);
-bool Input_ButtonUp(int button_code);
+bool DE_InputButtonDown(int button_code);
+bool DE_InputButtonUp(int button_code);
 
-void Input_GetMousePos(vec2 pos);
-int Input_MouseScrollHorizontal();
-int Input_MouseScrollVertical();
+void DE_InputGetMousePos(vec2 pos);
+int DE_InputMouseScrollHorizontal();
+int DE_InputMouseScrollVertical();

@@ -14,7 +14,7 @@
 ////////////////////////////////////////////////
 
 void DE_CompColliderRegister() {
-    DE_Flecs_RegisterComponent("Collider", sizeof(DeccanCompCollider), ECS_ALIGNOF(DeccanCompCollider));
+    DE_FlecsRegisterComponent("Collider", sizeof(DeccanCompCollider), ECS_ALIGNOF(DeccanCompCollider));
 }
 
 /////////////////////////////////////////////////

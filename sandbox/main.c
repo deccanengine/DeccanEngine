@@ -7,9 +7,9 @@ DeccanSpriteAsset *text;
 
 GameObject *s;
 
-void color_mod(DeccanSysIter *it) {
-    DeccanColor *color = DE_Flecs_IterColumn(it, "Color", 1);
-    DeccanCompState2D *state = DE_Flecs_IterColumn(it, "State2D", 2);
+void color_mod(DeccanFlecsIter *it) {
+    DeccanColor *color = DE_FlecsIterColumn(it, "Color", 1);
+    DeccanCompState2D *state = DE_FlecsIterColumn(it, "State2D", 2);
 
     for(int i = 0; i < it->count; i++) {
         color[i].r += 1;
@@ -17,8 +17,8 @@ void color_mod(DeccanSysIter *it) {
     }
 }
 
-void x_mod(DeccanSysIter *it) {
-    DeccanCompState2D *state = DE_Flecs_IterColumn(it, "State2D", 1);
+void x_mod(DeccanFlecsIter *it) {
+    DeccanCompState2D *state = DE_FlecsIterColumn(it, "State2D", 1);
 
     for(int i = 0; i < it->count; i++) {
         state[i].position[0] += 1;
@@ -27,7 +27,7 @@ void x_mod(DeccanSysIter *it) {
 
 void begin() {
     /* Start here */
-    DE_Components_RegisterAll();
+    DE_ComponentsRegisterAll();
 
     GameObject *player = Object_NewObject("main player");
 //     player->order.z = 5;
@@ -61,9 +61,9 @@ void begin() {
     DE_VarNew(DE_Core_GetVarManager(), "hola", DECCAN_VARTYPE_STRING);
     DE_VarSetString(DE_Core_GetVarManager(), "hola", "test string");
 
-    DE_Flecs_RegisterComponent("Color", sizeof(DeccanColor), ECS_ALIGNOF(DeccanColor));
-    DE_Flecs_System(color_mod, "color_mod", "Color, State2D", DECCAN_ECS_TYPE_ON_UPDATE);
-    DE_Flecs_System(x_mod, "x_mod", "State2D", DECCAN_ECS_TYPE_ON_UPDATE);
+    DE_FlecsRegisterComponent("Color", sizeof(DeccanColor), ECS_ALIGNOF(DeccanColor));
+    DE_FlecsSystem(color_mod, "color_mod", "Color, State2D", DECCAN_ECS_TYPE_ON_UPDATE);
+    DE_FlecsSystem(x_mod, "x_mod", "State2D", DECCAN_ECS_TYPE_ON_UPDATE);
 }
 
 void step() {
@@ -72,7 +72,7 @@ void step() {
 
 void render() {
     /* Start here */
-    if(Input_KeyReleased(KeyCode_Space) && DE_TimerGetTime(&timer).milliseconds > 2000) {
+    if(DE_InputKeyReleased(KeyCode_Space) && DE_TimerGetTime(&timer).milliseconds > 500) {
         size_t memory_needed = snprintf(NULL, 0, "circle: %I64ld", count++) + 1;
         char *name = DE_Mem_New(memory_needed, 1);
         sprintf(name, "circle%I64ld", count++);

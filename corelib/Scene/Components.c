@@ -7,7 +7,7 @@
 
 #include "Components.h"
 
-void DE_Components_RegisterAll() {
+void DE_ComponentsRegisterAll() {
     DE_CompColliderRegister();
     DE_CompState2DRegister();
 }

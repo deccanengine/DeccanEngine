@@ -138,11 +138,11 @@ void Object_End(GameObject *obj) {
 ////////////////////////////////////////////////
 
 void Object_SetComponent(GameObject *obj, const char *name, void *component) {
-    DE_Flecs_SetComponent(obj->entity, name, component);
+    DE_FlecsSetComponent(obj->entity, name, component);
 }
 
 void *Object_GetComponent(GameObject *obj, const char *name) {
-    return DE_Flecs_GetComponent(obj->entity, name);
+    return DE_FlecsGetComponent(obj->entity, name);
 }
 
 void Object_SetName(GameObject *obj, const char *name) {
@@ -158,11 +158,11 @@ const char *Object_GetName(GameObject *obj) {
 }
 
 void Object_SetTag(GameObject *obj, const char *name) {
-    DE_Flecs_SetTag(obj->entity, name);
+    DE_FlecsSetTag(obj->entity, name);
 }
 
 bool Object_HasTag(GameObject *obj, const char *name) {
-    return DE_Flecs_HasTag(obj->entity, name);
+    return DE_FlecsHasTag(obj->entity, name);
 }
 
 /////////////////////////////////////////////////
