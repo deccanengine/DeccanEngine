@@ -1,0 +1,14 @@
+# Deccan Engine
+root = true
+
+# For all files
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+insert_final_newline = true
+
+# For source files
+[*.{c, h, build}]
+trim_trailing_whitespace = true
+indent_size = 4

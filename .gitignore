@@ -1,12 +1,29 @@
+# Deccan Engine
+
+# Executables
+*.exe
 test
-test.exe
-.lite_*.lua
+demo
+
+# Build files
+*.o
+*.ninja
+.ninja_log
+.ninja_deps
+**/meson-logs/*.txt
+**/meson-dist/
+**/compile_commands.json
+builddir/
+build/
+
+# Resources
 *.png
 *.ttf
 *.log
 *.txt
 *.dll
+*.so
+*.a
 
-builddir/*
-
-!resources/deccan-light.png
+# Lite text editor
+.lite_*.lua
