@@ -10,11 +10,8 @@
 #include "Scene.h"
 
 /////////////////////////////////////////////////
-// Structs
+// Enums
 ////////////////////////////////////////////////
-
-typedef ecs_iter_t DeccanFlecsIter;
-typedef ecs_iter_action_t DeccanFlecsActionFunc;
 
 typedef enum DeccanEcsType {
     DECCAN_ECS_TYPE_PRE_FRAME   = EcsPreFrame,
@@ -27,6 +24,19 @@ typedef enum DeccanEcsType {
     DECCAN_ECS_TYPE_ON_STORE    = EcsOnStore,
     DECCAN_ECS_TYPE_POST_FRAME  = EcsPostFrame
 } DeccanFlecsType;
+
+/////////////////////////////////////////////////
+// Structs
+////////////////////////////////////////////////
+
+typedef ecs_iter_t DeccanFlecsIter;
+typedef ecs_iter_action_t DeccanFlecsActionFunc;
+
+typedef struct DeccanComponent {
+    char *key;
+    ecs_entity_t id;
+    size_t size;
+} DeccanComponent;
 
 void DE_FlecsRegisterComponent(const char *name, size_t size, size_t alignment);
 DeccanComponent DE_FlecsLookupComponent(const char *name);

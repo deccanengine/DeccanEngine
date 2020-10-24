@@ -12,21 +12,21 @@ DeccanColor
     ColorList_Green     = (DeccanColor){  0, 255,   0, 255},
     ColorList_Orange    = (DeccanColor){255, 165,   0, 255};
 
-void action(GameObject *this) {
-    GameObject *player = Scene_GetObject("main player");
+void action(DeccanGameObject *this) {
+    DeccanGameObject *player = DE_SceneGetObject("main player");
     if(DE_CompColliderCheckObject(player, this)) {
-        DeccanColor *color = Object_GetComponent(player, "Color");
+        DeccanColor *color = DE_ObjectGetComponent(player, "Color");
         *color = ColorList_Green;
     }
 }
 
-void _player_begin(GameObject *this) {
+void _player_begin(DeccanGameObject *this) {
     DE_VarNew(&this->vars, "test", DECCAN_VARTYPE_NUMBER);
     DE_VarSetNumber(&this->vars, "test", 10080.0f);
 
-    Object_SetComponent(this, "Color", &(DeccanColor){255, 0, 0, 255});
+    DE_ObjectSetComponent(this, "Color", &(DeccanColor){255, 0, 0, 255});
 
-    Object_SetComponent(this, "Collider", &(DeccanCompCollider){
+    DE_ObjectSetComponent(this, "Collider", &(DeccanCompCollider){
         .type = COLLIDER_Rect,
         .rect = {
             [0] = 0,
@@ -36,7 +36,7 @@ void _player_begin(GameObject *this) {
         }
     });
 
-    Object_SetComponent(this, "State2D", &(DeccanCompState2D){
+    DE_ObjectSetComponent(this, "State2D", &(DeccanCompState2D){
         .position = {
             [0] = 200,
             [1] = 200
@@ -44,11 +44,11 @@ void _player_begin(GameObject *this) {
     });
 }
 
-void _player_step(GameObject *this) {
+void _player_step(DeccanGameObject *this) {
     static int32_t SpeedModifier = 5;
 
-    DeccanCompState2D *state = Object_GetComponent(this, "State2D");
-    DeccanColor *color = Object_GetComponent(this, "Color");
+    DeccanCompState2D *state = DE_ObjectGetComponent(this, "State2D");
+    DeccanColor *color = DE_ObjectGetComponent(this, "Color");
 
     if(DE_InputKeyHeld(KeyCode_W)){ state->position[1] -= SpeedModifier; }
     else if(DE_InputKeyHeld(KeyCode_S)){ state->position[1] += SpeedModifier; }
@@ -84,29 +84,29 @@ void _player_step(GameObject *this) {
         state->position[1] = pos[1] - offset[1];
     }
 
-    Scene_IterateObjectOfType("isEnemy", action);
+    DE_SceneIterateObjectOfType("isEnemy", action);
 }
 
-void _player_render(GameObject *this) {
-    DeccanCompState2D *state = Object_GetComponent(this, "State2D");
-    DeccanColor *color = Object_GetComponent(this, "Color");
+void _player_render(DeccanGameObject *this) {
+    DeccanCompState2D *state = DE_ObjectGetComponent(this, "State2D");
+    DeccanColor *color = DE_ObjectGetComponent(this, "Color");
 
     Draw_FilledRect((vec4){state->position[0], state->position[1], 50, 50}, *color);
 }
 
-void _player_end(GameObject *this) { DE_UNUSED(this); }
+void _player_end(DeccanGameObject *this) { DE_UNUSED(this); }
 
-void _none_begin(GameObject *this) {
-    DeccanCompState2D *statePlayer = Object_GetComponent(Scene_GetObject("main player"), "State2D");
+void _none_begin(DeccanGameObject *this) {
+    DeccanCompState2D *statePlayer = DE_ObjectGetComponent(DE_SceneGetObject("main player"), "State2D");
 
-    Object_SetComponent(this, "State2D", &(DeccanCompState2D){
+    DE_ObjectSetComponent(this, "State2D", &(DeccanCompState2D){
         .position = {
             [0] = statePlayer->position[0],
             [1] = statePlayer->position[1]
         }
     });
 
-    Object_SetComponent(this, "Collider", &(DeccanCompCollider){
+    DE_ObjectSetComponent(this, "Collider", &(DeccanCompCollider){
         .type = COLLIDER_Rect,
         .rect = {
             [0] = 0,
@@ -116,15 +116,15 @@ void _none_begin(GameObject *this) {
         }
     });
 
-    Object_SetTag(this, "isEnemy");
+    DE_ObjectSetTag(this, "isEnemy");
 }
 
-void _none_step(GameObject *this) { DE_UNUSED(this); }
+void _none_step(DeccanGameObject *this) { DE_UNUSED(this); }
 
-void _none_render(GameObject *this) {
-    DeccanCompState2D *state = Object_GetComponent(this, "State2D");
+void _none_render(DeccanGameObject *this) {
+    DeccanCompState2D *state = DE_ObjectGetComponent(this, "State2D");
 
     Draw_FilledRect((vec4){state->position[0], state->position[1], 40, 40}, ColorList_Red);
 }
 
-void _none_end(GameObject *this) { DE_UNUSED(this); }
+void _none_end(DeccanGameObject *this) { DE_UNUSED(this); }

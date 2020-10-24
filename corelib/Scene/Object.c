@@ -16,16 +16,16 @@
 // Initialization and instantiator functions
 ////////////////////////////////////////////////
 
-GameObject *Object_NewObject(const char *name) {
-    GameScene *scene = Scene_CurrentScene();
-    GameObject *obj = DE_Mem_New(sizeof(GameObject), 1);
+DeccanGameObject *DE_ObjectNewObject(const char *name) {
+    DeccanGameScene *scene = DE_SceneCurrentScene();
+    DeccanGameObject *obj = DE_Mem_New(sizeof(DeccanGameObject), 1);
 
     obj->entity = ecs_new_w_entity(scene->world, ECS_CHILDOF | 0);
 
     ecs_set_ptr_w_entity(scene->world, obj->entity,
-        ecs_lookup(scene->world, "GameObject"), sizeof(GameObject), obj);
+        ecs_lookup(scene->world, "DeccanGameObject"), sizeof(DeccanGameObject), obj);
 
-    Object_SetName(obj, name);
+    DE_ObjectSetName(obj, name);
 
     obj->visible  = true;
     obj->active   = true;
@@ -41,9 +41,9 @@ GameObject *Object_NewObject(const char *name) {
     return obj;
 }
 
-GameObject *Object_MakeCopy(GameObject *object) {
-    GameScene *scene = Scene_CurrentScene();
-    GameObject *object_inst = Object_NewObject(Object_GetName(object));
+DeccanGameObject *DE_ObjectMakeCopy(DeccanGameObject *object) {
+    DeccanGameScene *scene = DE_SceneCurrentScene();
+    DeccanGameObject *object_inst = DE_ObjectNewObject(DE_ObjectGetName(object));
 
     object_inst->entity = ecs_new_w_entity(scene->world, ECS_INSTANCEOF | object->entity);
 
@@ -57,21 +57,21 @@ GameObject *Object_MakeCopy(GameObject *object) {
     object_inst->AtEnd = object->AtEnd;
 
     ecs_set_ptr_w_entity(scene->world, object_inst->entity,
-        ecs_lookup(scene->world, "GameObject"), sizeof(GameObject), object_inst);
+        ecs_lookup(scene->world, "DeccanGameObject"), sizeof(DeccanGameObject), object_inst);
 
     return object_inst;
 }
 
-void Object_DeleteObject(GameObject *obj) {
+void DE_ObjectDeleteObject(DeccanGameObject *obj) {
     PTR_NULLCHECK(obj);
 
     obj->toRemove = true;
 }
 
-void Object_FreeObject(GameObject *obj) {
+void DE_ObjectFreeObject(DeccanGameObject *obj) {
     PTR_NULLCHECK(obj);
 
-    GameScene *scene = Scene_CurrentScene();
+    DeccanGameScene *scene = DE_SceneCurrentScene();
 
     obj->AtEnd(obj);
 
@@ -95,9 +95,9 @@ void Object_FreeObject(GameObject *obj) {
 // Update
 ////////////////////////////////////////////////
 
-void Object_Update(GameObject *obj) {
+void DE_ObjectUpdate(DeccanGameObject *obj) {
     if(obj->toRemove) {
-        Object_FreeObject(obj);
+        DE_ObjectFreeObject(obj);
         return;
     }
 
@@ -117,7 +117,7 @@ void Object_Update(GameObject *obj) {
     }
 }
 
-void Object_Render(GameObject *obj) {
+void DE_ObjectRender(DeccanGameObject *obj) {
     if(!obj->visible) {
         return;
     }
@@ -127,7 +127,7 @@ void Object_Render(GameObject *obj) {
     }
 }
 
-void Object_End(GameObject *obj) {
+void DE_ObjectEnd(DeccanGameObject *obj) {
     PTR_NULLCHECK(obj);
 
     obj->AtEnd(obj);
@@ -137,31 +137,31 @@ void Object_End(GameObject *obj) {
 // Component
 ////////////////////////////////////////////////
 
-void Object_SetComponent(GameObject *obj, const char *name, void *component) {
+void DE_ObjectSetComponent(DeccanGameObject *obj, const char *name, void *component) {
     DE_FlecsSetComponent(obj->entity, name, component);
 }
 
-void *Object_GetComponent(GameObject *obj, const char *name) {
+void *DE_ObjectGetComponent(DeccanGameObject *obj, const char *name) {
     return DE_FlecsGetComponent(obj->entity, name);
 }
 
-void Object_SetName(GameObject *obj, const char *name) {
-    GameScene *scene = Scene_CurrentScene();
+void DE_ObjectSetName(DeccanGameObject *obj, const char *name) {
+    DeccanGameScene *scene = DE_SceneCurrentScene();
     ecs_set_ptr_w_entity(scene->world, obj->entity, FLECS__EEcsName,
         sizeof(EcsName), &(EcsName){DE_String_New(name)});
 }
 
-const char *Object_GetName(GameObject *obj) {
-    GameScene *scene = Scene_CurrentScene();
+const char *DE_ObjectGetName(DeccanGameObject *obj) {
+    DeccanGameScene *scene = DE_SceneCurrentScene();
     EcsName *name = ecs_get_mut_w_entity(scene->world, obj->entity, FLECS__EEcsName, NULL);
     return name->value;
 }
 
-void Object_SetTag(GameObject *obj, const char *name) {
+void DE_ObjectSetTag(DeccanGameObject *obj, const char *name) {
     DE_FlecsSetTag(obj->entity, name);
 }
 
-bool Object_HasTag(GameObject *obj, const char *name) {
+bool DE_ObjectHasTag(DeccanGameObject *obj, const char *name) {
     return DE_FlecsHasTag(obj->entity, name);
 }
 
@@ -169,19 +169,19 @@ bool Object_HasTag(GameObject *obj, const char *name) {
 // Setters and Getters
 ////////////////////////////////////////////////
 
-bool Object_IsHidden(GameObject *obj) {
+bool DE_ObjectIsHidden(DeccanGameObject *obj) {
     return obj->visible;
 }
 
-void Object_Hide(GameObject *obj, bool hide) {
+void DE_ObjectHide(DeccanGameObject *obj, bool hide) {
     obj->visible = hide;
 }
 
-bool Object_IsActive(GameObject *obj) {
+bool DE_ObjectIsActive(DeccanGameObject *obj) {
     return obj->active;
 }
 
-void Object_Activate(GameObject *obj, bool act) {
+void DE_ObjectActivate(DeccanGameObject *obj, bool act) {
     obj->active = act;
 }
 

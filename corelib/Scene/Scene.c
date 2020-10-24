@@ -10,7 +10,7 @@
 #include "Flecs.h"
 
 static struct {
-    GameScene **scenes;
+    DeccanGameScene **scenes;
 } SceneInfo = {
     .scenes = NULL
 };
@@ -19,21 +19,21 @@ static struct {
 // Scene internals
 ////////////////////////////////////////////////
 
-GameScene **Scene_GetSceneArray() {
+DeccanGameScene **DE_SceneGetSceneArray() {
     return SceneInfo.scenes;
 }
 
-int Scene_GetSceneCount() {
+int DE_SceneGetSceneCount() {
     return stbds_arrlen(SceneInfo.scenes);
 }
 
-void Scene_FreeAll() {
+void DE_SceneFreeAll() {
     stbds_arrfree(SceneInfo.scenes);
 }
 
-void Scene_Update() {
-    /* Process Scene(s) and GameObject(s) */
-    GameScene *scene = Scene_CurrentScene();  /* Current scene */
+void DE_SceneUpdate() {
+    /* Process Scene(s) and DeccanGameObject(s) */
+    DeccanGameScene *scene = DE_SceneCurrentScene();  /* Current scene */
 
     /* First frame of the scene. Same as at_beginning for scene */
     if(scene->is_first_frame == true) {
@@ -42,7 +42,7 @@ void Scene_Update() {
 
         /* First frame of objects */
         for(int i = 0; i < stbds_arrlen(scene->objects); i++) {
-            GameObject *obj = scene->objects[i];
+            DeccanGameObject *obj = scene->objects[i];
             obj->AtFirstFrame(obj);
         }
     }
@@ -52,32 +52,32 @@ void Scene_Update() {
     ecs_progress(scene->world, 0);
 
     for(int i=0; i<stbds_arrlen(scene->objects); i++) {
-        Object_Update(scene->objects[i]);
+        DE_ObjectUpdate(scene->objects[i]);
     }
 
     /* AtRender of scenes and objects */
     scene->AtRender();
 
     for(int i=0; i<stbds_arrlen(scene->objects); i++) {
-        Object_Render(scene->objects[i]);
+        DE_ObjectRender(scene->objects[i]);
     }
 }
 
-void Scene_Quit() {
+void DE_SceneQuit() {
     /* at_end of scenes and objects */
-    GameScene *currentScene = Scene_CurrentScene();
+    DeccanGameScene *currentScene = DE_SceneCurrentScene();
     currentScene->AtEnd();
 
     for(int i = 0; i < stbds_arrlen(currentScene->objects); i++) {
-        Object_End(currentScene->objects[i]);
+        DE_ObjectEnd(currentScene->objects[i]);
     }
 
     /* Dellocate everything */
     for(int i = 0; i < stbds_arrlen(SceneInfo.scenes); i++) {
-        GameScene *scene = SceneInfo.scenes[i];
+        DeccanGameScene *scene = SceneInfo.scenes[i];
 
         for(int j = 0; j < stbds_arrlen(scene->objects); j++) {
-            Object_DeleteObject(scene->objects[i]);
+            DE_ObjectDeleteObject(scene->objects[i]);
         }
 
         ecs_fini(scene->world);
@@ -90,8 +90,8 @@ void Scene_Quit() {
 // Constructor and destructor
 ////////////////////////////////////////////////
 
-GameScene *Scene_NewScene(const char *name) {
-    GameScene *scene = DE_Mem_New(sizeof(GameScene), 1);
+DeccanGameScene *DE_SceneNewScene(const char *name) {
+    DeccanGameScene *scene = DE_Mem_New(sizeof(DeccanGameScene), 1);
 
     scene->name = DE_String_New(name);
     scene->is_paused = false;
@@ -105,12 +105,12 @@ GameScene *Scene_NewScene(const char *name) {
     scene->AtRender = NULL_VOIDFUNC;
     scene->AtEnd = NULL_VOIDFUNC;
 
-    ecs_new_component(scene->world, 0, "GameObject", sizeof(GameObject), ECS_ALIGNOF(GameObject));
+    ecs_new_component(scene->world, 0, "DeccanGameObject", sizeof(DeccanGameObject), ECS_ALIGNOF(DeccanGameObject));
 
     return scene;
 }
 
-void Scene_AddScene(GameScene *scene, bool is_replacing) {
+void DE_SceneAddScene(DeccanGameScene *scene, bool is_replacing) {
     if(scene == NULL) {
         DE_REPORT("Invalid scene data");
         return;
@@ -133,7 +133,7 @@ void Scene_AddScene(GameScene *scene, bool is_replacing) {
     }
 }
 
-void Scene_RemoveScene() {
+void DE_SceneRemoveScene() {
     int32_t sceneCount = stbds_arrlen(SceneInfo.scenes);
 
     if(sceneCount > 1) {
@@ -146,26 +146,26 @@ void Scene_RemoveScene() {
 // Object handling
 ////////////////////////////////////////////////
 
-void Scene_InstantiateObject(GameObject *object) {
+void DE_SceneInstantiateObject(DeccanGameObject *object) {
     if(object == NULL) return;
-    GameScene *scene = Scene_CurrentScene();
+    DeccanGameScene *scene = DE_SceneCurrentScene();
     stbds_arrput(scene->objects, object);
 }
 
-GameObject *Scene_GetObject(const char *name) {
-    GameScene *scene = Scene_CurrentScene();
+DeccanGameObject *DE_SceneGetObject(const char *name) {
+    DeccanGameScene *scene = DE_SceneCurrentScene();
     ecs_entity_t obj = ecs_lookup(scene->world, name);
-    return ecs_get_mut_w_entity(scene->world, obj, ecs_lookup(scene->world, "GameObject"), NULL);
+    return ecs_get_mut_w_entity(scene->world, obj, ecs_lookup(scene->world, "DeccanGameObject"), NULL);
 }
 
-void Scene_IterateObject(void (*func)(GameObject *this)) {
-    GameScene *scene = Scene_CurrentScene();
+void DE_SceneIterateObject(void (*func)(DeccanGameObject *this)) {
+    DeccanGameScene *scene = DE_SceneCurrentScene();
 
-    ecs_query_t *query = ecs_query_new(scene->world, "GameObject");
+    ecs_query_t *query = ecs_query_new(scene->world, "DeccanGameObject");
     ecs_iter_t it = ecs_query_iter(query);
 
     while(ecs_query_next(&it)) {
-        GameObject *obj = ecs_column_w_size(&it, sizeof(GameObject), 1);
+        DeccanGameObject *obj = ecs_column_w_size(&it, sizeof(DeccanGameObject), 1);
 
         for(int i = 0; i < it.count; i++) {
             func(&obj[i]);
@@ -173,17 +173,17 @@ void Scene_IterateObject(void (*func)(GameObject *this)) {
     }
 }
 
-void Scene_IterateObjectOfType(const char *tag, void (*func)(GameObject *this)) {
-    GameScene *scene = Scene_CurrentScene();
+void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject *this)) {
+    DeccanGameScene *scene = DE_SceneCurrentScene();
 
-    ecs_query_t *query = ecs_query_new(scene->world, "GameObject");
+    ecs_query_t *query = ecs_query_new(scene->world, "DeccanGameObject");
     ecs_iter_t it = ecs_query_iter(query);
 
     while(ecs_query_next(&it)) {
-        GameObject *obj = ecs_column_w_size(&it, sizeof(GameObject), 1);
+        DeccanGameObject *obj = ecs_column_w_size(&it, sizeof(DeccanGameObject), 1);
 
         for(int i = 0; i < it.count; i++) {
-            if(Object_HasTag(&obj[i], tag)) {
+            if(DE_ObjectHasTag(&obj[i], tag)) {
                 func(&obj[i]);
             }
         }
@@ -194,14 +194,14 @@ void Scene_IterateObjectOfType(const char *tag, void (*func)(GameObject *this)) 
 // Scene status
 ////////////////////////////////////////////////
 
-GameScene *Scene_CurrentScene() {
+DeccanGameScene *DE_SceneCurrentScene() {
     return SceneInfo.scenes[stbds_arrlen(SceneInfo.scenes) - 1];
 }
 
-void Scene_PauseScene(bool pause) {
+void DE_ScenePauseScene(bool pause) {
     SceneInfo.scenes[stbds_arrlen(SceneInfo.scenes) - 1]->is_paused = pause;
 }
 
-bool Scene_IsScenePaused() {
+bool DE_SceneIsScenePaused() {
     return SceneInfo.scenes[stbds_arrlen(SceneInfo.scenes) - 1]->is_paused;
 }

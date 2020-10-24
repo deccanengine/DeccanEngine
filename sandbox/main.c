@@ -5,7 +5,7 @@ uint64_t count;
 DeccanTimer timer;
 DeccanSpriteAsset *text;
 
-GameObject *s;
+DeccanGameObject *s;
 
 void color_mod(DeccanFlecsIter *it) {
     DeccanColor *color = DE_FlecsIterColumn(it, "Color", 1);
@@ -29,15 +29,15 @@ void begin() {
     /* Start here */
     DE_ComponentsRegisterAll();
 
-    GameObject *player = Object_NewObject("main player");
+    DeccanGameObject *player = DE_ObjectNewObject("main player");
 //     player->order.z = 5;
     player->AtBeginning = _player_begin;
     player->AtStep = _player_step;
     player->AtRender = _player_render;
     player->AtEnd = _player_end;
-    Scene_InstantiateObject(player);
+    DE_SceneInstantiateObject(player);
 
-    s = Object_NewObject("Circle");
+    s = DE_ObjectNewObject("Circle");
     s->AtBeginning = _none_begin;
     s->AtStep = _none_step;
     s->AtRender = _none_render;
@@ -77,9 +77,9 @@ void render() {
         char *name = DE_Mem_New(memory_needed, 1);
         sprintf(name, "circle%I64ld", count++);
 
-        GameObject *object_to_push = Object_MakeCopy(s);
-        Object_SetName(object_to_push, name);
-        Scene_InstantiateObject(object_to_push);
+        DeccanGameObject *object_to_push = DE_ObjectMakeCopy(s);
+        DE_ObjectSetName(object_to_push, name);
+        DE_SceneInstantiateObject(object_to_push);
 
         DE_TimerReset(&timer);
         DE_Mem_Delete(name);
@@ -117,12 +117,12 @@ int main(int argc, char **argv) {
     settings.fps = 120.0f;
 
     if(DE_AppInit(&settings)) {
-        GameScene *scene = Scene_NewScene("scene0");
+        DeccanGameScene *scene = DE_SceneNewScene("scene0");
         scene->AtFirstFrame = begin;
         scene->AtStep = step;
         scene->AtRender = render;
         scene->AtEnd = end;
-        Scene_AddScene(scene, false);
+        DE_SceneAddScene(scene, false);
 
         DE_AppUpdate();
     }

@@ -18,27 +18,23 @@
 // Structs
 ////////////////////////////////////////////////
 
-typedef struct DeccanComponent {
-    char *key;
-    ecs_entity_t id;
-    size_t size;
-} DeccanComponent;
+typedef struct DeccanComponent DeccanComponent;
 
-typedef struct GameScene {
+typedef struct DeccanDeccanGameScene {
     char *name;
     bool is_paused;
     bool is_first_frame;
 
     ecs_world_t *world;
 
-    GameObject **objects;
+    DeccanGameObject **objects;
     DeccanComponent *components;
 
     void (*AtFirstFrame)(void);
     void (*AtStep)(void);
     void (*AtRender)(void);
     void (*AtEnd)(void);
-} GameScene;
+} DeccanGameScene;
 
 static inline void NULL_VOIDFUNC() { }
 
@@ -46,33 +42,33 @@ static inline void NULL_VOIDFUNC() { }
 // Scene internals
 ////////////////////////////////////////////////
 
-GameScene **Scene_GetSceneArray();
-int Scene_GetSceneCount();
-void Scene_FreeAll();
-void Scene_Update();
-void Scene_Quit();
+DeccanGameScene **DE_SceneGetSceneArray();
+int DE_SceneGetSceneCount();
+void DE_SceneFreeAll();
+void DE_SceneUpdate();
+void DE_SceneQuit();
 
 /////////////////////////////////////////////////
 // Constructor and destructor
 ////////////////////////////////////////////////
 
-GameScene *Scene_NewScene(const char *name);
-void Scene_AddScene(GameScene *scene, bool is_replacing);
-void Scene_RemoveScene();
+DeccanGameScene *DE_SceneNewScene(const char *name);
+void DE_SceneAddScene(DeccanGameScene *scene, bool is_replacing);
+void DE_SceneRemoveScene();
 
 /////////////////////////////////////////////////
 // Object handling
 ////////////////////////////////////////////////
 
-void Scene_InstantiateObject(GameObject *object);
-GameObject *Scene_GetObject(const char *name);
-void Scene_IterateObject(void (*func)(GameObject *this));
-void Scene_IterateObjectOfType(const char *type, void (*func)(GameObject *this));
+void DE_SceneInstantiateObject(DeccanGameObject *object);
+DeccanGameObject *DE_SceneGetObject(const char *name);
+void DE_SceneIterateObject(void (*func)(DeccanGameObject *this));
+void DE_SceneIterateObjectOfType(const char *type, void (*func)(DeccanGameObject *this));
 
 /////////////////////////////////////////////////
 // Scene status
 ////////////////////////////////////////////////
 
-GameScene *Scene_CurrentScene();
-void Scene_PauseScene(bool pause);
-bool Scene_IsScenePaused();
+DeccanGameScene *DE_SceneCurrentScene();
+void DE_ScenePauseScene(bool pause);
+bool DE_SceneIsScenePaused();

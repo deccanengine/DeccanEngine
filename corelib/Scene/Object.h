@@ -26,13 +26,8 @@
 // Structs
 ////////////////////////////////////////////////
 
-typedef struct Component {
-    int32_t  key;
-    void    *value;
-} ObjectComponent;
-
-typedef struct GameObject GameObject;
-typedef struct GameObject {
+typedef struct DeccanGameObject DeccanGameObject;
+typedef struct DeccanGameObject {
     bool visible;
     bool active;
     bool toRemove;
@@ -41,31 +36,31 @@ typedef struct GameObject {
     DeccanVarManager vars;
 
     bool is_beginning;
-    void (*AtFirstFrame)(GameObject *object);
-    void (*AtBeginning)(GameObject *object);
-    void (*AtStep)(GameObject *object);
-    void (*AtRender)(GameObject *object);
-    void (*AtEnd)(GameObject *object);
-} GameObject;
+    void (*AtFirstFrame)(DeccanGameObject *object);
+    void (*AtBeginning)(DeccanGameObject *object);
+    void (*AtStep)(DeccanGameObject *object);
+    void (*AtRender)(DeccanGameObject *object);
+    void (*AtEnd)(DeccanGameObject *object);
+} DeccanGameObject;
 
-static inline void NULL_OBJFUNC(GameObject *obj) { DE_UNUSED(obj); }
+static inline void NULL_OBJFUNC(DeccanGameObject *obj) { DE_UNUSED(obj); }
 
 /////////////////////////////////////////////////
 // Initialization and instantiator functions
 ////////////////////////////////////////////////
 
-GameObject *Object_NewObject(const char *name);
-GameObject *Object_MakeCopy(GameObject *object);
-void Object_DeleteObject(GameObject *obj);
-void Object_FreeObject(GameObject *obj);
+DeccanGameObject *DE_ObjectNewObject(const char *name);
+DeccanGameObject *DE_ObjectMakeCopy(DeccanGameObject *object);
+void DE_ObjectDeleteObject(DeccanGameObject *obj);
+void DE_ObjectFreeObject(DeccanGameObject *obj);
 
 /////////////////////////////////////////////////
 // Update
 ////////////////////////////////////////////////
 
-void Object_Update(GameObject *obj);
-void Object_Render(GameObject *obj);
-void Object_End(GameObject *obj);
+void DE_ObjectUpdate(DeccanGameObject *obj);
+void DE_ObjectRender(DeccanGameObject *obj);
+void DE_ObjectEnd(DeccanGameObject *obj);
 
 /////////////////////////////////////////////////
 // Messaging
@@ -75,21 +70,21 @@ void Object_End(GameObject *obj);
 // Component
 ////////////////////////////////////////////////
 
-void Object_SetComponent(GameObject *obj, const char *name, void *component);
-void *Object_GetComponent(GameObject *obj, const char *name);
+void DE_ObjectSetComponent(DeccanGameObject *obj, const char *name, void *component);
+void *DE_ObjectGetComponent(DeccanGameObject *obj, const char *name);
 
-void Object_SetName(GameObject *obj, const char *name);
-const char *Object_GetName(GameObject *obj);
+void DE_ObjectSetName(DeccanGameObject *obj, const char *name);
+const char *DE_ObjectGetName(DeccanGameObject *obj);
 
-void Object_SetTag(GameObject *obj, const char *name);
-bool Object_HasTag(GameObject *obj, const char *name);
+void DE_ObjectSetTag(DeccanGameObject *obj, const char *name);
+bool DE_ObjectHasTag(DeccanGameObject *obj, const char *name);
 
 /////////////////////////////////////////////////
 // Getters and Setters
 ////////////////////////////////////////////////
 
-bool Object_IsHidden(GameObject *obj);
-void Object_Hide(GameObject *obj, bool hide);
+bool DE_ObjectIsHidden(DeccanGameObject *obj);
+void DE_ObjectHide(DeccanGameObject *obj, bool hide);
 
-bool Object_IsActive(GameObject *obj);
-void Object_Activate(GameObject *obj, bool act);
+bool DE_ObjectIsActive(DeccanGameObject *obj);
+void DE_ObjectActivate(DeccanGameObject *obj, bool act);

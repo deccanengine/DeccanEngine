@@ -41,7 +41,7 @@ void DE_AppUpdate() {
 
         /* Render the background before rendering anything */
         Renderer_Background();
-        Scene_Update();
+        DE_SceneUpdate();
 
         /* Render everything */
         Renderer_Present();
@@ -64,9 +64,9 @@ void DE_AppUpdate() {
 }
 
 void DE_AppQuit() {
-    Scene_Quit();
+    DE_SceneQuit();
 
-    Scene_FreeAll();
+    DE_SceneFreeAll();
 
     Renderer_Quit();
 
