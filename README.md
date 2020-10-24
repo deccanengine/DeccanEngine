@@ -1,5 +1,5 @@
-# Deccan Game Engine
-![Deccan Engine](/resources/deccan_logo.svg?raw=true)
+# Deccan Engine
+![Deccan Engine](/resources/deccan-logo.svg?raw=true)
 
 [![GitHub](https://img.shields.io/github/license/iddev5/DeccanEngine)](LICENSE.md)
 [![Discord](https://img.shields.io/discord/681837246567022609?label=discord)](https://discord.gg/bNwnxwn)
@@ -19,20 +19,19 @@ git clone --recursive https://www.github.com/iddev5/DeccanEngine
 ```
 
 Recursively getting the repository automatically downloads the submodule dependencies.
-The external dependencies are SDL2 and SDL2_ttf only which has to be installed separately from your vendor
+The external dependencies are SDL2 and SDL2_ttf only which has to be installed separately from your vendor.
 
 Then build using:
 ```
 meson builddir
-cd builddir
-ninja
+ninja -C builddir
 ```
 
-For Windows, only POSIX environments are supported for now. Support for non-POSIX Windows will be added soon. Or temporarily, ``proj/build1.bat`` can be used.
+For non-POSIX Windows, CMake is needed for handling dependencies as it cannot properly use pkg-config.
 
 ## Example
 Currently not much is available in terms of demo/example as the project is in heavy progress, however you can check out ``sandbox`` which is automatically built when the engine is built.
 
 ## License
-This software is licensed under the terms of MIT License(See LICENSE.md)  
-Copyright 2020 Ayush Bardhan Tripathy
+This software is licensed under the terms of MIT License (See [LICENSE.md](LICENSE.md)).  
+Copyright 2020 Ayush Bardhan Tripathy.
