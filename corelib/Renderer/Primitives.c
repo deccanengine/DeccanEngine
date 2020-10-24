@@ -11,17 +11,17 @@
 
 #define DE_DRAW_BEGIN()                          \
 vec2 camera; DE_CameraGetPosition(camera);         \
-SDL_Renderer *renderer = Renderer_GetRenderer(); \
-DeccanColor def = Renderer_GetColor();                 \
+SDL_Renderer *renderer = DE_RendererGetRenderer(); \
+DeccanColor def = DE_RendererGetColor();                 \
 SDL_BlendMode blend;                             \
-Renderer_SetColor(color);                        \
+DE_RendererSetColor(color);                        \
 SDL_GetRenderDrawBlendMode(renderer, &blend);
 
 #define DE_DRAW_END()                            \
-Renderer_SetColor(def);                          \
+DE_RendererSetColor(def);                          \
 SDL_SetRenderDrawBlendMode(renderer,  blend);
 
-void Draw_Point(vec2 pos, DeccanColor color) {
+void DE_DrawPoint(vec2 pos, DeccanColor color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_RenderDrawPoint(renderer, pos[0] - camera[0], pos[1] - camera[1]);
@@ -31,7 +31,7 @@ void Draw_Point(vec2 pos, DeccanColor color) {
 #endif
 }
 
-void Draw_Line(vec2 start, vec2 end, DeccanColor color) {
+void DE_DrawLine(vec2 start, vec2 end, DeccanColor color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_RenderDrawLine(renderer, start[0] - camera[0], start[1] - camera[1], end[0] - camera[0], end[1] - camera[1]);
@@ -41,7 +41,7 @@ void Draw_Line(vec2 start, vec2 end, DeccanColor color) {
 #endif
 }
 
-void Draw_Rect(vec4 rect, DeccanColor color) {
+void DE_DrawRect(vec4 rect, DeccanColor color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_Rect sr = {rect[0] - camera[0], rect[1] - camera[1], rect[2], rect[3]};
@@ -52,7 +52,7 @@ void Draw_Rect(vec4 rect, DeccanColor color) {
 #endif
 }
 
-void Draw_FilledRect(vec4 rect, DeccanColor color) {
+void DE_DrawFilledRect(vec4 rect, DeccanColor color) {
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_Rect sr = {rect[0] - camera[0], rect[1] - camera[1], rect[2], rect[3]};
@@ -63,7 +63,7 @@ void Draw_FilledRect(vec4 rect, DeccanColor color) {
 #endif
 }
 
-void Draw_Circle(vec3 circle, DeccanColor color) {
+void DE_DrawCircle(vec3 circle, DeccanColor color) {
     if(!circle[2]) { return; }
 
 #ifdef DECCAN_RENDERER_SDL
@@ -97,7 +97,7 @@ void Draw_Circle(vec3 circle, DeccanColor color) {
 #endif
 }
 
-void Draw_FilledCircle(vec3 circle, DeccanColor color) {
+void DE_DrawFilledCircle(vec3 circle, DeccanColor color) {
     if(!circle[2]) { return; }
 
 #ifdef DECCAN_RENDERER_SDL

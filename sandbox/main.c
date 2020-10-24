@@ -54,7 +54,7 @@ void begin() {
 
     DE_TimerStart(&timer);
 
-    Renderer_SetBackgroundColor((DeccanColor){255, 255, 255, 255});
+    DE_RendererSetBackgroundColor((DeccanColor){255, 255, 255, 255});
 
     text = DE_FontText(DE_AssetGetFont("arial"), "Hello! This is Deccan Game Engine", 0, (DeccanColor){0, 0, 0, 0});
 

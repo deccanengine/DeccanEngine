@@ -91,7 +91,7 @@ void _player_render(DeccanGameObject *this) {
     DeccanCompState2D *state = DE_ObjectGetComponent(this, "State2D");
     DeccanColor *color = DE_ObjectGetComponent(this, "Color");
 
-    Draw_FilledRect((vec4){state->position[0], state->position[1], 50, 50}, *color);
+    DE_DrawFilledRect((vec4){state->position[0], state->position[1], 50, 50}, *color);
 }
 
 void _player_end(DeccanGameObject *this) { DE_UNUSED(this); }
@@ -124,7 +124,7 @@ void _none_step(DeccanGameObject *this) { DE_UNUSED(this); }
 void _none_render(DeccanGameObject *this) {
     DeccanCompState2D *state = DE_ObjectGetComponent(this, "State2D");
 
-    Draw_FilledRect((vec4){state->position[0], state->position[1], 40, 40}, ColorList_Red);
+    DE_DrawFilledRect((vec4){state->position[0], state->position[1], 40, 40}, ColorList_Red);
 }
 
 void _none_end(DeccanGameObject *this) { DE_UNUSED(this); }

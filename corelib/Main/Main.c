@@ -11,7 +11,7 @@ bool DE_AppInit(DeccanSettings *settings) {
     Core_Init(settings);
 
     /* Create renderer */
-    Renderer_Init(DE_Core_GetWindowHandle());
+    DE_RendererInit(DE_Core_GetWindowHandle());
 
     return true;
 }
@@ -40,11 +40,11 @@ void DE_AppUpdate() {
         DE_Core_Update(fpsAverage, deltaTime);
 
         /* Render the background before rendering anything */
-        Renderer_Background();
+        DE_RendererBackground();
         DE_SceneUpdate();
 
         /* Render everything */
-        Renderer_Present();
+        DE_RendererPresent();
 
         /* Increment the frame counter */
         frameCount++;
@@ -68,7 +68,7 @@ void DE_AppQuit() {
 
     DE_SceneFreeAll();
 
-    Renderer_Quit();
+    DE_RendererQuit();
 
     Core_Quit();
 }

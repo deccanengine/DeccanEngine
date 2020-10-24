@@ -13,7 +13,7 @@
 DeccanSpriteAsset *DE_FontFastText(DeccanFontAsset *font, const char *text, DeccanColor color) {
     PTR_NULLCHECK(font, NULL);
 
-	SDL_Renderer *renderer = Renderer_GetRenderer();
+	SDL_Renderer *renderer = DE_RendererGetRenderer();
 
     SDL_Color scol = {
         color.r,
@@ -45,7 +45,7 @@ DeccanSpriteAsset *DE_FontText(DeccanFontAsset *font, const char *text, FontStyl
 DeccanSpriteAsset *DE_FontOutlinedText(DeccanFontAsset *font, const char *text, FontStyle style, int32_t outline, DeccanColor color) {
     PTR_NULLCHECK(font, NULL);
 
-    SDL_Renderer *renderer = Renderer_GetRenderer();
+    SDL_Renderer *renderer = DE_RendererGetRenderer();
 
     SDL_Color scol = {
         color.r,
