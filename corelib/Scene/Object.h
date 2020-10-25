@@ -50,9 +50,17 @@ static inline void NULL_OBJFUNC(DeccanGameObject *obj) { DE_UNUSED(obj); }
 ////////////////////////////////////////////////
 
 DeccanGameObject *DE_ObjectNewObject(const char *name);
-DeccanGameObject *DE_ObjectMakeCopy(DeccanGameObject *object);
 void DE_ObjectDeleteObject(DeccanGameObject *obj);
 void DE_ObjectFreeObject(DeccanGameObject *obj);
+
+/////////////////////////////////////////////////
+// Prefab and hierarchy functions
+////////////////////////////////////////////////
+
+DeccanGameObject *DE_ObjectMakeCopy(DeccanGameObject *object);
+void DE_ObjectMakePrefab(DeccanGameObject *object);
+void DE_ObjectSetParent(DeccanGameObject *object, DeccanGameObject *parent);
+void DE_ObjectAddChild(DeccanGameObject *object, DeccanGameObject *child);
 
 /////////////////////////////////////////////////
 // Update

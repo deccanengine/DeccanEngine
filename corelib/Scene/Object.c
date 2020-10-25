@@ -19,7 +19,7 @@ DeccanGameObject *DE_ObjectNewObject(const char *name) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
     DeccanGameObject *obj = DE_Mem_New(sizeof(DeccanGameObject), 1);
 
-    obj->entity = ecs_new_w_entity(scene->world, ECS_CHILDOF | 0);
+    obj->entity = ecs_new_w_entity(scene->world, 0);
 
     ecs_set_ptr_w_entity(scene->world, obj->entity,
         ecs_lookup(scene->world, "DeccanGameObject"), sizeof(DeccanGameObject), obj);
@@ -38,27 +38,6 @@ DeccanGameObject *DE_ObjectNewObject(const char *name) {
     obj->AtEnd = NULL_OBJFUNC;
 
     return obj;
-}
-
-DeccanGameObject *DE_ObjectMakeCopy(DeccanGameObject *object) {
-    DeccanGameScene *scene = DE_SceneCurrentScene();
-    DeccanGameObject *object_inst = DE_ObjectNewObject(DE_ObjectGetName(object));
-
-    object_inst->entity = ecs_new_w_entity(scene->world, ECS_INSTANCEOF | object->entity);
-
-    object_inst->visible = object->visible;
-    object_inst->active = object->active;
-
-    object_inst->AtFirstFrame = object->AtFirstFrame;
-    object_inst->AtBeginning = object->AtBeginning;
-    object_inst->AtStep = object->AtStep;
-    object_inst->AtRender = object->AtRender;
-    object_inst->AtEnd = object->AtEnd;
-
-    ecs_set_ptr_w_entity(scene->world, object_inst->entity,
-        ecs_lookup(scene->world, "DeccanGameObject"), sizeof(DeccanGameObject), object_inst);
-
-    return object_inst;
 }
 
 void DE_ObjectDeleteObject(DeccanGameObject *obj) {
@@ -88,6 +67,45 @@ void DE_ObjectFreeObject(DeccanGameObject *obj) {
     /* Free */
     ecs_delete(scene->world, obj->entity);
     DE_Mem_Delete(obj);
+}
+
+/////////////////////////////////////////////////
+// Prefab and hierarchy functions
+////////////////////////////////////////////////
+
+DeccanGameObject *DE_ObjectMakeCopy(DeccanGameObject *object) {
+    DeccanGameScene *scene = DE_SceneCurrentScene();
+    DeccanGameObject *object_inst = DE_ObjectNewObject(DE_ObjectGetName(object));
+
+    object_inst->entity = ecs_new_w_entity(scene->world, object->entity);
+
+    object_inst->visible = object->visible;
+    object_inst->active = object->active;
+
+    object_inst->AtFirstFrame = object->AtFirstFrame;
+    object_inst->AtBeginning = object->AtBeginning;
+    object_inst->AtStep = object->AtStep;
+    object_inst->AtRender = object->AtRender;
+    object_inst->AtEnd = object->AtEnd;
+
+    ecs_set_ptr_w_entity(scene->world, object_inst->entity,
+        ecs_lookup(scene->world, "DeccanGameObject"), sizeof(DeccanGameObject), object_inst);
+
+    return object_inst;
+}
+
+void DE_ObjectMakePrefab(DeccanGameObject *object) {
+    DeccanGameScene *scene = DE_SceneCurrentScene();
+    ecs_add_entity(scene->world, object->entity, EcsPrefab);
+}
+
+void DE_ObjectSetParent(DeccanGameObject *object, DeccanGameObject *parent) {
+    DeccanGameScene *scene = DE_SceneCurrentScene();
+    ecs_add_entity(scene->world, object->entity, ECS_CHILDOF | parent->entity);
+}
+
+void DE_ObjectAddChild(DeccanGameObject *object, DeccanGameObject *child) {
+    DE_ObjectSetParent(child, object);
 }
 
 /////////////////////////////////////////////////

@@ -42,6 +42,7 @@ void begin() {
     s->AtStep = _none_step;
     s->AtRender = _none_render;
     s->AtEnd = _none_end;
+    DE_ObjectMakePrefab(s);
 
     DE_AssetLoadAnimatedSprite("arrow0",
         "arrow0.png",
