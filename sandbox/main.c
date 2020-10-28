@@ -43,7 +43,7 @@ void begin() {
     sinfo->AtStep = _none_step;
     sinfo->AtRender = _none_render;
     sinfo->AtEnd = _none_end;
-	//DE_ObjectMakePrefab(s);
+	DE_ObjectMakePrefab(s);
 
     DE_AssetLoadAnimatedSprite("arrow0",
         "arrow0.png",
@@ -79,7 +79,8 @@ void render() {
         char *name = DE_Mem_New(memory_needed, 1);
         sprintf(name, "circle%I64ld", count++);
 
-        DeccanGameObject *object_to_push = DE_ObjectMakeCopy(s);
+		DeccanGameObject prefab = DE_SceneGetObject("Circle");
+        DeccanGameObject *object_to_push = DE_ObjectMakeCopy(&prefab);
         DE_ObjectSetName(object_to_push, name);
         DE_SceneInstantiateObject(object_to_push);
 
