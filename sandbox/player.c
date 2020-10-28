@@ -21,8 +21,8 @@ void action(DeccanGameObject *this) {
 }
 
 void _player_begin(DeccanGameObject *this) {
-    DE_VarNew(&this->vars, "test", DECCAN_VARTYPE_NUMBER);
-    DE_VarSetNumber(&this->vars, "test", 10080.0f);
+    //DE_VarNew(&this->vars, "test", DECCAN_VARTYPE_NUMBER);
+    //DE_VarSetNumber(&this->vars, "test", 10080.0f);
 
     DE_ObjectSetComponent(this, "Color", &(DeccanColor){255, 0, 0, 255});
 
@@ -84,7 +84,7 @@ void _player_step(DeccanGameObject *this) {
         state->position[1] = pos[1] - offset[1];
     }
 
-    DE_SceneIterateObjectOfType("isEnemy", action);
+   // DE_SceneIterateObjectOfType("isEnemy", action);
 }
 
 void _player_render(DeccanGameObject *this) {
@@ -97,9 +97,9 @@ void _player_render(DeccanGameObject *this) {
 void _player_end(DeccanGameObject *this) { DE_UNUSED(this); }
 
 void _none_begin(DeccanGameObject *this) {
-    DeccanCompState2D *statePlayer = DE_ObjectGetComponent(DE_SceneGetObject("main player"), "State2D");
+	DeccanCompState2D *statePlayer = DE_ObjectGetComponent(DE_SceneGetObject("main player"), "State2D");
 
-    DE_ObjectSetComponent(this, "State2D", &(DeccanCompState2D){
+	DE_ObjectSetComponent(this, "State2D", &(DeccanCompState2D){
         .position = {
             [0] = statePlayer->position[0],
             [1] = statePlayer->position[1]
@@ -115,7 +115,6 @@ void _none_begin(DeccanGameObject *this) {
             [3] = 40
         }
     });
-
     DE_ObjectSetTag(this, "isEnemy");
 }
 

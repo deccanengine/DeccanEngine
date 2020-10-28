@@ -42,7 +42,8 @@ void DE_SceneUpdate() {
         /* First frame of objects */
         for(int i = 0; i < stbds_arrlen(scene->objects); i++) {
             DeccanGameObject *obj = scene->objects[i];
-            obj->AtFirstFrame(obj);
+            DeccanObjectInfo *info = DE_ObjectGetComponent(obj, "Info");
+			info->AtFirstFrame(obj);
         }
     }
 
@@ -104,7 +105,7 @@ DeccanGameScene *DE_SceneNewScene(const char *name) {
     scene->AtRender = NULL_VOIDFUNC;
     scene->AtEnd = NULL_VOIDFUNC;
 
-    ecs_new_component(scene->world, 0, "DeccanGameObject", sizeof(DeccanGameObject), ECS_ALIGNOF(DeccanGameObject));
+	ecs_new_component(scene->world, 0, "Info", sizeof(DeccanObjectInfo), ECS_ALIGNOF(DeccanObjectInfo));
 
     return scene;
 }
@@ -154,13 +155,17 @@ void DE_SceneInstantiateObject(DeccanGameObject *object) {
 DeccanGameObject *DE_SceneGetObject(const char *name) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
     ecs_entity_t obj = ecs_lookup(scene->world, name);
-    return ecs_get_mut_w_entity(scene->world, obj, ecs_lookup(scene->world, "DeccanGameObject"), NULL);
+
+	DeccanGameObject *object = DE_Mem_New(sizeof(DeccanGameObject), 1);
+	object->entity = obj;
+	object->info = DE_ObjectGetComponent(object, "Info");
+	return object;
 }
 
 void DE_SceneIterateObject(void (*func)(DeccanGameObject *this)) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 
-    ecs_query_t *query = ecs_query_new(scene->world, "DeccanGameObject");
+    ecs_query_t *query = ecs_query_new(scene->world, "Info");
     ecs_iter_t it = ecs_query_iter(query);
 
     while(ecs_query_next(&it)) {
@@ -175,7 +180,7 @@ void DE_SceneIterateObject(void (*func)(DeccanGameObject *this)) {
 void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject *this)) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 
-    ecs_query_t *query = ecs_query_new(scene->world, "DeccanGameObject");
+    ecs_query_t *query = ecs_query_new(scene->world, "Info");
     ecs_iter_t it = ecs_query_iter(query);
 
     while(ecs_query_next(&it)) {

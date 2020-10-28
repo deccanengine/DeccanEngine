@@ -1,7 +1,7 @@
 #include "../corelib/Deccan.h"
 #include "player.h"
 
-uint64_t count;
+uint64_t count = 0;
 DeccanTimer timer;
 DeccanSpriteAsset *text;
 
@@ -30,19 +30,21 @@ void begin() {
     DE_ComponentsRegisterAll();
 
     DeccanGameObject *player = DE_ObjectNewObject("main player");
-//     player->order.z = 5;
-    player->AtBeginning = _player_begin;
-    player->AtStep = _player_step;
-    player->AtRender = _player_render;
-    player->AtEnd = _player_end;
+	DeccanObjectInfo *info = DE_ObjectGetInfo(player);
+    info->AtBeginning = _player_begin;
+    info->AtStep = _player_step;
+    info->AtRender = _player_render;
+    info->AtEnd = _player_end;
     DE_SceneInstantiateObject(player);
 
     s = DE_ObjectNewObject("Circle");
-    s->AtBeginning = _none_begin;
-    s->AtStep = _none_step;
-    s->AtRender = _none_render;
-    s->AtEnd = _none_end;
-    DE_ObjectMakePrefab(s);
+    DeccanObjectInfo *sinfo = DE_ObjectGetInfo(s);
+	sinfo->AtBeginning = _none_begin;
+    sinfo->AtStep = _none_step;
+    sinfo->AtRender = _none_render;
+    sinfo->AtEnd = _none_end;
+    DE_SceneInstantiateObject(s);
+	//DE_ObjectMakePrefab(s);
 
     DE_AssetLoadAnimatedSprite("arrow0",
         "arrow0.png",
@@ -74,7 +76,7 @@ void step() {
 void render() {
     /* Start here */
     if(DE_InputKeyReleased(KeyCode_Space) && DE_TimerGetTime(&timer).milliseconds > 500) {
-        size_t memory_needed = snprintf(NULL, 0, "circle: %I64ld", count++) + 1;
+        size_t memory_needed = snprintf(NULL, 0, "circle: %I64ld", count+1) + 1;
         char *name = DE_Mem_New(memory_needed, 1);
         sprintf(name, "circle%I64ld", count++);
 
@@ -87,7 +89,6 @@ void render() {
     }
 
 	DE_SpriteBlit((vec4){100, 100, 0, 0}, 0, 0, DE_AssetGetSprite("arrow0"));
-
     DE_SpriteBlitScaled((vec4){10, 10, 0, 0}, (vec2){1.0f, 1.0f}, 0, 0, text);
 }
 

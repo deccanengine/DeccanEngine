@@ -10,14 +10,6 @@
 #include "../Core/Variable.h"
 #include "../Core/Memory.h"
 
-#ifndef DECCAN_OBJ_MSG_LENGTH
-    #define DECCAN_OBJ_MSG_LENGTH 50
-#endif
-
-#ifndef DECCAN_OBJ_MSG_COUNT
-    #define DECCAN_OBJ_MSG_COUNT 100
-#endif
-
 /////////////////////////////////////////////////
 // Enums
 ////////////////////////////////////////////////
@@ -27,20 +19,26 @@
 ////////////////////////////////////////////////
 
 typedef struct DeccanGameObject DeccanGameObject;
-typedef struct DeccanGameObject {
-    bool visible;
-    bool active;
-    bool toRemove;
 
-    ecs_entity_t entity;
-    DeccanVarManager vars;
+typedef struct DeccanObjectInfo {
+	bool visible;
+	bool active;
+	bool to_remove;
 
-    bool is_beginning;
+	bool is_beginning;
+
     void (*AtFirstFrame)(DeccanGameObject *object);
     void (*AtBeginning)(DeccanGameObject *object);
     void (*AtStep)(DeccanGameObject *object);
     void (*AtRender)(DeccanGameObject *object);
     void (*AtEnd)(DeccanGameObject *object);
+
+	DeccanVarManager vars;
+} DeccanObjectInfo;
+
+typedef struct DeccanGameObject {
+    ecs_entity_t entity;
+	DeccanObjectInfo *info;
 } DeccanGameObject;
 
 static inline void NULL_OBJFUNC(DeccanGameObject *obj) { DE_UNUSED(obj); }
@@ -90,6 +88,9 @@ bool DE_ObjectHasTag(DeccanGameObject *obj, const char *name);
 /////////////////////////////////////////////////
 // Getters and Setters
 ////////////////////////////////////////////////
+
+DeccanObjectInfo *DE_ObjectGetInfo(DeccanGameObject *object);
+void DE_ObjectSetInfo(DeccanGameObject *object, DeccanObjectInfo *info);
 
 bool DE_ObjectIsHidden(DeccanGameObject *obj);
 void DE_ObjectHide(DeccanGameObject *obj, bool hide);

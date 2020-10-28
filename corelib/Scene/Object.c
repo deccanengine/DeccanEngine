@@ -21,21 +21,21 @@ DeccanGameObject *DE_ObjectNewObject(const char *name) {
 
     obj->entity = ecs_new_w_entity(scene->world, 0);
 
-    ecs_set_ptr_w_entity(scene->world, obj->entity,
-        ecs_lookup(scene->world, "DeccanGameObject"), sizeof(DeccanGameObject), obj);
+	DeccanObjectInfo info;
+	info.visible  = true;
+    info.active   = true;
+    info.to_remove = false;
+    info.is_beginning = true;
+    info.AtFirstFrame = NULL_OBJFUNC;
+    info.AtBeginning = NULL_OBJFUNC;
+    info.AtStep = NULL_OBJFUNC;
+    info.AtRender = NULL_OBJFUNC;
+    info.AtEnd = NULL_OBJFUNC;
 
-    DE_ObjectSetName(obj, name);
+	DE_ObjectSetName(obj, name);
+	DE_ObjectSetInfo(obj, &info);
 
-    obj->visible  = true;
-    obj->active   = true;
-    obj->toRemove = false;
-
-    obj->is_beginning = true;
-    obj->AtFirstFrame = NULL_OBJFUNC;
-    obj->AtBeginning = NULL_OBJFUNC;
-    obj->AtStep = NULL_OBJFUNC;
-    obj->AtRender = NULL_OBJFUNC;
-    obj->AtEnd = NULL_OBJFUNC;
+	obj->info = DE_ObjectGetInfo(obj);
 
     return obj;
 }
@@ -43,18 +43,19 @@ DeccanGameObject *DE_ObjectNewObject(const char *name) {
 void DE_ObjectDeleteObject(DeccanGameObject *obj) {
     PTR_NULLCHECK(obj);
 
-    obj->toRemove = true;
+    //obj->toRemove = true;
 }
 
 void DE_ObjectFreeObject(DeccanGameObject *obj) {
     PTR_NULLCHECK(obj);
 
     DeccanGameScene *scene = DE_SceneCurrentScene();
+	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
 
-    obj->AtEnd(obj);
+	info->AtEnd(obj);
 
     /* Free the messaging system */
-    DE_VarQuit(&obj->vars);
+    //DE_VarQuit(&obj->vars);
 
     /* Index of the object in the array */
     for(int i = 0; i < stbds_arrlen(scene->objects); i++) {
@@ -75,21 +76,12 @@ void DE_ObjectFreeObject(DeccanGameObject *obj) {
 
 DeccanGameObject *DE_ObjectMakeCopy(DeccanGameObject *object) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
-    DeccanGameObject *object_inst = DE_ObjectNewObject(DE_ObjectGetName(object));
 
-    object_inst->entity = ecs_new_w_entity(scene->world, object->entity);
-
-    object_inst->visible = object->visible;
-    object_inst->active = object->active;
-
-    object_inst->AtFirstFrame = object->AtFirstFrame;
-    object_inst->AtBeginning = object->AtBeginning;
-    object_inst->AtStep = object->AtStep;
-    object_inst->AtRender = object->AtRender;
-    object_inst->AtEnd = object->AtEnd;
-
-    ecs_set_ptr_w_entity(scene->world, object_inst->entity,
-        ecs_lookup(scene->world, "DeccanGameObject"), sizeof(DeccanGameObject), object_inst);
+	DeccanGameObject *object_inst = DE_Mem_New(sizeof(DeccanGameObject), 1);
+	object_inst->entity = ecs_new_w_entity(scene->world, ECS_INSTANCEOF | object->entity);
+	object_inst->info = DE_ObjectGetInfo(object_inst);
+	object_inst->info->is_beginning = true;
+	object_inst->info->active = true;
 
     return object_inst;
 }
@@ -113,41 +105,46 @@ void DE_ObjectAddChild(DeccanGameObject *object, DeccanGameObject *child) {
 ////////////////////////////////////////////////
 
 void DE_ObjectUpdate(DeccanGameObject *obj) {
-    if(obj->toRemove) {
+    DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+
+	if(info->to_remove) {
         DE_ObjectFreeObject(obj);
         return;
     }
 
-    if(!obj->active) {
+    if(!info->active) {
         return;
     }
 
-    if(obj->is_beginning == true) {
+    if(info->is_beginning == true) {
         /* Initialize messaging system */
-        DE_VarInit(&obj->vars);
+        //DE_VarInit(&obj->vars);
 
-        obj->AtBeginning(obj);
-        obj->is_beginning = false;
+        info->AtBeginning(obj);
+        info->is_beginning = false;
     }
     else {
-        obj->AtStep(obj);
+		info->AtStep(obj);
     }
 }
 
 void DE_ObjectRender(DeccanGameObject *obj) {
-    if(!obj->visible) {
+    DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+
+	if(!info->visible) {
         return;
     }
 
-    if(!obj->is_beginning) {
-        obj->AtRender(obj);
+    if(!info->is_beginning) {
+        info->AtRender(obj);
     }
 }
 
 void DE_ObjectEnd(DeccanGameObject *obj) {
     PTR_NULLCHECK(obj);
 
-    obj->AtEnd(obj);
+	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+    info->AtEnd(obj);
 }
 
 /////////////////////////////////////////////////
@@ -186,20 +183,31 @@ bool DE_ObjectHasTag(DeccanGameObject *obj, const char *name) {
 // Setters and Getters
 ////////////////////////////////////////////////
 
+DeccanObjectInfo *DE_ObjectGetInfo(DeccanGameObject *object) {
+	DeccanGameScene *scene = DE_SceneCurrentScene();
+	DeccanObjectInfo *info = ecs_get_mut_w_entity(scene->world, object->entity, ecs_lookup(scene->world, "Info"), NULL);
+	return info;
+}
+
+void DE_ObjectSetInfo(DeccanGameObject *object, DeccanObjectInfo *info) {
+	DeccanGameScene *scene = DE_SceneCurrentScene();
+	ecs_set_ptr_w_entity(scene->world, object->entity, ecs_lookup(scene->world, "Info"), sizeof(DeccanObjectInfo), info);
+}
+
 bool DE_ObjectIsHidden(DeccanGameObject *obj) {
-    return obj->visible;
+//    return obj->visible;
 }
 
 void DE_ObjectHide(DeccanGameObject *obj, bool hide) {
-    obj->visible = hide;
+//    obj->visible = hide;
 }
 
 bool DE_ObjectIsActive(DeccanGameObject *obj) {
-    return obj->active;
+//    return obj->active;
 }
 
 void DE_ObjectActivate(DeccanGameObject *obj, bool act) {
-    obj->active = act;
+//    obj->active = act;
 }
 
 #undef PTR_NULLCHECK
