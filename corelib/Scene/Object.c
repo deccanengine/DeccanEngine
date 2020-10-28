@@ -105,46 +105,43 @@ void DE_ObjectAddChild(DeccanGameObject *object, DeccanGameObject *child) {
 ////////////////////////////////////////////////
 
 void DE_ObjectUpdate(DeccanGameObject *obj) {
-    DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
-
-	if(info->to_remove) {
+ 	obj->info = DE_ObjectGetInfo(obj);
+   
+	if(obj->info->to_remove) {
         DE_ObjectFreeObject(obj);
         return;
     }
 
-    if(!info->active) {
+    if(!obj->info->active) {
         return;
     }
-
-    if(info->is_beginning == true) {
+	
+    if(obj->info->is_beginning == true) {
         /* Initialize messaging system */
         DE_VarInit(&obj->info->vars);
 
-        info->AtBeginning(obj);
-        info->is_beginning = false;
+        obj->info->AtBeginning(obj);
+        obj->info->is_beginning = false;
     }
     else {
-		info->AtStep(obj);
+		obj->info->AtStep(obj);
     }
 }
 
 void DE_ObjectRender(DeccanGameObject *obj) {
-    DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
-
-	if(!info->visible) {
+	if(!obj->info->visible) {
         return;
     }
 
-    if(!info->is_beginning) {
-        info->AtRender(obj);
+    if(!obj->info->is_beginning) {
+        obj->info->AtRender(obj);
     }
 }
 
 void DE_ObjectEnd(DeccanGameObject *obj) {
     PTR_NULLCHECK(obj);
 
-	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
-    info->AtEnd(obj);
+    obj->info->AtEnd(obj);
 }
 
 /////////////////////////////////////////////////

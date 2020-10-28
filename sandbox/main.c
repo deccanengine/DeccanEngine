@@ -43,7 +43,6 @@ void begin() {
     sinfo->AtStep = _none_step;
     sinfo->AtRender = _none_render;
     sinfo->AtEnd = _none_end;
-    DE_SceneInstantiateObject(s);
 	//DE_ObjectMakePrefab(s);
 
     DE_AssetLoadAnimatedSprite("arrow0",
