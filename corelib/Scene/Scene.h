@@ -61,7 +61,7 @@ void DE_SceneRemoveScene();
 ////////////////////////////////////////////////
 
 void DE_SceneInstantiateObject(DeccanGameObject *object);
-DeccanGameObject *DE_SceneGetObject(const char *name);
+DeccanGameObject DE_SceneGetObject(const char *name);
 void DE_SceneIterateObject(void (*func)(DeccanGameObject *this));
 void DE_SceneIterateObjectOfType(const char *type, void (*func)(DeccanGameObject *this));
 

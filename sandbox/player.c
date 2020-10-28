@@ -13,16 +13,17 @@ DeccanColor
     ColorList_Orange    = (DeccanColor){255, 165,   0, 255};
 
 void action(DeccanGameObject *this) {
-    DeccanGameObject *player = DE_SceneGetObject("main player");
-    if(DE_CompColliderCheckObject(player, this)) {
-        DeccanColor *color = DE_ObjectGetComponent(player, "Color");
+    DeccanGameObject player = DE_SceneGetObject("main player");
+    if(DE_CompColliderCheckObject(&player, this)) {
+        DeccanColor *color = DE_ObjectGetComponent(&player, "Color");
         *color = ColorList_Green;
     }
 }
 
 void _player_begin(DeccanGameObject *this) {
-    //DE_VarNew(&this->vars, "test", DECCAN_VARTYPE_NUMBER);
-    //DE_VarSetNumber(&this->vars, "test", 10080.0f);
+    DeccanObjectInfo *info = DE_ObjectGetInfo(this);
+	DE_VarNew(&info->vars, "test", DECCAN_VARTYPE_NUMBER);
+    DE_VarSetNumber(&info->vars, "test", 10080.0f);
 
     DE_ObjectSetComponent(this, "Color", &(DeccanColor){255, 0, 0, 255});
 
@@ -42,6 +43,8 @@ void _player_begin(DeccanGameObject *this) {
             [1] = 200
         }
     });
+	
+	//printf("number: %f\n", DE_VarGetNumber(&info->vars, "test"));
 }
 
 void _player_step(DeccanGameObject *this) {
@@ -84,7 +87,7 @@ void _player_step(DeccanGameObject *this) {
         state->position[1] = pos[1] - offset[1];
     }
 
-   // DE_SceneIterateObjectOfType("isEnemy", action);
+    //DE_SceneIterateObjectOfType("isEnemy", action);
 }
 
 void _player_render(DeccanGameObject *this) {
@@ -97,7 +100,8 @@ void _player_render(DeccanGameObject *this) {
 void _player_end(DeccanGameObject *this) { DE_UNUSED(this); }
 
 void _none_begin(DeccanGameObject *this) {
-	DeccanCompState2D *statePlayer = DE_ObjectGetComponent(DE_SceneGetObject("main player"), "State2D");
+	DeccanGameObject player = DE_SceneGetObject("main player");
+	DeccanCompState2D *statePlayer = DE_ObjectGetComponent(&player, "State2D");
 
 	DE_ObjectSetComponent(this, "State2D", &(DeccanCompState2D){
         .position = {

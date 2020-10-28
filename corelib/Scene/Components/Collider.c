@@ -143,7 +143,7 @@ bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject *obj, vec3 circle) {
 }
 
 bool DE_CompColliderCheck(const char *name1, const char *name2) {
-    DeccanGameObject *obj1 = DE_SceneGetObject(name1);
-    DeccanGameObject *obj2 = DE_SceneGetObject(name2);
-    return DE_CompColliderCheckObject(obj1, obj2);
+    DeccanGameObject obj1 = DE_SceneGetObject(name1);
+    DeccanGameObject obj2 = DE_SceneGetObject(name2);
+    return DE_CompColliderCheckObject(&obj1, &obj2);
 }

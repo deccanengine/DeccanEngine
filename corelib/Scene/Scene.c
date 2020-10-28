@@ -152,16 +152,17 @@ void DE_SceneInstantiateObject(DeccanGameObject *object) {
     stbds_arrput(scene->objects, object);
 }
 
-DeccanGameObject *DE_SceneGetObject(const char *name) {
+DeccanGameObject DE_SceneGetObject(const char *name) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
     ecs_entity_t obj = ecs_lookup(scene->world, name);
 
-	DeccanGameObject *object = DE_Mem_New(sizeof(DeccanGameObject), 1);
-	object->entity = obj;
-	object->info = DE_ObjectGetComponent(object, "Info");
+	DeccanGameObject object; 
+	object.entity = obj;
+	object.info = DE_ObjectGetInfo(&object); 
 	return object;
 }
 
+// Broken
 void DE_SceneIterateObject(void (*func)(DeccanGameObject *this)) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 
@@ -177,6 +178,7 @@ void DE_SceneIterateObject(void (*func)(DeccanGameObject *this)) {
     }
 }
 
+// Broken
 void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject *this)) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 
@@ -184,7 +186,7 @@ void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject 
     ecs_iter_t it = ecs_query_iter(query);
 
     while(ecs_query_next(&it)) {
-        DeccanGameObject *obj = ecs_column_w_size(&it, sizeof(DeccanGameObject), 1);
+        DeccanGameObject *obj = ecs_column_w_size(&it, sizeof(DeccanGameObject), 1); 
 
         for(int i = 0; i < it.count; i++) {
             if(DE_ObjectHasTag(&obj[i], tag)) {

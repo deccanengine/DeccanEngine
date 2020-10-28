@@ -55,7 +55,7 @@ void DE_ObjectFreeObject(DeccanGameObject *obj) {
 	info->AtEnd(obj);
 
     /* Free the messaging system */
-    //DE_VarQuit(&obj->vars);
+    DE_VarQuit(&info->vars);
 
     /* Index of the object in the array */
     for(int i = 0; i < stbds_arrlen(scene->objects); i++) {
@@ -118,7 +118,7 @@ void DE_ObjectUpdate(DeccanGameObject *obj) {
 
     if(info->is_beginning == true) {
         /* Initialize messaging system */
-        //DE_VarInit(&obj->vars);
+        DE_VarInit(&obj->info->vars);
 
         info->AtBeginning(obj);
         info->is_beginning = false;
@@ -195,19 +195,19 @@ void DE_ObjectSetInfo(DeccanGameObject *object, DeccanObjectInfo *info) {
 }
 
 bool DE_ObjectIsHidden(DeccanGameObject *obj) {
-//    return obj->visible;
+    return obj->info->visible;
 }
 
 void DE_ObjectHide(DeccanGameObject *obj, bool hide) {
-//    obj->visible = hide;
+    obj->info->visible = hide;
 }
 
 bool DE_ObjectIsActive(DeccanGameObject *obj) {
-//    return obj->active;
+    return obj->info->active;
 }
 
 void DE_ObjectActivate(DeccanGameObject *obj, bool act) {
-//    obj->active = act;
+    obj->info->active = act;
 }
 
 #undef PTR_NULLCHECK
