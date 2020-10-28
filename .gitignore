@@ -25,5 +25,8 @@ build/
 *.so
 *.a
 
+# Vim text editor
+*.swp
+
 # Lite text editor
 .lite_*.lua
