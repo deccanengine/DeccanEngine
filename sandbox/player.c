@@ -87,7 +87,7 @@ void _player_step(DeccanGameObject *this) {
         state->position[1] = pos[1] - offset[1];
     }
 
-    //DE_SceneIterateObjectOfType("isEnemy", action);
+    DE_SceneIterateObjectOfType("isEnemy", action);
 }
 
 void _player_render(DeccanGameObject *this) {

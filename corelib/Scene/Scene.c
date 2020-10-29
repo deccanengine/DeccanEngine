@@ -162,7 +162,6 @@ DeccanGameObject DE_SceneGetObject(const char *name) {
 	return object;
 }
 
-// Broken
 void DE_SceneIterateObject(void (*func)(DeccanGameObject *this)) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 
@@ -170,15 +169,20 @@ void DE_SceneIterateObject(void (*func)(DeccanGameObject *this)) {
     ecs_iter_t it = ecs_query_iter(query);
 
     while(ecs_query_next(&it)) {
-        DeccanGameObject *obj = ecs_column_w_size(&it, sizeof(DeccanGameObject), 1);
+        DeccanObjectInfo *info = ecs_column_w_size(&it, sizeof(DeccanObjectInfo), 1); 
 
         for(int i = 0; i < it.count; i++) {
-            func(&obj[i]);
+			ecs_entity_t entity = it.entities[i];
+		
+			DeccanGameObject object;
+			object.entity = entity;
+			object.info = &info[i];
+
+            func(&object);
         }
     }
 }
 
-// Broken
 void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject *this)) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 
@@ -186,12 +190,18 @@ void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject 
     ecs_iter_t it = ecs_query_iter(query);
 
     while(ecs_query_next(&it)) {
-        DeccanGameObject *obj = ecs_column_w_size(&it, sizeof(DeccanGameObject), 1); 
+        DeccanObjectInfo *info = ecs_column_w_size(&it, sizeof(DeccanObjectInfo), 1); 
 
         for(int i = 0; i < it.count; i++) {
-            if(DE_ObjectHasTag(&obj[i], tag)) {
-                func(&obj[i]);
-            }
+			ecs_entity_t entity = it.entities[i];
+		
+			DeccanGameObject object;
+			object.entity = entity;
+			object.info = &info[i];
+
+			if(DE_ObjectHasTag(&object, tag)) {
+				func(&object);
+			}
         }
     }
 }
