@@ -9,18 +9,18 @@
 
 void DE_FlecsRegisterComponent(const char *name, size_t size, size_t alignment) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
-
-    DeccanComponent component = {0};
-    component.key  = DE_String_New(name);
-    component.size = size;
-    component.id  = ecs_new_component(scene->world, 0, component.key, component.size, alignment);
-
-    stbds_shputs(scene->components, component);
+	ecs_new_component(scene->world, 0, name, size, alignment);
 }
 
 DeccanComponent DE_FlecsLookupComponent(const char *name) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
-    return stbds_shgets(scene->components, name);
+	
+	ecs_entity_t id = ecs_lookup(scene->world, name);
+	EcsComponent *comp = ecs_get_w_entity(scene->world, id, FLECS__EEcsComponent);
+	DeccanComponent ret;
+	ret.size = comp->size;
+	ret.id = id;
+	return ret;
 }
 
 uint64_t DE_FlecsRegisterTag(const char *name) {
@@ -37,7 +37,7 @@ void DE_FlecsSystem(DeccanFlecsActionFunc iter, const char *name, const char *si
 void DE_FlecsSetComponent(ecs_entity_t entity, const char *name, void *component) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
     DeccanComponent comp = DE_FlecsLookupComponent(name);
-    if(comp.key == NULL) {
+    if(comp.id == 0) {
         DE_WARN("Component %s is not a valid registered component in the scene", name);
         return;
     }

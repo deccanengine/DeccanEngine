@@ -33,7 +33,6 @@ typedef ecs_iter_t DeccanFlecsIter;
 typedef ecs_iter_action_t DeccanFlecsActionFunc;
 
 typedef struct DeccanComponent {
-    char *key;
     ecs_entity_t id;
     size_t size;
 } DeccanComponent;
