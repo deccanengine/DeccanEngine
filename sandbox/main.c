@@ -74,7 +74,7 @@ void step() {
 
 void render() {
     /* Start here */
-    if(DE_InputKeyReleased(KeyCode_Space) && DE_TimerGetTime(&timer).milliseconds > 500) {
+    if(DE_InputKeyReleased(DECCAN_KEY_SPACE) && DE_TimerGetTime(&timer).milliseconds > 500) {
         size_t memory_needed = snprintf(NULL, 0, "circle: %I64ld", count+1) + 1;
         char *name = DE_Mem_New(memory_needed, 1);
         sprintf(name, "circle%I64ld", count++);

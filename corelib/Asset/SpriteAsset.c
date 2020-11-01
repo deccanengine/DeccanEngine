@@ -21,7 +21,7 @@ DeccanSpriteAsset *DE_SpriteNew(const char *name) {
     asset->count   = 1;
     asset->texture = NULL;
     asset->clock   = SDL_GetTicks();
-    asset->flags   = AnimActive;
+    asset->flags   = DECCAN_ANIMFLAG_ACTIVE;
 
     return asset;
 }
@@ -68,15 +68,15 @@ void DE_SpriteSetAnimLoop(DeccanSpriteAsset *texture, bool loop) {
 
     int32_t flags = 0;
 
-    if(texture->flags & AnimActive) { flags |= AnimActive; }
-    if(loop) { flags |= AnimLoop; }
+    if(texture->flags & DECCAN_ANIMFLAG_ACTIVE) { flags |= DECCAN_ANIMFLAG_ACTIVE; }
+    if(loop) { flags |= DECCAN_ANIMFLAG_LOOP; }
 
     texture->flags = flags;
 }
 
 bool DE_SpriteGetAnimLoop(DeccanSpriteAsset *texture) {
     PTR_NULLCHECK(texture, false);
-    return (bool)(texture->flags & AnimLoop);
+    return (bool)(texture->flags & DECCAN_ANIMFLAG_LOOP);
 }
 
 /*
@@ -87,15 +87,15 @@ void DE_SpriteSetAnimActive(DeccanSpriteAsset *texture, bool active) {
 
     int32_t flags = 0;
 
-    if(active) { flags |= AnimActive; }
-    if(texture->flags & AnimLoop) { flags |= AnimLoop; }
+    if(active) { flags |= DECCAN_ANIMFLAG_ACTIVE; }
+    if(texture->flags & DECCAN_ANIMFLAG_LOOP) { flags |= DECCAN_ANIMFLAG_LOOP; }
 
     texture->flags = flags;
 }
 
 bool DE_SpriteGetAnimActive(DeccanSpriteAsset *texture) {
     PTR_NULLCHECK(texture, false);
-    return (bool)(texture->flags & AnimActive);
+    return (bool)(texture->flags & DECCAN_ANIMFLAG_ACTIVE);
 }
 
 /*

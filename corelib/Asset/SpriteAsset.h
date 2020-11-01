@@ -19,8 +19,8 @@
 ////////////////////////////////////////////////
 
 typedef enum {
-    AnimActive = 1,
-    AnimLoop = 2
+    DECCAN_ANIMFLAG_ACTIVE = 1,
+    DECCAN_ANIMFLAG_LOOP   = 2
 } DeccanSpriteAnimFlag;
 
 /////////////////////////////////////////////////
@@ -36,8 +36,6 @@ typedef struct DeccanSpriteAsset {
     float clock;
     DeccanSpriteAnimFlag flags;
 } DeccanSpriteAsset;
-
-// To do: destructor
 
 /////////////////////////////////////////////////
 // Constructor/Destructor

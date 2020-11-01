@@ -53,15 +53,15 @@ void _player_step(DeccanGameObject *this) {
     DeccanCompState2D *state = DE_ObjectGetComponent(this, "State2D");
     DeccanColor *color = DE_ObjectGetComponent(this, "Color");
 
-    if(DE_InputKeyHeld(KeyCode_W)){ state->position[1] -= SpeedModifier; }
-    else if(DE_InputKeyHeld(KeyCode_S)){ state->position[1] += SpeedModifier; }
-    else if(DE_InputKeyHeld(KeyCode_A)){ state->position[0] -= SpeedModifier; }
-    else if(DE_InputKeyHeld(KeyCode_D)){ state->position[0] += SpeedModifier; }
+    if(DE_InputKeyHeld(DECCAN_KEY_W)){ state->position[1] -= SpeedModifier; }
+    else if(DE_InputKeyHeld(DECCAN_KEY_S)){ state->position[1] += SpeedModifier; }
+    else if(DE_InputKeyHeld(DECCAN_KEY_A)){ state->position[0] -= SpeedModifier; }
+    else if(DE_InputKeyHeld(DECCAN_KEY_D)){ state->position[0] += SpeedModifier; }
 
-    if(DE_InputKeyReleased(KeyCode_O)) {
+    if(DE_InputKeyReleased(DECCAN_KEY_O)) {
         SpeedModifier -= 1;
     }
-    else if(DE_InputKeyReleased(KeyCode_P)) {
+    else if(DE_InputKeyReleased(DECCAN_KEY_P)) {
         SpeedModifier += 1;
     }
 
@@ -72,12 +72,12 @@ void _player_step(DeccanGameObject *this) {
     DE_InputGetMousePos(pos);
     if(DE_CompColliderCheckObjectWithVector(this, pos)) {
         *color = ColorList_Orange;
-        if(DE_InputButtonDown(ButtonCode_Left)) {
+        if(DE_InputButtonDown(DECCAN_BUTTON_LEFT)) {
             selected = true;
             offset[0] = pos[0] - state->position[0];
             offset[1] = pos[1] - state->position[1];
         }
-        else if(DE_InputButtonUp(ButtonCode_Left)) {
+        else if(DE_InputButtonUp(DECCAN_BUTTON_LEFT)) {
             selected = false;
         }
     }

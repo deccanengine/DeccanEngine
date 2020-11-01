@@ -69,7 +69,7 @@ void BlitInternal(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, Decc
 #endif
 
     /* Check if animation is active */
-    if(texture->flags & AnimActive) {
+    if(texture->flags & DECCAN_ANIMFLAG_ACTIVE) {
         /* Change frame only if delay is reached */
         if(texture->delay <= SDL_GetTicks() - texture->clock) {
             texture->clock = SDL_GetTicks();
@@ -77,7 +77,7 @@ void BlitInternal(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, Decc
             /* Reached final frame */
             if(texture->current == texture->count - 1) {
                 /* If looping is allowed then set to first(0 index) frame */
-                if(texture->flags & AnimLoop) {
+                if(texture->flags & DECCAN_ANIMFLAG_LOOP) {
                     texture->current = 0;
                 }
             }

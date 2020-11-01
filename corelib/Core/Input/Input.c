@@ -13,8 +13,8 @@ static struct {
     uint8_t prevKeys [SDL_NUM_SCANCODES];
 } Input_Info = {0};
 
-#define KEY_IN_BOUNDS(x)    (x > KeyCode_Unknown1 && x < KeyCodeTotalCount)
-#define BUTTON_IN_BOUNDS(x) (x >= ButtonCode_Left && x < ButtonCodeTotalCount)
+#define KEY_IN_BOUNDS(x)    (x > DECCAN_KEY_UNKNOWN1 && x < DECCAN_KEY_TOTAL_COUNT)
+#define BUTTON_IN_BOUNDS(x) (x >= DECCAN_BUTTON_LEFT && x < DECCAN_BUTTON_TOTAL_COUNT)
 
 /////////////////////////////////////////////////
 // Input management
