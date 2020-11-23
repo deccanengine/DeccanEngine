@@ -81,8 +81,8 @@ void DE_SceneQuit() {
         }
 
         ecs_fini(scene->world);
-        DE_Mem_Delete(scene->name);
-        DE_Mem_Delete(scene);
+        DE_Free(scene->name);
+        DE_Free(scene);
     }
 }
 
@@ -91,9 +91,9 @@ void DE_SceneQuit() {
 ////////////////////////////////////////////////
 
 DeccanGameScene *DE_SceneNewScene(const char *name) {
-    DeccanGameScene *scene = DE_Mem_New(sizeof(DeccanGameScene), 1);
+    DeccanGameScene *scene = DE_Alloc(sizeof(DeccanGameScene), 1);
 
-    scene->name = DE_String_New(name);
+    scene->name = DE_StringNew(name);
     scene->is_paused = false;
     scene->objects = NULL;
     scene->components = NULL;

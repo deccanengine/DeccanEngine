@@ -14,8 +14,8 @@
 ////////////////////////////////////////////////
 
 DeccanSpriteAsset *DE_SpriteNew(const char *name) {
-    DeccanSpriteAsset *asset = DE_Mem_New(sizeof(DeccanSpriteAsset), 1);
-    asset->name  = DE_String_New(name);
+    DeccanSpriteAsset *asset = DE_Alloc(sizeof(DeccanSpriteAsset), 1);
+    asset->name  = DE_StringNew(name);
     asset->delay = 100.0f;
     asset->current = 0;
     asset->count   = 1;
@@ -34,8 +34,8 @@ void DE_SpriteDelete(DeccanSpriteAsset *asset) {
 			SDL_DestroyTexture(asset->texture[i]);
 	}
 
-    DE_Mem_Delete(asset->name);
-    DE_Mem_Delete(asset);
+    DE_Free(asset->name);
+    DE_Free(asset);
 }
 
 /////////////////////////////////////////////////

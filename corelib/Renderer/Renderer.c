@@ -10,6 +10,7 @@
 #include "Texture.h"
 #include "TextRendering.h"
 #include "../Core/Core.h"
+#include "../Core/String.h"
 
 static struct {
 #ifdef DECCAN_RENDERER_SDL
@@ -194,8 +195,8 @@ DeccanSpriteAsset *DE_RendererGetBackgroundTexture() {
 }
 
 DeccanSpriteAsset *DE_RendererGetTarget() {
-    DeccanSpriteAsset *target = DE_Mem_New(sizeof(DeccanSpriteAsset), 1);
-    target->name = DE_String_New("DE_DE_RendererTarget");
+    DeccanSpriteAsset *target = DE_Alloc(sizeof(DeccanSpriteAsset), 1);
+    target->name = DE_StringNew("DE_DE_RendererTarget");
 
 #ifdef DECCAN_RENDERER_SDL
     target->texture[0] = SDL_GetRenderTarget(Renderer_Info.renderer);

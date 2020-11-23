@@ -19,7 +19,7 @@ void DE_AssetLoadAsset(const char *type, const char *name, void *asset) {
     struct AssetManager assets;
 
     if(index == -1) {
-        assets.key = DE_String_New(type);
+        assets.key = DE_StringNew(type);
         assets.value = NULL;
     }
     else {

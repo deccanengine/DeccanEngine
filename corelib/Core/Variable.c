@@ -16,17 +16,17 @@ void DE_VarQuit(DeccanVarManager *manager) {
         DeccanVar *var = manager->vars[i].value;
 
         if(var->type == DECCAN_VARTYPE_STRING) {
-            DE_Mem_Delete(var->value.string);
+            DE_Free(var->value.string);
         }
 
-        DE_Mem_Delete(var);
+        DE_Free(var);
     }
 
     stbds_shfree(manager->vars);
 }
 
 void DE_VarNew(DeccanVarManager *manager, const char *name, DeccanVarType type) {
-    DeccanVar *var = DE_Mem_New(sizeof(DeccanVar), 1);
+    DeccanVar *var = DE_Alloc(sizeof(DeccanVar), 1);
     var->type = type;
 
     stbds_shput(manager->vars, name, var);
@@ -64,7 +64,7 @@ void DE_VarSetNumber(DeccanVarManager *manager, const char *name, double value) 
 void DE_VarSetString(DeccanVarManager *manager, const char *name, const char *value) {
     DeccanVar *var = stbds_shget(manager->vars, name);
     if(var->type == DECCAN_VARTYPE_STRING) {
-        var->value.string = DE_String_New(value);
+        var->value.string = DE_StringNew(value);
     }
 }
 

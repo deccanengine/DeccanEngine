@@ -11,7 +11,7 @@
 #include "Core/Core.h"
 #include "Core/Asset.h"
 #include "Core/Variable.h"
-#include "Core/Memory.h"
+#include "Core/Utils.h"
 #include "Core/Timer.h"
 #include "Core/Input/Input.h"
 #include "Core/Input/InputCodes.h"

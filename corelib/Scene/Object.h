@@ -8,7 +8,7 @@
 #pragma once
 #include "../Config.h"
 #include "../Core/Variable.h"
-#include "../Core/Memory.h"
+#include "../Core/Utils.h"
 
 /////////////////////////////////////////////////
 // Enums

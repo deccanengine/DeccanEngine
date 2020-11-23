@@ -76,7 +76,7 @@ void render() {
     /* Start here */
     if(DE_InputKeyReleased(DECCAN_KEY_SPACE) && DE_TimerGetTime(&timer).milliseconds > 500) {
         size_t memory_needed = snprintf(NULL, 0, "circle: %I64ld", count+1) + 1;
-        char *name = DE_Mem_New(memory_needed, 1);
+        char *name = DE_Alloc(memory_needed, 1);
         sprintf(name, "circle%I64ld", count++);
 
 		DeccanGameObject prefab = DE_SceneGetObject("Circle");
@@ -85,7 +85,7 @@ void render() {
         DE_SceneInstantiateObject(object_to_push);
 
         DE_TimerReset(&timer);
-        DE_Mem_Delete(name);
+        DE_Free(name);
     }
 
 	DE_SpriteBlit((vec4){100, 100, 0, 0}, 0, 0, DE_AssetGetSprite("arrow0"));

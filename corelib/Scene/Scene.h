@@ -7,7 +7,8 @@
 
 #pragma once
 #include "../Config.h"
-#include "../Core/Memory.h"
+#include "../Core/Utils.h"
+#include "../Core/String.h"
 #include "Object.h"
 
 /////////////////////////////////////////////////

@@ -14,17 +14,17 @@
 ////////////////////////////////////////////////
 
 DeccanFontAsset *DE_FontNew(const char *name) {
-    DeccanFontAsset *asset = DE_Mem_New(sizeof(DeccanFontAsset), 1);
-    asset->name = DE_String_New(name);
+    DeccanFontAsset *asset = DE_Alloc(sizeof(DeccanFontAsset), 1);
+    asset->name = DE_StringNew(name);
     return asset;
 }
 
 void DE_FontDelete(DeccanFontAsset *asset) {
 	if(!asset) return;
 
-    DE_Mem_Delete(asset->name);
-    DE_Mem_Delete(asset->font);
-    DE_Mem_Delete(asset);
+    DE_Free(asset->name);
+    DE_Free(asset->font);
+    DE_Free(asset);
 }
 
 /////////////////////////////////////////////////

@@ -10,9 +10,10 @@ src = [
     'corelib/Core/Asset.c',
     'corelib/Core/Core.c',
     'corelib/Core/Input/Input.c',
-    'corelib/Core/Memory.c',
     'corelib/Core/Timer.c',
     'corelib/Core/Variable.c',
+    'corelib/Core/String.c',
+    'corelib/Core/Utils.c',
 
     'corelib/Asset/Importer.c',
     'corelib/Asset/FontAsset.c',

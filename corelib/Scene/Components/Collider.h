@@ -9,7 +9,7 @@
 #include "../../Config.h"
 #include "../Object.h"
 #include "../../Renderer/Primitives.h"
-#include "../../Core/Memory.h"
+#include "../../Core/Utils.h"
 
 /////////////////////////////////////////////////
 // Enums

@@ -8,7 +8,8 @@
 #pragma once
 
 #include "../Config.h"
-#include "Memory.h"
+#include "Utils.h"
+#include "String.h"
 
 typedef struct DeccanAsset {
     const char *key;

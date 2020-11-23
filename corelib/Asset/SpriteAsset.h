@@ -7,7 +7,8 @@
 
 #pragma once
 #include "../Config.h"
-#include "../Core/Memory.h"
+#include "../Core/Utils.h"
+#include "../Core/String.h"
 
 /* Texture structure depends on backend */
 #ifdef DECCAN_RENDERER_SDL

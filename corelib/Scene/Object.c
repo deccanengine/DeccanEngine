@@ -17,7 +17,7 @@
 
 DeccanGameObject *DE_ObjectNewObject(const char *name) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
-    DeccanGameObject *obj = DE_Mem_New(sizeof(DeccanGameObject), 1);
+    DeccanGameObject *obj = DE_Alloc(sizeof(DeccanGameObject), 1);
 
     obj->entity = ecs_new_w_entity(scene->world, 0);
 
@@ -67,7 +67,7 @@ void DE_ObjectFreeObject(DeccanGameObject *obj) {
 
     /* Free */
     ecs_delete(scene->world, obj->entity);
-    DE_Mem_Delete(obj);
+    DE_Free(obj);
 }
 
 /////////////////////////////////////////////////
@@ -77,7 +77,7 @@ void DE_ObjectFreeObject(DeccanGameObject *obj) {
 DeccanGameObject *DE_ObjectMakeCopy(DeccanGameObject *object) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 
-	DeccanGameObject *object_inst = DE_Mem_New(sizeof(DeccanGameObject), 1);
+	DeccanGameObject *object_inst = DE_Alloc(sizeof(DeccanGameObject), 1);
 	object_inst->entity = ecs_new_w_entity(scene->world, ECS_INSTANCEOF | object->entity);
 	object_inst->info = DE_ObjectGetInfo(object_inst);
 	object_inst->info->is_beginning = true;
@@ -159,7 +159,7 @@ void *DE_ObjectGetComponent(DeccanGameObject *obj, const char *name) {
 void DE_ObjectSetName(DeccanGameObject *obj, const char *name) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
     ecs_set_ptr_w_entity(scene->world, obj->entity, FLECS__EEcsName,
-        sizeof(EcsName), &(EcsName){DE_String_New(name)});
+        sizeof(EcsName), &(EcsName){DE_StringNew(name)});
 }
 
 const char *DE_ObjectGetName(DeccanGameObject *obj) {
