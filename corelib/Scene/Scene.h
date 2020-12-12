@@ -19,17 +19,12 @@
 // Structs
 ////////////////////////////////////////////////
 
-typedef struct DeccanComponent DeccanComponent;
-
 typedef struct DeccanDeccanGameScene {
     char *name;
     bool is_paused;
     bool is_first_frame;
 
     ecs_world_t *world;
-
-    DeccanGameObject **objects;
-    DeccanComponent *components;
 
     void (*AtFirstFrame)(void);
     void (*AtStep)(void);

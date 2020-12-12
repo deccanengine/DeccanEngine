@@ -34,6 +34,10 @@ void RegisterBaseComponent(DeccanGameScene *scene) {
 		ecs_new_component(scene->world, 0, "Info", sizeof(DeccanObjectInfo), ECS_ALIGNOF(DeccanObjectInfo));
 }
 
+void ObjectFirstFrame(DeccanGameObject *object) {
+	object->info->AtFirstFrame(object);
+}
+
 void DE_SceneUpdate() {
     /* Process Scene(s) and DeccanGameObject(s) */
     DeccanGameScene *scene = DE_SceneCurrentScene();  /* Current scene */
@@ -46,27 +50,17 @@ void DE_SceneUpdate() {
         scene->is_first_frame = false;
 
         /* First frame of objects */
-        for(int i = 0; i < stbds_arrlen(scene->objects); i++) {
-            DeccanGameObject *obj = scene->objects[i];
-            DeccanObjectInfo *info = DE_ObjectGetComponent(obj, "Info");
-			info->AtFirstFrame(obj);
-        }
+		DE_SceneIterateObject(ObjectFirstFrame);	
     }
 
     /* AtStep of scenes and objects */
     scene->AtStep();
     ecs_progress(scene->world, 0);
-
-    for(int i=0; i<stbds_arrlen(scene->objects); i++) {
-        DE_ObjectUpdate(scene->objects[i]);
-    }
+	DE_SceneIterateObject(DE_ObjectUpdate);
 
     /* AtRender of scenes and objects */
     scene->AtRender();
-
-    for(int i=0; i<stbds_arrlen(scene->objects); i++) {
-        DE_ObjectRender(scene->objects[i]);
-    }
+	DE_SceneIterateObject(DE_ObjectRender);
 }
 
 void DE_SceneQuit() {
@@ -74,17 +68,13 @@ void DE_SceneQuit() {
     DeccanGameScene *currentScene = DE_SceneCurrentScene();
     currentScene->AtEnd();
 
-    for(int i = 0; i < stbds_arrlen(currentScene->objects); i++) {
-        DE_ObjectEnd(currentScene->objects[i]);
-    }
+	DE_SceneIterateObject(DE_ObjectEnd);
 
     /* Dellocate everything */
     for(int i = 0; i < stbds_arrlen(SceneInfo.scenes); i++) {
         DeccanGameScene *scene = SceneInfo.scenes[i];
 
-        for(int j = 0; j < stbds_arrlen(scene->objects); j++) {
-            DE_ObjectDeleteObject(scene->objects[i]);
-        }
+		DE_SceneIterateObject(DE_ObjectDeleteObject);
 
         ecs_fini(scene->world);
         DE_Free(scene->name);
@@ -105,8 +95,6 @@ DeccanGameScene *DE_SceneNewScene(const char *name) {
 
     scene->name = DE_StringNew(name);
     scene->is_paused = false;
-    scene->objects = NULL;
-    scene->components = NULL;
     scene->world = ecs_init();
 
     scene->is_first_frame = true;
@@ -154,10 +142,12 @@ void DE_SceneRemoveScene() {
 // Object handling
 ////////////////////////////////////////////////
 
+// TO DO: Do something!
 void DE_SceneInstantiateObject(DeccanGameObject *object) {
     if(object == NULL) return;
     DeccanGameScene *scene = DE_SceneCurrentScene();
-    stbds_arrput(scene->objects, object);
+
+	// Need to figure it out soon
 }
 
 DeccanGameObject DE_SceneGetObject(const char *name) {

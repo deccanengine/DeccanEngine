@@ -60,14 +60,6 @@ void DE_ObjectFreeObject(DeccanGameObject *obj) {
     /* Free the messaging system */
     DE_VarQuit(&info->vars);
 
-    /* Index of the object in the array */
-    for(int i = 0; i < stbds_arrlen(scene->objects); i++) {
-        if(scene->objects[i] == obj) {
-            /* Remove from the array */
-            stbds_arrdel(scene->objects, i);
-        }
-    }
-
     /* Free */
     ecs_delete(scene->world, obj->entity);
     DE_Free(obj);
