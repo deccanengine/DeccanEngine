@@ -9,11 +9,13 @@
 #include "Scene.h"
 #include "Flecs.h"
 
-#define PTR_NULLCHECK(x) if(x == NULL) { return; }
-
 /////////////////////////////////////////////////
 // Initialization and instantiator functions
 ////////////////////////////////////////////////
+
+void ObjectNoneFunc(DeccanGameObject *obj) {
+	DE_UNUSED(obj);
+}
 
 DeccanGameObject *DE_ObjectNewObject(const char *name) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
@@ -26,11 +28,11 @@ DeccanGameObject *DE_ObjectNewObject(const char *name) {
     info.active   = true;
     info.to_remove = false;
     info.is_beginning = true;
-    info.AtFirstFrame = NULL_OBJFUNC;
-    info.AtBeginning = NULL_OBJFUNC;
-    info.AtStep = NULL_OBJFUNC;
-    info.AtRender = NULL_OBJFUNC;
-    info.AtEnd = NULL_OBJFUNC;
+    info.AtFirstFrame = ObjectNoneFunc;
+    info.AtBeginning = ObjectNoneFunc;
+    info.AtStep = ObjectNoneFunc;
+    info.AtRender = ObjectNoneFunc;
+    info.AtEnd = ObjectNoneFunc;
 
 	DE_ObjectSetName(obj, name);
 	DE_ObjectSetInfo(obj, &info);
@@ -41,18 +43,19 @@ DeccanGameObject *DE_ObjectNewObject(const char *name) {
 }
 
 void DE_ObjectDeleteObject(DeccanGameObject *obj) {
-    PTR_NULLCHECK(obj);
+	if(obj == NULL) return;
 
     //obj->toRemove = true;
 }
 
 void DE_ObjectFreeObject(DeccanGameObject *obj) {
-    PTR_NULLCHECK(obj);
+    if(obj == NULL) return;
 
     DeccanGameScene *scene = DE_SceneCurrentScene();
 	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
 
-	info->AtEnd(obj);
+	if(obj->info->active) 
+		info->AtEnd(obj);
 
     /* Free the messaging system */
     DE_VarQuit(&info->vars);
@@ -112,11 +115,9 @@ void DE_ObjectUpdate(DeccanGameObject *obj) {
         return;
     }
 
-    if(!obj->info->active) {
-        return;
-    }
+    if(!obj->info->active) return;
 	
-    if(obj->info->is_beginning == true) {
+    if(obj->info->is_beginning) {
         /* Initialize messaging system */
         DE_VarInit(&obj->info->vars);
 
@@ -129,9 +130,7 @@ void DE_ObjectUpdate(DeccanGameObject *obj) {
 }
 
 void DE_ObjectRender(DeccanGameObject *obj) {
-	if(!obj->info->visible) {
-        return;
-    }
+	if(!obj->info->visible || !obj->info->active) return;
 
     if(!obj->info->is_beginning) {
         obj->info->AtRender(obj);
@@ -139,7 +138,7 @@ void DE_ObjectRender(DeccanGameObject *obj) {
 }
 
 void DE_ObjectEnd(DeccanGameObject *obj) {
-    PTR_NULLCHECK(obj);
+	if(!obj->info->active) return;
 
     obj->info->AtEnd(obj);
 }

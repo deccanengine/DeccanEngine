@@ -30,13 +30,19 @@ void DE_SceneFreeAll() {
     stbds_arrfree(SceneInfo.scenes);
 }
 
+void RegisterBaseComponent(DeccanGameScene *scene) {
+		ecs_new_component(scene->world, 0, "Info", sizeof(DeccanObjectInfo), ECS_ALIGNOF(DeccanObjectInfo));
+}
+
 void DE_SceneUpdate() {
     /* Process Scene(s) and DeccanGameObject(s) */
     DeccanGameScene *scene = DE_SceneCurrentScene();  /* Current scene */
 
     /* First frame of the scene. Same as at_beginning for scene */
     if(scene->is_first_frame == true) {
-        scene->AtFirstFrame();
+		RegisterBaseComponent(scene);
+
+		scene->AtFirstFrame();
         scene->is_first_frame = false;
 
         /* First frame of objects */
@@ -90,6 +96,10 @@ void DE_SceneQuit() {
 // Constructor and destructor
 ////////////////////////////////////////////////
 
+void SceneNoneFunc(DeccanGameScene *scene) {
+	DE_UNUSED(scene);
+}
+
 DeccanGameScene *DE_SceneNewScene(const char *name) {
     DeccanGameScene *scene = DE_Alloc(sizeof(DeccanGameScene), 1);
 
@@ -100,12 +110,10 @@ DeccanGameScene *DE_SceneNewScene(const char *name) {
     scene->world = ecs_init();
 
     scene->is_first_frame = true;
-    scene->AtFirstFrame = NULL_VOIDFUNC;
-    scene->AtStep = NULL_VOIDFUNC;
-    scene->AtRender = NULL_VOIDFUNC;
-    scene->AtEnd = NULL_VOIDFUNC;
-
-	ecs_new_component(scene->world, 0, "Info", sizeof(DeccanObjectInfo), ECS_ALIGNOF(DeccanObjectInfo));
+    scene->AtFirstFrame = SceneNoneFunc;
+    scene->AtStep = SceneNoneFunc;
+    scene->AtRender = SceneNoneFunc;
+    scene->AtEnd = SceneNoneFunc;
 
     return scene;
 }

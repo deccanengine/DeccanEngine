@@ -37,8 +37,6 @@ typedef struct DeccanDeccanGameScene {
     void (*AtEnd)(void);
 } DeccanGameScene;
 
-static inline void NULL_VOIDFUNC() { }
-
 /////////////////////////////////////////////////
 // Scene internals
 ////////////////////////////////////////////////
