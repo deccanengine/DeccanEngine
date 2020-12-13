@@ -10,8 +10,16 @@
 
 static struct {
     DeccanGameScene **scenes;
+
+	bool is_adding;
+	bool is_removing;
+	bool is_replacing;
+	DeccanGameScene *changed_scene;
 } SceneInfo = {
-    .scenes = NULL
+    .scenes = NULL,
+	.is_adding = false,
+	.is_removing = false,
+	.changed_scene = NULL
 };
 
 /////////////////////////////////////////////////
@@ -38,7 +46,11 @@ void ObjectFirstFrame(DeccanGameObject *object) {
 	object->info->AtFirstFrame(object);
 }
 
+void SceneMakeChanges(); /* Forward declaration */
 void DE_SceneUpdate() {
+	/* Add or remove scene (only one) */
+	SceneMakeChanges();
+
     /* Process Scene(s) and DeccanGameObject(s) */
     DeccanGameScene *scene = DE_SceneCurrentScene();  /* Current scene */
 
@@ -52,6 +64,8 @@ void DE_SceneUpdate() {
         /* First frame of objects */
 		DE_SceneIterateObject(ObjectFirstFrame);	
     }
+
+	//if(SceneMakeChanges()) return;	
 
     /* AtStep of scenes and objects */
     scene->AtStep();
@@ -111,31 +125,43 @@ void DE_SceneAddScene(DeccanGameScene *scene, bool is_replacing) {
         DE_REPORT("Invalid scene data");
         return;
     }
-
-    int32_t sceneCount = stbds_arrlen(SceneInfo.scenes);
-
-    if(sceneCount != 0) {
-        if(is_replacing) {
-            stbds_arrpop(SceneInfo.scenes);
-        }
-        else {
-            SceneInfo.scenes[sceneCount - 1]->is_paused = true;
-        }
-    }
-
-    if(stbds_arrput(SceneInfo.scenes, scene) != scene) {
-        DE_REPORT("Cannot add scene: %s\n", scene->name);
-        return;
-    }
+	
+	SceneInfo.changed_scene = scene;
+	SceneInfo.is_replacing = is_replacing;
+	SceneInfo.is_adding = true;
 }
 
 void DE_SceneRemoveScene() {
-    int32_t sceneCount = stbds_arrlen(SceneInfo.scenes);
+   SceneInfo.is_removing = true; 
+}
 
-    if(sceneCount > 1) {
-        stbds_arrpop(SceneInfo.scenes);
-        SceneInfo.scenes[sceneCount - 1]->is_paused = false;
-    }
+void SceneMakeChanges() {
+	int32_t sceneCount = stbds_arrlen(SceneInfo.scenes);
+	if(SceneInfo.is_adding) {
+		SceneInfo.is_adding = false;
+
+    	if(sceneCount != 0) {
+        	if(SceneInfo.is_replacing) {
+           		stbds_arrpop(SceneInfo.scenes);
+        	}
+        	else {
+            	SceneInfo.scenes[sceneCount - 1]->is_paused = true;
+        	}
+    	}
+
+   		if(stbds_arrput(SceneInfo.scenes, SceneInfo.changed_scene) != SceneInfo.changed_scene) {
+        	DE_REPORT("Cannot add scene: %s\n", SceneInfo.changed_scene->name);
+        	return false;
+    	}
+	}
+	else if(SceneInfo.is_removing) {
+		SceneInfo.is_removing = false;
+
+    	if(sceneCount > 1) {
+        	stbds_arrpop(SceneInfo.scenes);
+        	SceneInfo.scenes[sceneCount - 1]->is_paused = false;
+    	}
+	}
 }
 
 /////////////////////////////////////////////////

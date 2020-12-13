@@ -7,6 +7,11 @@ DeccanSpriteAsset *text;
 
 DeccanGameObject *s;
 
+void begin1();
+void step1();
+void render1();
+void end1();
+
 void color_mod(DeccanFlecsIter *it) {
     DeccanColor *color = DE_FlecsIterColumn(it, "Color", 1);
     DeccanCompState2D *state = DE_FlecsIterColumn(it, "State2D", 2);
@@ -68,8 +73,20 @@ void begin() {
     DE_FlecsSystem(x_mod, "x_mod", "State2D", DECCAN_ECS_TYPE_ON_UPDATE);
 }
 
+void render();
+void end();
+
 void step() {
     /* Start here */
+	if(DE_InputKeyReleased(DECCAN_KEY_P)) {
+		DeccanGameScene *scene = DE_SceneNewScene("scene1");
+		scene->AtFirstFrame = begin1;
+		scene->AtStep = step1;
+		scene->AtRender = render1;
+		scene->AtEnd = end1;
+
+		DE_SceneAddScene(scene, true);
+	}
 }
 
 void render() {
@@ -96,6 +113,22 @@ void end() {
     /* Start here */
 	DE_SpriteDelete(DE_AssetGetSprite("arrow0"));
 	DE_FontDelete(DE_AssetGetFont("arial"));
+}
+
+void begin1() {
+    DE_FlecsRegisterComponent("Color", sizeof(DeccanColor), ECS_ALIGNOF(DeccanColor));
+}
+
+void step1() {
+	
+}
+
+void render1() {
+	DE_DrawFilledRect((vec4){100, 100, 100, 100}, (DeccanColor){128, 128, 255, 255});
+}
+
+void end1() {
+
 }
 
 int main(int argc, char **argv) {
