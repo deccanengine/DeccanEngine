@@ -119,6 +119,8 @@ void DE_ObjectUpdate(DeccanGameObject *obj) {
     else {
 		obj->info->AtStep(obj);
     }
+
+	DE_ObjectSetInfo(obj, obj->info);
 }
 
 void DE_ObjectRender(DeccanGameObject *obj) {
