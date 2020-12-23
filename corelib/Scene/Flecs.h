@@ -44,6 +44,7 @@ void DE_FlecsSystem(DeccanFlecsActionFunc iter, const char *name, const char *si
 
 void DE_FlecsSetComponent(ecs_entity_t entity, const char *name, void *component);
 void *DE_FlecsGetComponent(ecs_entity_t entity, const char *name);
+void DE_FlecsRemoveComponent(ecs_entity_t entity, const char *name);
 
 uint64_t DE_FlecsRegisterTag(const char *name);
 void DE_FlecsSetTag(ecs_entity_t entity, const char *name);

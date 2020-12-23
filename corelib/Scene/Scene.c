@@ -169,12 +169,10 @@ void SceneMakeChanges() {
 // Object handling
 ////////////////////////////////////////////////
 
-// TO DO: Do something!
 void DE_SceneInstantiateObject(DeccanGameObject *object) {
     if(object == NULL) return;
     DeccanGameScene *scene = DE_SceneCurrentScene();
-
-	// Need to figure it out soon
+	ecs_remove_entity(scene->world, object->entity, EcsPrefab);
 }
 
 DeccanGameObject DE_SceneGetObject(const char *name) {

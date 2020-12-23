@@ -40,7 +40,8 @@ void begin() {
     info->AtStep = _player_step;
     info->AtRender = _player_render;
     info->AtEnd = _player_end;
-    DE_SceneInstantiateObject(player);
+    DE_ObjectMakePrefab(player);
+	DE_SceneInstantiateObject(player);
 
     s = DE_ObjectNewObject("Circle");
     DeccanObjectInfo *sinfo = DE_ObjectGetInfo(s);

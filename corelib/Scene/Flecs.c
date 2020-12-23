@@ -50,6 +50,11 @@ void *DE_FlecsGetComponent(ecs_entity_t entity, const char *name) {
     return ecs_get_mut_w_entity(scene->world, entity, ecs_lookup(scene->world, name), NULL);
 }
 
+void DE_FlecsRemoveComponent(ecs_entity_t entity, const char *name) {
+	DeccanGameScene *scene = DE_SceneCurrentScene();
+	ecs_remove_entity(scene->world, entity, ecs_lookup(scene->world, name));
+}
+
 void DE_FlecsSetTag(ecs_entity_t entity, const char *name) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
     ecs_entity_t tag = ecs_lookup(scene->world, name);

@@ -36,14 +36,16 @@ DeccanGameObject *DE_ObjectNewObject(const char *name) {
 
 	DE_ObjectSetName(obj, name);
 	DE_ObjectSetInfo(obj, &info);
+	DE_ObjectMakePrefab(obj);
 
     return obj;
 }
 
 void DE_ObjectDeleteObject(DeccanGameObject *obj) {
 	if(obj == NULL) return;
-
-    //obj->toRemove = true;
+	
+	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+	info->to_remove = true;
 }
 
 void DE_ObjectFreeObject(DeccanGameObject *obj) {
@@ -150,6 +152,10 @@ void DE_ObjectSetComponent(DeccanGameObject *obj, const char *name, void *compon
 
 void *DE_ObjectGetComponent(DeccanGameObject *obj, const char *name) {
     return DE_FlecsGetComponent(obj->entity, name);
+}
+
+void DE_ObjectRemoveComponent(DeccanGameObject *obj, const char *name) {
+	return DE_FlecsRemoveComponent(obj->entity, name);
 }
 
 void DE_ObjectSetName(DeccanGameObject *obj, const char *name) {

@@ -77,6 +77,7 @@ void DE_ObjectEnd(DeccanGameObject *obj);
 
 void DE_ObjectSetComponent(DeccanGameObject *obj, const char *name, void *component);
 void *DE_ObjectGetComponent(DeccanGameObject *obj, const char *name);
+void DE_ObjectRemoveComponent(DeccanGameObject *obj, const char *name);
 
 void DE_ObjectSetName(DeccanGameObject *obj, const char *name);
 const char *DE_ObjectGetName(DeccanGameObject *obj);
