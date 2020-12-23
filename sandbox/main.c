@@ -35,7 +35,7 @@ void begin() {
     DE_ComponentsRegisterAll();
 
     DeccanGameObject *player = DE_ObjectNewObject("main player");
-	DeccanObjectInfo *info = DE_ObjectGetInfo(player);
+	DeccanObjectInfo *info = DE_ObjectGetComponent(player, "Info");
     info->AtBeginning = _player_begin;
     info->AtStep = _player_step;
     info->AtRender = _player_render;
@@ -44,7 +44,7 @@ void begin() {
 	DE_SceneInstantiateObject(player);
 
     s = DE_ObjectNewObject("Circle");
-    DeccanObjectInfo *sinfo = DE_ObjectGetInfo(s);
+    DeccanObjectInfo *sinfo = DE_ObjectGetComponent(s, "Info");
 	sinfo->AtBeginning = _none_begin;
     sinfo->AtStep = _none_step;
     sinfo->AtRender = _none_render;

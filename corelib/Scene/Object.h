@@ -88,10 +88,6 @@ bool DE_ObjectHasTag(DeccanGameObject *obj, const char *name);
 /////////////////////////////////////////////////
 // Getters and Setters
 ////////////////////////////////////////////////
-
-DeccanObjectInfo *DE_ObjectGetInfo(DeccanGameObject *object);
-void DE_ObjectSetInfo(DeccanGameObject *object, DeccanObjectInfo *info);
-
 bool DE_ObjectIsHidden(DeccanGameObject *obj);
 void DE_ObjectHide(DeccanGameObject *obj, bool hide);
 

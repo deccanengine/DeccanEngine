@@ -39,11 +39,11 @@ void DE_SceneFreeAll() {
 }
 
 void RegisterBaseComponent(DeccanGameScene *scene) {
-		ecs_new_component(scene->world, 0, "Info", sizeof(DeccanObjectInfo), ECS_ALIGNOF(DeccanObjectInfo));
+	DE_FlecsRegisterComponent("Info", sizeof(DeccanObjectInfo), ECS_ALIGNOF(DeccanObjectInfo));
 }
 
 void ObjectFirstFrame(DeccanGameObject *object) {
-	DeccanObjectInfo *info = DE_ObjectGetInfo(object);
+	DeccanObjectInfo *info = DE_ObjectGetComponent(object, "Info");
 	info->AtFirstFrame(object);
 }
 
@@ -65,8 +65,6 @@ void DE_SceneUpdate() {
         /* First frame of objects */
 		DE_SceneIterateObject(ObjectFirstFrame);	
     }
-
-	//if(SceneMakeChanges()) return;	
 
     /* AtStep of scenes and objects */
     scene->AtStep();

@@ -35,7 +35,7 @@ DeccanGameObject *DE_ObjectNewObject(const char *name) {
     info.AtEnd = ObjectNoneFunc;
 
 	DE_ObjectSetName(obj, name);
-	DE_ObjectSetInfo(obj, &info);
+	DE_ObjectSetComponent(obj, "Info", &info);
 	DE_ObjectMakePrefab(obj);
 
     return obj;
@@ -44,7 +44,7 @@ DeccanGameObject *DE_ObjectNewObject(const char *name) {
 void DE_ObjectDeleteObject(DeccanGameObject *obj) {
 	if(obj == NULL) return;
 	
-	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+	DeccanObjectInfo *info = DE_ObjectGetComponent(obj, "Info");
 	info->to_remove = true;
 }
 
@@ -52,7 +52,7 @@ void DE_ObjectFreeObject(DeccanGameObject *obj) {
     if(obj == NULL) return;
 
     DeccanGameScene *scene = DE_SceneCurrentScene();
-	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+	DeccanObjectInfo *info = DE_ObjectGetComponent(obj, "Info");
 
 	if(info->active) 
 		info->AtEnd(obj);
@@ -75,10 +75,10 @@ DeccanGameObject *DE_ObjectMakeCopy(DeccanGameObject *object) {
 	DeccanGameObject *object_inst = DE_Alloc(sizeof(DeccanGameObject), 1);
 	object_inst->entity = ecs_new_w_entity(scene->world, ECS_INSTANCEOF | object->entity);
 
-	DeccanObjectInfo *info = DE_ObjectGetInfo(object_inst);
+	DeccanObjectInfo *info = DE_ObjectGetComponent(object_inst, "Info");
 	info->is_beginning = true;
 	info->active = true;
-	DE_ObjectSetInfo(object_inst, info);
+	DE_ObjectSetComponent(object_inst, "Info", info);
     
 	return object_inst;
 }
@@ -102,7 +102,7 @@ void DE_ObjectAddChild(DeccanGameObject *object, DeccanGameObject *child) {
 ////////////////////////////////////////////////
 
 void DE_ObjectUpdate(DeccanGameObject *obj) {
- 	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+ 	DeccanObjectInfo *info = DE_ObjectGetComponent(obj, "Info");
    
 	if(info->to_remove) {
         DE_ObjectFreeObject(obj);
@@ -117,7 +117,7 @@ void DE_ObjectUpdate(DeccanGameObject *obj) {
 
         info->AtBeginning(obj);
         info->is_beginning = false;
-		DE_ObjectSetInfo(obj, info);
+		DE_ObjectSetComponent(obj, "Info", info);
     }
     else {
 		info->AtStep(obj);
@@ -125,7 +125,7 @@ void DE_ObjectUpdate(DeccanGameObject *obj) {
 }
 
 void DE_ObjectRender(DeccanGameObject *obj) {
-	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+	DeccanObjectInfo *info = DE_ObjectGetComponent(obj, "Info");
 
 	if(!info->visible || !info->active) return;
 
@@ -135,7 +135,7 @@ void DE_ObjectRender(DeccanGameObject *obj) {
 }
 
 void DE_ObjectEnd(DeccanGameObject *obj) {
-	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+	DeccanObjectInfo *info = DE_ObjectGetComponent(obj, "Info");
 
 	if(!info->active) return;
 
@@ -182,35 +182,24 @@ bool DE_ObjectHasTag(DeccanGameObject *obj, const char *name) {
 // Setters and Getters
 ////////////////////////////////////////////////
 
-DeccanObjectInfo *DE_ObjectGetInfo(DeccanGameObject *object) {
-	DeccanGameScene *scene = DE_SceneCurrentScene();
-	DeccanObjectInfo *info = ecs_get_mut_w_entity(scene->world, object->entity, ecs_lookup(scene->world, "Info"), NULL);
-	return info;
-}
-
-void DE_ObjectSetInfo(DeccanGameObject *object, DeccanObjectInfo *info) {
-	DeccanGameScene *scene = DE_SceneCurrentScene();
-	ecs_set_ptr_w_entity(scene->world, object->entity, ecs_lookup(scene->world, "Info"), sizeof(DeccanObjectInfo), info);
-}
-
 bool DE_ObjectIsHidden(DeccanGameObject *obj) {
-	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+	DeccanObjectInfo *info = DE_ObjectGetComponent(obj, "Info");
 	return info->visible;
 }
 
 void DE_ObjectHide(DeccanGameObject *obj, bool hide) {
-    DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+    DeccanObjectInfo *info = DE_ObjectGetComponent(obj, "Info");
 	info->visible = hide;
-	DE_ObjectSetInfo(obj, info);
+	DE_ObjectSetComponent(obj, "Info", info);
 }
 
 bool DE_ObjectIsActive(DeccanGameObject *obj) {
-    DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+    DeccanObjectInfo *info = DE_ObjectGetComponent(obj, "Info");
 	return info->active;
 }
 
 void DE_ObjectActivate(DeccanGameObject *obj, bool act) {
-    DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+    DeccanObjectInfo *info = DE_ObjectGetComponent(obj, "Info");
 	info->active = act;
-	DE_ObjectSetInfo(obj, info);
+	DE_ObjectSetComponent(obj, "Info", info);
 }
