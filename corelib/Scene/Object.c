@@ -37,8 +37,6 @@ DeccanGameObject *DE_ObjectNewObject(const char *name) {
 	DE_ObjectSetName(obj, name);
 	DE_ObjectSetInfo(obj, &info);
 
-	obj->info = DE_ObjectGetInfo(obj);
-
     return obj;
 }
 
@@ -54,7 +52,7 @@ void DE_ObjectFreeObject(DeccanGameObject *obj) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
 
-	if(obj->info->active) 
+	if(info->active) 
 		info->AtEnd(obj);
 
     /* Free the messaging system */
@@ -74,11 +72,13 @@ DeccanGameObject *DE_ObjectMakeCopy(DeccanGameObject *object) {
 
 	DeccanGameObject *object_inst = DE_Alloc(sizeof(DeccanGameObject), 1);
 	object_inst->entity = ecs_new_w_entity(scene->world, ECS_INSTANCEOF | object->entity);
-	object_inst->info = DE_ObjectGetInfo(object_inst);
-	object_inst->info->is_beginning = true;
-	object_inst->info->active = true;
 
-    return object_inst;
+	DeccanObjectInfo *info = DE_ObjectGetInfo(object_inst);
+	info->is_beginning = true;
+	info->active = true;
+	DE_ObjectSetInfo(object_inst, info);
+    
+	return object_inst;
 }
 
 void DE_ObjectMakePrefab(DeccanGameObject *object) {
@@ -100,41 +100,44 @@ void DE_ObjectAddChild(DeccanGameObject *object, DeccanGameObject *child) {
 ////////////////////////////////////////////////
 
 void DE_ObjectUpdate(DeccanGameObject *obj) {
- 	obj->info = DE_ObjectGetInfo(obj);
+ 	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
    
-	if(obj->info->to_remove) {
+	if(info->to_remove) {
         DE_ObjectFreeObject(obj);
         return;
     }
 
-    if(!obj->info->active) return;
-	
-    if(obj->info->is_beginning) {
-        /* Initialize messaging system */
-        DE_VarInit(&obj->info->vars);
+    if(!info->active) return;
 
-        obj->info->AtBeginning(obj);
-        obj->info->is_beginning = false;
+    if(info->is_beginning) {
+        /* Initialize messaging system */
+        DE_VarInit(&info->vars);
+
+        info->AtBeginning(obj);
+        info->is_beginning = false;
+		DE_ObjectSetInfo(obj, info);
     }
     else {
-		obj->info->AtStep(obj);
+		info->AtStep(obj);
     }
-
-	DE_ObjectSetInfo(obj, obj->info);
 }
 
 void DE_ObjectRender(DeccanGameObject *obj) {
-	if(!obj->info->visible || !obj->info->active) return;
+	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
 
-    if(!obj->info->is_beginning) {
-        obj->info->AtRender(obj);
+	if(!info->visible || !info->active) return;
+
+    if(!info->is_beginning) {
+        info->AtRender(obj);
     }
 }
 
 void DE_ObjectEnd(DeccanGameObject *obj) {
-	if(!obj->info->active) return;
+	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
 
-    obj->info->AtEnd(obj);
+	if(!info->active) return;
+
+    info->AtEnd(obj);
 }
 
 /////////////////////////////////////////////////
@@ -185,19 +188,23 @@ void DE_ObjectSetInfo(DeccanGameObject *object, DeccanObjectInfo *info) {
 }
 
 bool DE_ObjectIsHidden(DeccanGameObject *obj) {
-    return obj->info->visible;
+	DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+	return info->visible;
 }
 
 void DE_ObjectHide(DeccanGameObject *obj, bool hide) {
-    obj->info->visible = hide;
+    DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+	info->visible = hide;
+	DE_ObjectSetInfo(obj, info);
 }
 
 bool DE_ObjectIsActive(DeccanGameObject *obj) {
-    return obj->info->active;
+    DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+	return info->active;
 }
 
 void DE_ObjectActivate(DeccanGameObject *obj, bool act) {
-    obj->info->active = act;
+    DeccanObjectInfo *info = DE_ObjectGetInfo(obj);
+	info->active = act;
+	DE_ObjectSetInfo(obj, info);
 }
-
-#undef PTR_NULLCHECK

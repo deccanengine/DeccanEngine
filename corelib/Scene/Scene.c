@@ -43,7 +43,8 @@ void RegisterBaseComponent(DeccanGameScene *scene) {
 }
 
 void ObjectFirstFrame(DeccanGameObject *object) {
-	object->info->AtFirstFrame(object);
+	DeccanObjectInfo *info = DE_ObjectGetInfo(object);
+	info->AtFirstFrame(object);
 }
 
 void SceneMakeChanges(); /* Forward declaration */
@@ -182,7 +183,6 @@ DeccanGameObject DE_SceneGetObject(const char *name) {
 
 	DeccanGameObject object; 
 	object.entity = obj;
-	object.info = DE_ObjectGetInfo(&object); 
 	return object;
 }
 
@@ -200,7 +200,6 @@ void DE_SceneIterateObject(void (*func)(DeccanGameObject *this)) {
 		
 			DeccanGameObject object;
 			object.entity = entity;
-			object.info = &info[i];
 
             func(&object);
         }
@@ -221,7 +220,6 @@ void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject 
 		
 			DeccanGameObject object;
 			object.entity = entity;
-			object.info = &info[i];
 
 			if(DE_ObjectHasTag(&object, tag)) {
 				func(&object);

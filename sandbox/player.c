@@ -21,7 +21,7 @@ void action(DeccanGameObject *this) {
 }
 
 void _player_begin(DeccanGameObject *this) {
-    DeccanObjectInfo *info = DE_ObjectGetInfo(this);
+	DeccanObjectInfo *info = DE_ObjectGetInfo(this);
 	DE_VarNew(&info->vars, "test", DECCAN_VARTYPE_NUMBER);
     DE_VarSetNumber(&info->vars, "test", 10080.0f);
 
