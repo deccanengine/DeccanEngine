@@ -21,14 +21,15 @@ void DE_CompColliderRegister() {
 // Collision checking
 ////////////////////////////////////////////////
 #define COLLISION_CHECK_HEADER(obj)                                         \
+	const char *name = DE_ObjectGetName(obj);                               \
 	DeccanCompCollider *c = DE_ObjectGetComponent(obj, "Collider");         \
     if(c == NULL) {                                                         \
-        DE_REPORT("Collider component not found in object: %s", "obj.name"); \
+        DE_REPORT("Collider component not found in object: %s", name);      \
         return false;                                                       \
     }                                                                       \
     DeccanCompState2D *state = DE_ObjectGetComponent(obj, "State2D");       \
     if(state == NULL) {                                                     \
-        DE_REPORT("State component not found in object: %s", "obj.name");   \
+        DE_REPORT("State component not found in object: %s", name);         \
         return false;                                                       \
     }                                                                       \
     vec3 p; glm_vec3_copy(state->position, p);
