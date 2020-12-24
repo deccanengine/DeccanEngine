@@ -52,7 +52,9 @@ void *DE_FlecsGetComponent(ecs_entity_t entity, const char *name) {
 
 void DE_FlecsRemoveComponent(ecs_entity_t entity, const char *name) {
 	DeccanGameScene *scene = DE_SceneCurrentScene();
-	ecs_remove_entity(scene->world, entity, ecs_lookup(scene->world, name));
+	ecs_entity_t component = ecs_lookup(scene->world, name);
+	ecs_type_t type = ecs_type_from_entity(scene->world, component);
+	ecs_remove_type(scene->world, entity, type);
 }
 
 void DE_FlecsSetTag(ecs_entity_t entity, const char *name) {
