@@ -12,15 +12,15 @@ DeccanColor
     ColorList_Green     = (DeccanColor){  0, 255,   0, 255},
     ColorList_Orange    = (DeccanColor){255, 165,   0, 255};
 
-void action(DeccanGameObject *this) {
+void action(DeccanGameObject this) {
     DeccanGameObject player = DE_SceneGetObject("main player");
-    if(DE_CompColliderCheckObject(&player, this)) {
-        DeccanColor *color = DE_ObjectGetComponent(&player, "Color");
+    if(DE_CompColliderCheckObject(player, this)) {
+        DeccanColor *color = DE_ObjectGetComponent(player, "Color");
         *color = ColorList_Green;
     }
 }
 
-void _player_begin(DeccanGameObject *this) {
+void _player_begin(DeccanGameObject this) {
 	DeccanObjectInfo *info = DE_ObjectGetComponent(this, "Info");
 	DE_VarNew(&info->vars, "test", DECCAN_VARTYPE_NUMBER);
     DE_VarSetNumber(&info->vars, "test", 10080.0f);
@@ -47,7 +47,7 @@ void _player_begin(DeccanGameObject *this) {
 	//printf("number: %f\n", DE_VarGetNumber(&info->vars, "test"));
 }
 
-void _player_step(DeccanGameObject *this) {
+void _player_step(DeccanGameObject this) {
     static int32_t SpeedModifier = 5;
 
     DeccanCompState2D *state = DE_ObjectGetComponent(this, "State2D");
@@ -90,18 +90,18 @@ void _player_step(DeccanGameObject *this) {
     DE_SceneIterateObjectOfType("isEnemy", action);
 }
 
-void _player_render(DeccanGameObject *this) {
+void _player_render(DeccanGameObject this) {
     DeccanCompState2D *state = DE_ObjectGetComponent(this, "State2D");
     DeccanColor *color = DE_ObjectGetComponent(this, "Color");
 
     DE_DrawFilledRect((vec4){state->position[0], state->position[1], 50, 50}, *color);
 }
 
-void _player_end(DeccanGameObject *this) { DE_UNUSED(this); }
+void _player_end(DeccanGameObject this) { DE_UNUSED(this); }
 
-void _none_begin(DeccanGameObject *this) {
+void _none_begin(DeccanGameObject this) {
 	DeccanGameObject player = DE_SceneGetObject("main player");
-	DeccanCompState2D *statePlayer = DE_ObjectGetComponent(&player, "State2D");
+	DeccanCompState2D *statePlayer = DE_ObjectGetComponent(player, "State2D");
 
 	DE_ObjectSetComponent(this, "State2D", &(DeccanCompState2D){
         .position = {
@@ -122,12 +122,12 @@ void _none_begin(DeccanGameObject *this) {
     DE_ObjectSetTag(this, "isEnemy");
 }
 
-void _none_step(DeccanGameObject *this) { DE_UNUSED(this); }
+void _none_step(DeccanGameObject this) { DE_UNUSED(this); }
 
-void _none_render(DeccanGameObject *this) {
+void _none_render(DeccanGameObject this) {
     DeccanCompState2D *state = DE_ObjectGetComponent(this, "State2D");
 
     DE_DrawFilledRect((vec4){state->position[0], state->position[1], 40, 40}, ColorList_Red);
 }
 
-void _none_end(DeccanGameObject *this) { DE_UNUSED(this); }
+void _none_end(DeccanGameObject this) { DE_UNUSED(this); }

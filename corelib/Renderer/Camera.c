@@ -56,8 +56,8 @@ void Camera_CenterOn(GameObject *obj) {
     vec2i mode = Core_GetMode();
     vec2f pixel = Renderer_GetPixelSize();
 
-    float x = (obj->position.x) + (obj->size.x)/2 - (mode.x/pixel.x)/2;
-    float y = (obj->position.y) + (obj->size.y)/2 - (mode.y/pixel.y)/2;
+    float x = (obj.position.x) + (obj.size.x)/2 - (mode.x/pixel.x)/2;
+    float y = (obj.position.y) + (obj.size.y)/2 - (mode.y/pixel.y)/2;
 
     vec2f pos = {x, y};
     _clamp(&pos, &Camera_Info.bounds, &x, &y);

@@ -44,8 +44,8 @@ void DE_CompColliderRegister();
 // Collision checking
 ////////////////////////////////////////////////
 
-bool DE_CompColliderCheckObject(DeccanGameObject *obj1, DeccanGameObject *obj2);
-bool DE_CompColliderCheckObjectWithVector(DeccanGameObject *obj, vec2 vec);
-bool DE_CompColliderCheckObjectWithRect(DeccanGameObject *obj, vec4 vec);
-bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject *obj, vec3 vec);
+bool DE_CompColliderCheckObject(DeccanGameObject obj1, DeccanGameObject obj2);
+bool DE_CompColliderCheckObjectWithVector(DeccanGameObject obj, vec2 vec);
+bool DE_CompColliderCheckObjectWithRect(DeccanGameObject obj, vec4 vec);
+bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject obj, vec3 vec);
 bool DE_CompColliderCheck(const char *name1, const char *name2);

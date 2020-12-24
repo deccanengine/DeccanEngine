@@ -5,7 +5,7 @@ uint64_t count = 0;
 DeccanTimer timer;
 DeccanSpriteAsset *text;
 
-DeccanGameObject *s;
+DeccanGameObject s;
 
 void begin1();
 void step1();
@@ -34,7 +34,7 @@ void begin() {
     /* Start here */
     DE_ComponentsRegisterAll();
 
-    DeccanGameObject *player = DE_ObjectNewObject("main player");
+    DeccanGameObject player = DE_ObjectNewObject("main player");
 	DeccanObjectInfo *info = DE_ObjectGetComponent(player, "Info");
     info->AtBeginning = _player_begin;
     info->AtStep = _player_step;
@@ -98,7 +98,7 @@ void render() {
         sprintf(name, "circle%I64ld", count++);
 
 		DeccanGameObject prefab = DE_SceneGetObject("Circle");
-        DeccanGameObject *object_to_push = DE_ObjectMakeCopy(&prefab);
+        DeccanGameObject object_to_push = DE_ObjectMakeCopy(prefab);
         DE_ObjectSetName(object_to_push, name);
         DE_SceneInstantiateObject(object_to_push);
 

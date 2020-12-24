@@ -20,29 +20,20 @@ void DE_CompColliderRegister() {
 /////////////////////////////////////////////////
 // Collision checking
 ////////////////////////////////////////////////
-
 #define COLLISION_CHECK_HEADER(obj)                                         \
-    if(obj == NULL) {                                                       \
-        DE_REPORT("Invalid object passed to collision system");             \
-        return false;                                                       \
-    }                                                                       \
-    DeccanCompCollider *c = DE_ObjectGetComponent(obj, "Collider");           \
+	DeccanCompCollider *c = DE_ObjectGetComponent(obj, "Collider");         \
     if(c == NULL) {                                                         \
-        DE_REPORT("Collider component not found in object: %s", "obj->name"); \
+        DE_REPORT("Collider component not found in object: %s", "obj.name"); \
         return false;                                                       \
     }                                                                       \
-    DeccanCompState2D *state = DE_ObjectGetComponent(obj, "State2D");         \
+    DeccanCompState2D *state = DE_ObjectGetComponent(obj, "State2D");       \
     if(state == NULL) {                                                     \
-        DE_REPORT("State component not found in object: %s", "obj->name");  \
+        DE_REPORT("State component not found in object: %s", "obj.name");   \
         return false;                                                       \
     }                                                                       \
     vec3 p; glm_vec3_copy(state->position, p);
 
-bool DE_CompColliderCheckObject(DeccanGameObject *obj1, DeccanGameObject *obj2) {
-    if(obj2 == NULL) {
-        DE_REPORT("Invalid object passed to collision system");
-    }
-
+bool DE_CompColliderCheckObject(DeccanGameObject obj1, DeccanGameObject obj2) {
     COLLISION_CHECK_HEADER(obj1);
 
     switch(c->type) {
@@ -67,7 +58,7 @@ bool DE_CompColliderCheckObject(DeccanGameObject *obj1, DeccanGameObject *obj2) 
     }
 }
 
-bool DE_CompColliderCheckObjectWithVector(DeccanGameObject *obj, vec2 vec) {
+bool DE_CompColliderCheckObjectWithVector(DeccanGameObject obj, vec2 vec) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
@@ -92,7 +83,7 @@ bool DE_CompColliderCheckObjectWithVector(DeccanGameObject *obj, vec2 vec) {
     }
 }
 
-bool DE_CompColliderCheckObjectWithRect(DeccanGameObject *obj, vec4 rect) {
+bool DE_CompColliderCheckObjectWithRect(DeccanGameObject obj, vec4 rect) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
@@ -117,7 +108,7 @@ bool DE_CompColliderCheckObjectWithRect(DeccanGameObject *obj, vec4 rect) {
     }
 }
 
-bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject *obj, vec3 circle) {
+bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject obj, vec3 circle) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
@@ -145,5 +136,5 @@ bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject *obj, vec3 circle) {
 bool DE_CompColliderCheck(const char *name1, const char *name2) {
     DeccanGameObject obj1 = DE_SceneGetObject(name1);
     DeccanGameObject obj2 = DE_SceneGetObject(name2);
-    return DE_CompColliderCheckObject(&obj1, &obj2);
+    return DE_CompColliderCheckObject(obj1, obj2);
 }

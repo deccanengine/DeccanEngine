@@ -42,7 +42,7 @@ void RegisterBaseComponent(DeccanGameScene *scene) {
 	DE_FlecsRegisterComponent("Info", sizeof(DeccanObjectInfo), ECS_ALIGNOF(DeccanObjectInfo));
 }
 
-void ObjectFirstFrame(DeccanGameObject *object) {
+void ObjectFirstFrame(DeccanGameObject object) {
 	DeccanObjectInfo *info = DE_ObjectGetComponent(object, "Info");
 	info->AtFirstFrame(object);
 }
@@ -52,7 +52,7 @@ void DE_SceneUpdate() {
 	/* Add or remove scene (only one) */
 	SceneMakeChanges();
 
-    /* Process Scene(s) and DeccanGameObject(s) */
+    /* Process Scene(s) and DeccanGameObject (s) */
     DeccanGameScene *scene = DE_SceneCurrentScene();  /* Current scene */
 
     /* First frame of the scene. Same as at_beginning for scene */
@@ -167,10 +167,9 @@ void SceneMakeChanges() {
 // Object handling
 ////////////////////////////////////////////////
 
-void DE_SceneInstantiateObject(DeccanGameObject *object) {
-    if(object == NULL) return;
+void DE_SceneInstantiateObject(DeccanGameObject object) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
-	ecs_remove_entity(scene->world, object->entity, EcsPrefab);
+	ecs_remove_entity(scene->world, object.entity, EcsPrefab);
 }
 
 DeccanGameObject DE_SceneGetObject(const char *name) {
@@ -182,7 +181,7 @@ DeccanGameObject DE_SceneGetObject(const char *name) {
 	return object;
 }
 
-void DE_SceneIterateObject(void (*func)(DeccanGameObject *this)) {
+void DE_SceneIterateObject(void (*func)(DeccanGameObject this)) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 
     ecs_query_t *query = ecs_query_new(scene->world, "Info");
@@ -197,12 +196,12 @@ void DE_SceneIterateObject(void (*func)(DeccanGameObject *this)) {
 			DeccanGameObject object;
 			object.entity = entity;
 
-            func(&object);
+            func(object);
         }
     }
 }
 
-void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject *this)) {
+void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject this)) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 
     ecs_query_t *query = ecs_query_new(scene->world, "Info");
@@ -217,8 +216,8 @@ void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject 
 			DeccanGameObject object;
 			object.entity = entity;
 
-			if(DE_ObjectHasTag(&object, tag)) {
-				func(&object);
+			if(DE_ObjectHasTag(object, tag)) {
+				func(object);
 			}
         }
     }
