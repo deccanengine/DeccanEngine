@@ -32,22 +32,31 @@ typedef enum DeccanEcsType {
 typedef ecs_iter_t DeccanFlecsIter;
 typedef ecs_iter_action_t DeccanFlecsActionFunc;
 
-typedef struct DeccanComponent {
-    ecs_entity_t id;
-    size_t size;
-} DeccanComponent;
-
-void DE_FlecsRegisterComponent(const char *name, size_t size, size_t alignment);
-DeccanComponent DE_FlecsLookupComponent(const char *name);
+/////////////////////////////////////////////////
+// System
+////////////////////////////////////////////////
 
 void DE_FlecsSystem(DeccanFlecsActionFunc iter, const char *name, const char *sign, DeccanFlecsType type);
 
+/////////////////////////////////////////////////
+// Component 
+////////////////////////////////////////////////
+
+void DE_FlecsRegisterComponent(const char *name, size_t size, size_t alignment);
 void DE_FlecsSetComponent(ecs_entity_t entity, const char *name, void *component);
 void *DE_FlecsGetComponent(ecs_entity_t entity, const char *name);
 void DE_FlecsRemoveComponent(ecs_entity_t entity, const char *name);
 
+/////////////////////////////////////////////////
+// Tag
+////////////////////////////////////////////////
+
 uint64_t DE_FlecsRegisterTag(const char *name);
 void DE_FlecsSetTag(ecs_entity_t entity, const char *name);
 bool DE_FlecsHasTag(ecs_entity_t entity, const char *name);
+
+/////////////////////////////////////////////////
+// Iterator
+////////////////////////////////////////////////
 
 void *DE_FlecsIterColumn(DeccanFlecsIter *it, const char *name, int index);
