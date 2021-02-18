@@ -99,9 +99,7 @@ void DE_SceneQuit() {
 // Constructor and destructor
 ////////////////////////////////////////////////
 
-void SceneNoneFunc(DeccanGameScene *scene) {
-	DE_UNUSED(scene);
-}
+void SceneNoneFunc(void) { }
 
 DeccanGameScene *DE_SceneNewScene(const char *name) {
     DeccanGameScene *scene = DE_Alloc(sizeof(DeccanGameScene), 1);
@@ -150,7 +148,6 @@ void SceneMakeChanges() {
 
    		if(stbds_arrput(SceneInfo.scenes, SceneInfo.changed_scene) != SceneInfo.changed_scene) {
         	DE_REPORT("Cannot add scene: %s\n", SceneInfo.changed_scene->name);
-        	return false;
     	}
 	}
 	else if(SceneInfo.is_removing) {
@@ -188,8 +185,6 @@ void DE_SceneIterateObject(void (*func)(DeccanGameObject this)) {
     ecs_iter_t it = ecs_query_iter(query);
 
     while(ecs_query_next(&it)) {
-        DeccanObjectInfo *info = ecs_column_w_size(&it, sizeof(DeccanObjectInfo), 1); 
-
         for(int i = 0; i < it.count; i++) {
 			ecs_entity_t entity = it.entities[i];
 		
@@ -208,8 +203,6 @@ void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject 
     ecs_iter_t it = ecs_query_iter(query);
 
     while(ecs_query_next(&it)) {
-        DeccanObjectInfo *info = ecs_column_w_size(&it, sizeof(DeccanObjectInfo), 1); 
-
         for(int i = 0; i < it.count; i++) {
 			ecs_entity_t entity = it.entities[i];
 		

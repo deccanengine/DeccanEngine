@@ -18,7 +18,7 @@
 // Structs
 ////////////////////////////////////////////////
 
-typedef struct DeccanGameObject DeccanGameObject ;
+typedef struct DeccanGameObject DeccanGameObject;
 
 typedef struct DeccanObjectInfo {
 	bool visible;

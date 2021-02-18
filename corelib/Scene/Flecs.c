@@ -13,7 +13,7 @@
 
 void DE_FlecsSystem(DeccanFlecsActionFunc iter, const char *name, const char *sign, DeccanFlecsType type) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
-    ecs_entity_t sys = ecs_new_system(scene->world, 0, name ? name : "system", type, sign, iter);
+    ecs_new_system(scene->world, 0, name ? name : "system", type, sign, iter);
 }
 
 /////////////////////////////////////////////////
@@ -23,7 +23,7 @@ void DE_FlecsSystem(DeccanFlecsActionFunc iter, const char *name, const char *si
 size_t GetComponentSize(ecs_entity_t id) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 	
-	EcsComponent *comp = ecs_get_w_entity(scene->world, id, FLECS__EEcsComponent);
+	const EcsComponent *comp = ecs_get_w_entity(scene->world, id, FLECS__EEcsComponent);
 	return comp->size;
 }
 
