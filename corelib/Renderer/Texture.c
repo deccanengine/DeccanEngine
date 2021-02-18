@@ -50,7 +50,7 @@ void BlitInternal(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, Decc
     //int width, height;
     /* Get the default width and height */
     //if(SDL_QueryTexture(texture->texture[texture->current], NULL, NULL, &width, &height) > 0) {
-    //    DE_REPORT("Cannot query texture: %s :%s", texture->name, SDL_GetError());
+    //    DE_WARN("Cannot query texture: %s :%s", texture->name, SDL_GetError());
     //}
 
     vec2 size; DE_SpriteGetSize(texture, size);

@@ -50,7 +50,7 @@ void DE_CameraMove(vec2 pos) {
 /*
 void Camera_CenterOn(GameObject *obj) {
     if(obj == NULL) {
-        DE_REPORT("Invalid object used with camera"); return;
+        DE_WARN("Invalid object used with camera"); return;
     }
 
     vec2i mode = Core_GetMode();

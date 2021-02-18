@@ -43,7 +43,7 @@ DeccanRawTexture *LoadSprite(const char *path) {
 	 * stb_image will handle it. */
 	data = stbi_load(path, &width, &height, NULL, fmt);
 	if(data == NULL) {
-		DE_REPORT("Cannot load image: %s\n", path);
+		DE_WARN("Cannot load image: %s", path);
 	}
 
 	/* 3-channel calculation is never used but,
@@ -63,7 +63,7 @@ DeccanRawTexture *LoadSprite(const char *path) {
 
 	img = SDL_CreateRGBSurfaceWithFormatFrom((void*)data, width, height, depth, pitch, pixel_fmt);
 	if(img == NULL) {
-		DE_REPORT("Cannot process image: %s\n", path);
+		DE_WARN("Cannot process image: %s", path);
 		stbi_image_free(data);
 	}
 
@@ -80,7 +80,7 @@ DeccanSpriteAsset *DE_AssetLoadSprite(const char *name, const char *path) {
     DeccanRawTexture *tex = LoadSprite(path);
 
     if(tex == NULL) {
-        DE_REPORT("Cannot create texture: %s: %s", name, SDL_GetError());
+        DE_WARN("Cannot create texture: %s: %s", name, SDL_GetError());
         return asset;
     }
 
@@ -135,7 +135,7 @@ DeccanFontAsset *DE_AssetLoadFont(const char *name, const char *path) {
 
     font = TTF_OpenFont(path, 20);
     if(font == NULL) {
-        DE_REPORT("Cannot load font: %s: %s", path, TTF_GetError());
+        DE_WARN("Cannot load font: %s: %s", path, TTF_GetError());
         return asset;
     }
 

@@ -125,7 +125,7 @@ void DE_CoreUpdate(float fpsAverage, float deltaTime) {
                 Core_Info.settings.resolution[0], Core_Info.settings.resolution[1], 0, 0};
 
             if(SDL_SetWindowDisplayMode(Core_Info.window, &disp) > 0) {
-                DE_REPORT("Cannot set fullscreen window mode: %s", SDL_GetError());
+                DE_WARN("Cannot set fullscreen window mode: %s", SDL_GetError());
             }
 
             SDL_MaximizeWindow(Core_Info.window);
@@ -137,7 +137,7 @@ void DE_CoreUpdate(float fpsAverage, float deltaTime) {
 
     	// Issue: Not working in some Windows environment
     	if(SDL_GL_SetSwapInterval(Core_Info.settings.vsync ? 1 : 0) == -1) {
-    		DE_REPORT("VSync is not supported: %s", SDL_GetError());
+    		DE_WARN("VSync is not supported: %s", SDL_GetError());
     	}
 
         Core_Info.isSettingsDirty = false;

@@ -180,6 +180,3 @@
     #define DE_WARN(...)
     #define DE_INFO(...)
 #endif
-
-// For backward compatibility, to be removed
-#define DE_REPORT(...) DE_WARN(__VA_ARGS__)

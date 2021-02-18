@@ -24,12 +24,12 @@ DeccanSpriteAsset *DE_FontFastText(DeccanFontAsset *font, const char *text, Decc
 
     SDL_Surface *surf = TTF_RenderText_Solid(font->font, text, scol);
     if(surf == NULL) {
-        DE_REPORT("Cannot generate font text surface: %s", TTF_GetError());
+        DE_WARN("Cannot generate font text surface: %s", TTF_GetError());
     }
 
     SDL_Texture *tex = SDL_CreateTextureFromSurface(renderer, surf);
     if(tex == NULL) {
-        DE_REPORT("Cannot create text texture: %s", SDL_GetError());
+        DE_WARN("Cannot create text texture: %s", SDL_GetError());
     }
 
     DeccanSpriteAsset *asset = DE_SpriteNew("__font_generated_fase_text_texture__");
@@ -65,7 +65,7 @@ DeccanSpriteAsset *DE_FontOutlinedText(DeccanFontAsset *font, const char *text, 
 
     SDL_Surface *surf = TTF_RenderText_Blended(font->font, text, scol);
     if(surf == NULL) {
-        DE_REPORT("Cannot generate font text surface: %s", TTF_GetError());
+        DE_WARN("Cannot generate font text surface: %s", TTF_GetError());
     }
 
     if(outline != -1) {
@@ -76,7 +76,7 @@ DeccanSpriteAsset *DE_FontOutlinedText(DeccanFontAsset *font, const char *text, 
 
     SDL_Texture *tex = SDL_CreateTextureFromSurface(renderer, surf);
     if(tex == NULL) {
-        DE_REPORT("Cannot create text texture: %s", SDL_GetError());
+        DE_WARN("Cannot create text texture: %s", SDL_GetError());
     }
 
     DeccanSpriteAsset *asset = DE_SpriteNew("__font_generated_text_texture__");

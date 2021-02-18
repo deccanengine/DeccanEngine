@@ -137,7 +137,7 @@ void DE_RendererSetTarget(DeccanSpriteAsset *target) {
 
 #ifdef DECCAN_RENDERER_SDL
     if(SDL_SetRenderTarget(Renderer_Info.renderer, texture) != 0) {
-        DE_REPORT("Cannot set render target: %s", SDL_GetError());
+        DE_WARN("Cannot set render target: %s", SDL_GetError());
     }
 #else
 
@@ -163,7 +163,7 @@ void DE_RendererSetPixelSize(vec2 size) {
 void DE_RendererSetBlendMode(int blend_mode) {
 #ifdef DECCAN_RENDERER_SDL
     if(SDL_SetRenderDrawBlendMode(Renderer_Info.renderer, blend_mode) != 0) {
-        DE_REPORT("Cannot set blend mode: %s", SDL_GetError());
+        DE_WARN("Cannot set blend mode: %s", SDL_GetError());
     }
 #else
 

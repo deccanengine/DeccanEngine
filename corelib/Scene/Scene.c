@@ -119,7 +119,7 @@ DeccanGameScene *DE_SceneNewScene(const char *name) {
 
 void DE_SceneAddScene(DeccanGameScene *scene, bool is_replacing) {
     if(scene == NULL) {
-        DE_REPORT("Invalid scene data");
+        DE_WARN("Invalid scene data");
         return;
     }
 	
@@ -147,7 +147,7 @@ void SceneMakeChanges() {
     	}
 
    		if(stbds_arrput(SceneInfo.scenes, SceneInfo.changed_scene) != SceneInfo.changed_scene) {
-        	DE_REPORT("Cannot add scene: %s\n", SceneInfo.changed_scene->name);
+        	DE_WARN("Cannot add scene: %s", SceneInfo.changed_scene->name);
     	}
 	}
 	else if(SceneInfo.is_removing) {

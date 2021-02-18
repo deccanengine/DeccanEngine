@@ -53,7 +53,7 @@ void DE_SpriteGetSize(DeccanSpriteAsset *texture, vec2 size) {
     PTR_NULLCHECK(texture,);
 
     if(SDL_QueryTexture(texture->texture[texture->current], NULL, NULL, &x, &y) > 0) {
-        DE_REPORT("Cannot get texture size of texture: %s : %s", texture->name, SDL_GetError());
+        DE_WARN("Cannot get texture size of texture: %s : %s", texture->name, SDL_GetError());
     }
 
     size[0] = (float)x;
