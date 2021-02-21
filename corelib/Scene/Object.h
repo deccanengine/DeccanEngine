@@ -40,8 +40,6 @@ typedef struct DeccanGameObject {
     ecs_entity_t entity;
 } DeccanGameObject ;
 
-static inline void NULL_OBJFUNC(DeccanGameObject obj) { DE_UNUSED(obj); }
-
 /////////////////////////////////////////////////
 // Initialization and instantiator functions
 ////////////////////////////////////////////////

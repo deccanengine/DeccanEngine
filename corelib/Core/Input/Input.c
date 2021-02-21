@@ -20,16 +20,16 @@ DE_PRIV struct {
 // Input management
 ////////////////////////////////////////////////
 
-DE_IMPL SDL_Event *DE_InputGetEventHandler() {
+DE_IMPL SDL_Event *DE_InputGetEventHandler(void) {
     return &Input_Info.event;
 }
 
-DE_IMPL void DE_InputInit() {
+DE_IMPL void DE_InputInit(void) {
     memcpy(Input_Info.prevKeys, "\0", sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
     memcpy(Input_Info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
 }
 
-DE_IMPL void DE_InputUpdate() {
+DE_IMPL void DE_InputUpdate(void) {
     memcpy(Input_Info.prevKeys, Input_Info.currKeys, sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
     memcpy(Input_Info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
 
@@ -142,7 +142,7 @@ DE_IMPL void DE_InputGetMousePos(vec2 pos) {
     pos[1] = (float)y;
 }
 
-DE_IMPL int DE_InputMouseScrollHorizontal() {
+DE_IMPL int DE_InputMouseScrollHorizontal(void) {
     if(Input_Info.event.type == SDL_MOUSEWHEEL) {
         if(Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) {
             return Input_Info.event.wheel.x;
@@ -154,7 +154,7 @@ DE_IMPL int DE_InputMouseScrollHorizontal() {
     return 0;
 }
 
-DE_IMPL int DE_InputMouseScrollVertical() {
+DE_IMPL int DE_InputMouseScrollVertical(void) {
     if(Input_Info.event.type == SDL_MOUSEWHEEL) {
         if(Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) {
             return Input_Info.event.wheel.y;

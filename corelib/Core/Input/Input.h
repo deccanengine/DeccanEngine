@@ -32,9 +32,9 @@ typedef struct {
 // Input management
 ////////////////////////////////////////////////
 
-DE_API SDL_Event *DE_InputGetEventHandler();
-DE_API void DE_InputInit();
-DE_API void DE_InputUpdate();
+DE_API SDL_Event *DE_InputGetEventHandler(void);
+DE_API void DE_InputInit(void);
+DE_API void DE_InputUpdate(void);
 
 /////////////////////////////////////////////////
 // Keyboard functions
@@ -56,5 +56,5 @@ DE_API bool DE_InputButtonDown(int button_code);
 DE_API bool DE_InputButtonUp(int button_code);
 
 DE_API void DE_InputGetMousePos(vec2 pos);
-DE_API int DE_InputMouseScrollHorizontal();
-DE_API int DE_InputMouseScrollVertical();
+DE_API int DE_InputMouseScrollHorizontal(void);
+DE_API int DE_InputMouseScrollVertical(void);
