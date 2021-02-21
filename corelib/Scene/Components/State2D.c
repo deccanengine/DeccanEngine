@@ -11,6 +11,6 @@
 // Registers/Constructors/Destructors
 ////////////////////////////////////////////////
 
-void DE_CompState2DRegister() {
+void DE_CompState2DRegister(void) {
     DE_FlecsRegisterComponent("State2D", sizeof(DeccanCompState2D), ECS_ALIGNOF(DeccanCompState2D));
 }

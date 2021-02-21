@@ -31,7 +31,7 @@ static struct {
 
 } Renderer_Info = {0};
 
-SDL_Renderer *DE_RendererGetRenderer() {
+SDL_Renderer *DE_RendererGetRenderer(void) {
     return Renderer_Info.renderer;
 }
 
@@ -67,15 +67,15 @@ void DE_RendererInit(SDL_Window *window) {
     Renderer_Info.target = SDL_GetRenderTarget(Renderer_Info.renderer);
 }
 
-void DE_RendererQuit() {
+void DE_RendererQuit(void) {
     SDL_DestroyRenderer(Renderer_Info.renderer);
 }
 
-void DE_RendererPresent() {
+void DE_RendererPresent(void) {
     SDL_RenderPresent(Renderer_Info.renderer);
 }
 
-void DE_RendererBackground() {
+void DE_RendererBackground(void) {
     if(Renderer_Info.background.type == 0) {
         DE_RendererClearColor(Renderer_Info.background.color);
     }
@@ -98,7 +98,7 @@ void DE_RendererBackground() {
 
 /* Setters */
 
-void DE_RendererClear() {
+void DE_RendererClear(void) {
     DeccanColor blank = {
         0, 0, 0, 0
     };
@@ -172,7 +172,7 @@ void DE_RendererSetBlendMode(int blend_mode) {
 
 /* Getters */
 
-DeccanColor DE_RendererGetBackgroundColor() {
+DeccanColor DE_RendererGetBackgroundColor(void) {
     DeccanColor color = {
         0, 0, 0, 0
     };
@@ -184,7 +184,7 @@ DeccanColor DE_RendererGetBackgroundColor() {
     return color;
 }
 
-DeccanSpriteAsset *DE_RendererGetBackgroundTexture() {
+DeccanSpriteAsset *DE_RendererGetBackgroundTexture(void) {
     DeccanSpriteAsset *texture = NULL;
 
     if(Renderer_Info.background.type == 1) {
@@ -194,7 +194,7 @@ DeccanSpriteAsset *DE_RendererGetBackgroundTexture() {
     return texture;
 }
 
-DeccanSpriteAsset *DE_RendererGetTarget() {
+DeccanSpriteAsset *DE_RendererGetTarget(void) {
     DeccanSpriteAsset *target = DE_Alloc(sizeof(DeccanSpriteAsset), 1);
     target->name = DE_StringNew("DE_DE_RendererTarget");
 
@@ -209,7 +209,7 @@ DeccanSpriteAsset *DE_RendererGetTarget() {
     return target;
 }
 
-DeccanColor DE_RendererGetColor() {
+DeccanColor DE_RendererGetColor(void) {
     DeccanColor color = {
         0, 0, 0, 0
     };
@@ -229,7 +229,7 @@ void DE_RendererGetPixelSize(vec2 size) {
 #endif
 }
 
-DeccanRenderBlendMode DE_RendererGetBlendMode() {
+DeccanRenderBlendMode DE_RendererGetBlendMode(void) {
     SDL_BlendMode blend = SDL_BLENDMODE_NONE;
 #ifdef DECCAN_RENDERER_SDL
     SDL_GetRenderDrawBlendMode(Renderer_Info.renderer, &blend);

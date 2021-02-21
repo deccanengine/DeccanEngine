@@ -32,5 +32,5 @@
 #include "Renderer/TextRendering.h"
 
 bool DE_AppInit(DeccanSettings *settings);
-void DE_AppUpdate();
-void DE_AppQuit();
+void DE_AppUpdate(void);
+void DE_AppQuit(void);

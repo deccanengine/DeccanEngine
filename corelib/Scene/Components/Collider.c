@@ -13,7 +13,7 @@
 // Registers/Constructors/Destructors
 ////////////////////////////////////////////////
 
-void DE_CompColliderRegister() {
+void DE_CompColliderRegister(void) {
     DE_FlecsRegisterComponent("Collider", sizeof(DeccanCompCollider), ECS_ALIGNOF(DeccanCompCollider));
 }
 

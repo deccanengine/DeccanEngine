@@ -9,15 +9,15 @@
 #include "Renderer.h"
 #include "Camera.h"
 
-#define DE_DRAW_BEGIN()                          \
+#define DE_DRAW_BEGIN()                            \
 vec2 camera; DE_CameraGetPosition(camera);         \
 SDL_Renderer *renderer = DE_RendererGetRenderer(); \
-DeccanColor def = DE_RendererGetColor();                 \
-SDL_BlendMode blend;                             \
+DeccanColor def = DE_RendererGetColor();           \
+SDL_BlendMode blend;                               \
 DE_RendererSetColor(color);                        \
 SDL_GetRenderDrawBlendMode(renderer, &blend);
 
-#define DE_DRAW_END()                            \
+#define DE_DRAW_END()                              \
 DE_RendererSetColor(def);                          \
 SDL_SetRenderDrawBlendMode(renderer,  blend);
 

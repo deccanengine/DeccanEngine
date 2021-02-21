@@ -16,7 +16,7 @@ bool DE_AppInit(DeccanSettings *settings) {
     return true;
 }
 
-void DE_AppUpdate() {
+void DE_AppUpdate(void) {
     DeccanTimer fpsTimer;
     DeccanTimer frmTimer;
 
@@ -63,7 +63,7 @@ void DE_AppUpdate() {
     }
 }
 
-void DE_AppQuit() {
+void DE_AppQuit(void) {
     DE_SceneQuit();
 
     DE_SceneFreeAll();

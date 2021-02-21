@@ -80,7 +80,7 @@ int DE_CoreInit(DeccanSettings *settings) {
     return 1;
 }
 
-void DE_CoreQuit() {
+void DE_CoreQuit(void) {
 #ifdef DE_DEBUG
     fclose(Core_Info.logfile);
 #endif
@@ -162,7 +162,7 @@ void DE_CoreSetResolution(vec2 resolution) {
     Core_Info.isSettingsDirty = true;
 }
 
-void DE_CoreToogleFullscreen() {
+void DE_CoreToogleFullscreen(void) {
     Core_Info.settings.fullscreen = !Core_Info.settings.fullscreen;
     Core_Info.isSettingsDirty = true;
 }
@@ -177,7 +177,7 @@ void DE_CoreSetFramerateLimit(float fps){
 }
 
 /* Core Settings Getters */
-const char *DE_CoreGetTitle() {
+const char *DE_CoreGetTitle(void) {
     return Core_Info.settings.title;
 }
 
@@ -185,42 +185,42 @@ void DE_CoreGetResolution(vec2 res) {
     glm_vec2_copy(Core_Info.settings.resolution, res);
 }
 
-bool DE_CoreIsFullscreened() {
+bool DE_CoreIsFullscreened(void) {
     return Core_Info.settings.fullscreen;
 }
 
-bool DE_CoreIsVsyncEnabled() {
+bool DE_CoreIsVsyncEnabled(void) {
     return Core_Info.settings.vsync;
 }
 
-bool DE_CoreIsResizable() {
+bool DE_CoreIsResizable(void) {
     return Core_Info.settings.resizable;
 }
 
-bool DE_CoreIsRunning() {
+bool DE_CoreIsRunning(void) {
     return Core_Info.isRunning;
 }
 
-float DE_CoreGetFramerateLimit() {
+float DE_CoreGetFramerateLimit(void) {
     return Core_Info.settings.fps;
 }
 
-float DE_CoreGetAverageFramerate() {
+float DE_CoreGetAverageFramerate(void) {
     return Core_Info.fpsAverage;
 }
 
-float DE_CoreGetDeltaTime() {
+float DE_CoreGetDeltaTime(void) {
     return Core_Info.deltaTime;
 }
 
-SDL_Window *DE_CoreGetWindowHandle() {
+SDL_Window *DE_CoreGetWindowHandle(void) {
     return Core_Info.window;
 }
 
-DeccanVarManager *DE_CoreGetVarManager() {
+DeccanVarManager *DE_CoreGetVarManager(void) {
     return &Core_Info.vars;
 }
 
-DeccanSettings *DE_CoreGetSettings() {
+DeccanSettings *DE_CoreGetSettings(void) {
     return &Core_Info.settings;
 }

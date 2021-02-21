@@ -31,12 +31,12 @@ typedef enum {
 // Renderer functions
 ////////////////////////////////////////////////
 
-SDL_Renderer *DE_RendererGetRenderer();
+SDL_Renderer *DE_RendererGetRenderer(void);
 void DE_RendererInit(SDL_Window *window);
-void DE_RendererQuit();
-void DE_RendererPresent();
-void DE_RendererBackground();
-void DE_RendererClear();
+void DE_RendererQuit(void);
+void DE_RendererPresent(void);
+void DE_RendererBackground(void);
+void DE_RendererClear(void);
 void DE_RendererClearColor(DeccanColor color);
 void DE_RendererSetBackgroundColor(DeccanColor color);
 void DE_RendererSetBackgroundTexture(DeccanSpriteAsset *texture);
@@ -44,9 +44,9 @@ void DE_RendererSetTarget(DeccanSpriteAsset *target);
 void DE_RendererSetColor(DeccanColor color);
 void DE_RendererSetPixelSize(vec2 size);
 void DE_RendererSetBlendMode(int blend_mode);
-DeccanColor DE_RendererGetBackgroundColor();
-DeccanSpriteAsset *DE_RendererGetBackgroundTexture();
-DeccanSpriteAsset *DE_RendererGetTarget();
-DeccanColor DE_RendererGetColor();
+DeccanColor DE_RendererGetBackgroundColor(void);
+DeccanSpriteAsset *DE_RendererGetBackgroundTexture(void);
+DeccanSpriteAsset *DE_RendererGetTarget(void);
+DeccanColor DE_RendererGetColor(void);
 void DE_RendererGetPixelSize(vec2 size);
-DeccanRenderBlendMode DE_RendererGetBlendMode();
+DeccanRenderBlendMode DE_RendererGetBlendMode(void);

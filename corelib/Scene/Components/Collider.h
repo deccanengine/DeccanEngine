@@ -38,7 +38,7 @@ typedef struct DeccanCompCollider {
 // Registers/Constructors/Destructors
 ////////////////////////////////////////////////
 
-void DE_CompColliderRegister();
+void DE_CompColliderRegister(void);
 
 /////////////////////////////////////////////////
 // Collision checking

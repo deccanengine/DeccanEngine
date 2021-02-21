@@ -36,11 +36,11 @@ typedef struct DeccanDeccanGameScene {
 // Scene internals
 ////////////////////////////////////////////////
 
-DeccanGameScene **DE_SceneGetSceneArray();
-int DE_SceneGetSceneCount();
-void DE_SceneFreeAll();
-void DE_SceneUpdate();
-void DE_SceneQuit();
+DeccanGameScene **DE_SceneGetSceneArray(void);
+int DE_SceneGetSceneCount(void);
+void DE_SceneFreeAll(void);
+void DE_SceneUpdate(void);
+void DE_SceneQuit(void);
 
 /////////////////////////////////////////////////
 // Constructor and destructor
@@ -48,7 +48,7 @@ void DE_SceneQuit();
 
 DeccanGameScene *DE_SceneNewScene(const char *name);
 void DE_SceneAddScene(DeccanGameScene *scene, bool is_replacing);
-void DE_SceneRemoveScene();
+void DE_SceneRemoveScene(void);
 
 /////////////////////////////////////////////////
 // Object handling
@@ -63,6 +63,6 @@ void DE_SceneIterateObjectOfType(const char *type, void (*func)(DeccanGameObject
 // Scene status
 ////////////////////////////////////////////////
 
-DeccanGameScene *DE_SceneCurrentScene();
+DeccanGameScene *DE_SceneCurrentScene(void);
 void DE_ScenePauseScene(bool pause);
-bool DE_SceneIsScenePaused();
+bool DE_SceneIsScenePaused(void);

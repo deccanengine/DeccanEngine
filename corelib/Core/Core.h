@@ -43,23 +43,23 @@ typedef struct DeccanSettings {
 ////////////////////////////////////////////////
 
 int  DE_CoreInit(DeccanSettings *settings);
-void DE_CoreQuit();
+void DE_CoreQuit(void);
 void DE_CoreUpdate(float fpsAverage, float deltaTime);
 void DE_CoreSetTitle(const char *name);
 void DE_CoreSetResolution(vec2 mode);
-void DE_CoreToogleFullscreen();
+void DE_CoreToogleFullscreen(void);
 void DE_CoreToogleVsync(bool vsync);
 void DE_CoreSetFramerateLimit(float fps);
-const char *DE_CoreGetTitle();
+const char *DE_CoreGetTitle(void);
 void DE_CoreGetResolution(vec2 res);
-bool DE_CoreIsFullscreened();
-bool DE_CoreIsVsyncEnabled();
-bool DE_CoreIsResizable();
-bool DE_CoreIsRunning();
-float DE_CoreGetFramerateLimit();
-float DE_CoreGetAverageFramerate();
-float DE_CoreGetDeltaTime();
-SDL_Window *DE_CoreGetWindowHandle();
-DeccanVarManager *DE_CoreGetVarManager();
-DeccanSettings *DE_CoreGetSettings();
+bool DE_CoreIsFullscreened(void);
+bool DE_CoreIsVsyncEnabled(void);
+bool DE_CoreIsResizable(void);
+bool DE_CoreIsRunning(void);
+float DE_CoreGetFramerateLimit(void);
+float DE_CoreGetAverageFramerate(void);
+float DE_CoreGetDeltaTime(void);
+SDL_Window *DE_CoreGetWindowHandle(void);
+DeccanVarManager *DE_CoreGetVarManager(void);
+DeccanSettings *DE_CoreGetSettings(void);
 
