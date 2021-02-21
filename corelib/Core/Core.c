@@ -20,7 +20,7 @@
 #include "Core.h"
 #include "Input/Input.h"
 
-static struct {
+DE_PRIV struct {
     SDL_Window *window;
 
     bool isRunning;
@@ -41,7 +41,7 @@ static struct {
 };
 
 /* Core */
-int DE_CoreInit(DeccanSettings *settings) {
+DE_IMPL int DE_CoreInit(DeccanSettings *settings) {
     int flags = SDL_INIT_VIDEO;
     if(SDL_Init(flags) != 0) {
         DE_FATAL("Could not initialize SDL2: %s", SDL_GetError());
@@ -80,7 +80,7 @@ int DE_CoreInit(DeccanSettings *settings) {
     return 1;
 }
 
-void DE_CoreQuit(void) {
+DE_IMPL void DE_CoreQuit(void) {
 #ifdef DE_DEBUG
     fclose(Core_Info.logfile);
 #endif
@@ -91,7 +91,7 @@ void DE_CoreQuit(void) {
     SDL_Quit();
 }
 
-void DE_CoreUpdate(float fpsAverage, float deltaTime) {
+DE_IMPL void DE_CoreUpdate(float fpsAverage, float deltaTime) {
     /* Handle some events */
     SDL_Event *event = DE_InputGetEventHandler();
 
@@ -151,76 +151,76 @@ void DE_CoreUpdate(float fpsAverage, float deltaTime) {
 }
 
 /* Core Settings Setters */
-void DE_CoreSetTitle(const char *name) {
+DE_IMPL void DE_CoreSetTitle(const char *name) {
     DE_Free(Core_Info.settings.title);
     Core_Info.settings.title = DE_StringNew(name);
     Core_Info.isSettingsDirty = true;
 }
 
-void DE_CoreSetResolution(vec2 resolution) {
+DE_IMPL void DE_CoreSetResolution(vec2 resolution) {
     glm_vec2_copy(resolution, Core_Info.settings.resolution);
     Core_Info.isSettingsDirty = true;
 }
 
-void DE_CoreToogleFullscreen(void) {
+DE_IMPL void DE_CoreToogleFullscreen(void) {
     Core_Info.settings.fullscreen = !Core_Info.settings.fullscreen;
     Core_Info.isSettingsDirty = true;
 }
 
-void DE_CoreToogleVsync(bool vsync) {
+DE_IMPL void DE_CoreToogleVsync(bool vsync) {
     Core_Info.settings.vsync = vsync;
     Core_Info.isSettingsDirty = true;
 }
 
-void DE_CoreSetFramerateLimit(float fps){
+DE_IMPL void DE_CoreSetFramerateLimit(float fps){
     Core_Info.settings.fps = fps;
 }
 
 /* Core Settings Getters */
-const char *DE_CoreGetTitle(void) {
+DE_IMPL const char *DE_CoreGetTitle(void) {
     return Core_Info.settings.title;
 }
 
-void DE_CoreGetResolution(vec2 res) {
+DE_IMPL void DE_CoreGetResolution(vec2 res) {
     glm_vec2_copy(Core_Info.settings.resolution, res);
 }
 
-bool DE_CoreIsFullscreened(void) {
+DE_IMPL bool DE_CoreIsFullscreened(void) {
     return Core_Info.settings.fullscreen;
 }
 
-bool DE_CoreIsVsyncEnabled(void) {
+DE_IMPL bool DE_CoreIsVsyncEnabled(void) {
     return Core_Info.settings.vsync;
 }
 
-bool DE_CoreIsResizable(void) {
+DE_IMPL bool DE_CoreIsResizable(void) {
     return Core_Info.settings.resizable;
 }
 
-bool DE_CoreIsRunning(void) {
+DE_IMPL bool DE_CoreIsRunning(void) {
     return Core_Info.isRunning;
 }
 
-float DE_CoreGetFramerateLimit(void) {
+DE_IMPL float DE_CoreGetFramerateLimit(void) {
     return Core_Info.settings.fps;
 }
 
-float DE_CoreGetAverageFramerate(void) {
+DE_IMPL float DE_CoreGetAverageFramerate(void) {
     return Core_Info.fpsAverage;
 }
 
-float DE_CoreGetDeltaTime(void) {
+DE_IMPL float DE_CoreGetDeltaTime(void) {
     return Core_Info.deltaTime;
 }
 
-SDL_Window *DE_CoreGetWindowHandle(void) {
+DE_IMPL SDL_Window *DE_CoreGetWindowHandle(void) {
     return Core_Info.window;
 }
 
-DeccanVarManager *DE_CoreGetVarManager(void) {
+DE_IMPL DeccanVarManager *DE_CoreGetVarManager(void) {
     return &Core_Info.vars;
 }
 
-DeccanSettings *DE_CoreGetSettings(void) {
+DE_IMPL DeccanSettings *DE_CoreGetSettings(void) {
     return &Core_Info.settings;
 }

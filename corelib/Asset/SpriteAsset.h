@@ -40,20 +40,20 @@ typedef struct DeccanSpriteAsset {
 // Constructor/Destructor
 ////////////////////////////////////////////////
 
-DeccanSpriteAsset *DE_SpriteNew(const char *name);
-void DE_SpriteDelete(DeccanSpriteAsset *asset);
+DE_API DeccanSpriteAsset *DE_SpriteNew(const char *name);
+DE_API void DE_SpriteDelete(DeccanSpriteAsset *asset);
 
 /////////////////////////////////////////////////
 // Setters/Getters
 ////////////////////////////////////////////////
 
-void DE_SpriteGetSize(DeccanSpriteAsset *texture, vec2 size);
+DE_API void DE_SpriteGetSize(DeccanSpriteAsset *texture, vec2 size);
 
-void DE_SpriteSetAnimLoop(DeccanSpriteAsset *texture, bool loop);
-bool DE_SpriteGetAnimLoop(DeccanSpriteAsset *texture);
+DE_API void DE_SpriteSetAnimLoop(DeccanSpriteAsset *texture, bool loop);
+DE_API bool DE_SpriteGetAnimLoop(DeccanSpriteAsset *texture);
 
-void DE_SpriteSetAnimActive(DeccanSpriteAsset *texture, bool active);
-bool DE_SpriteGetAnimActive(DeccanSpriteAsset *texture);
+DE_API void DE_SpriteSetAnimActive(DeccanSpriteAsset *texture, bool active);
+DE_API bool DE_SpriteGetAnimActive(DeccanSpriteAsset *texture);
 
-void DE_SpriteSetAnimDelay(DeccanSpriteAsset *texture, float ms);
-float DE_SpriteGetAnimDelay(DeccanSpriteAsset *texture);
+DE_API void DE_SpriteSetAnimDelay(DeccanSpriteAsset *texture, float ms);
+DE_API float DE_SpriteGetAnimDelay(DeccanSpriteAsset *texture);

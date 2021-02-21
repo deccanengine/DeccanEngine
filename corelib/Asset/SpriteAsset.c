@@ -13,7 +13,7 @@
 // Constructor/Destructor
 ////////////////////////////////////////////////
 
-DeccanSpriteAsset *DE_SpriteNew(const char *name) {
+DE_IMPL DeccanSpriteAsset *DE_SpriteNew(const char *name) {
     DeccanSpriteAsset *asset = DE_Alloc(sizeof(DeccanSpriteAsset), 1);
     asset->name  = DE_StringNew(name);
     asset->delay = 100.0f;
@@ -26,7 +26,7 @@ DeccanSpriteAsset *DE_SpriteNew(const char *name) {
     return asset;
 }
 
-void DE_SpriteDelete(DeccanSpriteAsset *asset) {
+DE_IMPL void DE_SpriteDelete(DeccanSpriteAsset *asset) {
 	if(!asset) return;
 
 	for(int i=0; i<stbds_arrlen(asset->texture); i++) {
@@ -45,7 +45,7 @@ void DE_SpriteDelete(DeccanSpriteAsset *asset) {
 /*
  * Size
  */
-void DE_SpriteGetSize(DeccanSpriteAsset *texture, vec2 size) {
+DE_IMPL void DE_SpriteGetSize(DeccanSpriteAsset *texture, vec2 size) {
     int32_t x, y;
     size[0] = 0;
     size[1] = 0;
@@ -63,7 +63,7 @@ void DE_SpriteGetSize(DeccanSpriteAsset *texture, vec2 size) {
 /*
  * Animation loop
  */
-void DE_SpriteSetAnimLoop(DeccanSpriteAsset *texture, bool loop) {
+DE_IMPL void DE_SpriteSetAnimLoop(DeccanSpriteAsset *texture, bool loop) {
     PTR_NULLCHECK(texture,);
 
     int32_t flags = 0;
@@ -74,7 +74,7 @@ void DE_SpriteSetAnimLoop(DeccanSpriteAsset *texture, bool loop) {
     texture->flags = flags;
 }
 
-bool DE_SpriteGetAnimLoop(DeccanSpriteAsset *texture) {
+DE_IMPL bool DE_SpriteGetAnimLoop(DeccanSpriteAsset *texture) {
     PTR_NULLCHECK(texture, false);
     return (bool)(texture->flags & DECCAN_ANIMFLAG_LOOP);
 }
@@ -82,7 +82,7 @@ bool DE_SpriteGetAnimLoop(DeccanSpriteAsset *texture) {
 /*
  * Animation status
  */
-void DE_SpriteSetAnimActive(DeccanSpriteAsset *texture, bool active) {
+DE_IMPL void DE_SpriteSetAnimActive(DeccanSpriteAsset *texture, bool active) {
     PTR_NULLCHECK(texture,);
 
     int32_t flags = 0;
@@ -93,7 +93,7 @@ void DE_SpriteSetAnimActive(DeccanSpriteAsset *texture, bool active) {
     texture->flags = flags;
 }
 
-bool DE_SpriteGetAnimActive(DeccanSpriteAsset *texture) {
+DE_IMPL bool DE_SpriteGetAnimActive(DeccanSpriteAsset *texture) {
     PTR_NULLCHECK(texture, false);
     return (bool)(texture->flags & DECCAN_ANIMFLAG_ACTIVE);
 }
@@ -101,12 +101,12 @@ bool DE_SpriteGetAnimActive(DeccanSpriteAsset *texture) {
 /*
  * Animation delay
  */
-void DE_SpriteSetAnimDelay(DeccanSpriteAsset *texture, float ms) {
+DE_IMPL void DE_SpriteSetAnimDelay(DeccanSpriteAsset *texture, float ms) {
     PTR_NULLCHECK(texture,);
     texture->delay = ms;
 }
 
-float DE_SpriteGetAnimDelay(DeccanSpriteAsset *texture) {
+DE_IMPL float DE_SpriteGetAnimDelay(DeccanSpriteAsset *texture) {
     PTR_NULLCHECK(texture, -1.0f);
     return texture->delay;
 }

@@ -13,7 +13,7 @@
 // Registers/Constructors/Destructors
 ////////////////////////////////////////////////
 
-void DE_CompColliderRegister(void) {
+DE_IMPL void DE_CompColliderRegister(void) {
     DE_FlecsRegisterComponent("Collider", sizeof(DeccanCompCollider), ECS_ALIGNOF(DeccanCompCollider));
 }
 
@@ -34,7 +34,7 @@ void DE_CompColliderRegister(void) {
     }                                                                       \
     vec3 p; glm_vec3_copy(state->position, p);
 
-bool DE_CompColliderCheckObject(DeccanGameObject obj1, DeccanGameObject obj2) {
+DE_IMPL bool DE_CompColliderCheckObject(DeccanGameObject obj1, DeccanGameObject obj2) {
     COLLISION_CHECK_HEADER(obj1);
 
     switch(c->type) {
@@ -59,7 +59,7 @@ bool DE_CompColliderCheckObject(DeccanGameObject obj1, DeccanGameObject obj2) {
     }
 }
 
-bool DE_CompColliderCheckObjectWithVector(DeccanGameObject obj, vec2 vec) {
+DE_IMPL bool DE_CompColliderCheckObjectWithVector(DeccanGameObject obj, vec2 vec) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
@@ -84,7 +84,7 @@ bool DE_CompColliderCheckObjectWithVector(DeccanGameObject obj, vec2 vec) {
     }
 }
 
-bool DE_CompColliderCheckObjectWithRect(DeccanGameObject obj, vec4 rect) {
+DE_IMPL bool DE_CompColliderCheckObjectWithRect(DeccanGameObject obj, vec4 rect) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
@@ -109,7 +109,7 @@ bool DE_CompColliderCheckObjectWithRect(DeccanGameObject obj, vec4 rect) {
     }
 }
 
-bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject obj, vec3 circle) {
+DE_IMPL bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject obj, vec3 circle) {
     COLLISION_CHECK_HEADER(obj);
 
     switch(c->type) {
@@ -134,7 +134,7 @@ bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject obj, vec3 circle) {
     }
 }
 
-bool DE_CompColliderCheck(const char *name1, const char *name2) {
+DE_IMPL bool DE_CompColliderCheck(const char *name1, const char *name2) {
     DeccanGameObject obj1 = DE_SceneGetObject(name1);
     DeccanGameObject obj2 = DE_SceneGetObject(name2);
     return DE_CompColliderCheckObject(obj1, obj2);

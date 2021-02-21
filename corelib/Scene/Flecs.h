@@ -36,27 +36,27 @@ typedef ecs_iter_action_t DeccanFlecsActionFunc;
 // System
 ////////////////////////////////////////////////
 
-void DE_FlecsSystem(DeccanFlecsActionFunc iter, const char *name, const char *sign, DeccanFlecsType type);
+DE_API void DE_FlecsSystem(DeccanFlecsActionFunc iter, const char *name, const char *sign, DeccanFlecsType type);
 
 /////////////////////////////////////////////////
 // Component 
 ////////////////////////////////////////////////
 
-void DE_FlecsRegisterComponent(const char *name, size_t size, size_t alignment);
-void DE_FlecsSetComponent(ecs_entity_t entity, const char *name, void *component);
-void *DE_FlecsGetComponent(ecs_entity_t entity, const char *name);
-void DE_FlecsRemoveComponent(ecs_entity_t entity, const char *name);
+DE_API void DE_FlecsRegisterComponent(const char *name, size_t size, size_t alignment);
+DE_API void DE_FlecsSetComponent(ecs_entity_t entity, const char *name, void *component);
+DE_API void *DE_FlecsGetComponent(ecs_entity_t entity, const char *name);
+DE_API void DE_FlecsRemoveComponent(ecs_entity_t entity, const char *name);
 
 /////////////////////////////////////////////////
 // Tag
 ////////////////////////////////////////////////
 
-uint64_t DE_FlecsRegisterTag(const char *name);
-void DE_FlecsSetTag(ecs_entity_t entity, const char *name);
-bool DE_FlecsHasTag(ecs_entity_t entity, const char *name);
+DE_API uint64_t DE_FlecsRegisterTag(const char *name);
+DE_API void DE_FlecsSetTag(ecs_entity_t entity, const char *name);
+DE_API bool DE_FlecsHasTag(ecs_entity_t entity, const char *name);
 
 /////////////////////////////////////////////////
 // Iterator
 ////////////////////////////////////////////////
 
-void *DE_FlecsIterColumn(DeccanFlecsIter *it, const char *name, int index);
+DE_API void *DE_FlecsIterColumn(DeccanFlecsIter *it, const char *name, int index);

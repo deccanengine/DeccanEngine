@@ -24,8 +24,8 @@ static inline void DE_ClockDelay(int32_t ms) {
     SDL_Delay(ms);
 }
 
-void DE_TimerStart(DeccanTimer *timer);
-void DE_TimerStop(DeccanTimer *timer);
-void DE_TimerPause(DeccanTimer *timer);
-void DE_TimerReset(DeccanTimer *timer);
-DeccanTime DE_TimerGetTime(DeccanTimer *timer);
+DE_API void DE_TimerStart(DeccanTimer *timer);
+DE_API void DE_TimerStop(DeccanTimer *timer);
+DE_API void DE_TimerPause(DeccanTimer *timer);
+DE_API void DE_TimerReset(DeccanTimer *timer);
+DE_API DeccanTime DE_TimerGetTime(DeccanTimer *timer);

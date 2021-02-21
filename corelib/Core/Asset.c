@@ -12,9 +12,9 @@ struct AssetManager {
     DeccanAsset *value;
 };
 
-static struct AssetManager *manager = NULL;
+DE_PRIV struct AssetManager *manager = NULL;
 
-void DE_AssetLoadAsset(const char *type, const char *name, void *asset) {
+DE_IMPL void DE_AssetLoadAsset(const char *type, const char *name, void *asset) {
     int32_t index = stbds_shgeti(manager, type);
     struct AssetManager assets;
 
@@ -30,7 +30,7 @@ void DE_AssetLoadAsset(const char *type, const char *name, void *asset) {
     stbds_shputs(manager, assets);
 }
 
-void* DE_AssetGetAsset(const char *type, const char *name) {
+DE_IMPL void* DE_AssetGetAsset(const char *type, const char *name) {
     struct AssetManager assets = stbds_shgets(manager, type);
     return stbds_shget(assets.value, name);
 }

@@ -26,4 +26,4 @@ typedef struct DeccanCompState2D {
 // Registers/Constructors/Destructors
 ////////////////////////////////////////////////
 
-void DE_CompState2DRegister(void);
+DE_API void DE_CompState2DRegister(void);

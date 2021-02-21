@@ -10,4 +10,4 @@
 
 typedef char* Str;
 
-char* DE_StringNew(const char* source);
+DE_API char* DE_StringNew(const char* source);

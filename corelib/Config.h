@@ -166,6 +166,31 @@
 #include <depends/stb/stb_ds.h>
 
 /////////////////////////////////////////////////
+/* Library API */
+/////////////////////////////////////////////////
+
+/* Always shared library */
+#define DE_SHARED_LIB
+
+#ifdef DE_SHARED_LIB
+    #ifdef DE_COMPILER_MSVC 
+        #ifdef DE_LIBRARY_EXPORT
+            #define DE_API __declspec(dllexport)
+        #else
+            #define DE_API __declspec(dllimport)
+        #endif
+    #else
+        #define DE_API extern
+    #endif
+#else
+    /* Just reserved for future */
+    #error "Building as static library is unsupported."
+#endif
+
+#define DE_IMPL /* Unused! */
+#define DE_PRIV static
+
+/////////////////////////////////////////////////
 /* Error handling/logging */
 /////////////////////////////////////////////////
 

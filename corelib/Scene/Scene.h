@@ -36,33 +36,33 @@ typedef struct DeccanDeccanGameScene {
 // Scene internals
 ////////////////////////////////////////////////
 
-DeccanGameScene **DE_SceneGetSceneArray(void);
-int DE_SceneGetSceneCount(void);
-void DE_SceneFreeAll(void);
-void DE_SceneUpdate(void);
-void DE_SceneQuit(void);
+DE_API DeccanGameScene **DE_SceneGetSceneArray(void);
+DE_API int DE_SceneGetSceneCount(void);
+DE_API void DE_SceneFreeAll(void);
+DE_API void DE_SceneUpdate(void);
+DE_API void DE_SceneQuit(void);
 
 /////////////////////////////////////////////////
 // Constructor and destructor
 ////////////////////////////////////////////////
 
-DeccanGameScene *DE_SceneNewScene(const char *name);
-void DE_SceneAddScene(DeccanGameScene *scene, bool is_replacing);
-void DE_SceneRemoveScene(void);
+DE_API DeccanGameScene *DE_SceneNewScene(const char *name);
+DE_API void DE_SceneAddScene(DeccanGameScene *scene, bool is_replacing);
+DE_API void DE_SceneRemoveScene(void);
 
 /////////////////////////////////////////////////
 // Object handling
 ////////////////////////////////////////////////
 
-void DE_SceneInstantiateObject(DeccanGameObject object);
-DeccanGameObject DE_SceneGetObject(const char *name);
-void DE_SceneIterateObject(void (*func)(DeccanGameObject this));
-void DE_SceneIterateObjectOfType(const char *type, void (*func)(DeccanGameObject this));
+DE_API void DE_SceneInstantiateObject(DeccanGameObject object);
+DE_API DeccanGameObject DE_SceneGetObject(const char *name);
+DE_API void DE_SceneIterateObject(void (*func)(DeccanGameObject this));
+DE_API void DE_SceneIterateObjectOfType(const char *type, void (*func)(DeccanGameObject this));
 
 /////////////////////////////////////////////////
 // Scene status
 ////////////////////////////////////////////////
 
-DeccanGameScene *DE_SceneCurrentScene(void);
-void DE_ScenePauseScene(bool pause);
-bool DE_SceneIsScenePaused(void);
+DE_API DeccanGameScene *DE_SceneCurrentScene(void);
+DE_API void DE_ScenePauseScene(bool pause);
+DE_API bool DE_SceneIsScenePaused(void);

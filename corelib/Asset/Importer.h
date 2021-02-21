@@ -22,16 +22,16 @@
 // Sprite importer
 ////////////////////////////////////////////////
 
-int32_t DE_AssetGetSpriteIndex(const char *name);
-DeccanSpriteAsset *DE_AssetLoadSprite(const char *name, const char *path);
-DeccanSpriteAsset *DE_AssetLoadAnimatedSprite(const char *name, const char *path, ...);
-DeccanSpriteAsset *DE_AssetGetSprite(const char *name);
+DE_API int32_t DE_AssetGetSpriteIndex(const char *name);
+DE_API DeccanSpriteAsset *DE_AssetLoadSprite(const char *name, const char *path);
+DE_API DeccanSpriteAsset *DE_AssetLoadAnimatedSprite(const char *name, const char *path, ...);
+DE_API DeccanSpriteAsset *DE_AssetGetSprite(const char *name);
 
 /////////////////////////////////////////////////
 // Font importer
 ////////////////////////////////////////////////
 
-int32_t DE_AssetGetFontIndex(const char *name);
-DeccanFontAsset *DE_AssetNewDeccanFontAsset(const char *name);
-DeccanFontAsset *DE_AssetLoadFont(const char *name, const char *path);
-DeccanFontAsset *DE_AssetGetFont(const char *name);
+DE_API int32_t DE_AssetGetFontIndex(const char *name);
+DE_API DeccanFontAsset *DE_AssetNewDeccanFontAsset(const char *name);
+DE_API DeccanFontAsset *DE_AssetLoadFont(const char *name, const char *path);
+DE_API DeccanFontAsset *DE_AssetGetFont(const char *name);

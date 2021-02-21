@@ -31,6 +31,6 @@ typedef enum {
 // Font/Text rendering
 ////////////////////////////////////////////////
 
-DeccanSpriteAsset *DE_FontFastText(DeccanFontAsset *font, const char *text, DeccanColor color);
-DeccanSpriteAsset *DE_FontText(DeccanFontAsset *font, const char *text, FontStyle style, DeccanColor color);
-DeccanSpriteAsset *DE_FontOutlinedText(DeccanFontAsset *font, const char *text, FontStyle style, int32_t outline, DeccanColor color);
+DE_API DeccanSpriteAsset *DE_FontFastText(DeccanFontAsset *font, const char *text, DeccanColor color);
+DE_API DeccanSpriteAsset *DE_FontText(DeccanFontAsset *font, const char *text, FontStyle style, DeccanColor color);
+DE_API DeccanSpriteAsset *DE_FontOutlinedText(DeccanFontAsset *font, const char *text, FontStyle style, int32_t outline, DeccanColor color);

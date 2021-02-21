@@ -8,6 +8,6 @@
 #pragma once
 #include "../Config.h"
 
-void *DE_Alloc(size_t size, int count);
-void *DE_Realloc(void *mem, size_t size);
-void DE_Free(void *mem);
+DE_API void *DE_Alloc(size_t size, int count);
+DE_API void *DE_Realloc(void *mem, size_t size);
+DE_API void DE_Free(void *mem);

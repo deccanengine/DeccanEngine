@@ -38,14 +38,14 @@ typedef struct DeccanCompCollider {
 // Registers/Constructors/Destructors
 ////////////////////////////////////////////////
 
-void DE_CompColliderRegister(void);
+DE_API void DE_CompColliderRegister(void);
 
 /////////////////////////////////////////////////
 // Collision checking
 ////////////////////////////////////////////////
 
-bool DE_CompColliderCheckObject(DeccanGameObject obj1, DeccanGameObject obj2);
-bool DE_CompColliderCheckObjectWithVector(DeccanGameObject obj, vec2 vec);
-bool DE_CompColliderCheckObjectWithRect(DeccanGameObject obj, vec4 vec);
-bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject obj, vec3 vec);
-bool DE_CompColliderCheck(const char *name1, const char *name2);
+DE_API bool DE_CompColliderCheckObject(DeccanGameObject obj1, DeccanGameObject obj2);
+DE_API bool DE_CompColliderCheckObjectWithVector(DeccanGameObject obj, vec2 vec);
+DE_API bool DE_CompColliderCheckObjectWithRect(DeccanGameObject obj, vec4 vec);
+DE_API bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject obj, vec3 vec);
+DE_API bool DE_CompColliderCheck(const char *name1, const char *name2);

@@ -21,9 +21,9 @@
 // Camera
 ////////////////////////////////////////////////
 
-void DE_CameraMove(vec2 pos);
+DE_API void DE_CameraMove(vec2 pos);
 //void DE_CameraCenterOn(GameObject *obj);
-void DE_CameraSetPosition(vec2 pos);
-void DE_CameraSetBounds(vec4 rect);
-void DE_CameraGetPosition(vec2 pos);
-void DE_CameraGetBounds(vec4 bounds);
+DE_API void DE_CameraSetPosition(vec2 pos);
+DE_API void DE_CameraSetBounds(vec4 rect);
+DE_API void DE_CameraGetPosition(vec2 pos);
+DE_API void DE_CameraGetBounds(vec4 bounds);

@@ -9,7 +9,7 @@
 #include "../Core/Core.h"
 #include "../Renderer/Renderer.h"
 
-static struct {
+DE_PRIV struct {
     struct AssetTextureStorage {
 		const char *key;
 		DeccanSpriteAsset *value;
@@ -27,11 +27,11 @@ static struct {
 // DeccanSpriteAsset
 ////////////////////////////////////////////////
 
-int32_t DE_AssetGetSpriteIndex(const char *name) {
+DE_IMPL int32_t DE_AssetGetSpriteIndex(const char *name) {
     return stbds_shgeti(Asset_Info.textures, name);
 }
 
-DeccanRawTexture *LoadSprite(const char *path) {
+DE_PRIV DeccanRawTexture *LoadSprite(const char *path) {
     SDL_Surface *img;
     SDL_Texture *tex;
 
@@ -75,7 +75,7 @@ DeccanRawTexture *LoadSprite(const char *path) {
     return tex;
 }
 
-DeccanSpriteAsset *DE_AssetLoadSprite(const char *name, const char *path) {
+DE_IMPL DeccanSpriteAsset *DE_AssetLoadSprite(const char *name, const char *path) {
     DeccanSpriteAsset *asset = NULL;
     DeccanRawTexture *tex = LoadSprite(path);
 
@@ -100,7 +100,7 @@ DeccanSpriteAsset *DE_AssetLoadSprite(const char *name, const char *path) {
     return asset;
 }
 
-DeccanSpriteAsset *DE_AssetLoadAnimatedSprite(const char *name, const char *path, ...) {
+DE_IMPL DeccanSpriteAsset *DE_AssetLoadAnimatedSprite(const char *name, const char *path, ...) {
     va_list args;
     DeccanSpriteAsset *asset;
 
@@ -117,7 +117,7 @@ DeccanSpriteAsset *DE_AssetLoadAnimatedSprite(const char *name, const char *path
     return asset;
 }
 
-DeccanSpriteAsset *DE_AssetGetSprite(const char *name) {
+DE_IMPL DeccanSpriteAsset *DE_AssetGetSprite(const char *name) {
 	return stbds_shget(Asset_Info.textures, name);
 }
 
@@ -125,11 +125,11 @@ DeccanSpriteAsset *DE_AssetGetSprite(const char *name) {
 // DeccanFontAsset
 ////////////////////////////////////////////////
 
-int32_t DE_AssetGetFontIndex(const char *name) {
+DE_IMPL int32_t DE_AssetGetFontIndex(const char *name) {
     return stbds_shgeti(Asset_Info.fonts, name);
 }
 
-DeccanFontAsset *DE_AssetLoadFont(const char *name, const char *path) {
+DE_IMPL DeccanFontAsset *DE_AssetLoadFont(const char *name, const char *path) {
     DeccanFontAsset *asset = NULL;
     TTF_Font *font;
 
@@ -154,6 +154,6 @@ DeccanFontAsset *DE_AssetLoadFont(const char *name, const char *path) {
     return asset;
 }
 
-DeccanFontAsset *DE_AssetGetFont(const char *name) {
+DE_IMPL DeccanFontAsset *DE_AssetGetFont(const char *name) {
     return stbds_shget(Asset_Info.fonts, name);
 }
