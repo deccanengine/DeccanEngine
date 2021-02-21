@@ -10,10 +10,8 @@
 #include "../Core/Utils.h"
 #include "../Core/String.h"
 
-/* Texture structure depends on backend */
-#ifdef DECCAN_RENDERER_SDL
-    typedef SDL_Texture DeccanRawTexture;
-#endif
+/* Raw texture structure */
+typedef SDL_Texture DeccanRawTexture;
 
 /////////////////////////////////////////////////
 // Enums

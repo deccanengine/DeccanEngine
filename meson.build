@@ -4,7 +4,11 @@ cc = meson.get_compiler('c')
 m_dep = cc.find_library('m')
 
 dep_incdir = include_directories('proj')
-deps = [dependency('SDL2'), dependency('SDL2_ttf'), m_dep]
+deps = [
+    dependency('SDL2'), 
+    dependency('SDL2_ttf'), 
+    m_dep
+]
 
 src = [
     'corelib/Core/Asset.c',
@@ -34,13 +38,11 @@ src = [
     'corelib/Scene/Components/Collider.c',
     'corelib/Scene/Components/State2D.c',
 
-    'corelib/Main/Main.c',
-
-    'sandbox/main.c',
-    'sandbox/player.c'
+    'corelib/Main/Main.c'
 ]
 
-executable('demo', src,
+de_lib = shared_library('deccancore', src,
+    name_prefix: '',
     dependencies: deps,
     include_directories: dep_incdir,
     c_args: [
@@ -50,3 +52,15 @@ executable('demo', src,
         '-DDECCAN_RENDERER_SDL'
     ]
 )
+
+de_dep = declare_dependency(
+    link_with: de_lib,
+    include_directories: 'corelib'
+)
+
+demo_src = [
+    'sandbox/main.c',
+    'sandbox/player.c'
+]
+
+executable('demo', demo_src, link_with: de_lib)
