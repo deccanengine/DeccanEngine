@@ -15,11 +15,7 @@
 // Enums
 ////////////////////////////////////////////////
 
-typedef enum {
-    COLLIDER_Vec,
-    COLLIDER_Rect,
-    COLLIDER_Circle
-} DeccanCompColliderType;
+typedef enum { COLLIDER_Vec, COLLIDER_Rect, COLLIDER_Circle } DeccanCompColliderType;
 
 /////////////////////////////////////////////////
 // Structs
@@ -28,9 +24,15 @@ typedef enum {
 typedef struct DeccanCompCollider {
     DeccanCompColliderType type;
     union {
-        struct { vec2 vec; };
-        struct { vec4 rect; };
-        struct { vec3 circle; };
+        struct {
+            vec2 vec;
+        };
+        struct {
+            vec4 rect;
+        };
+        struct {
+            vec3 circle;
+        };
     };
 } DeccanCompCollider;
 

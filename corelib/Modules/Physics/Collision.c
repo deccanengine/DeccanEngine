@@ -11,6 +11,8 @@
 // Collisions
 ////////////////////////////////////////////////
 
+/* clang-format off */
+
 bool DE_CollisionVecVec(vec2 v1, vec2 v2) {
     return v1[0] == v2[1] &&
            v1[0] == v2[1];
@@ -42,21 +44,35 @@ bool DE_CollisionCircleVec(vec3 circle, vec2 vec) {
     return distance < circle[2] * circle[2];
 }
 
+/* clang-format on */
 
 bool DE_CollisionRectCircle(vec4 rect, vec3 circle) {
-    float cx, cy;     /* Closest X and Y of rect */
+    float cx, cy; /* Closest X and Y of rect */
 
     /* Find the abscissa of nearest point to the abscissa center of circle */
-    if(circle[0] < rect[0]) { cx = rect[0]; }
-    else if(circle[0] > rect[0] + rect[2]) { cx = rect[0] + rect[2]; }
-    else { cx = circle[0]; }       /* Special case: the x coord of rect is same as x coord of center */
+    if (circle[0] < rect[0]) {
+        cx = rect[0];
+    }
+    else if (circle[0] > rect[0] + rect[2]) {
+        cx = rect[0] + rect[2];
+    }
+    else {
+        /* Special case: the x coord of rect is same as x coord of center */
+        cx = circle[0];
+    }
 
     /* Find the ordinate of nearest point to the ordinate center of circle */
-    if(circle[1] < rect[1]) { cy = rect[1]; }
-    else if(circle[1] > rect[1] + rect[3]) { cy = rect[1] + rect[2]; }
-    else { cy = circle[1]; }       /* Special case: the y coord of rect is same as y coord of center */
+    if (circle[1] < rect[1]) {
+        cy = rect[1];
+    }
+    else if (circle[1] > rect[1] + rect[3]) {
+        cy = rect[1] + rect[2];
+    }
+    else {
+        /* Special case: the y coord of rect is same as y coord of center */
+        cy = circle[1];
+    }
 
-    double distance = ((cx - circle[0]) * (cx - circle[0])) +
-                      ((cy - circle[1]) * (cy - circle[1]));
+    double distance = ((cx - circle[0]) * (cx - circle[0])) + ((cy - circle[1]) * (cy - circle[1]));
     return distance < circle[2] * circle[2];
 }

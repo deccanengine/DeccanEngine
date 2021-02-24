@@ -9,11 +9,8 @@
 
 static struct {
     vec2 position;
-    vec4  bounds;
-} Camera_Info = {
-    .position = {0,  0},
-    .bounds   = {-1, -1, -1, -1}
-};
+    vec4 bounds;
+} Camera_Info = {.position = {0, 0}, .bounds = {-1, -1, -1, -1}};
 
 /////////////////////////////////////////////////
 // Camera
@@ -21,21 +18,33 @@ static struct {
 
 void Clamp(vec2 pos, vec4 rect, float *final_x, float *final_y) {
     /* Bounds are not set */
-    if(rect[0] == -1) {
+    if (rect[0] == -1) {
         *final_x = pos[0];
         *final_y = pos[1];
         return;
     }
 
     /* Clamp the abscissa */
-    if(pos[0] < rect[0]) { *final_x = rect[0]; }
-    else if(pos[0] > rect[0] + rect[2]) { *final_x = rect[0] + rect[2]; }
-    else { *final_y = pos[0]; }
+    if (pos[0] < rect[0]) {
+        *final_x = rect[0];
+    }
+    else if (pos[0] > rect[0] + rect[2]) {
+        *final_x = rect[0] + rect[2];
+    }
+    else {
+        *final_y = pos[0];
+    }
 
     /* Clamp the ordinate */
-    if(pos[1] < rect[1]) { *final_y = rect[1]; }
-    else if(pos[1] > rect[1] + rect[3]) { *final_y = rect[1] + rect[3]; }
-    else { *final_y = pos[1]; }
+    if (pos[1] < rect[1]) {
+        *final_y = rect[1];
+    }
+    else if (pos[1] > rect[1] + rect[3]) {
+        *final_y = rect[1] + rect[3];
+    }
+    else {
+        *final_y = pos[1];
+    }
 }
 
 void DE_CameraMove(vec2 pos) {

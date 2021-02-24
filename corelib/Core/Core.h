@@ -14,11 +14,11 @@
 #include "Variable.h"
 
 #ifndef DECCAN_MSG_LENGTH
-    #define DECCAN_MSG_LENGTH 50
+#define DECCAN_MSG_LENGTH 50
 #endif
 
 #ifndef DECCAN_MSG_COUNT
-    #define DECCAN_MSG_COUNT 100
+#define DECCAN_MSG_COUNT 100
 #endif
 /////////////////////////////////////////////////
 // Enums
@@ -42,7 +42,7 @@ typedef struct DeccanSettings {
 // Core functions
 ////////////////////////////////////////////////
 
-DE_API int  DE_CoreInit(DeccanSettings *settings);
+DE_API int DE_CoreInit(DeccanSettings *settings);
 DE_API void DE_CoreQuit(void);
 DE_API void DE_CoreUpdate(float fpsAverage, float deltaTime);
 DE_API void DE_CoreSetTitle(const char *name);
@@ -62,4 +62,3 @@ DE_API float DE_CoreGetDeltaTime(void);
 DE_API SDL_Window *DE_CoreGetWindowHandle(void);
 DE_API DeccanVarManager *DE_CoreGetVarManager(void);
 DE_API DeccanSettings *DE_CoreGetSettings(void);
-

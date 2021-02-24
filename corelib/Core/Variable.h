@@ -20,9 +20,15 @@ typedef enum DeccanVarType {
 typedef struct DeccanVar {
     DeccanVarType type;
     union {
-        struct { bool logical;  };
-        struct { double number; };
-        struct { char *string;  };
+        struct {
+            bool logical;
+        };
+        struct {
+            double number;
+        };
+        struct {
+            char *string;
+        };
     } value;
 } DeccanVar;
 
@@ -30,7 +36,7 @@ typedef struct DeccanVarManager {
     struct {
         char *key;
         DeccanVar *value;
-    } *vars;
+    } * vars;
 } DeccanVarManager;
 
 DE_API void DE_VarInit(DeccanVarManager *manager);

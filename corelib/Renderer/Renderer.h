@@ -17,10 +17,10 @@
 ////////////////////////////////////////////////
 
 typedef enum {
-    BlendMode_None  = SDL_BLENDMODE_NONE,
+    BlendMode_None = SDL_BLENDMODE_NONE,
     BlendMode_Alpha = SDL_BLENDMODE_BLEND,
-    BlendMode_Add   = SDL_BLENDMODE_ADD,
-    BlendMode_Mod   = SDL_BLENDMODE_MOD
+    BlendMode_Add = SDL_BLENDMODE_ADD,
+    BlendMode_Mod = SDL_BLENDMODE_MOD
 } DeccanRenderBlendMode;
 
 /////////////////////////////////////////////////

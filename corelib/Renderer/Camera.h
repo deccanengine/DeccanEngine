@@ -22,7 +22,7 @@
 ////////////////////////////////////////////////
 
 DE_API void DE_CameraMove(vec2 pos);
-//void DE_CameraCenterOn(GameObject *obj);
+// void DE_CameraCenterOn(GameObject *obj);
 DE_API void DE_CameraSetPosition(vec2 pos);
 DE_API void DE_CameraSetBounds(vec4 rect);
 DE_API void DE_CameraGetPosition(vec2 pos);

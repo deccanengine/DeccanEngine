@@ -25,43 +25,50 @@ void DE_SpriteSetDeccanColor(DeccanSpriteAsset *texture, DeccanColor color) {
 */
 
 void BlitInternal(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, DeccanSpriteAsset *texture) {
-    if(texture == NULL) {
+    if (texture == NULL) {
         return;
     }
 
-    vec2 camera; DE_CameraGetPosition(camera);
+    vec2 camera;
+    DE_CameraGetPosition(camera);
 
 #ifdef DECCAN_RENDERER_SDL
     SDL_Renderer *renderer = DE_RendererGetRenderer();
 
     /* Source rect */
-    SDL_Rect src = {
-        dim[0], dim[1], dim[2], dim[3]
-    };
+    SDL_Rect src = {dim[0], dim[1], dim[2], dim[3]};
 
     /* Destination(target) rect */
-    SDL_Rect tgt = {
-        rect[0] - camera[0],
-        rect[1] - camera[1],
-        rect[2],
-        rect[3]
-    };
+    SDL_Rect tgt = {rect[0] - camera[0], rect[1] - camera[1], rect[2], rect[3]};
 
-    //int width, height;
+    // int width, height;
     /* Get the default width and height */
-    //if(SDL_QueryTexture(texture->texture[texture->current], NULL, NULL, &width, &height) > 0) {
+    // if(SDL_QueryTexture(texture->texture[texture->current], NULL, NULL, &width, &height) > 0) {
     //    DE_WARN("Cannot query texture: %s :%s", texture->name, SDL_GetError());
     //}
 
-    vec2 size; DE_SpriteGetSize(texture, size);
+    vec2 size;
+    DE_SpriteGetSize(texture, size);
 
-    if(!src.w) { src.w = size[0]; }
-    if(!src.h) { src.h = size[1]; }
-    if(!tgt.w) { tgt.w = size[0]; }
-    if(!tgt.h) { tgt.h = size[1]; }
+    if (!src.w) {
+        src.w = size[0];
+    }
+    if (!src.h) {
+        src.h = size[1];
+    }
+    if (!tgt.w) {
+        tgt.w = size[0];
+    }
+    if (!tgt.h) {
+        tgt.h = size[1];
+    }
 
-    if(scale[0]) { tgt.w *= scale[0]; }
-    if(scale[1]) { tgt.h *= scale[1]; }
+    if (scale[0]) {
+        tgt.w *= scale[0];
+    }
+    if (scale[1]) {
+        tgt.h *= scale[1];
+    }
 
     SDL_RenderCopyEx(renderer, texture->texture[texture->current], &src, &tgt, angle, NULL, flip);
 #else
@@ -69,15 +76,15 @@ void BlitInternal(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, Decc
 #endif
 
     /* Check if animation is active */
-    if(texture->flags & DECCAN_ANIMFLAG_ACTIVE) {
+    if (texture->flags & DECCAN_ANIMFLAG_ACTIVE) {
         /* Change frame only if delay is reached */
-        if(texture->delay <= SDL_GetTicks() - texture->clock) {
+        if (texture->delay <= SDL_GetTicks() - texture->clock) {
             texture->clock = SDL_GetTicks();
 
             /* Reached final frame */
-            if(texture->current == texture->count - 1) {
+            if (texture->current == texture->count - 1) {
                 /* If looping is allowed then set to first(0 index) frame */
-                if(texture->flags & DECCAN_ANIMFLAG_LOOP) {
+                if (texture->flags & DECCAN_ANIMFLAG_LOOP) {
                     texture->current = 0;
                 }
             }

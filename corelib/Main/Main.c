@@ -20,7 +20,7 @@ void DE_AppUpdate(void) {
     DeccanTimer fpsTimer;
     DeccanTimer frmTimer;
 
-    DE_TimerStart(&fpsTimer);    /* To calculate FPS */
+    DE_TimerStart(&fpsTimer); /* To calculate FPS */
 
     int32_t frameCount;
     float fpsAverage = 0.0f;
@@ -28,12 +28,12 @@ void DE_AppUpdate(void) {
 
     DeccanSettings *settings = DE_CoreGetSettings();
 
-    while(DE_CoreIsRunning()) {
+    while (DE_CoreIsRunning()) {
         DE_TimerStart(&frmTimer);
 
         /* Calculate FPS */
         fpsAverage = frameCount / DE_TimerGetTime(&fpsTimer).seconds;
-        if(fpsAverage > 20000) {
+        if (fpsAverage > 20000) {
             fpsAverage = 0.0f;
         }
 
@@ -53,10 +53,9 @@ void DE_AppUpdate(void) {
         deltaTime = DE_TimerGetTime(&frmTimer).milliseconds;
 
         /* Limit FPS */
-        if((!settings->vsync) &&
-           (settings->fps > 20.0f)) {
-            float ticksPerFrame = (1000.0f / settings->fps);  /* Required ticks per frame */
-            if(deltaTime < ticksPerFrame) {
+        if ((!settings->vsync) && (settings->fps > 20.0f)) {
+            float ticksPerFrame = (1000.0f / settings->fps); /* Required ticks per frame */
+            if (deltaTime < ticksPerFrame) {
                 DE_ClockDelay((int)(ticksPerFrame - deltaTime));
             }
         }

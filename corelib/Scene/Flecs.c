@@ -22,23 +22,22 @@ DE_IMPL void DE_FlecsSystem(DeccanFlecsActionFunc iter, const char *name, const 
 
 DE_PRIV size_t GetComponentSize(ecs_entity_t id) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
-	
-	const EcsComponent *comp = ecs_get_w_entity(scene->world, id, FLECS__EEcsComponent);
-	return comp->size;
+
+    const EcsComponent *comp = ecs_get_w_entity(scene->world, id, FLECS__EEcsComponent);
+    return comp->size;
 }
 
 DE_IMPL void DE_FlecsRegisterComponent(const char *name, size_t size, size_t alignment) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
-	ecs_new_component(scene->world, 0, name, size, alignment);
+    ecs_new_component(scene->world, 0, name, size, alignment);
 }
-
 
 DE_IMPL void DE_FlecsSetComponent(ecs_entity_t entity, const char *name, void *component) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 
-	ecs_entity_t id = ecs_lookup(scene->world, name);
+    ecs_entity_t id = ecs_lookup(scene->world, name);
     size_t size = GetComponentSize(id);
-    if(id == 0) {
+    if (id == 0) {
         DE_WARN("Component %s is not a valid registered component in the scene", name);
         return;
     }
@@ -52,13 +51,13 @@ DE_IMPL void *DE_FlecsGetComponent(ecs_entity_t entity, const char *name) {
 }
 
 DE_IMPL void DE_FlecsRemoveComponent(ecs_entity_t entity, const char *name) {
-	DeccanGameScene *scene = DE_SceneCurrentScene();
-	ecs_entity_t component = ecs_lookup(scene->world, name);
-	ecs_remove_entity(scene->world, entity, component);
+    DeccanGameScene *scene = DE_SceneCurrentScene();
+    ecs_entity_t component = ecs_lookup(scene->world, name);
+    ecs_remove_entity(scene->world, entity, component);
 }
 
 /////////////////////////////////////////////////
-// Tag 
+// Tag
 ////////////////////////////////////////////////
 
 DE_IMPL uint64_t DE_FlecsRegisterTag(const char *name) {
@@ -70,7 +69,7 @@ DE_IMPL uint64_t DE_FlecsRegisterTag(const char *name) {
 DE_IMPL void DE_FlecsSetTag(ecs_entity_t entity, const char *name) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
     ecs_entity_t tag = ecs_lookup(scene->world, name);
-    if(tag == 0)
+    if (tag == 0)
         tag = DE_FlecsRegisterTag(name);
 
     ecs_type_t type = ecs_type_from_entity(scene->world, tag);
@@ -80,7 +79,7 @@ DE_IMPL void DE_FlecsSetTag(ecs_entity_t entity, const char *name) {
 DE_IMPL bool DE_FlecsHasTag(ecs_entity_t entity, const char *name) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
     ecs_entity_t tag = ecs_lookup(scene->world, name);
-    if(tag == 0)
+    if (tag == 0)
         return false;
 
     ecs_type_t type = ecs_type_from_entity(scene->world, tag);
@@ -92,7 +91,7 @@ DE_IMPL bool DE_FlecsHasTag(ecs_entity_t entity, const char *name) {
 ////////////////////////////////////////////////
 
 DE_IMPL void *DE_FlecsIterColumn(DeccanFlecsIter *it, const char *name, int index) {
-	DeccanGameScene *scene = DE_SceneCurrentScene();
-	ecs_entity_t id = ecs_lookup(scene->world, name);
-	return ecs_column_w_size(it, GetComponentSize(id), index);
+    DeccanGameScene *scene = DE_SceneCurrentScene();
+    ecs_entity_t id = ecs_lookup(scene->world, name);
+    return ecs_column_w_size(it, GetComponentSize(id), index);
 }

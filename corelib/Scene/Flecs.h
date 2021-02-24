@@ -14,15 +14,15 @@
 ////////////////////////////////////////////////
 
 typedef enum DeccanEcsType {
-    DECCAN_ECS_TYPE_PRE_FRAME   = EcsPreFrame,
-    DECCAN_ECS_TYPE_POST_LOAD   = EcsPostLoad,
-    DECCAN_ECS_TYPE_PRE_UPDATE  = EcsPreUpdate,
-    DECCAN_ECS_TYPE_ON_UPDATE   = EcsOnUpdate,
+    DECCAN_ECS_TYPE_PRE_FRAME = EcsPreFrame,
+    DECCAN_ECS_TYPE_POST_LOAD = EcsPostLoad,
+    DECCAN_ECS_TYPE_PRE_UPDATE = EcsPreUpdate,
+    DECCAN_ECS_TYPE_ON_UPDATE = EcsOnUpdate,
     DECCAN_ECS_TYPE_ON_VALIDATE = EcsOnValidate,
     DECCAN_ECS_TYPE_POST_UPDATE = EcsPostUpdate,
-    DECCAN_ECS_TYPE_PRE_STORE   = EcsPreStore,
-    DECCAN_ECS_TYPE_ON_STORE    = EcsOnStore,
-    DECCAN_ECS_TYPE_POST_FRAME  = EcsPostFrame
+    DECCAN_ECS_TYPE_PRE_STORE = EcsPreStore,
+    DECCAN_ECS_TYPE_ON_STORE = EcsOnStore,
+    DECCAN_ECS_TYPE_POST_FRAME = EcsPostFrame
 } DeccanFlecsType;
 
 /////////////////////////////////////////////////
@@ -39,7 +39,7 @@ typedef ecs_iter_action_t DeccanFlecsActionFunc;
 DE_API void DE_FlecsSystem(DeccanFlecsActionFunc iter, const char *name, const char *sign, DeccanFlecsType type);
 
 /////////////////////////////////////////////////
-// Component 
+// Component
 ////////////////////////////////////////////////
 
 DE_API void DE_FlecsRegisterComponent(const char *name, size_t size, size_t alignment);

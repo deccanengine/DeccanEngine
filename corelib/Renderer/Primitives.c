@@ -9,17 +9,18 @@
 #include "Renderer.h"
 #include "Camera.h"
 
-#define DE_DRAW_BEGIN()                            \
-vec2 camera; DE_CameraGetPosition(camera);         \
-SDL_Renderer *renderer = DE_RendererGetRenderer(); \
-DeccanColor def = DE_RendererGetColor();           \
-SDL_BlendMode blend;                               \
-DE_RendererSetColor(color);                        \
-SDL_GetRenderDrawBlendMode(renderer, &blend);
+#define DE_DRAW_BEGIN()                                                                                                \
+    vec2 camera;                                                                                                       \
+    DE_CameraGetPosition(camera);                                                                                      \
+    SDL_Renderer *renderer = DE_RendererGetRenderer();                                                                 \
+    DeccanColor def = DE_RendererGetColor();                                                                           \
+    SDL_BlendMode blend;                                                                                               \
+    DE_RendererSetColor(color);                                                                                        \
+    SDL_GetRenderDrawBlendMode(renderer, &blend);
 
-#define DE_DRAW_END()                              \
-DE_RendererSetColor(def);                          \
-SDL_SetRenderDrawBlendMode(renderer,  blend);
+#define DE_DRAW_END()                                                                                                  \
+    DE_RendererSetColor(def);                                                                                          \
+    SDL_SetRenderDrawBlendMode(renderer, blend);
 
 void DE_DrawPoint(vec2 pos, DeccanColor color) {
 #ifdef DECCAN_RENDERER_SDL
@@ -64,7 +65,9 @@ void DE_DrawFilledRect(vec4 rect, DeccanColor color) {
 }
 
 void DE_DrawCircle(vec3 circle, DeccanColor color) {
-    if(!circle[2]) { return; }
+    if (!circle[2]) {
+        return;
+    }
 
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
@@ -88,8 +91,10 @@ void DE_DrawCircle(vec3 circle, DeccanColor color) {
         _draw_point(x - y0, y + x0);
         _draw_point(x - y0, y - x0);
         _draw_point(x - x0, y - y0);
-        if (d < 0) d += 4 * x0++ + 6;
-        else d += 4 * (x0++ - y0--) + 10;
+        if (d < 0)
+            d += 4 * x0++ + 6;
+        else
+            d += 4 * (x0++ - y0--) + 10;
     }
     DE_DRAW_END();
 #else
@@ -98,7 +103,9 @@ void DE_DrawCircle(vec3 circle, DeccanColor color) {
 }
 
 void DE_DrawFilledCircle(vec3 circle, DeccanColor color) {
-    if(!circle[2]) { return; }
+    if (!circle[2]) {
+        return;
+    }
 
 #ifdef DECCAN_RENDERER_SDL
     DE_DRAW_BEGIN();
@@ -115,11 +122,13 @@ void DE_DrawFilledCircle(vec3 circle, DeccanColor color) {
 
     while (y0 >= x0) {
         _draw_line(x - x0, y - y0, x + x0, y - y0);
-		_draw_line(x - y0, y - x0, x + y0, y - x0);
-		_draw_line(x - x0, y + y0, x + x0, y + y0);
-		_draw_line(x - y0, y + x0, x + y0, y + x0);
-        if (d < 0) d += 4 * x0++ + 6;
-        else d += 4 * (x0++ - y0--) + 10;
+        _draw_line(x - y0, y - x0, x + y0, y - x0);
+        _draw_line(x - x0, y + y0, x + x0, y + y0);
+        _draw_line(x - y0, y + x0, x + y0, y + x0);
+        if (d < 0)
+            d += 4 * x0++ + 6;
+        else
+            d += 4 * (x0++ - y0--) + 10;
     }
     DE_DRAW_END();
 #else

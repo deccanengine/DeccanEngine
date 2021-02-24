@@ -26,7 +26,7 @@ void DE_TimerReset(DeccanTimer *timer) {
 }
 
 void DE_TimerPause(DeccanTimer *timer) {
-    if(timer->isRunning && !timer->isPaused) {
+    if (timer->isRunning && !timer->isPaused) {
         timer->isPaused = true;
 
         /* Calculate the paused ticks */
@@ -38,8 +38,8 @@ void DE_TimerPause(DeccanTimer *timer) {
 DeccanTime DE_TimerGetTime(DeccanTimer *timer) {
     float timeMS = 0.0f;
 
-    if(timer->isRunning) {
-        if(timer->isPaused) {
+    if (timer->isRunning) {
+        if (timer->isPaused) {
             timeMS = timer->pausedTicks;
         }
         else {

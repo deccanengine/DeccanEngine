@@ -1,0 +1,17 @@
+﻿---
+BasedOnStyle: LLVM
+
+AlignAfterOpenBracket: DontAlign
+AllowShortBlocksOnASingleLine: 'false'
+AllowShortCaseLabelsOnASingleLine: 'true'
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: 'false'
+BreakBeforeBraces: Custom
+BraceWrapping:
+    BeforeElse: 'true'
+ColumnLimit: '120'
+ContinuationIndentWidth: '4'
+IndentWidth: '4'
+SortIncludes: 'false'
+UseTab: Never
+...

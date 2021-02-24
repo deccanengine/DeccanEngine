@@ -21,11 +21,11 @@
 typedef struct DeccanGameObject DeccanGameObject;
 
 typedef struct DeccanObjectInfo {
-	bool visible;
-	bool active;
-	bool to_remove;
+    bool visible;
+    bool active;
+    bool to_remove;
 
-	bool is_beginning;
+    bool is_beginning;
 
     void (*AtFirstFrame)(DeccanGameObject object);
     void (*AtBeginning)(DeccanGameObject object);
@@ -33,12 +33,12 @@ typedef struct DeccanObjectInfo {
     void (*AtRender)(DeccanGameObject object);
     void (*AtEnd)(DeccanGameObject object);
 
-	DeccanVarManager vars;
+    DeccanVarManager vars;
 } DeccanObjectInfo;
 
 typedef struct DeccanGameObject {
     ecs_entity_t entity;
-} DeccanGameObject ;
+} DeccanGameObject;
 
 /////////////////////////////////////////////////
 // Initialization and instantiator functions

@@ -8,6 +8,6 @@
 #pragma once
 #include "../Config.h"
 
-typedef char* Str;
+typedef char *Str;
 
-DE_API char* DE_StringNew(const char* source);
+DE_API char *DE_StringNew(const char *source);

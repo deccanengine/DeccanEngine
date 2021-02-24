@@ -9,11 +9,11 @@
 
 DE_PRIV struct {
     SDL_Event event;
-    uint8_t currKeys [SDL_NUM_SCANCODES];
-    uint8_t prevKeys [SDL_NUM_SCANCODES];
+    uint8_t currKeys[SDL_NUM_SCANCODES];
+    uint8_t prevKeys[SDL_NUM_SCANCODES];
 } Input_Info = {0};
 
-#define KEY_IN_BOUNDS(x)    (x > DECCAN_KEY_UNKNOWN1 && x < DECCAN_KEY_TOTAL_COUNT)
+#define KEY_IN_BOUNDS(x) (x > DECCAN_KEY_UNKNOWN1 && x < DECCAN_KEY_TOTAL_COUNT)
 #define BUTTON_IN_BOUNDS(x) (x >= DECCAN_BUTTON_LEFT && x < DECCAN_BUTTON_TOTAL_COUNT)
 
 /////////////////////////////////////////////////
@@ -42,19 +42,17 @@ DE_IMPL void DE_InputUpdate(void) {
 ////////////////////////////////////////////////
 
 DE_IMPL DeccanKeyState DE_InputGetKey(int key_code) {
-    DeccanKeyState key = {
-        false, false, false
-    };
+    DeccanKeyState key = {false, false, false};
 
-    if(KEY_IN_BOUNDS(key_code)) {
-        if(Input_Info.currKeys[key_code]) {
-            if(!Input_Info.prevKeys[key_code]) {
+    if (KEY_IN_BOUNDS(key_code)) {
+        if (Input_Info.currKeys[key_code]) {
+            if (!Input_Info.prevKeys[key_code]) {
                 key.IsPressed = true;
             }
             key.IsHeld = true;
         }
         else {
-            if(Input_Info.prevKeys[key_code]) {
+            if (Input_Info.prevKeys[key_code]) {
                 key.IsReleased = true;
             }
         }
@@ -64,9 +62,8 @@ DE_IMPL DeccanKeyState DE_InputGetKey(int key_code) {
 }
 
 DE_IMPL bool DE_InputKeyPressed(int key_code) {
-    if(KEY_IN_BOUNDS(key_code)) {
-        return Input_Info.currKeys[key_code] &&
-              !Input_Info.prevKeys[key_code];
+    if (KEY_IN_BOUNDS(key_code)) {
+        return Input_Info.currKeys[key_code] && !Input_Info.prevKeys[key_code];
     }
     else {
         return false;
@@ -74,9 +71,8 @@ DE_IMPL bool DE_InputKeyPressed(int key_code) {
 }
 
 DE_IMPL bool DE_InputKeyReleased(int key_code) {
-    if(KEY_IN_BOUNDS(key_code)) {
-        return !Input_Info.currKeys[key_code] &&
-                Input_Info.prevKeys[key_code];
+    if (KEY_IN_BOUNDS(key_code)) {
+        return !Input_Info.currKeys[key_code] && Input_Info.prevKeys[key_code];
     }
     else {
         return false;
@@ -84,7 +80,7 @@ DE_IMPL bool DE_InputKeyReleased(int key_code) {
 }
 
 DE_IMPL bool DE_InputKeyHeld(int key_code) {
-    if(KEY_IN_BOUNDS(key_code)) {
+    if (KEY_IN_BOUNDS(key_code)) {
         return Input_Info.currKeys[key_code];
     }
     else {
@@ -97,16 +93,14 @@ DE_IMPL bool DE_InputKeyHeld(int key_code) {
 ////////////////////////////////////////////////
 
 DE_IMPL DeccanMouseState DE_InputGetMouseButton(int button_code) {
-    DeccanMouseState button = {
-        false, false
-    };
+    DeccanMouseState button = {false, false};
 
-    if(BUTTON_IN_BOUNDS(button_code)) {
-        if(Input_Info.event.button.button == button_code) {
-            if(Input_Info.event.type == SDL_MOUSEBUTTONDOWN) {
+    if (BUTTON_IN_BOUNDS(button_code)) {
+        if (Input_Info.event.button.button == button_code) {
+            if (Input_Info.event.type == SDL_MOUSEBUTTONDOWN) {
                 button.IsDown = true;
             }
-            else if(Input_Info.event.type == SDL_MOUSEBUTTONUP) {
+            else if (Input_Info.event.type == SDL_MOUSEBUTTONUP) {
                 button.IsUp = true;
             }
         }
@@ -116,9 +110,8 @@ DE_IMPL DeccanMouseState DE_InputGetMouseButton(int button_code) {
 }
 
 DE_IMPL bool DE_InputButtonDown(int button_code) {
-    if(BUTTON_IN_BOUNDS(button_code)) {
-        return Input_Info.event.type == SDL_MOUSEBUTTONDOWN &&
-               Input_Info.event.button.button == button_code;
+    if (BUTTON_IN_BOUNDS(button_code)) {
+        return Input_Info.event.type == SDL_MOUSEBUTTONDOWN && Input_Info.event.button.button == button_code;
     }
     else {
         return false;
@@ -126,9 +119,8 @@ DE_IMPL bool DE_InputButtonDown(int button_code) {
 }
 
 DE_IMPL bool DE_InputButtonUp(int button_code) {
-    if(BUTTON_IN_BOUNDS(button_code)) {
-        return Input_Info.event.type == SDL_MOUSEBUTTONUP &&
-            Input_Info.event.button.button == button_code;
+    if (BUTTON_IN_BOUNDS(button_code)) {
+        return Input_Info.event.type == SDL_MOUSEBUTTONUP && Input_Info.event.button.button == button_code;
     }
     else {
         return false;
@@ -143,8 +135,8 @@ DE_IMPL void DE_InputGetMousePos(vec2 pos) {
 }
 
 DE_IMPL int DE_InputMouseScrollHorizontal(void) {
-    if(Input_Info.event.type == SDL_MOUSEWHEEL) {
-        if(Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) {
+    if (Input_Info.event.type == SDL_MOUSEWHEEL) {
+        if (Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) {
             return Input_Info.event.wheel.x;
         }
         else {
@@ -155,8 +147,8 @@ DE_IMPL int DE_InputMouseScrollHorizontal(void) {
 }
 
 DE_IMPL int DE_InputMouseScrollVertical(void) {
-    if(Input_Info.event.type == SDL_MOUSEWHEEL) {
-        if(Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) {
+    if (Input_Info.event.type == SDL_MOUSEWHEEL) {
+        if (Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) {
             return Input_Info.event.wheel.y;
         }
         else {

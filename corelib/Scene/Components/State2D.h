@@ -17,7 +17,7 @@
 typedef struct DeccanCompState2D {
     vec3 position;
     vec2 scale;
-    double  rotation;
+    double rotation;
 
     bool is_z_dirty;
 } DeccanCompState2D;

@@ -7,7 +7,10 @@
 
 #include "FontAsset.h"
 
-#define PTR_NULLCHECK(x,y) if(!x) { return y; }
+#define PTR_NULLCHECK(x, y)                                                                                            \
+    if (!x) {                                                                                                          \
+        return y;                                                                                                      \
+    }
 
 /////////////////////////////////////////////////
 // Constructor/Destructor
@@ -20,7 +23,8 @@ DE_IMPL DeccanFontAsset *DE_FontNew(const char *name) {
 }
 
 DE_IMPL void DE_FontDelete(DeccanFontAsset *asset) {
-	if(!asset) return;
+    if (!asset)
+        return;
 
     DE_Free(asset->name);
     DE_Free(asset->font);
@@ -32,7 +36,7 @@ DE_IMPL void DE_FontDelete(DeccanFontAsset *asset) {
 ////////////////////////////////////////////////
 
 DE_IMPL void DE_FontSetKerning(DeccanFontAsset *font, bool kerning) {
-    PTR_NULLCHECK(font,);
+    PTR_NULLCHECK(font, );
 
     TTF_SetFontKerning(font->font, kerning ? 1 : 0);
 }
@@ -53,7 +57,7 @@ DE_IMPL void DE_FontCalculateTextSize(DeccanFontAsset *font, const char *text, v
     size[0] = -1;
     size[1] = -1;
 
-    PTR_NULLCHECK(font,);
+    PTR_NULLCHECK(font, );
     TTF_SizeText(font->font, text, &x, &y);
 
     size[0] = (float)x;

@@ -43,11 +43,11 @@ DE_PRIV struct {
 /* Core */
 DE_IMPL int DE_CoreInit(DeccanSettings *settings) {
     int flags = SDL_INIT_VIDEO;
-    if(SDL_Init(flags) != 0) {
+    if (SDL_Init(flags) != 0) {
         DE_FATAL("Could not initialize SDL2: %s", SDL_GetError());
     }
 
-    if(TTF_Init() != 0) {
+    if (TTF_Init() != 0) {
         DE_FATAL("Could not initialize SDL2_ttf: %s", TTF_GetError());
     }
 
@@ -56,18 +56,22 @@ DE_IMPL int DE_CoreInit(DeccanSettings *settings) {
     /* Create window */
     SDL_WindowFlags window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;
 
-    if(settings->fullscreen) { window_flags |= SDL_WINDOW_FULLSCREEN; }
-    if(settings->resizable ) { window_flags |= SDL_WINDOW_RESIZABLE;  }
+    if (settings->fullscreen) {
+        window_flags |= SDL_WINDOW_FULLSCREEN;
+    }
+    if (settings->resizable) {
+        window_flags |= SDL_WINDOW_RESIZABLE;
+    }
 
-    if((Core_Info.window = SDL_CreateWindow(Core_Info.settings.title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        Core_Info.settings.resolution[0], Core_Info.settings.resolution[1], window_flags)) == NULL) {
+    if ((Core_Info.window = SDL_CreateWindow(Core_Info.settings.title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+             Core_Info.settings.resolution[0], Core_Info.settings.resolution[1], window_flags)) == NULL) {
         DE_FATAL("Could not create window: %s", SDL_GetError());
     }
 
 #ifdef DE_DEBUG
     /* Open the log file */
     Core_Info.logfile = fopen("report.log", "w");
-    if(Core_Info.logfile == NULL) {
+    if (Core_Info.logfile == NULL) {
         DE_ERROR("Could not create/open log file");
     }
 
@@ -95,36 +99,35 @@ DE_IMPL void DE_CoreUpdate(float fpsAverage, float deltaTime) {
     /* Handle some events */
     SDL_Event *event = DE_InputGetEventHandler();
 
-    if(SDL_PollEvent(event)) {
-        switch(event->type) {
-            /* Handle close event */
-            case SDL_QUIT: {
+    if (SDL_PollEvent(event)) {
+        switch (event->type) {
+        /* Handle close event */
+        case SDL_QUIT: {
+            Core_Info.isRunning = false;
+            break;
+        }
+
+        /* Handle close on escape key event */
+        case SDL_KEYDOWN: {
+            /* Close on Escape Key */
+            if (event->key.keysym.sym == SDLK_ESCAPE && Core_Info.settings.closeOnEscape) {
                 Core_Info.isRunning = false;
                 break;
             }
-
-            /* Handle close on escape key event */
-            case SDL_KEYDOWN: {
-                /* Close on Escape Key */
-                if(event->key.keysym.sym == SDLK_ESCAPE &&
-                   Core_Info.settings.closeOnEscape) {
-                    Core_Info.isRunning = false;
-                    break;
-                }
-            }
+        }
         }
     }
 
-    if(Core_Info.isSettingsDirty) {
+    if (Core_Info.isSettingsDirty) {
         SDL_SetWindowTitle(Core_Info.window, Core_Info.settings.title);
 
-        if(Core_Info.settings.fullscreen) {
+        if (Core_Info.settings.fullscreen) {
             SDL_SetWindowFullscreen(Core_Info.window, true);
 
-            SDL_DisplayMode disp = {SDL_PIXELFORMAT_UNKNOWN,
-                Core_Info.settings.resolution[0], Core_Info.settings.resolution[1], 0, 0};
+            SDL_DisplayMode disp = {
+                SDL_PIXELFORMAT_UNKNOWN, Core_Info.settings.resolution[0], Core_Info.settings.resolution[1], 0, 0};
 
-            if(SDL_SetWindowDisplayMode(Core_Info.window, &disp) > 0) {
+            if (SDL_SetWindowDisplayMode(Core_Info.window, &disp) > 0) {
                 DE_WARN("Cannot set fullscreen window mode: %s", SDL_GetError());
             }
 
@@ -135,10 +138,10 @@ DE_IMPL void DE_CoreUpdate(float fpsAverage, float deltaTime) {
             SDL_SetWindowSize(Core_Info.window, Core_Info.settings.resolution[0], Core_Info.settings.resolution[1]);
         }
 
-    	// Issue: Not working in some Windows environment
-    	if(SDL_GL_SetSwapInterval(Core_Info.settings.vsync ? 1 : 0) == -1) {
-    		DE_WARN("VSync is not supported: %s", SDL_GetError());
-    	}
+        // Issue: Not working in some Windows environment
+        if (SDL_GL_SetSwapInterval(Core_Info.settings.vsync ? 1 : 0) == -1) {
+            DE_WARN("VSync is not supported: %s", SDL_GetError());
+        }
 
         Core_Info.isSettingsDirty = false;
     }
@@ -147,7 +150,7 @@ DE_IMPL void DE_CoreUpdate(float fpsAverage, float deltaTime) {
     DE_InputUpdate();
 
     Core_Info.fpsAverage = fpsAverage;
-    Core_Info.deltaTime  = deltaTime;
+    Core_Info.deltaTime = deltaTime;
 }
 
 /* Core Settings Setters */
@@ -172,7 +175,7 @@ DE_IMPL void DE_CoreToogleVsync(bool vsync) {
     Core_Info.isSettingsDirty = true;
 }
 
-DE_IMPL void DE_CoreSetFramerateLimit(float fps){
+DE_IMPL void DE_CoreSetFramerateLimit(float fps) {
     Core_Info.settings.fps = fps;
 }
 

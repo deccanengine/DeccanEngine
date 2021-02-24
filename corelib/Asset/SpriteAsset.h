@@ -17,10 +17,7 @@ typedef SDL_Texture DeccanRawTexture;
 // Enums
 ////////////////////////////////////////////////
 
-typedef enum {
-    DECCAN_ANIMFLAG_ACTIVE = 1,
-    DECCAN_ANIMFLAG_LOOP   = 2
-} DeccanSpriteAnimFlag;
+typedef enum { DECCAN_ANIMFLAG_ACTIVE = 1, DECCAN_ANIMFLAG_LOOP = 2 } DeccanSpriteAnimFlag;
 
 /////////////////////////////////////////////////
 // Structs

@@ -36,31 +36,32 @@ SDL_Renderer *DE_RendererGetRenderer(void) {
 }
 
 void DE_RendererInit(SDL_Window *window) {
-    if(!window) return;
+    if (!window)
+        return;
 
     /* GL Attributes: OpenGL 2.1 with hardware acceleration */
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
     SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-    SDL_GL_SetAttribute(SDL_GL_RED_SIZE,   8);
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,  8);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
     /* Set the renderer to OpenGL */
-    if(SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl") != SDL_TRUE) {
+    if (SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl") != SDL_TRUE) {
         DE_ERROR("OpenGL cannot be enabled");
     }
 
     int render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    if((Renderer_Info.renderer = SDL_CreateRenderer(window, -1, render_flags)) == NULL) {
+    if ((Renderer_Info.renderer = SDL_CreateRenderer(window, -1, render_flags)) == NULL) {
         DE_ERROR("Could not create renderer: %s", SDL_GetError());
     }
 
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &Renderer_Info.glMajor);
     SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &Renderer_Info.glMinor);
-    if(Renderer_Info.glMajor < 2 || (Renderer_Info.glMajor == 2 && Renderer_Info.glMinor < 1)) {
+    if (Renderer_Info.glMajor < 2 || (Renderer_Info.glMajor == 2 && Renderer_Info.glMinor < 1)) {
         DE_ERROR("OpenGL 2.1 support needed at minimum. Consider upgrading your hardware.");
     }
 
@@ -76,21 +77,18 @@ void DE_RendererPresent(void) {
 }
 
 void DE_RendererBackground(void) {
-    if(Renderer_Info.background.type == 0) {
+    if (Renderer_Info.background.type == 0) {
         DE_RendererClearColor(Renderer_Info.background.color);
     }
     else {
         DE_RendererClear(); // Removing it produces artifacts
 
-        vec2 mode; DE_CoreGetResolution(mode);
-        vec2 camera; DE_CameraGetPosition(camera);
+        vec2 mode;
+        DE_CoreGetResolution(mode);
+        vec2 camera;
+        DE_CameraGetPosition(camera);
 
-        vec4 rect = {
-            camera[0],
-            camera[1],
-            mode[0],
-            mode[1]
-        };
+        vec4 rect = {camera[0], camera[1], mode[0], mode[1]};
 
         DE_SpriteBlit(rect, 0, 0, Renderer_Info.background.texture);
     }
@@ -99,9 +97,7 @@ void DE_RendererBackground(void) {
 /* Setters */
 
 void DE_RendererClear(void) {
-    DeccanColor blank = {
-        0, 0, 0, 0
-    };
+    DeccanColor blank = {0, 0, 0, 0};
 
     DE_RendererClearColor(blank);
 }
@@ -128,7 +124,7 @@ void DE_RendererSetBackgroundTexture(DeccanSpriteAsset *texture) {
 void DE_RendererSetTarget(DeccanSpriteAsset *target) {
     DeccanRawTexture *texture;
 
-    if(target == NULL) {
+    if (target == NULL) {
         texture = Renderer_Info.target;
     }
     else {
@@ -136,7 +132,7 @@ void DE_RendererSetTarget(DeccanSpriteAsset *target) {
     }
 
 #ifdef DECCAN_RENDERER_SDL
-    if(SDL_SetRenderTarget(Renderer_Info.renderer, texture) != 0) {
+    if (SDL_SetRenderTarget(Renderer_Info.renderer, texture) != 0) {
         DE_WARN("Cannot set render target: %s", SDL_GetError());
     }
 #else
@@ -162,7 +158,7 @@ void DE_RendererSetPixelSize(vec2 size) {
 
 void DE_RendererSetBlendMode(int blend_mode) {
 #ifdef DECCAN_RENDERER_SDL
-    if(SDL_SetRenderDrawBlendMode(Renderer_Info.renderer, blend_mode) != 0) {
+    if (SDL_SetRenderDrawBlendMode(Renderer_Info.renderer, blend_mode) != 0) {
         DE_WARN("Cannot set blend mode: %s", SDL_GetError());
     }
 #else
@@ -173,11 +169,9 @@ void DE_RendererSetBlendMode(int blend_mode) {
 /* Getters */
 
 DeccanColor DE_RendererGetBackgroundColor(void) {
-    DeccanColor color = {
-        0, 0, 0, 0
-    };
+    DeccanColor color = {0, 0, 0, 0};
 
-    if(Renderer_Info.background.type == 0) {
+    if (Renderer_Info.background.type == 0) {
         color = Renderer_Info.background.color;
     }
 
@@ -187,7 +181,7 @@ DeccanColor DE_RendererGetBackgroundColor(void) {
 DeccanSpriteAsset *DE_RendererGetBackgroundTexture(void) {
     DeccanSpriteAsset *texture = NULL;
 
-    if(Renderer_Info.background.type == 1) {
+    if (Renderer_Info.background.type == 1) {
         texture = Renderer_Info.background.texture;
     }
 
@@ -200,7 +194,7 @@ DeccanSpriteAsset *DE_RendererGetTarget(void) {
 
 #ifdef DECCAN_RENDERER_SDL
     target->texture[0] = SDL_GetRenderTarget(Renderer_Info.renderer);
-    if(target->texture == NULL) {
+    if (target->texture == NULL) {
         DE_ERROR("Render target is NULL");
     }
 #else
@@ -210,9 +204,7 @@ DeccanSpriteAsset *DE_RendererGetTarget(void) {
 }
 
 DeccanColor DE_RendererGetColor(void) {
-    DeccanColor color = {
-        0, 0, 0, 0
-    };
+    DeccanColor color = {0, 0, 0, 0};
 #ifdef DECCAN_RENDERER_SDL
     SDL_GetRenderDrawColor(Renderer_Info.renderer, &color.r, &color.g, &color.b, &color.a);
 #else
