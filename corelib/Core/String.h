@@ -11,3 +11,4 @@
 typedef char *Str;
 
 DE_API char *DE_StringNew(const char *source);
+uint32_t DE_StringHash(const char *string);

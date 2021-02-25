@@ -28,6 +28,7 @@ DE_PRIV struct {
 
     float fpsAverage;
     float deltaTime;
+    uint32_t proc_start_time;
 
     DeccanSettings settings;
     DeccanVarManager vars;
@@ -77,6 +78,9 @@ DE_IMPL int DE_CoreInit(DeccanSettings *settings) {
 
     log_add_fp(Core_Info.logfile, 0);
 #endif
+
+    Core_Info.proc_start_time = SDL_GetTicks();
+    stbds_rand_seed(Core_Info.proc_start_time);
 
     DE_InputInit();
     DE_VarInit(&Core_Info.vars);
@@ -214,6 +218,10 @@ DE_IMPL float DE_CoreGetAverageFramerate(void) {
 
 DE_IMPL float DE_CoreGetDeltaTime(void) {
     return Core_Info.deltaTime;
+}
+
+DE_IMPL uint32_t DE_CoreProcessStartTime(void) {
+    return Core_Info.proc_start_time;
 }
 
 DE_IMPL SDL_Window *DE_CoreGetWindowHandle(void) {

@@ -6,6 +6,7 @@
  */
 
 #include "String.h"
+#include "Core.h"
 #include "Utils.h"
 
 char *DE_StringNew(const char *source) {
@@ -15,4 +16,8 @@ char *DE_StringNew(const char *source) {
     strncpy(string, source, len);
     string[len] = '\0';
     return string;
+}
+
+uint32_t DE_StringHash(const char *string) {
+    return stbds_hash_string(string, DE_CoreProcessStartTime());
 }

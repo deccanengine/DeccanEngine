@@ -21,12 +21,12 @@ SDL_RWops *DE_FSLocateFile(const char *file_name, bool is_binary) {
 const char *DE_FSGetFileContent(SDL_RWops *file) {
     int64_t size = SDL_RWseek(file, 0, SEEK_END);
     SDL_RWseek(file, 0, RW_SEEK_SET);
-    
+
     if (size > 0) {
         char *content = DE_Alloc(sizeof(char), size + 1);
         SDL_RWread(file, content, sizeof(char), size);
         content[size] = '\0';
-    
+
         return content;
     }
 
@@ -42,6 +42,6 @@ const char *DE_FSGetFileExtension(const char *file_name) {
     if (ext) {
         return ext + 1;
     }
-    
+
     return NULL;
 }
