@@ -14,6 +14,7 @@ src = [
     'corelib/Core/Asset.c',
     'corelib/Core/Core.c',
     'corelib/Core/Input/Input.c',
+    'corelib/Core/FileSys.c',
     'corelib/Core/Timer.c',
     'corelib/Core/Variable.c',
     'corelib/Core/String.c',
