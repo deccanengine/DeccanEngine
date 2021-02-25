@@ -23,7 +23,7 @@
     SDL_SetRenderDrawBlendMode(renderer, blend);
 
 void DE_DrawPoint(vec2 pos, DeccanColor color) {
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_RenderDrawPoint(renderer, pos[0] - camera[0], pos[1] - camera[1]);
     DE_DRAW_END();
@@ -33,7 +33,7 @@ void DE_DrawPoint(vec2 pos, DeccanColor color) {
 }
 
 void DE_DrawLine(vec2 start, vec2 end, DeccanColor color) {
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_RenderDrawLine(renderer, start[0] - camera[0], start[1] - camera[1], end[0] - camera[0], end[1] - camera[1]);
     DE_DRAW_END();
@@ -43,7 +43,7 @@ void DE_DrawLine(vec2 start, vec2 end, DeccanColor color) {
 }
 
 void DE_DrawRect(vec4 rect, DeccanColor color) {
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_Rect sr = {rect[0] - camera[0], rect[1] - camera[1], rect[2], rect[3]};
     SDL_RenderDrawRect(renderer, &sr);
@@ -54,7 +54,7 @@ void DE_DrawRect(vec4 rect, DeccanColor color) {
 }
 
 void DE_DrawFilledRect(vec4 rect, DeccanColor color) {
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     DE_DRAW_BEGIN();
     SDL_Rect sr = {rect[0] - camera[0], rect[1] - camera[1], rect[2], rect[3]};
     SDL_RenderFillRect(renderer, &sr);
@@ -69,7 +69,7 @@ void DE_DrawCircle(vec3 circle, DeccanColor color) {
         return;
     }
 
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     DE_DRAW_BEGIN();
     int x = circle[0] - camera[0];
     int y = circle[1] - camera[1];
@@ -107,7 +107,7 @@ void DE_DrawFilledCircle(vec3 circle, DeccanColor color) {
         return;
     }
 
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     DE_DRAW_BEGIN();
     int x = circle[0] - camera[0];
     int y = circle[1] - camera[1];

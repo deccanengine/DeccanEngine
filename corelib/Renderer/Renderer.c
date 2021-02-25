@@ -13,7 +13,7 @@
 #include "../Core/String.h"
 
 static struct {
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     SDL_Renderer *renderer;
 #endif
     DeccanRawTexture *target;
@@ -104,7 +104,7 @@ void DE_RendererClear(void) {
 
 void DE_RendererClearColor(DeccanColor color) {
     DE_RendererSetColor(color);
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     SDL_RenderClear(Renderer_Info.renderer);
 #else
 
@@ -131,7 +131,7 @@ void DE_RendererSetTarget(DeccanSpriteAsset *target) {
         texture = target->texture[0];
     }
 
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     if (SDL_SetRenderTarget(Renderer_Info.renderer, texture) != 0) {
         DE_WARN("Cannot set render target: %s", SDL_GetError());
     }
@@ -141,7 +141,7 @@ void DE_RendererSetTarget(DeccanSpriteAsset *target) {
 }
 
 void DE_RendererSetColor(DeccanColor color) {
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     SDL_SetRenderDrawColor(Renderer_Info.renderer, color.r, color.g, color.b, color.a);
 #else
 
@@ -149,7 +149,7 @@ void DE_RendererSetColor(DeccanColor color) {
 }
 
 void DE_RendererSetPixelSize(vec2 size) {
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     SDL_RenderSetScale(Renderer_Info.renderer, size[0], size[1]);
 #else
 
@@ -157,7 +157,7 @@ void DE_RendererSetPixelSize(vec2 size) {
 }
 
 void DE_RendererSetBlendMode(int blend_mode) {
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     if (SDL_SetRenderDrawBlendMode(Renderer_Info.renderer, blend_mode) != 0) {
         DE_WARN("Cannot set blend mode: %s", SDL_GetError());
     }
@@ -192,7 +192,7 @@ DeccanSpriteAsset *DE_RendererGetTarget(void) {
     DeccanSpriteAsset *target = DE_Alloc(sizeof(DeccanSpriteAsset), 1);
     target->name = DE_StringNew("DE_DE_RendererTarget");
 
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     target->texture[0] = SDL_GetRenderTarget(Renderer_Info.renderer);
     if (target->texture == NULL) {
         DE_ERROR("Render target is NULL");
@@ -205,7 +205,7 @@ DeccanSpriteAsset *DE_RendererGetTarget(void) {
 
 DeccanColor DE_RendererGetColor(void) {
     DeccanColor color = {0, 0, 0, 0};
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     SDL_GetRenderDrawColor(Renderer_Info.renderer, &color.r, &color.g, &color.b, &color.a);
 #else
 
@@ -214,7 +214,7 @@ DeccanColor DE_RendererGetColor(void) {
 }
 
 void DE_RendererGetPixelSize(vec2 size) {
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     SDL_RenderGetScale(Renderer_Info.renderer, &size[0], &size[1]);
 #else
 
@@ -223,7 +223,7 @@ void DE_RendererGetPixelSize(vec2 size) {
 
 DeccanRenderBlendMode DE_RendererGetBlendMode(void) {
     SDL_BlendMode blend = SDL_BLENDMODE_NONE;
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     SDL_GetRenderDrawBlendMode(Renderer_Info.renderer, &blend);
 #else
 

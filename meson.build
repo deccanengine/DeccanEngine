@@ -50,7 +50,7 @@ de_lib = shared_library('deccancore', src,
         '-D_REENTRANT',
         '-DLOG_USE_COLOR',
         '-DDE_DEBUG',
-        '-DDECCAN_RENDERER_SDL'
+        '-DDE_RENDERER_SDL'
     ]
 )
 

@@ -16,7 +16,7 @@ void DE_SpriteSetDeccanColor(DeccanSpriteAsset *texture, DeccanColor color) {
     if(texture == NULL) {
         return;
     }
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     SDL_SetTextureDeccanColorMod(texture->texture[0], color.r, color.g, color.b);
 #else
 
@@ -32,7 +32,7 @@ void BlitInternal(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, Decc
     vec2 camera;
     DE_CameraGetPosition(camera);
 
-#ifdef DECCAN_RENDERER_SDL
+#ifdef DE_RENDERER_SDL
     SDL_Renderer *renderer = DE_RendererGetRenderer();
 
     /* Source rect */
