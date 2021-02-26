@@ -161,6 +161,10 @@
 #include <depends/stb/stb_image.h>
 #include <depends/stb/stb_ds.h>
 
+#include <depends/sx/include/sx/sx.h>
+#include <depends/sx/include/sx/allocator.h>
+#include <depends/sx/include/sx/handle.h>
+
 /////////////////////////////////////////////////
 /* Library API */
 /////////////////////////////////////////////////

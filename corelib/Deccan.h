@@ -13,6 +13,8 @@
 #include "Core/Variable.h"
 #include "Core/Utils.h"
 #include "Core/Timer.h"
+#include "Core/Asset/AssetManager.h"
+#include "Core/Asset/AssetDescriptor.h"
 #include "Core/Input/Input.h"
 #include "Core/Input/InputCodes.h"
 

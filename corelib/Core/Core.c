@@ -16,6 +16,13 @@
 
 #include <depends/flecs/flecs.c>
 #include <depends/log.c/src/log.c>
+#include <depends/sx/src/handle.c>
+#include <depends/sx/src/sx.c>
+#include <depends/sx/src/allocator.c>
+/* Temporary */
+#include <depends/sx/src/threads.c>
+#include <depends/sx/src/string.c>
+#include <depends/sx/src/os.c>
 
 #include "Core.h"
 #include "Input/Input.h"

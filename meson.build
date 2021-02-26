@@ -1,18 +1,24 @@
 project('deccan-engine', 'c', license: 'mit')
 
 cc = meson.get_compiler('c')
-m_dep = cc.find_library('m')
+m_dep  = cc.find_library('m')
+dl_dep = cc.find_library('dl')
 
-dep_incdir = include_directories('proj')
+dep_incdir = [
+    include_directories('proj'),
+    include_directories('depends/sx/include')
+]
 deps = [
     dependency('SDL2'), 
     dependency('SDL2_ttf'), 
-    m_dep
+    m_dep,
+    dl_dep
 ]
 
 src = [
     'corelib/Core/Asset.c',
     'corelib/Core/Core.c',
+    'corelib/Core/Asset/AssetManager.c',
     'corelib/Core/Input/Input.c',
     'corelib/Core/FileSys.c',
     'corelib/Core/Timer.c',
