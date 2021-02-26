@@ -9,6 +9,10 @@ DE_PRIV struct {
     .manager = NULL,
 };
 
+DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager) {
+    Asset_Info.manager = manager;
+}
+
 DE_IMPL void DE_AssetInitManager(size_t count, DeccanAssetDescriptor *desc) {
     Asset_Info.manager->system = NULL;
     Asset_Info.manager->asset_buffer = NULL;

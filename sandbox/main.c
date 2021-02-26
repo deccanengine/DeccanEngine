@@ -124,6 +124,10 @@ void render1() {
 void end1() {
 }
 
+void *LoadTextFile(char *mem, size_t size) {
+    printf("the text file contains: %s", mem);
+}
+
 int main(int argc, char **argv) {
     DE_UNUSED(argc);
     DE_UNUSED(argv);
@@ -135,6 +139,19 @@ int main(int argc, char **argv) {
 	char *hi = DE_AssetGetAsset("test", "hi");
 	printf("text after: %s\n", hi);
 #endif
+
+    DeccanAssetDescriptor desc[] = {
+        {
+            .key = "text",
+            .calls.Create = LoadTextFile,
+        },
+    };
+
+    DeccanAssetManager manager;
+    DE_AssetSetManagerInst(&manager);
+    DE_AssetInitManager(1, desc);
+
+    void *_ = DE_AssetLoadFromFile("text", "test.txt");
 
     DeccanSettings settings = {0};
     settings.title = "Test";
