@@ -10,6 +10,7 @@
 
 #include "Core/Core.h"
 #include "Core/Asset.h"
+#include "Core/FileSys.h"
 #include "Core/Variable.h"
 #include "Core/Utils.h"
 #include "Core/Timer.h"

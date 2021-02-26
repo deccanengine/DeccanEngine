@@ -70,4 +70,7 @@ demo_src = [
     'sandbox/player.c'
 ]
 
-executable('demo', demo_src, link_with: de_lib)
+executable('demo', demo_src, 
+    link_with: de_lib, 
+    dependencies: deps
+)

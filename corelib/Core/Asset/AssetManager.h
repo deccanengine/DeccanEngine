@@ -25,6 +25,6 @@ typedef struct DeccanAssetManager {
 
 DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager);
 
-DE_API void DE_AssetInitManager(size_t count, DeccanAssetDescriptor *desc);
-DE_API void *DE_AssetLoadFromFile(const char *type, const char *file_name);
+DE_API void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, DeccanAssetDescriptor *desc);
+DE_API void *DE_AssetLoad(const char *type, const char *name, SDL_RWops *file);
 DE_API void *DE_AssetGet(const char *type, const char *file_name);

@@ -148,10 +148,11 @@ int main(int argc, char **argv) {
     };
 
     DeccanAssetManager manager;
+    DE_AssetInitManager(&manager, 1, desc);
     DE_AssetSetManagerInst(&manager);
-    DE_AssetInitManager(1, desc);
 
-    void *_ = DE_AssetLoadFromFile("text", "test.txt");
+    SDL_RWops *file = DE_FSLocateFile("test.txt", false);
+    void *_ = DE_AssetLoad("text", "test.txt", file);
 
     DeccanSettings settings = {0};
     settings.title = "Test";
