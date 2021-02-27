@@ -124,8 +124,9 @@ void render1() {
 void end1() {
 }
 
-void *LoadTextFile(char *mem, size_t size) {
-    printf("the text file contains: %s", mem);
+void *LoadTextFile(void *mem, size_t size) {
+    printf("the text file contains: %s", (char*)mem);
+    return mem;
 }
 
 int main(int argc, char **argv) {
@@ -151,8 +152,14 @@ int main(int argc, char **argv) {
     DE_AssetInitManager(&manager, 1, desc);
     DE_AssetSetManagerInst(&manager);
 
-    SDL_RWops *file = DE_FSLocateFile("test.txt", false);
-    void *_ = DE_AssetLoad("text", "test.txt", file);
+    SDL_RWops *file = SDL_RWFromFile("test.txt", "r");
+    DE_AssetLoad("text", "test.txt", file);
+
+    SDL_RWops *file2 = SDL_RWFromFile("test2.txt", "r");
+    DE_AssetLoad("text", "test2.txt", file2);
+
+    char *string = DE_AssetGet("text", "test2.txt");
+    printf("Again: %s\n", string);
 
     DeccanSettings settings = {0};
     settings.title = "Test";
