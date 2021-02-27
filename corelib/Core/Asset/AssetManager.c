@@ -22,6 +22,33 @@ DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, Decc
     manager->pool = sx_handle_create_pool(sx_alloc_malloc(), POOL_INITIAL_CAP);
 }
 
+DE_IMPL void DE_AssetDestroyManager(DeccanAssetManager *manager) {
+    for (int i = 0; i < stbds_shlen(manager->system); i++) {
+        DeccanAssetDescriptor desc = stbds_shgets(manager->desc, manager->system[i].key); 
+        Asset *asset_class  = manager->system[i].value;
+
+        for (int j = 0; j < stbds_shlen(asset_class); j++) {
+            Asset asset_entry = asset_class[j];
+
+            uint32_t handle = asset_entry.value;
+            uint32_t index = sx_handle_index(handle);
+
+            RawAsset asset = manager->asset_buffer[index];
+            desc.calls.Destroy(asset.internal_data);    
+        }
+    }
+    
+    sx_handle_destroy_pool(manager->pool, sx_alloc_malloc());
+    
+    if (manager->system != NULL) {
+        stbds_shfree(manager->system);
+    }
+
+    if (manager->asset_buffer != NULL) {
+        stbds_arrfree(manager->asset_buffer);
+    }
+}
+
 DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager) {
     Asset_Info.manager = manager;
 }

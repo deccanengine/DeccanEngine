@@ -129,6 +129,10 @@ void *LoadTextFile(void *mem, size_t size) {
     return mem;
 }
 
+void UnloadTextFile(void *asset) {
+    return;
+}
+
 int main(int argc, char **argv) {
     DE_UNUSED(argc);
     DE_UNUSED(argv);
@@ -145,6 +149,7 @@ int main(int argc, char **argv) {
         {
             .key = "text",
             .calls.Create = LoadTextFile,
+            .calls.Destroy = UnloadTextFile,
         },
     };
 
@@ -177,6 +182,9 @@ int main(int argc, char **argv) {
 
         DE_AppUpdate();
     }
+
+    DE_AssetDestroyManager(&manager);
+
     atexit(DE_AppQuit);
 
     return 0;

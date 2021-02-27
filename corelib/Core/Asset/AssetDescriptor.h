@@ -3,7 +3,7 @@
 
 typedef struct AssetCallbacks {
     void *(*Create)(void *mem, size_t size);
-    void  (*Destroy)();
+    void  (*Destroy)(void *asset);
 } AssetCallbacks;
 
 typedef struct DeccanAssetDescriptor {
