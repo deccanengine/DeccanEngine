@@ -9,5 +9,6 @@ typedef struct AssetCallbacks {
 typedef struct DeccanAssetDescriptor {
     const char *key;
     const char **ext; /* Unused for now! */
+    bool is_binary;   /* Unused for now! */
     AssetCallbacks calls;
 } DeccanAssetDescriptor;

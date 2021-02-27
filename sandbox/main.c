@@ -152,11 +152,8 @@ int main(int argc, char **argv) {
     DE_AssetInitManager(&manager, 1, desc);
     DE_AssetSetManagerInst(&manager);
 
-    SDL_RWops *file = SDL_RWFromFile("test.txt", "r");
-    DE_AssetLoad("text", "test.txt", file);
-
-    SDL_RWops *file2 = SDL_RWFromFile("test2.txt", "r");
-    DE_AssetLoad("text", "test2.txt", file2);
+    DE_AssetLoadFromFile("text", "test.txt", "test.txt", false);
+    DE_AssetLoadFromFile("text", "test2.txt", "test2.txt", false);
 
     char *string = DE_AssetGet("text", "test2.txt");
     printf("Again: %s\n", string);

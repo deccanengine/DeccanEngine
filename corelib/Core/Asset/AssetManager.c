@@ -9,10 +9,6 @@ DE_PRIV struct {
     .manager = NULL,
 };
 
-DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager) {
-    Asset_Info.manager = manager;
-}
-
 DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, DeccanAssetDescriptor *desc) {
     manager->system = NULL;
     manager->asset_buffer = NULL;
@@ -24,6 +20,10 @@ DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, Decc
     }
 
     manager->pool = sx_handle_create_pool(sx_alloc_malloc(), POOL_INITIAL_CAP);
+}
+
+DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager) {
+    Asset_Info.manager = manager;
 }
 
 DE_IMPL void *DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) {
@@ -57,6 +57,24 @@ DE_IMPL void *DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) 
     stbds_arrput(Asset_Info.manager->asset_buffer, raw_asset);
 
     return asset;
+}
+
+DE_IMPL void *DE_AssetLoadFromFile(const char *type, const char *name, const char *file_name, bool is_binary) {
+    SDL_RWops *file = SDL_RWFromFile(file_name, (is_binary ? "rb" : "r"));
+    if (file == NULL) {
+        DE_ERROR("Cannot load file: %s: %s", file_name, SDL_GetError());
+        return NULL;
+    }
+    return DE_AssetLoad(type, name, file);
+}
+
+DE_IMPL void *DE_AssetLoadFromMem(const char *type, const char *name, size_t size, void *memory) {
+    SDL_RWops *file = SDL_RWFromMem(memory, size);
+    if (file == NULL) {
+        DE_ERROR("Cannot read memory block: %s", SDL_GetError());
+        return NULL;
+    }
+    return DE_AssetLoad(type, name, file);
 }
 
 DE_IMPL void *DE_AssetGet(const char *type, const char *file_name) {
