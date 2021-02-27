@@ -1,6 +1,17 @@
+/* Deccan Game Engine - C11 2D SDL Game Engine.
+ * Copyright 2020, 2021 Ayush Bardhan Tripathy
+ *
+ * This software is licensed under MIT License.
+ * See LICENSE.md included with this package for more info.
+ */
+
 #pragma once
 #include "../../Config.h"
 #include "AssetDescriptor.h"
+
+/////////////////////////////////////////////////
+// Structs
+////////////////////////////////////////////////
 
 typedef struct Asset {
     const char *key;
@@ -22,6 +33,10 @@ typedef struct DeccanAssetManager {
     RawAsset *asset_buffer;
     sx_handle_pool *pool;
 } DeccanAssetManager;
+
+/////////////////////////////////////////////////
+// Asset Manager
+////////////////////////////////////////////////
 
 DE_API void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, DeccanAssetDescriptor *desc);
 DE_API void DE_AssetDestroyManager(DeccanAssetManager *manager);

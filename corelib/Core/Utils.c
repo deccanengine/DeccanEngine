@@ -24,7 +24,8 @@ DE_IMPL void DE_Free(void *mem) {
     }
 }
 
-DE_PRIV void *SXAllocFunc(void *ptr, size_t size, uint32_t align, const char *file, const char *func, uint32_t line, void *user_data) {
+DE_PRIV void *SXAllocFunc(
+    void *ptr, size_t size, uint32_t align, const char *file, const char *func, uint32_t line, void *user_data) {
     DE_UNUSED(align);
     DE_UNUSED(file);
     DE_UNUSED(func);
@@ -46,6 +47,6 @@ DE_PRIV void *SXAllocFunc(void *ptr, size_t size, uint32_t align, const char *fi
 }
 
 DE_IMPL sx_alloc *DE_GetSXAlloc() {
-    static sx_alloc alloc = { SXAllocFunc , NULL };
+    static sx_alloc alloc = {SXAllocFunc, NULL};
     return &alloc;
 }

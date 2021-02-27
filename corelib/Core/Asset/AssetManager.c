@@ -1,3 +1,10 @@
+/* Deccan Game Engine - C11 2D SDL Game Engine.
+ * Copyright 2020, 2021 Ayush Bardhan Tripathy
+ *
+ * This software is licensed under MIT License.
+ * See LICENSE.md included with this package for more info.
+ */
+
 #include "AssetManager.h"
 #include "../Utils.h"
 #include "../FileSys.h"
@@ -13,7 +20,7 @@ DE_PRIV struct {
 DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, DeccanAssetDescriptor *desc) {
     manager->system = NULL;
     manager->asset_buffer = NULL;
-    
+
     manager->desc = NULL;
 
     for (int i = 0; i < count; i++) {
@@ -25,8 +32,8 @@ DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, Decc
 
 DE_IMPL void DE_AssetDestroyManager(DeccanAssetManager *manager) {
     for (int i = 0; i < stbds_shlen(manager->system); i++) {
-        DeccanAssetDescriptor desc = stbds_shgets(manager->desc, manager->system[i].key); 
-        Asset *asset_class  = manager->system[i].value;
+        DeccanAssetDescriptor desc = stbds_shgets(manager->desc, manager->system[i].key);
+        Asset *asset_class = manager->system[i].value;
 
         for (int j = 0; j < stbds_shlen(asset_class); j++) {
             Asset asset_entry = asset_class[j];
@@ -35,12 +42,12 @@ DE_IMPL void DE_AssetDestroyManager(DeccanAssetManager *manager) {
             uint32_t index = sx_handle_index(handle);
 
             RawAsset asset = manager->asset_buffer[index];
-            desc.calls.Destroy(asset.internal_data);    
+            desc.calls.Destroy(asset.internal_data);
         }
     }
-    
-    sx_handle_destroy_pool(manager->pool, DE_GetSXAlloc()); 
-    
+
+    sx_handle_destroy_pool(manager->pool, DE_GetSXAlloc());
+
     if (manager->system != NULL) {
         stbds_shfree(manager->system);
     }
@@ -81,7 +88,7 @@ DE_IMPL void *DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) 
     };
 
     stbds_shputs(asset_class, asset_entry);
-    stbds_shput(Asset_Info.manager->system, type, asset_class); 
+    stbds_shput(Asset_Info.manager->system, type, asset_class);
 
     RawAsset raw_asset = {
         .internal_data = asset,
@@ -122,7 +129,7 @@ DE_IMPL void *DE_AssetGet(const char *type, const char *name) {
 DE_IMPL void DE_AssetRemove(const char *type, const char *name) {
     DeccanAssetDescriptor desc = stbds_shgets(Asset_Info.manager->desc, type);
     Asset *asset_class = stbds_shget(Asset_Info.manager->system, type);
-    
+
     uint32_t handle = stbds_shget(asset_class, name);
     uint32_t index = sx_handle_index(handle);
 
