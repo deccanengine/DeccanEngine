@@ -71,6 +71,10 @@ DE_IMPL void *DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) 
 
     Asset *asset_class = stbds_shget(Asset_Info.manager->system, type);
 
+    if (sx_handle_full(Asset_Info.manager->pool)) {
+        sx_handle_grow_pool(Asset_Info.manager->pool, DE_GetSXAlloc());
+    }
+
     Asset asset_entry = {
         .key = name,
         .value = sx_handle_new(Asset_Info.manager->pool),
