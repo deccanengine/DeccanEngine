@@ -1,4 +1,5 @@
 #include "AssetManager.h"
+#include "../Utils.h"
 #include "../FileSys.h"
 
 #define POOL_INITIAL_CAP 100
@@ -19,7 +20,7 @@ DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, Decc
         stbds_shputs(manager->desc, desc[i]);
     }
 
-    manager->pool = sx_handle_create_pool(sx_alloc_malloc(), POOL_INITIAL_CAP);
+    manager->pool = sx_handle_create_pool(DE_GetSXAlloc(), POOL_INITIAL_CAP);
 }
 
 DE_IMPL void DE_AssetDestroyManager(DeccanAssetManager *manager) {
@@ -38,7 +39,7 @@ DE_IMPL void DE_AssetDestroyManager(DeccanAssetManager *manager) {
         }
     }
     
-    sx_handle_destroy_pool(manager->pool, sx_alloc_malloc());
+    sx_handle_destroy_pool(manager->pool, DE_GetSXAlloc()); 
     
     if (manager->system != NULL) {
         stbds_shfree(manager->system);
