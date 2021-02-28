@@ -74,7 +74,7 @@ DE_IMPL void *DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) 
     DeccanAssetDescriptor desc = stbds_shgets(Asset_Info.manager->desc, type);
 
     /* TODO: Actually send size */
-    void *asset = desc.calls.Create(data, 1);
+    void *asset = desc.calls.Create(data, SDL_RWsize(file));
     if (asset == NULL) {
         DE_ERROR("Could not create asset: %s", name);
         return NULL;

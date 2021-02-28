@@ -1,4 +1,5 @@
-#include "../corelib/Deccan.h"
+#pragma once
+#include <corelib/Deccan.h>
 
 void _player_begin(DeccanGameObject this);
 void _player_step(DeccanGameObject this);

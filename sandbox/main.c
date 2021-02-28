@@ -1,5 +1,6 @@
 #include "../corelib/Deccan.h"
 #include "player.h"
+#include "Texture.h"
 
 uint64_t count = 0;
 DeccanTimer timer;
@@ -54,6 +55,8 @@ void begin() {
     DE_AssetLoadAnimatedSprite("arrow0", "arrow0.png", "arrow1.png", "arrow2.png", "arrow3.png", NULL);
     DE_AssetLoadFont("arial", "arial.ttf");
 
+    DE_AssetLoadFromFile("Texture", "logo.png", "logo.png", true);
+
     DE_TimerStart(&timer);
 
     DE_RendererSetBackgroundColor((DeccanColor){255, 255, 255, 255});
@@ -82,6 +85,8 @@ void step() {
 
         DE_SceneAddScene(scene, true);
     }
+
+    SDL_RenderCopy(DE_RendererGetRenderer(), DE_AssetGet("Texture", "logo.png"), NULL, &(SDL_Rect){265, 228, 265, 228});
 }
 
 void render() {
@@ -166,10 +171,15 @@ int main(int argc, char **argv) {
             .calls.Create = LoadTextFile2,
             .calls.Destroy = UnloadTextFile2,
         },
+        {
+            .key = "Texture",
+            .calls.Create = CreateSprite,
+            .calls.Destroy = DestroySprite,
+        },
     };
 
     DeccanAssetManager manager;
-    DE_AssetInitManager(&manager, 2, desc);
+    DE_AssetInitManager(&manager, 3, desc);
     DE_AssetSetManagerInst(&manager);
 
     DE_AssetLoadFromFile("text", "test.txt", "test.txt", false);
