@@ -65,7 +65,11 @@ DE_IMPL void *DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) 
     if (file == NULL) {
         return NULL;
     }
+
     char *data = DE_FSGetFileContent(file);
+    if (data == NULL) {
+        return NULL;
+    }
 
     DeccanAssetDescriptor desc = stbds_shgets(Asset_Info.manager->desc, type);
 
@@ -120,17 +124,25 @@ DE_IMPL void *DE_AssetGet(const char *type, const char *name) {
     Asset *asset_class = stbds_shget(Asset_Info.manager->system, type);
 
     uint32_t handle = stbds_shget(asset_class, name);
+    if (sx_handle_valid(Asset_Info.manager->pool, handle) == false) {
+        return NULL;
+    }
+
     uint32_t index = sx_handle_index(handle);
 
     RawAsset asset = Asset_Info.manager->asset_buffer[index];
     return asset.internal_data;
 }
 
-DE_IMPL void DE_AssetRemove(const char *type, const char *name) {
+DE_IMPL bool DE_AssetRemove(const char *type, const char *name) {
     DeccanAssetDescriptor desc = stbds_shgets(Asset_Info.manager->desc, type);
     Asset *asset_class = stbds_shget(Asset_Info.manager->system, type);
 
     uint32_t handle = stbds_shget(asset_class, name);
+    if (sx_handle_valid(Asset_Info.manager->pool, handle) == false) {
+        return false;
+    }
+
     uint32_t index = sx_handle_index(handle);
 
     sx_handle_del(Asset_Info.manager->pool, handle);
@@ -139,4 +151,6 @@ DE_IMPL void DE_AssetRemove(const char *type, const char *name) {
     desc.calls.Destroy(asset.internal_data);
 
     stbds_arrdel(Asset_Info.manager->asset_buffer, index);
+
+    return true;
 }

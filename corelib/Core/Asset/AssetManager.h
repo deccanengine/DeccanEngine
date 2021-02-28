@@ -49,4 +49,4 @@ DE_API void *DE_AssetLoadFromMem(const char *type, const char *name, size_t size
 
 DE_API void *DE_AssetGet(const char *type, const char *file_name);
 
-DE_API void DE_AssetRemove(const char *type, const char *name);
+DE_API bool DE_AssetRemove(const char *type, const char *name);
