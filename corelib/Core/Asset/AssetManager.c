@@ -124,7 +124,8 @@ DE_IMPL void *DE_AssetGet(const char *type, const char *name) {
     Asset *asset_class = stbds_shget(Asset_Info.manager->system, type);
 
     uint32_t handle = stbds_shget(asset_class, name);
-    if (sx_handle_valid(Asset_Info.manager->pool, handle) == false) {
+    if (handle == 0 || sx_handle_valid(Asset_Info.manager->pool, handle) == false) {
+        DE_ERROR("Cannot find asset: %s", name);
         return NULL;
     }
 
@@ -139,7 +140,8 @@ DE_IMPL bool DE_AssetRemove(const char *type, const char *name) {
     Asset *asset_class = stbds_shget(Asset_Info.manager->system, type);
 
     uint32_t handle = stbds_shget(asset_class, name);
-    if (sx_handle_valid(Asset_Info.manager->pool, handle) == false) {
+    if (handle == 0 || sx_handle_valid(Asset_Info.manager->pool, handle) == false) {
+        DE_ERROR("Asset '%s' cannot be removed because it is not found", name);
         return false;
     }
 

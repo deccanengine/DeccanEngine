@@ -133,6 +133,16 @@ void UnloadTextFile(void *asset) {
     return;
 }
 
+void *LoadTextFile2(void *mem, size_t size) {
+    printf("THIS contains: %s", (char*)mem);
+    return mem;
+}
+
+void UnloadTextFile2(void *asset) {
+    return;
+}
+
+
 int main(int argc, char **argv) {
     DE_UNUSED(argc);
     DE_UNUSED(argv);
@@ -151,14 +161,19 @@ int main(int argc, char **argv) {
             .calls.Create = LoadTextFile,
             .calls.Destroy = UnloadTextFile,
         },
+        {
+            .key = "text2",
+            .calls.Create = LoadTextFile2,
+            .calls.Destroy = UnloadTextFile2,
+        },
     };
 
     DeccanAssetManager manager;
-    DE_AssetInitManager(&manager, 1, desc);
+    DE_AssetInitManager(&manager, 2, desc);
     DE_AssetSetManagerInst(&manager);
 
     DE_AssetLoadFromFile("text", "test.txt", "test.txt", false);
-    DE_AssetLoadFromFile("text", "test2.txt", "test2.txt", false);
+    DE_AssetLoadFromFile("text2", "test2.txt", "test2.txt", false);
 
     char *string = DE_AssetGet("text", "test2.txt");
     printf("Again: %s\n", string);
