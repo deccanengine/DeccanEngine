@@ -158,6 +158,7 @@
 
 #include <depends/flecs/flecs.h>
 
+#define STBDS_NO_SHORT_NAMES
 #include <depends/stb/stb_image.h>
 #include <depends/stb/stb_ds.h>
 

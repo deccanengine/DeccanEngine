@@ -45,7 +45,8 @@ src = [
     'corelib/Scene/Components/Collider.c',
     'corelib/Scene/Components/State2D.c',
 
-    'corelib/Main/Main.c'
+    'corelib/Main/Main.c',
+    'corelib/Main/Sources.c',
 ]
 
 de_lib = shared_library('deccancore', src,
