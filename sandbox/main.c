@@ -59,7 +59,7 @@ void begin() {
 
     DE_TimerStart(&timer);
 
-    DE_RendererSetBackgroundColor((DeccanColor){255, 255, 255, 255});
+    DE_SRendererSetBackgroundColor((DeccanColor){255, 255, 255, 255});
 
     text = DE_FontText(DE_AssetGetFont("arial"), "Hello! This is Deccan Game Engine", 0, (DeccanColor){0, 0, 0, 0});
 
@@ -86,7 +86,8 @@ void step() {
         DE_SceneAddScene(scene, true);
     }
 
-    SDL_RenderCopy(DE_RendererGetRenderer(), DE_AssetGet("Texture", "logo.png"), NULL, &(SDL_Rect){265, 228, 265, 228});
+    SDL_RenderCopy(
+        DE_SRendererGetRenderer(), DE_AssetGet("Texture", "logo.png"), NULL, &(SDL_Rect){265, 228, 265, 228});
 }
 
 void render() {
@@ -130,7 +131,7 @@ void end1() {
 }
 
 void *LoadTextFile(void *mem, size_t size) {
-    printf("the text file contains: %s", (char*)mem);
+    printf("the text file contains: %s", (char *)mem);
     return mem;
 }
 
@@ -139,14 +140,13 @@ void UnloadTextFile(void *asset) {
 }
 
 void *LoadTextFile2(void *mem, size_t size) {
-    printf("THIS contains: %s", (char*)mem);
+    printf("THIS contains: %s", (char *)mem);
     return mem;
 }
 
 void UnloadTextFile2(void *asset) {
     return;
 }
-
 
 int main(int argc, char **argv) {
     DE_UNUSED(argc);

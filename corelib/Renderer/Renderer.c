@@ -31,11 +31,11 @@ static struct {
 
 } Renderer_Info = {0};
 
-SDL_Renderer *DE_RendererGetRenderer(void) {
+SDL_Renderer *DE_SRendererGetRenderer(void) {
     return Renderer_Info.renderer;
 }
 
-void DE_RendererInit(SDL_Window *window) {
+void DE_SRendererInit(SDL_Window *window) {
     if (!window)
         return;
 
@@ -68,20 +68,20 @@ void DE_RendererInit(SDL_Window *window) {
     Renderer_Info.target = SDL_GetRenderTarget(Renderer_Info.renderer);
 }
 
-void DE_RendererQuit(void) {
+void DE_SRendererQuit(void) {
     SDL_DestroyRenderer(Renderer_Info.renderer);
 }
 
-void DE_RendererPresent(void) {
+void DE_SRendererPresent(void) {
     SDL_RenderPresent(Renderer_Info.renderer);
 }
 
-void DE_RendererBackground(void) {
+void DE_SRendererBackground(void) {
     if (Renderer_Info.background.type == 0) {
-        DE_RendererClearColor(Renderer_Info.background.color);
+        DE_SRendererClearColor(Renderer_Info.background.color);
     }
     else {
-        DE_RendererClear(); // Removing it produces artifacts
+        DE_SRendererClear(); // Removing it produces artifacts
 
         vec2 mode;
         DE_CoreGetResolution(mode);
@@ -96,14 +96,14 @@ void DE_RendererBackground(void) {
 
 /* Setters */
 
-void DE_RendererClear(void) {
+void DE_SRendererClear(void) {
     DeccanColor blank = {0, 0, 0, 0};
 
-    DE_RendererClearColor(blank);
+    DE_SRendererClearColor(blank);
 }
 
-void DE_RendererClearColor(DeccanColor color) {
-    DE_RendererSetColor(color);
+void DE_SRendererClearColor(DeccanColor color) {
+    DE_SRendererSetColor(color);
 #ifdef DE_RENDERER_SDL
     SDL_RenderClear(Renderer_Info.renderer);
 #else
@@ -111,17 +111,17 @@ void DE_RendererClearColor(DeccanColor color) {
 #endif
 }
 
-void DE_RendererSetBackgroundColor(DeccanColor color) {
+void DE_SRendererSetBackgroundColor(DeccanColor color) {
     Renderer_Info.background.type = 0;
     Renderer_Info.background.color = color;
 }
 
-void DE_RendererSetBackgroundTexture(DeccanSpriteAsset *texture) {
+void DE_SRendererSetBackgroundTexture(DeccanSpriteAsset *texture) {
     Renderer_Info.background.type = 1;
     Renderer_Info.background.texture = texture;
 }
 
-void DE_RendererSetTarget(DeccanSpriteAsset *target) {
+void DE_SRendererSetTarget(DeccanSpriteAsset *target) {
     DeccanRawTexture *texture;
 
     if (target == NULL) {
@@ -140,7 +140,7 @@ void DE_RendererSetTarget(DeccanSpriteAsset *target) {
 #endif
 }
 
-void DE_RendererSetColor(DeccanColor color) {
+void DE_SRendererSetColor(DeccanColor color) {
 #ifdef DE_RENDERER_SDL
     SDL_SetRenderDrawColor(Renderer_Info.renderer, color.r, color.g, color.b, color.a);
 #else
@@ -148,7 +148,7 @@ void DE_RendererSetColor(DeccanColor color) {
 #endif
 }
 
-void DE_RendererSetPixelSize(vec2 size) {
+void DE_SRendererSetPixelSize(vec2 size) {
 #ifdef DE_RENDERER_SDL
     SDL_RenderSetScale(Renderer_Info.renderer, size[0], size[1]);
 #else
@@ -156,7 +156,7 @@ void DE_RendererSetPixelSize(vec2 size) {
 #endif
 }
 
-void DE_RendererSetBlendMode(int blend_mode) {
+void DE_SRendererSetBlendMode(int blend_mode) {
 #ifdef DE_RENDERER_SDL
     if (SDL_SetRenderDrawBlendMode(Renderer_Info.renderer, blend_mode) != 0) {
         DE_WARN("Cannot set blend mode: %s", SDL_GetError());
@@ -168,7 +168,7 @@ void DE_RendererSetBlendMode(int blend_mode) {
 
 /* Getters */
 
-DeccanColor DE_RendererGetBackgroundColor(void) {
+DeccanColor DE_SRendererGetBackgroundColor(void) {
     DeccanColor color = {0, 0, 0, 0};
 
     if (Renderer_Info.background.type == 0) {
@@ -178,7 +178,7 @@ DeccanColor DE_RendererGetBackgroundColor(void) {
     return color;
 }
 
-DeccanSpriteAsset *DE_RendererGetBackgroundTexture(void) {
+DeccanSpriteAsset *DE_SRendererGetBackgroundTexture(void) {
     DeccanSpriteAsset *texture = NULL;
 
     if (Renderer_Info.background.type == 1) {
@@ -188,9 +188,9 @@ DeccanSpriteAsset *DE_RendererGetBackgroundTexture(void) {
     return texture;
 }
 
-DeccanSpriteAsset *DE_RendererGetTarget(void) {
+DeccanSpriteAsset *DE_SRendererGetTarget(void) {
     DeccanSpriteAsset *target = DE_Alloc(sizeof(DeccanSpriteAsset), 1);
-    target->name = DE_StringNew("DE_DE_RendererTarget");
+    target->name = DE_StringNew("DE_DE_SRendererTarget");
 
 #ifdef DE_RENDERER_SDL
     target->texture[0] = SDL_GetRenderTarget(Renderer_Info.renderer);
@@ -203,7 +203,7 @@ DeccanSpriteAsset *DE_RendererGetTarget(void) {
     return target;
 }
 
-DeccanColor DE_RendererGetColor(void) {
+DeccanColor DE_SRendererGetColor(void) {
     DeccanColor color = {0, 0, 0, 0};
 #ifdef DE_RENDERER_SDL
     SDL_GetRenderDrawColor(Renderer_Info.renderer, &color.r, &color.g, &color.b, &color.a);
@@ -213,7 +213,7 @@ DeccanColor DE_RendererGetColor(void) {
     return color;
 }
 
-void DE_RendererGetPixelSize(vec2 size) {
+void DE_SRendererGetPixelSize(vec2 size) {
 #ifdef DE_RENDERER_SDL
     SDL_RenderGetScale(Renderer_Info.renderer, &size[0], &size[1]);
 #else
@@ -221,7 +221,7 @@ void DE_RendererGetPixelSize(vec2 size) {
 #endif
 }
 
-DeccanRenderBlendMode DE_RendererGetBlendMode(void) {
+DeccanRenderBlendMode DE_SRendererGetBlendMode(void) {
     SDL_BlendMode blend = SDL_BLENDMODE_NONE;
 #ifdef DE_RENDERER_SDL
     SDL_GetRenderDrawBlendMode(Renderer_Info.renderer, &blend);

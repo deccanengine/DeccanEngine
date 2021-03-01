@@ -33,7 +33,7 @@ void BlitInternal(vec4 rect, vec4 dim, vec2 scale, double angle, Flip flip, Decc
     DE_CameraGetPosition(camera);
 
 #ifdef DE_RENDERER_SDL
-    SDL_Renderer *renderer = DE_RendererGetRenderer();
+    SDL_Renderer *renderer = DE_SRendererGetRenderer();
 
     /* Source rect */
     SDL_Rect src = {dim[0], dim[1], dim[2], dim[3]};

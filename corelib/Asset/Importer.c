@@ -64,7 +64,7 @@ DE_PRIV DeccanRawTexture *LoadSprite(const char *path) {
         stbi_image_free(data);
     }
 
-    tex = SDL_CreateTextureFromSurface(DE_RendererGetRenderer(), img);
+    tex = SDL_CreateTextureFromSurface(DE_SRendererGetRenderer(), img);
 
     SDL_FreeSurface(img);
     stbi_image_free(data);

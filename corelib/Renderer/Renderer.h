@@ -31,22 +31,22 @@ typedef enum {
 // Renderer functions
 ////////////////////////////////////////////////
 
-DE_API SDL_Renderer *DE_RendererGetRenderer(void);
-DE_API void DE_RendererInit(SDL_Window *window);
-DE_API void DE_RendererQuit(void);
-DE_API void DE_RendererPresent(void);
-DE_API void DE_RendererBackground(void);
-DE_API void DE_RendererClear(void);
-DE_API void DE_RendererClearColor(DeccanColor color);
-DE_API void DE_RendererSetBackgroundColor(DeccanColor color);
-DE_API void DE_RendererSetBackgroundTexture(DeccanSpriteAsset *texture);
-DE_API void DE_RendererSetTarget(DeccanSpriteAsset *target);
-DE_API void DE_RendererSetColor(DeccanColor color);
-DE_API void DE_RendererSetPixelSize(vec2 size);
-DE_API void DE_RendererSetBlendMode(int blend_mode);
-DE_API DeccanColor DE_RendererGetBackgroundColor(void);
-DE_API DeccanSpriteAsset *DE_RendererGetBackgroundTexture(void);
-DE_API DeccanSpriteAsset *DE_RendererGetTarget(void);
-DE_API DeccanColor DE_RendererGetColor(void);
-DE_API void DE_RendererGetPixelSize(vec2 size);
-DE_API DeccanRenderBlendMode DE_RendererGetBlendMode(void);
+DE_API SDL_Renderer *DE_SRendererGetRenderer(void);
+DE_API void DE_SRendererInit(SDL_Window *window);
+DE_API void DE_SRendererQuit(void);
+DE_API void DE_SRendererPresent(void);
+DE_API void DE_SRendererBackground(void);
+DE_API void DE_SRendererClear(void);
+DE_API void DE_SRendererClearColor(DeccanColor color);
+DE_API void DE_SRendererSetBackgroundColor(DeccanColor color);
+DE_API void DE_SRendererSetBackgroundTexture(DeccanSpriteAsset *texture);
+DE_API void DE_SRendererSetTarget(DeccanSpriteAsset *target);
+DE_API void DE_SRendererSetColor(DeccanColor color);
+DE_API void DE_SRendererSetPixelSize(vec2 size);
+DE_API void DE_SRendererSetBlendMode(int blend_mode);
+DE_API DeccanColor DE_SRendererGetBackgroundColor(void);
+DE_API DeccanSpriteAsset *DE_SRendererGetBackgroundTexture(void);
+DE_API DeccanSpriteAsset *DE_SRendererGetTarget(void);
+DE_API DeccanColor DE_SRendererGetColor(void);
+DE_API void DE_SRendererGetPixelSize(vec2 size);
+DE_API DeccanRenderBlendMode DE_SRendererGetBlendMode(void);

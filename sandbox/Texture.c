@@ -36,7 +36,7 @@ void *CreateSprite(char *mem, size_t size) {
         stbi_image_free(data);
     }
 
-    tex = SDL_CreateTextureFromSurface(DE_RendererGetRenderer(), img);
+    tex = SDL_CreateTextureFromSurface(DE_SRendererGetRenderer(), img);
 
     SDL_FreeSurface(img);
     stbi_image_free(data);

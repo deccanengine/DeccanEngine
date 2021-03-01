@@ -12,14 +12,14 @@
 #define DE_DRAW_BEGIN()                                                                                                \
     vec2 camera;                                                                                                       \
     DE_CameraGetPosition(camera);                                                                                      \
-    SDL_Renderer *renderer = DE_RendererGetRenderer();                                                                 \
-    DeccanColor def = DE_RendererGetColor();                                                                           \
+    SDL_Renderer *renderer = DE_SRendererGetRenderer();                                                                \
+    DeccanColor def = DE_SRendererGetColor();                                                                          \
     SDL_BlendMode blend;                                                                                               \
-    DE_RendererSetColor(color);                                                                                        \
+    DE_SRendererSetColor(color);                                                                                       \
     SDL_GetRenderDrawBlendMode(renderer, &blend);
 
 #define DE_DRAW_END()                                                                                                  \
-    DE_RendererSetColor(def);                                                                                          \
+    DE_SRendererSetColor(def);                                                                                         \
     SDL_SetRenderDrawBlendMode(renderer, blend);
 
 void DE_DrawPoint(vec2 pos, DeccanColor color) {
