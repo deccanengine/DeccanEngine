@@ -6,7 +6,8 @@ dl_dep = cc.find_library('dl')
 
 dep_incdir = [
     include_directories('proj'),
-    include_directories('depends/sx/include')
+    include_directories('depends/sx/include'),
+    include_directories('depends/glad/include')
 ]
 deps = [
     dependency('SDL2'), 
@@ -37,6 +38,12 @@ src = [
     'corelib/Renderer/Renderer.c',
     'corelib/Renderer/TextRendering.c',
     'corelib/Renderer/Texture.c',
+
+    'corelib/Renderer-sokol/Camera.c',
+    'corelib/Renderer-sokol/GenericPipeline.c',
+    'corelib/Renderer-sokol/PrimitiveGeometry.c',
+    'corelib/Renderer-sokol/Renderer.c',
+    'corelib/Renderer-sokol/Texture.c',
 
     'corelib/Scene/Flecs.c',
     'corelib/Scene/Object.c',

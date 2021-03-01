@@ -34,6 +34,13 @@
 #include "Renderer/Texture.h"
 #include "Renderer/TextRendering.h"
 
+#include "Renderer-sokol/Camera.h"
+#include "Renderer-sokol/GenericPipeline.h"
+#include "Renderer-sokol/PrimitiveGeometry.h"
+#include "Renderer-sokol/Renderer.h"
+#include "Renderer-sokol/RenderTypes.h"
+#include "Renderer-sokol/Texture.h"
+
 DE_API bool DE_AppInit(DeccanSettings *settings);
 DE_API void DE_AppUpdate(void);
 DE_API void DE_AppQuit(void);
