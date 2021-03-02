@@ -8,10 +8,21 @@
 #include "../Deccan.h"
 
 bool DE_AppInit(DeccanSettings *settings) {
-    DE_CoreInit(settings);
+    /* Temporarily here */
+    int flags = SDL_INIT_VIDEO;
+    if (SDL_Init(flags) != 0) {
+        DE_FATAL("Could not initialize SDL2: %s", SDL_GetError());
+    }
 
-    /* Create renderer */
-    DE_SRendererInit(DE_CoreGetWindowHandle());
+    if (TTF_Init() != 0) {
+        DE_FATAL("Could not initialize SDL2_ttf: %s", TTF_GetError());
+    }
+
+    DE_RendererPreInit();
+    DE_CoreInit(settings);
+    DE_RendererCreate(DE_CoreGetWindowHandle());
+
+    DE_GenericPipelineCreate();
 
     return true;
 }
@@ -28,6 +39,8 @@ void DE_AppUpdate(void) {
 
     DeccanSettings *settings = DE_CoreGetSettings();
 
+    DE_SceneMakeChanges();
+
     while (DE_CoreIsRunning()) {
         DE_TimerStart(&frmTimer);
 
@@ -39,12 +52,17 @@ void DE_AppUpdate(void) {
 
         DE_CoreUpdate(fpsAverage, deltaTime);
 
-        /* Render the background before rendering anything */
-        DE_SRendererBackground();
+        vec2s viewport; 
+        DE_CoreGetResolution(viewport.raw);
+        DE_RendererSetViewport(viewport);
+
+        /* Update and render the scene */
+        DE_GenericPipelineBegin(DE_SceneGetCamera()); 
         DE_SceneUpdate();
+        DE_GenericPipelineEnd();
 
         /* Render everything */
-        DE_SRendererPresent();
+        DE_RendererDraw();
 
         /* Increment the frame counter */
         frameCount++;
@@ -66,8 +84,9 @@ void DE_AppQuit(void) {
     DE_SceneQuit();
 
     DE_SceneFreeAll();
-
-    DE_SRendererQuit();
+    
+    DE_GenericPipelineDestroy();
+    DE_RendererDestroy();
 
     DE_CoreQuit();
 }

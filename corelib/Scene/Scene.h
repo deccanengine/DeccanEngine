@@ -9,7 +9,9 @@
 #include "../Config.h"
 #include "../Core/Utils.h"
 #include "../Core/String.h"
+#include "../Renderer/Camera.h"
 #include "Object.h"
+
 
 /////////////////////////////////////////////////
 // Enums
@@ -25,6 +27,7 @@ typedef struct DeccanDeccanGameScene {
     bool is_first_frame;
 
     ecs_world_t *world;
+    DeccanCamera *camera;
 
     void (*AtFirstFrame)(void);
     void (*AtStep)(void);
@@ -49,6 +52,7 @@ DE_API void DE_SceneQuit(void);
 DE_API DeccanGameScene *DE_SceneNewScene(const char *name);
 DE_API void DE_SceneAddScene(DeccanGameScene *scene, bool is_replacing);
 DE_API void DE_SceneRemoveScene(void);
+DE_API void DE_SceneMakeChanges(void);
 
 /////////////////////////////////////////////////
 // Object handling
@@ -66,3 +70,6 @@ DE_API void DE_SceneIterateObjectOfType(const char *type, void (*func)(DeccanGam
 DE_API DeccanGameScene *DE_SceneCurrentScene(void);
 DE_API void DE_ScenePauseScene(bool pause);
 DE_API bool DE_SceneIsScenePaused(void);
+
+DE_API void DE_SceneSetCamera(DeccanCamera *camera);
+DE_API DeccanCamera *DE_SceneGetCamera(void);

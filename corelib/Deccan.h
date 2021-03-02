@@ -9,7 +9,6 @@
 #include "Config.h"
 
 #include "Core/Core.h"
-#include "Core/Asset.h"
 #include "Core/FileSys.h"
 #include "Core/Variable.h"
 #include "Core/Utils.h"
@@ -19,10 +18,6 @@
 #include "Core/Input/Input.h"
 #include "Core/Input/InputCodes.h"
 
-#include "Asset/Importer.h"
-#include "Asset/SpriteAsset.h"
-#include "Asset/FontAsset.h"
-
 #include "Modules/Modules.h"
 
 #include "Scene/Object.h"
@@ -30,16 +25,13 @@
 #include "Scene/Flecs.h"
 #include "Scene/Components.h"
 
+#include "Renderer/Color.h"
+#include "Renderer/Camera.h"
+#include "Renderer/GenericPipeline.h"
+#include "Renderer/PrimitiveGeometry.h"
 #include "Renderer/Renderer.h"
+#include "Renderer/RenderTypes.h"
 #include "Renderer/Texture.h"
-#include "Renderer/TextRendering.h"
-
-#include "Renderer-sokol/Camera.h"
-#include "Renderer-sokol/GenericPipeline.h"
-#include "Renderer-sokol/PrimitiveGeometry.h"
-#include "Renderer-sokol/Renderer.h"
-#include "Renderer-sokol/RenderTypes.h"
-#include "Renderer-sokol/Texture.h"
 
 DE_API bool DE_AppInit(DeccanSettings *settings);
 DE_API void DE_AppUpdate(void);

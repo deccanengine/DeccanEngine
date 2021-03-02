@@ -17,7 +17,6 @@ deps = [
 ]
 
 src = [
-    'corelib/Core/Asset.c',
     'corelib/Core/Core.c',
     'corelib/Core/Asset/AssetManager.c',
     'corelib/Core/Input/Input.c',
@@ -27,23 +26,13 @@ src = [
     'corelib/Core/String.c',
     'corelib/Core/Utils.c',
 
-    'corelib/Asset/Importer.c',
-    'corelib/Asset/FontAsset.c',
-    'corelib/Asset/SpriteAsset.c',
-
     'corelib/Modules/Physics/Collision.c',
 
     'corelib/Renderer/Camera.c',
-    'corelib/Renderer/Primitives.c',
+    'corelib/Renderer/GenericPipeline.c',
+    'corelib/Renderer/PrimitiveGeometry.c',
     'corelib/Renderer/Renderer.c',
-    'corelib/Renderer/TextRendering.c',
     'corelib/Renderer/Texture.c',
-
-    'corelib/Renderer-sokol/Camera.c',
-    'corelib/Renderer-sokol/GenericPipeline.c',
-    'corelib/Renderer-sokol/PrimitiveGeometry.c',
-    'corelib/Renderer-sokol/Renderer.c',
-    'corelib/Renderer-sokol/Texture.c',
 
     'corelib/Scene/Flecs.c',
     'corelib/Scene/Object.c',
@@ -64,7 +53,7 @@ de_lib = shared_library('deccancore', src,
         '-D_REENTRANT',
         '-DLOG_USE_COLOR',
         '-DDE_DEBUG',
-        '-DDE_RENDERER_SDL'
+#        '-DDE_RENDERER_SDL'
     ]
 )
 

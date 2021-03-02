@@ -1,91 +1,65 @@
-/* Deccan Game Engine - C11 2D SDL Game Engine.
- * Copyright 2020, 2021 Ayush Bardhan Tripathy
- *
- * This software is licensed under MIT License.
- * See LICENSE.md included with this package for more info.
- */
-
 #include "Camera.h"
 
-static struct {
-    vec2 position;
-    vec4 bounds;
-} Camera_Info = {.position = {0, 0}, .bounds = {-1, -1, -1, -1}};
+////////////////////////////////////////////////////////////////////////////////
+// View
+////////////////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////
+void DE_ViewInit(DeccanView *camera, vec3s position) {
+    camera->position = position;
+	camera->yaw = 0.0f;
+	camera->pitch = 0.0f;
+	camera->roll = 0.0f;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void DE_ViewUpdate(DeccanView *camera) {
+	mat4s transform = glms_mat4_identity();
+
+	transform = glms_rotate_x(transform, glm_rad(camera->roll));
+	transform = glms_rotate_y(transform, glm_rad(camera->pitch));
+	transform = glms_rotate_z(transform, glm_rad(camera->yaw));
+
+	transform = glms_translate(transform, camera->position);
+
+	camera->view = glms_mat4_inv(transform);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Camera
-////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-void Clamp(vec2 pos, vec4 rect, float *final_x, float *final_y) {
-    /* Bounds are not set */
-    if (rect[0] == -1) {
-        *final_x = pos[0];
-        *final_y = pos[1];
+void DE_CameraInit(DeccanCamera *camera, float near, float far) {
+	DE_ViewInit(&camera->cam, (vec3s){ .x = 0.0f, .y = 0.0f, .z = 1.0f});
+	
+    camera->proj = glms_mat4_identity();
+	camera->near = near;
+	camera->far  = far;
+	camera->aspect_ratio = (float)(4.0f / 3.0f);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void DE_CameraSetViewport(DeccanCamera *camera, vec2s viewport) { 
+	if(viewport.y <= 0) 
         return;
-    }
-
-    /* Clamp the abscissa */
-    if (pos[0] < rect[0]) {
-        *final_x = rect[0];
-    }
-    else if (pos[0] > rect[0] + rect[2]) {
-        *final_x = rect[0] + rect[2];
-    }
-    else {
-        *final_y = pos[0];
-    }
-
-    /* Clamp the ordinate */
-    if (pos[1] < rect[1]) {
-        *final_y = rect[1];
-    }
-    else if (pos[1] > rect[1] + rect[3]) {
-        *final_y = rect[1] + rect[3];
-    }
-    else {
-        *final_y = pos[1];
-    }
+	camera->aspect_ratio = (float)(viewport.x / viewport.y);
 }
 
-void DE_CameraMove(vec2 pos) {
-    float x, y;
-    Clamp(pos, Camera_Info.bounds, &x, &y);
+////////////////////////////////////////////////////////////////////////////////
 
-    Camera_Info.position[0] += x;
-    Camera_Info.position[1] += y;
+void DE_CameraSetOrtho(DeccanCamera *camera, float size) {
+	camera->proj = glms_ortho(-camera->aspect_ratio * size, 
+            camera->aspect_ratio * size, -size, size, camera->near, camera->far);
+
+	DE_ViewUpdate(&camera->cam);
 }
 
-/* New function needed */
-/*
-void Camera_CenterOn(GameObject *obj) {
-    if(obj == NULL) {
-        DE_WARN("Invalid object used with camera"); return;
-    }
+////////////////////////////////////////////////////////////////////////////////
 
-    vec2i mode = Core_GetMode();
-    vec2f pixel = Renderer_GetPixelSize();
+void DE_CameraSetPersp(DeccanCamera *camera, float vfov) {
+	camera->proj = glms_perspective(glm_rad(vfov), 
+            camera->aspect_ratio, camera->near, camera->far);
 
-    float x = (obj.position.x) + (obj.size.x)/2 - (mode.x/pixel.x)/2;
-    float y = (obj.position.y) + (obj.size.y)/2 - (mode.y/pixel.y)/2;
-
-    vec2f pos = {x, y};
-    _clamp(&pos, &Camera_Info.bounds, &x, &y);
-    Camera_SetPosition((vec2f){x, y});
-}
-*/
-
-void DE_CameraSetPosition(vec2 pos) {
-    glm_vec2_copy(pos, Camera_Info.position);
-}
-
-void DE_CameraSetBounds(vec4 rect) {
-    glm_vec2_copy(rect, Camera_Info.bounds);
-}
-
-void DE_CameraGetPosition(vec2 pos) {
-    glm_vec2_copy(Camera_Info.position, pos);
-}
-
-void DE_CameraGetBounds(vec4 bounds) {
-    glm_vec4_copy(Camera_Info.bounds, bounds);
+	DE_ViewUpdate(&camera->cam);
 }

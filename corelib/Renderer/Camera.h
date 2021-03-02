@@ -1,33 +1,32 @@
-/* Deccan Game Engine - C11 2D SDL Game Engine.
- * Copyright 2020, 2021 Ayush Bardhan Tripathy
- *
- * This software is licensed under MIT License.
- * See LICENSE.md included with this package for more info.
- */
-
 #pragma once
 #include "../Config.h"
-#include "Primitives.h"
 
-/////////////////////////////////////////////////
-// Enums
-////////////////////////////////////////////////
+typedef struct DeccanView {
+	mat4s view;
+	vec3s position;
+	float yaw;
+	float pitch;
+	float roll;
+} DeccanView;
 
-/////////////////////////////////////////////////
-// Structs
-////////////////////////////////////////////////
+typedef enum DeccanCameraType {
+	DECCAN_CAMERA_ORTHOGRAPHIC = 0,
+	DECCAN_CAMERA_PERSPECTIVE
+} DeccanCameraType;
 
-/////////////////////////////////////////////////
-// Camera
-////////////////////////////////////////////////
+typedef struct DeccanCamera {
+	DeccanView cam;
+	DeccanCameraType type;
+	mat4s proj;
+	float near;
+	float far;
+	float aspect_ratio;
+} DeccanCamera;
 
-#if 0
+void DE_ViewInit(DeccanView *camera, vec3s position);
+void DE_ViewUpdate(DeccanView *camera);
 
-DE_API void DE_CameraMove(vec2 pos);
-// void DE_CameraCenterOn(GameObject *obj);
-DE_API void DE_CameraSetPosition(vec2 pos);
-DE_API void DE_CameraSetBounds(vec4 rect);
-DE_API void DE_CameraGetPosition(vec2 pos);
-DE_API void DE_CameraGetBounds(vec4 bounds);
-
-#endif
+void DE_CameraInit(DeccanCamera *camera, float near, float far);
+void DE_CameraSetViewport(DeccanCamera *camera, vec2s viewport); 
+void DE_CameraSetOrtho(DeccanCamera *camera, float size);
+void DE_CameraSetPersp(DeccanCamera *camera, float vfov);

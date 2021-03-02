@@ -42,10 +42,9 @@ void ObjectFirstFrame(DeccanGameObject object) {
     info->AtFirstFrame(object);
 }
 
-void SceneMakeChanges(); /* Forward declaration */
 void DE_SceneUpdate(void) {
     /* Add or remove scene (only one) */
-    SceneMakeChanges();
+    DE_SceneMakeChanges();
 
     /* Process Scene(s) and DeccanGameObject (s) */
     DeccanGameScene *scene = DE_SceneCurrentScene(); /* Current scene */
@@ -128,7 +127,7 @@ void DE_SceneRemoveScene(void) {
     SceneInfo.is_removing = true;
 }
 
-void SceneMakeChanges(void) {
+void DE_SceneMakeChanges(void) {
     int32_t sceneCount = stbds_arrlen(SceneInfo.scenes);
     if (SceneInfo.is_adding) {
         SceneInfo.is_adding = false;
@@ -226,4 +225,14 @@ void DE_ScenePauseScene(bool pause) {
 
 bool DE_SceneIsScenePaused(void) {
     return SceneInfo.scenes[stbds_arrlen(SceneInfo.scenes) - 1]->is_paused;
+}
+
+DE_IMPL void DE_SceneSetCamera(DeccanCamera *camera) {
+    DeccanGameScene *scene = DE_SceneCurrentScene();
+    scene->camera = camera;
+}
+
+DE_IMPL DeccanCamera *DE_SceneGetCamera() {
+    DeccanGameScene *scene = DE_SceneCurrentScene();
+    return scene->camera;
 }

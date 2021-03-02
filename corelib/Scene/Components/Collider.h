@@ -8,7 +8,6 @@
 #pragma once
 #include "../../Config.h"
 #include "../Object.h"
-#include "../../Renderer/Primitives.h"
 #include "../../Core/Utils.h"
 
 /////////////////////////////////////////////////
