@@ -6,7 +6,7 @@
  */
 
 #include "Collider.h"
-#include "State2D.h"
+#include "Transform.h"
 #include "../../Modules/Physics/Collision.h"
 
 /////////////////////////////////////////////////
@@ -27,7 +27,7 @@ DE_IMPL void DE_CompColliderRegister(void) {
         DE_WARN("Collider component not found in object: %s", name);                                                   \
         return false;                                                                                                  \
     }                                                                                                                  \
-    DeccanCompState2D *state = DE_ObjectGetComponent(obj, "State2D");                                                  \
+    DeccanCompTransform *state = DE_ObjectGetComponent(obj, "Transform");                                                  \
     if (state == NULL) {                                                                                               \
         DE_WARN("State component not found in object: %s", name);                                                      \
         return false;                                                                                                  \

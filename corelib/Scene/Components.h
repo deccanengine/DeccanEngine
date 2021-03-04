@@ -8,6 +8,6 @@
 #pragma once
 
 #include "Components/Collider.h"
-#include "Components/State2D.h"
+#include "Components/Transform.h"
 
 DE_API void DE_ComponentsRegisterAll(void);

@@ -10,17 +10,18 @@ DeccanColor ColorList_White = (DeccanColor){255, 255, 255, 255}, ColorList_Black
 void _player_begin(DeccanGameObject this) {
     DeccanObjectInfo *info = DE_ObjectGetComponent(this, "Info");
 
-    DE_ObjectSetComponent(this, "Color", &(DeccanColor){255, 0, 0, 255});
+    //DE_ObjectSetComponent(this, "Color", &(DeccanColor){255, 0, 0, 255});
     DE_ObjectSetComponent(
         this, "Collider", &(DeccanCompCollider){.type = COLLIDER_Rect, .rect = {[0] = 0, [1] = 0, [2] = 50, [3] = 50}});
-    DE_ObjectSetComponent(this, "State2D", &(DeccanCompState2D){.position = {[0] = 200, [1] = 200}});
-
+    DE_ObjectSetComponent(this, "Transform", &(DeccanCompTransform){.position = {[0] = 200, [1] = 200}});
+    DE_ObjectSetComponent(this, "Drawable", &(DeccanCompDrawable){.color = {0, 255, 0, 255}});
+    DE_ObjectSetComponent(this, "DrawableGeometry", &(DeccanCompDrawableGeometry){.geometry = DE_PrimitiveCreateQuad()});
 }
 
 void _player_step(DeccanGameObject this) {
     static int32_t SpeedModifier = 5;
 
-    DeccanCompState2D *state = DE_ObjectGetComponent(this, "State2D");
+    DeccanCompTransform *state = DE_ObjectGetComponent(this, "Transform");
     DeccanColor *color = DE_ObjectGetComponent(this, "Color");
 
     if (DE_InputKeyHeld(DECCAN_KEY_W)) {
@@ -67,7 +68,7 @@ void _player_step(DeccanGameObject this) {
 }
 
 void _player_render(DeccanGameObject this) {
-    DeccanCompState2D *state = DE_ObjectGetComponent(this, "State2D");
+    DeccanCompTransform *state = DE_ObjectGetComponent(this, "Transform");
     DeccanColor *color = DE_ObjectGetComponent(this, "Color");
 }
 
@@ -77,10 +78,10 @@ void _player_end(DeccanGameObject this) {
 
 void _none_begin(DeccanGameObject this) {
     DeccanGameObject player = DE_SceneGetObject("main player");
-    DeccanCompState2D *statePlayer = DE_ObjectGetComponent(player, "State2D");
+    DeccanCompTransform *statePlayer = DE_ObjectGetComponent(player, "Transform");
 
-    DE_ObjectSetComponent(this, "State2D",
-        &(DeccanCompState2D){.position = {[0] = statePlayer->position[0], [1] = statePlayer->position[1]}});
+    DE_ObjectSetComponent(this, "Transform",
+        &(DeccanCompTransform){.position = {[0] = statePlayer->position[0], [1] = statePlayer->position[1]}});
     DE_ObjectSetComponent(
         this, "Collider", &(DeccanCompCollider){.type = COLLIDER_Rect, .rect = {[0] = 0, [1] = 0, [2] = 40, [3] = 40}});
     DE_ObjectSetTag(this, "isEnemy");
@@ -91,7 +92,7 @@ void _none_step(DeccanGameObject this) {
 }
 
 void _none_render(DeccanGameObject this) {
-    DeccanCompState2D *state = DE_ObjectGetComponent(this, "State2D");
+    DeccanCompTransform *state = DE_ObjectGetComponent(this, "Transform");
 }
 
 void _none_end(DeccanGameObject this) {

@@ -8,7 +8,9 @@ DeccanCamera camera;
 
 void begin() {
     /* Start here */
+    // TODO: Introduce hooks and callbacks here
     DE_ComponentsRegisterAll();
+    DE_RenderComponentsRegisterAll();
 
     DeccanGameObject player = DE_ObjectNewObject("main player");
     DeccanObjectInfo *info = DE_ObjectGetComponent(player, "Info");

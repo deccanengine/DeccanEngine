@@ -9,5 +9,5 @@
 
 DE_IMPL void DE_ComponentsRegisterAll(void) {
     DE_CompColliderRegister();
-    DE_CompState2DRegister();
+    DE_CompTransformRegister();
 }

@@ -33,13 +33,16 @@ src = [
     'corelib/Renderer/PrimitiveGeometry.c',
     'corelib/Renderer/Renderer.c',
     'corelib/Renderer/Texture.c',
+    'corelib/Renderer/Components.c',
+    'corelib/Renderer/Components/Drawable.c',
+    'corelib/Renderer/Components/DrawableGeometry.c',
 
     'corelib/Scene/Flecs.c',
     'corelib/Scene/Object.c',
     'corelib/Scene/Scene.c',
     'corelib/Scene/Components.c',
     'corelib/Scene/Components/Collider.c',
-    'corelib/Scene/Components/State2D.c',
+    'corelib/Scene/Components/Transform.c',
 
     'corelib/Main/Main.c',
     'corelib/Main/Sources.c',

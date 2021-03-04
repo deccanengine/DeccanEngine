@@ -14,16 +14,14 @@
 // Structs
 ////////////////////////////////////////////////
 
-typedef struct DeccanCompState2D {
+typedef struct DeccanCompTransform {
     vec3 position;
-    vec2 scale;
-    double rotation;
-
-    bool is_z_dirty;
-} DeccanCompState2D;
+    vec3 scale;
+    vec3 rotation;
+} DeccanCompTransform;
 
 /////////////////////////////////////////////////
 // Registers/Constructors/Destructors
 ////////////////////////////////////////////////
 
-DE_API void DE_CompState2DRegister(void);
+DE_API void DE_CompTransformRegister(void);

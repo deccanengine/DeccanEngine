@@ -5,12 +5,12 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include "State2D.h"
+#include "Transform.h"
 
 /////////////////////////////////////////////////
 // Registers/Constructors/Destructors
 ////////////////////////////////////////////////
 
-DE_IMPL void DE_CompState2DRegister(void) {
-    DE_FlecsRegisterComponent("State2D", sizeof(DeccanCompState2D), ECS_ALIGNOF(DeccanCompState2D));
+DE_IMPL void DE_CompTransformRegister(void) {
+    DE_FlecsRegisterComponent("Transform", sizeof(DeccanCompTransform), ECS_ALIGNOF(DeccanCompTransform));
 }

@@ -32,6 +32,7 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/RenderTypes.h"
 #include "Renderer/Texture.h"
+#include "Renderer/Components.h"
 
 DE_API bool DE_AppInit(DeccanSettings *settings);
 DE_API void DE_AppUpdate(void);
