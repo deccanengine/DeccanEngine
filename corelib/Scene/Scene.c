@@ -64,7 +64,7 @@ void DE_SceneUpdate(void) {
     scene->AtStep();
     ecs_progress(scene->world, 0);
     DE_SceneIterateObject(DE_ObjectUpdate);
-
+    
     /* AtRender of scenes and objects */
     scene->AtRender();
     DE_SceneIterateObject(DE_ObjectRender);
