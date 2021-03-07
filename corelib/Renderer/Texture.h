@@ -13,6 +13,7 @@ typedef struct DeccanSurface {
     int format;
 } DeccanSurface;
 
-void DE_TextureCreateFromMem(DeccanTexture *texture, int32_t width, int32_t height, size_t count, DeccanSurface *surfaces);
+void DE_TextureCreateFromMem(
+    DeccanTexture *texture, int32_t width, int32_t height, size_t count, DeccanSurface *surfaces);
 void DE_TextureCreateBlankRGBA(DeccanTexture *texture, int32_t width, int32_t height, uint32_t color);
 void DE_TextureDestroy(DeccanTexture *texture);

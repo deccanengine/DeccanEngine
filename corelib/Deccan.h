@@ -22,17 +22,17 @@
 
 #include "Scene/Object.h"
 #include "Scene/Scene.h"
-#include "Scene/Flecs.h"
-#include "Scene/Components.h"
 
 #include "Renderer/Color.h"
-#include "Renderer/Camera.h"
 #include "Renderer/GenericPipeline.h"
 #include "Renderer/PrimitiveGeometry.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/RenderTypes.h"
 #include "Renderer/Texture.h"
-#include "Renderer/Components.h"
+
+#include "World/Camera.h"
+#include "World/Flecs.h"
+#include "World/Components.h"
 
 DE_API bool DE_AppInit(DeccanSettings *settings);
 DE_API void DE_AppUpdate(void);

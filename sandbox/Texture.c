@@ -11,8 +11,7 @@ void *CreateSprite(char *mem, size_t size) {
         DE_WARN("Cannot load image: %s", path);
     }
 
-    sg_image img = sg_make_image(&(sg_image_desc) {
-        .width = width,
+    sg_image img = sg_make_image(&(sg_image_desc){.width = width,
         .height = height,
         .pixel_format = SG_PIXELFORMAT_RGBA8,
         .min_filter = SG_FILTER_NEAREST,
@@ -20,8 +19,7 @@ void *CreateSprite(char *mem, size_t size) {
         .content.subimage[0][0] = {
             .ptr = data,
             .size = size, // sizeof(data),
-        }
-    });
+        }});
     stbi_image_free(data);
 
     return NULL; // TODO!

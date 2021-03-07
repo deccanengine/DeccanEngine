@@ -7,7 +7,7 @@
 
 #include "Object.h"
 #include "Scene.h"
-#include "Flecs.h"
+#include "../World/Flecs.h"
 
 /////////////////////////////////////////////////
 // Initialization and instantiator functions

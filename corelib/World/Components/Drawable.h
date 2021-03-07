@@ -1,6 +1,6 @@
 #pragma once
 #include "../../Config.h"
-#include "../Color.h"
+#include "../../Renderer/Color.h"
 
 typedef struct DeccanCompDrawable {
     DeccanColor color;

@@ -10,4 +10,6 @@
 DE_IMPL void DE_ComponentsRegisterAll(void) {
     DE_CompColliderRegister();
     DE_CompTransformRegister();
+    DE_CompDrawableRegister();
+    DE_CompDrawableGeometryRegister();
 }

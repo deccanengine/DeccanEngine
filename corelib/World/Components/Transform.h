@@ -7,7 +7,6 @@
 
 #pragma once
 #include "../../Config.h"
-#include "../../Core/Utils.h"
 #include "../Flecs.h"
 
 /////////////////////////////////////////////////

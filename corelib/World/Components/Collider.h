@@ -7,7 +7,7 @@
 
 #pragma once
 #include "../../Config.h"
-#include "../Object.h"
+#include "../../Scene/Object.h"
 #include "../../Core/Utils.h"
 
 /////////////////////////////////////////////////

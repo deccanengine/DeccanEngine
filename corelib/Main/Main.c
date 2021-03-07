@@ -52,12 +52,12 @@ void DE_AppUpdate(void) {
 
         DE_CoreUpdate(fpsAverage, deltaTime);
 
-        vec2s viewport; 
+        vec2s viewport;
         DE_CoreGetResolution(viewport.raw);
         DE_RendererSetViewport(viewport);
 
         /* Update and render the scene */
-        DE_GenericPipelineBegin(DE_SceneGetCamera()); 
+        DE_GenericPipelineBegin(DE_SceneGetCamera());
         DE_SceneUpdate();
         DE_GenericPipelineEnd();
 
@@ -84,7 +84,7 @@ void DE_AppQuit(void) {
     DE_SceneQuit();
 
     DE_SceneFreeAll();
-    
+
     DE_GenericPipelineDestroy();
     DE_RendererDestroy();
 

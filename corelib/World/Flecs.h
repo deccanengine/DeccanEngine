@@ -7,7 +7,7 @@
 
 #pragma once
 #include "../Config.h"
-#include "Scene.h"
+#include "../Scene/Scene.h"
 
 /////////////////////////////////////////////////
 // Enums

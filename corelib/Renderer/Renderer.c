@@ -26,11 +26,11 @@ void DE_RendererPreInit() {
 void DE_RendererCreate(SDL_Window *window) {
     RendererInfo.window = window;
     RendererInfo.glcontext = SDL_GL_CreateContext(window);
-    if(!RendererInfo.glcontext) {
+    if (!RendererInfo.glcontext) {
         printf("Cannot create GL context: %s\n", SDL_GetError());
     }
 
-    if(!gladLoadGL()) {
+    if (!gladLoadGL()) {
         printf("Couldn't load GLAD without context\n");
     }
 
@@ -40,7 +40,7 @@ void DE_RendererCreate(SDL_Window *window) {
 void DE_RendererDestroy() {
     sg_shutdown();
 
-    if(RendererInfo.glcontext != NULL)
+    if (RendererInfo.glcontext != NULL)
         SDL_GL_DeleteContext(RendererInfo.glcontext);
 }
 

@@ -5,4 +5,3 @@
 DeccanGeometry DE_PrimitiveCreateQuad();
 DeccanGeometry DE_PrimitiveCreateTriangle();
 DeccanGeometry DE_PrimitiveCreateCube();
-

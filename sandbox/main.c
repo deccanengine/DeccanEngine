@@ -10,7 +10,6 @@ void begin() {
     /* Start here */
     // TODO: Introduce hooks and callbacks here
     DE_ComponentsRegisterAll();
-    DE_RenderComponentsRegisterAll();
 
     DeccanGameObject player = DE_ObjectNewObject("main player");
     DeccanObjectInfo *info = DE_ObjectGetComponent(player, "Info");
@@ -22,7 +21,7 @@ void begin() {
     DE_SceneInstantiateObject(player);
 
     DE_FlecsRegisterComponent("Color", sizeof(DeccanColor), ECS_ALIGNOF(DeccanColor));
-    
+
     DE_CameraInit(&camera, 1.0f, 100.0f);
 }
 
@@ -34,9 +33,9 @@ void render() {
     /* Start here */
     vec2s viewport;
     DE_CoreGetResolution(viewport.raw);
-    
+
     DE_RendererSetClearColor((vec4s){1.0f, 0.0f, 0.0f, 1.0f});
-    
+
     camera.cam.position = (vec3s){0.0f, 0.0f, 1.0f};
     DE_CameraSetViewport(&camera, viewport);
     DE_CameraSetOrtho(&camera, 1.0f);

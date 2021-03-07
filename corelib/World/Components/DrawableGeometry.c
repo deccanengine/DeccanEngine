@@ -1,10 +1,10 @@
 #include "DrawableGeometry.h"
 #include "Drawable.h"
-#include "../../Scene/Flecs.h"
-#include "../../Scene/Components/Transform.h"
-#include "../GenericPipeline.h"
-#include "../Texture.h"
-#include "../Color.h"
+#include "Transform.h"
+#include "../Flecs.h"
+#include "../../Renderer/GenericPipeline.h"
+#include "../../Renderer/Texture.h"
+#include "../../Renderer/Color.h"
 
 DeccanTexture white_tex;
 
@@ -20,20 +20,21 @@ void Draw(DeccanFlecsIter *it) {
         mat4s transmat = glms_mat4_identity();
         glm_translate(transmat.raw, transform->position);
 
-        geometry.color[0] = color.r; 
+        geometry.color[0] = color.r;
         geometry.color[1] = color.g;
         geometry.color[2] = color.b;
         geometry.color[3] = color.a;
         geometry.image = white_tex.image;
         geometry.transform = transmat;
 
-        DE_GenericPipelineDrawGeometry(geometry);        
+        DE_GenericPipelineDrawGeometry(geometry);
     }
 }
 
 void DE_CompDrawableGeometryRegister(void) {
     DE_TextureCreateBlankRGBA(&white_tex, 1, 1, 0xffffffff);
 
-    DE_FlecsRegisterComponent("DrawableGeometry", sizeof(DeccanCompDrawableGeometry), ECS_ALIGNOF(DeccanCompDrawableGeometry));
+    DE_FlecsRegisterComponent(
+        "DrawableGeometry", sizeof(DeccanCompDrawableGeometry), ECS_ALIGNOF(DeccanCompDrawableGeometry));
     DE_FlecsSystem(Draw, "Draw", "Transform, Drawable, DrawableGeometry", DECCAN_ECS_TYPE_ON_UPDATE);
 }

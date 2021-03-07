@@ -7,7 +7,10 @@
 
 #pragma once
 
+#include "../Config.h"
 #include "Components/Collider.h"
 #include "Components/Transform.h"
+#include "Components/Drawable.h"
+#include "Components/DrawableGeometry.h"
 
 DE_API void DE_ComponentsRegisterAll(void);

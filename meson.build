@@ -28,21 +28,22 @@ src = [
 
     'corelib/Modules/Physics/Collision.c',
 
-    'corelib/Renderer/Camera.c',
     'corelib/Renderer/GenericPipeline.c',
     'corelib/Renderer/PrimitiveGeometry.c',
     'corelib/Renderer/Renderer.c',
     'corelib/Renderer/Texture.c',
-    'corelib/Renderer/Components.c',
-    'corelib/Renderer/Components/Drawable.c',
-    'corelib/Renderer/Components/DrawableGeometry.c',
-
-    'corelib/Scene/Flecs.c',
+    
     'corelib/Scene/Object.c',
     'corelib/Scene/Scene.c',
-    'corelib/Scene/Components.c',
-    'corelib/Scene/Components/Collider.c',
-    'corelib/Scene/Components/Transform.c',
+    
+    'corelib/World/Camera.c',
+    'corelib/World/Flecs.c',
+    'corelib/World/Components.c',
+    'corelib/World/Components/Collider.c',
+    'corelib/World/Components/Transform.c',
+    'corelib/World/Components/Drawable.c',
+    'corelib/World/Components/DrawableGeometry.c',
+
 
     'corelib/Main/Main.c',
     'corelib/Main/Sources.c',

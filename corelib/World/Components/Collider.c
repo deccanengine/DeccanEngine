@@ -27,7 +27,7 @@ DE_IMPL void DE_CompColliderRegister(void) {
         DE_WARN("Collider component not found in object: %s", name);                                                   \
         return false;                                                                                                  \
     }                                                                                                                  \
-    DeccanCompTransform *state = DE_ObjectGetComponent(obj, "Transform");                                                  \
+    DeccanCompTransform *state = DE_ObjectGetComponent(obj, "Transform");                                              \
     if (state == NULL) {                                                                                               \
         DE_WARN("State component not found in object: %s", name);                                                      \
         return false;                                                                                                  \

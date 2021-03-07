@@ -9,9 +9,8 @@
 #include "../Config.h"
 #include "../Core/Utils.h"
 #include "../Core/String.h"
-#include "../Renderer/Camera.h"
+#include "../World/Camera.h"
 #include "Object.h"
-
 
 /////////////////////////////////////////////////
 // Enums
