@@ -20,6 +20,7 @@ typedef struct FSParams {
 } FSParams;
 
 void DE_GenericPipelineCreate() {
+    /* clang-format off */
     const char *vs_source =
         "#version 330\n"
         "in vec3 position;\n"
@@ -33,100 +34,81 @@ void DE_GenericPipelineCreate() {
         "    uv = texcoord;\n"
         "}\n";
 
-    const char *fs_source = "#version 330\n"
-                            "uniform sampler2D tex;\n"
-                            "uniform vec4 color;\n"
-                            "in vec2 uv;\n"
-                            "out vec4 frag_color;\n"
-                            "void main() {\n"
-                            "    vec4 tex_color = texture(tex, uv) * color;\n"
-                            "    if(tex_color.a < 0.1)\n"
-                            "        discard;\n"
-                            "    frag_color = tex_color;\n"
-                            "}\n";
+    const char *fs_source = 
+        "#version 330\n"
+        "uniform sampler2D tex;\n"
+        "uniform vec4 color;\n"
+        "in vec2 uv;\n"
+        "out vec4 frag_color;\n"
+        "void main() {\n"
+        "    vec4 tex_color = texture(tex, uv) * color;\n"
+        "    if(tex_color.a < 0.1)\n"
+        "        discard;\n"
+        "    frag_color = tex_color;\n"
+        "}\n";
 
-    GenericPipelineInfo.shader =
-        sg_make_shader(
-            &(sg_shader_desc){
-                .vs =
-                    {
-                        .uniform_blocks =
-                            {
-                                [0] =
-                                    {
-                                        .size = sizeof(VSParams),
-                                        .uniforms =
-                                            {
-                                                [0] = {.name = "transform", .type = SG_UNIFORMTYPE_MAT4},
-                                                [1] = {.name = "view_matrix", .type = SG_UNIFORMTYPE_MAT4},
-                                                [2] = {.name = "projection_matrix", .type = SG_UNIFORMTYPE_MAT4},
-                                            },
-                                    },
-                            },
+    GenericPipelineInfo.shader = sg_make_shader(&(sg_shader_desc){
+        .vs = {
+            .uniform_blocks = {
+                [0] = {
+                    .size = sizeof(VSParams),
+                    .uniforms = {
+                        [0] = {.name = "transform", .type = SG_UNIFORMTYPE_MAT4},
+                        [1] = {.name = "view_matrix", .type = SG_UNIFORMTYPE_MAT4},
+                        [2] = {.name = "projection_matrix", .type = SG_UNIFORMTYPE_MAT4},
                     },
-                .fs =
-                    {
-                        .images =
-                            {
-                                [0] =
-                                    {
-                                        .name = "tex",
-                                        .type = SG_IMAGETYPE_2D,
-                                    },
-                            },
-                        .uniform_blocks =
-                            {
-                                [0] =
-                                    {
-                                        .size = sizeof(FSParams),
-                                        .uniforms =
-                                            {
-                                                [0] =
-                                                    {
-                                                        .name = "color",
-                                                        .type = SG_UNIFORMTYPE_FLOAT4,
-                                                    },
-                                            },
-                                    },
-                            },
+                },
+            },
+        },
+        .fs = {
+            .images = {
+                [0] = { .name = "tex", .type = SG_IMAGETYPE_2D, },
+            },
+            .uniform_blocks = {
+                [0] = {
+                    .size = sizeof(FSParams),
+                    .uniforms = {
+                        [0] = { .name = "color", .type = SG_UNIFORMTYPE_FLOAT4, },
                     },
-                .vs.source = vs_source,
-                .fs.source = fs_source,
-            });
+                },
+            },
+        },
+        .vs.source = vs_source,
+        .fs.source = fs_source,
+    });
 
     GenericPipelineInfo.pip = sg_make_pipeline(&(sg_pipeline_desc){
         .shader = GenericPipelineInfo.shader,
         .index_type = SG_INDEXTYPE_UINT16,
-        .layout = {.attrs =
-                       {
-                           [0].format = SG_VERTEXFORMAT_FLOAT3,
-                           [1].format = SG_VERTEXFORMAT_FLOAT2,
-                       }},
-        .blend =
-            {
-                .enabled = true,
-                .src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA,
-                .dst_factor_rgb = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
-                .color_write_mask = SG_COLORMASK_RGB,
-            },
-        .depth_stencil =
-            {
-                .depth_compare_func = SG_COMPAREFUNC_LESS_EQUAL,
-                .depth_write_enabled = true,
-            },
-        .rasterizer =
-            {
-                .cull_mode = SG_CULLMODE_BACK,
-            },
+        .layout = {
+            .attrs = {
+                [0].format = SG_VERTEXFORMAT_FLOAT3,
+                [1].format = SG_VERTEXFORMAT_FLOAT2,
+            }
+        },
+        .blend = {
+            .enabled = true,
+            .src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA,
+            .dst_factor_rgb = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+            .color_write_mask = SG_COLORMASK_RGB,
+        },
+        .depth_stencil = {
+            .depth_compare_func = SG_COMPAREFUNC_LESS_EQUAL,
+            .depth_write_enabled = true,
+        },
+        .rasterizer = {
+            .cull_mode = SG_CULLMODE_BACK,
+        },
     });
 
     GenericPipelineInfo.pass_action = (sg_pass_action){
-        .colors[0] =
-            {
-                .action = SG_ACTION_CLEAR,
-                .val = {0.0f, 0.0f, 0.0f, 1.0f},
-            },
+        .colors[0] = {
+            .action = SG_ACTION_CLEAR,
+            .val = {0.0f, 0.0f, 0.0f, 1.0f},
+        },
     };
+
+    /* clang-format on */
 }
 
 void DE_GenericPipelineDestroy() {
