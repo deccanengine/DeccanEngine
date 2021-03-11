@@ -29,7 +29,7 @@ void DE_GenericPipelineCreate() {
         "uniform mat4 view_matrix;\n"
         "uniform mat4 projection_matrix;\n"
         "void main() {\n"
-        "    gl_Position = /* projection_matrix * view_matrix */ transform * vec4(position, 1.0f);\n"
+        "    gl_Position = projection_matrix * view_matrix * transform * vec4(position, 1.0f);\n"
         "    uv = texcoord;\n"
         "}\n";
 

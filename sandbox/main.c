@@ -22,7 +22,7 @@ void begin() {
 
     DE_FlecsRegisterComponent("Color", sizeof(DeccanColor), ECS_ALIGNOF(DeccanColor));
 
-    DE_CameraInit(&camera, 1.0f, 100.0f);
+    DE_CameraInit(&camera, 0.1f, 100.0f);
 }
 
 void step() {
@@ -34,7 +34,7 @@ void render() {
     vec2s viewport;
     DE_CoreGetResolution(viewport.raw);
 
-    DE_RendererSetClearColor((vec4s){1.0f, 0.0f, 0.0f, 1.0f});
+    DE_RendererSetClearColor((vec4s){0.0f, 0.0f, 0.0f, 1.0f});
 
     camera.cam.position = (vec3s){0.0f, 0.0f, 1.0f};
     DE_CameraSetViewport(&camera, viewport);

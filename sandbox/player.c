@@ -13,7 +13,7 @@ void _player_begin(DeccanGameObject this) {
     // DE_ObjectSetComponent(this, "Color", &(DeccanColor){255, 0, 0, 255});
     DE_ObjectSetComponent(
         this, "Collider", &(DeccanCompCollider){.type = COLLIDER_Rect, .rect = {[0] = 0, [1] = 0, [2] = 50, [3] = 50}});
-    DE_ObjectSetComponent(this, "Transform", &(DeccanCompTransform){.position = {[0] = 1.0f, [1] = 0.0f, [2] = 1.0f}});
+    DE_ObjectSetComponent(this, "Transform", &(DeccanCompTransform){.position = {[0] = 1.0f, [1] = 0.0f, [2] = 0.0f}});
     DE_ObjectSetComponent(this, "Drawable", &(DeccanCompDrawable){.color = {0, 255, 255, 255}});
     DE_ObjectSetComponent(
         this, "DrawableGeometry", &(DeccanCompDrawableGeometry){.geometry = DE_PrimitiveCreateQuad()});
