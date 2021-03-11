@@ -18,6 +18,7 @@ deps = [
 
 src = [
     'corelib/Core/Core.c',
+    'corelib/Core/SDLHelper.c',
     'corelib/Core/Asset/AssetManager.c',
     'corelib/Core/Input/Input.c',
     'corelib/Core/FileSys.c',

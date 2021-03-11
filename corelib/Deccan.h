@@ -9,6 +9,7 @@
 #include "Config.h"
 
 #include "Core/Core.h"
+#include "Core/SDLHelper.h"
 #include "Core/FileSys.h"
 #include "Core/Variable.h"
 #include "Core/Utils.h"
