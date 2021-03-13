@@ -1,0 +1,52 @@
+#!/usr/bin/python3
+import os, re, sys;
+import subprocess;
+
+def build():
+    subprocess.call(["meson", "builddir"]);
+    subprocess.call(["ninja", "-C", "builddir"]);
+
+def run():
+    build();
+    subprocess.call(["./demo"], cwd = "builddir"); 
+
+def searchtodo(name, words):
+    dir = os.listdir(name);
+    for file in dir:
+        path = os.path.join(name, file);
+        if not os.path.isfile(path):
+            searchtodo(path, words);
+            continue;
+        with open(path, "r") as f:
+            lineno = 0;
+            for line in f.readlines():
+                lineno += 1;
+                word = "|".join(words);
+                if re.findall(word, line, re.M):
+                    print("file '{}' line: {} : {}".format(path, lineno, line), end = "");
+
+def listtodo(dirs, words):
+    for x in dirs:
+        searchtodo(x, words);
+
+def usage():
+    print("Usage: {} <command>".format(sys.argv[0]));
+
+def main():
+    if len(sys.argv) < 2:
+        usage();
+        return;
+
+    if sys.argv[1] == "build":
+        build();
+    elif sys.argv[1] == "run":
+        run();
+    elif sys.argv[1] == "todo":
+        dirs = ["corelib", "sandbox"];
+        words = ["TODO", "FIXME"];
+        listtodo(dirs, words);
+    else:
+        usage();
+
+if __name__ == "__main__":
+    main();
