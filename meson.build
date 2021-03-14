@@ -1,4 +1,4 @@
-project('deccan-engine', 'c', license: 'mit')
+project('deccan-engine', ['c', 'cpp'], license: 'mit')
 
 cc = meson.get_compiler('c')
 m_dep  = cc.find_library('m')
@@ -67,6 +67,24 @@ de_dep = declare_dependency(
     include_directories: 'corelib'
 )
 
+ig_src = [
+    'depends/cimgui/cimgui.cpp',
+    'depends/cimgui/imgui/imgui.cpp',
+    'depends/cimgui/imgui/imgui_draw.cpp',
+    'depends/cimgui/imgui/imgui_widgets.cpp'
+]
+
+ig_lib = static_library('imgui', ig_src) 
+
+ig_sdl2_src = [
+    'depends/cimgui/imgui/backends/imgui_impl_sdl.cpp'
+]
+
+ig_sdl2_lib = static_library('imgui-sdl2', ig_sdl2_src,
+    include_directories: 'depends/cimgui/imgui',
+    dependencies: dependency('SDL2')
+)
+
 demo_src = [
     'sandbox/main.c',
     'sandbox/player.c',
@@ -74,6 +92,6 @@ demo_src = [
 ]
 
 executable('demo', demo_src, 
-    link_with: de_lib, 
+    link_with: [de_lib, ig_lib, ig_sdl2_lib ],
     dependencies: deps
 )
