@@ -44,6 +44,10 @@ void DE_RendererDestroy() {
         SDL_GL_DeleteContext(RendererInfo.glcontext);
 }
 
+SDL_GLContext DE_RendererGetContext() {
+    return RendererInfo.glcontext;
+}
+
 void DE_RendererDraw() {
     sg_commit();
 

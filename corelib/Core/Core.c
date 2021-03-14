@@ -203,7 +203,7 @@ DE_IMPL uint32_t DE_CoreProcessStartTime(void) {
     return Core_Info.proc_start_time;
 }
 
-DE_IMPL SDL_Window *DE_CoreGetWindowHandle(void) {
+DE_IMPL SDL_Window *DE_CoreGetWindow(void) {
     return Core_Info.window;
 }
 

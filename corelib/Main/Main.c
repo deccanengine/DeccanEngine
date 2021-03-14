@@ -12,7 +12,7 @@ bool DE_AppInit(DeccanSettings *settings) {
 
     DE_RendererPreInit();
     DE_CoreInit(settings);
-    DE_RendererCreate(DE_CoreGetWindowHandle());
+    DE_RendererCreate(DE_CoreGetWindow());
 
     DE_GenericPipelineCreate();
 

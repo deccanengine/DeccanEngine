@@ -4,6 +4,7 @@
 void DE_RendererPreInit();
 void DE_RendererCreate(SDL_Window *window);
 void DE_RendererDestroy();
+SDL_GLContext DE_RendererGetContext();
 void DE_RendererDraw();
 
 void DE_RendererSetViewport(vec2s viewport);

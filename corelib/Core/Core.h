@@ -61,6 +61,6 @@ DE_API float DE_CoreGetFramerateLimit(void);
 DE_API float DE_CoreGetAverageFramerate(void);
 DE_API float DE_CoreGetDeltaTime(void);
 DE_API uint32_t DE_CoreProcessStartTime(void);
-DE_API SDL_Window *DE_CoreGetWindowHandle(void);
+DE_API SDL_Window *DE_CoreGetWindow(void);
 DE_API DeccanVarManager *DE_CoreGetVarManager(void);
 DE_API DeccanSettings *DE_CoreGetSettings(void);

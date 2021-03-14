@@ -16,6 +16,6 @@
 [submodule "depends/sokol"]
 	path = depends/sokol
 	url = https://github.com/floooh/sokol
-[submodule "depends/cimgui"]
-	path = depends/cimgui
-	url = https://github.com/cimgui/cimgui
+[submodule "depends/deimgui"]
+	path = depends/deimgui
+	url = https://github.com/deccanengine/deimgui

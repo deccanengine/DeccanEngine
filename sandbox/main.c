@@ -1,4 +1,7 @@
 #include "../corelib/Deccan.h"
+#define SOKOL_IMPL
+#define SOKOL_IMGUI_NO_SOKOL_APP
+#define SOKOL_GLCORE33
 #include "ImGui.h"
 #include "player.h"
 #include "Texture.h"
@@ -7,8 +10,14 @@ uint64_t count = 0;
 DeccanTimer timer;
 DeccanCamera camera;
 
+simgui_desc_t imgui_context = {0};
+
 void begin() {
     /* Start here */
+    igCreateContext(NULL);
+    ImGui_ImplSDL2_InitForOpenGL(DE_CoreGetWindow(), DE_RendererGetContext());
+    simgui_setup(&imgui_context);
+
     // TODO: Introduce hooks and callbacks here
     DE_ComponentsRegisterAll();
 
@@ -42,6 +51,16 @@ void render() {
     DE_CameraSetOrtho(&camera, 1.0f);
 
     DE_SceneSetCamera(&camera);
+
+    ImGui_ImplSDL2_NewFrame(DE_CoreGetWindow());
+    simgui_new_frame(viewport.x, viewport.y, 1.0f);
+
+    igBegin("Main Window", NULL, 0);
+    igText("Hello, World!");
+    igEnd();
+
+    igRender();
+    simgui_render();
 }
 
 void end() {

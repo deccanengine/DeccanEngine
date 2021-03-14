@@ -9,6 +9,7 @@ dep_incdir = [
     include_directories('depends/sx/include'),
     include_directories('depends/glad/include')
 ]
+
 deps = [
     dependency('SDL2'), 
     dependency('SDL2_ttf'), 
@@ -58,7 +59,6 @@ de_lib = shared_library('deccancore', src,
         '-D_REENTRANT',
         '-DLOG_USE_COLOR',
         '-DDE_DEBUG',
-#        '-DDE_RENDERER_SDL'
     ]
 )
 
@@ -68,21 +68,17 @@ de_dep = declare_dependency(
 )
 
 ig_src = [
-    'depends/cimgui/cimgui.cpp',
-    'depends/cimgui/imgui/imgui.cpp',
-    'depends/cimgui/imgui/imgui_draw.cpp',
-    'depends/cimgui/imgui/imgui_widgets.cpp'
+    'depends/deimgui/cimgui.cpp',
+    'depends/deimgui/imgui.cpp',
+    'depends/deimgui/imgui_draw.cpp',
+    'depends/deimgui/imgui_demo.cpp',
+    'depends/deimgui/imgui_tables.cpp',
+    'depends/deimgui/imgui_widgets.cpp',
+    'depends/deimgui/imgui_impl_sdl.cpp'
 ]
 
-ig_lib = static_library('imgui', ig_src) 
-
-ig_sdl2_src = [
-    'depends/cimgui/imgui/backends/imgui_impl_sdl.cpp'
-]
-
-ig_sdl2_lib = static_library('imgui-sdl2', ig_sdl2_src,
-    include_directories: 'depends/cimgui/imgui',
-    dependencies: dependency('SDL2')
+ig_lib = static_library('imgui', ig_src,
+    dependencies: dependency('SDL2'),
 )
 
 demo_src = [
@@ -92,6 +88,6 @@ demo_src = [
 ]
 
 executable('demo', demo_src, 
-    link_with: [de_lib, ig_lib, ig_sdl2_lib ],
-    dependencies: deps
+    link_with: [de_lib, ig_lib],
+    dependencies: deps,
 )
