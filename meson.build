@@ -4,6 +4,20 @@ cc = meson.get_compiler('c')
 m_dep  = cc.find_library('m')
 dl_dep = cc.find_library('dl')
 
+ig_src = [
+    'depends/deimgui/cimgui.cpp',
+    'depends/deimgui/imgui.cpp',
+    'depends/deimgui/imgui_draw.cpp',
+    'depends/deimgui/imgui_demo.cpp',
+    'depends/deimgui/imgui_tables.cpp',
+    'depends/deimgui/imgui_widgets.cpp',
+    'depends/deimgui/imgui_impl_sdl.cpp'
+]
+
+ig_lib = static_library('imgui', ig_src,
+    dependencies: dependency('SDL2'),
+)
+
 dep_incdir = [
     include_directories('proj'),
     include_directories('depends/sx/include'),
@@ -29,6 +43,7 @@ src = [
     'corelib/Core/Utils.c',
 
     'corelib/Modules/Physics/Collision.c',
+    'corelib/Modules/Imgui/Imgui.c',
 
     'corelib/Renderer/GenericPipeline.c',
     'corelib/Renderer/PrimitiveGeometry.c',
@@ -46,7 +61,6 @@ src = [
     'corelib/World/Components/Drawable.c',
     'corelib/World/Components/DrawableGeometry.c',
 
-
     'corelib/Main/Main.c',
     'corelib/Main/Sources.c',
 ]
@@ -55,6 +69,7 @@ de_lib = shared_library('deccancore', src,
     name_prefix: '',
     dependencies: deps,
     include_directories: dep_incdir,
+    link_with: ig_lib,
     c_args: [
         '-D_REENTRANT',
         '-DLOG_USE_COLOR',
@@ -65,20 +80,6 @@ de_lib = shared_library('deccancore', src,
 de_dep = declare_dependency(
     link_with: de_lib,
     include_directories: 'corelib'
-)
-
-ig_src = [
-    'depends/deimgui/cimgui.cpp',
-    'depends/deimgui/imgui.cpp',
-    'depends/deimgui/imgui_draw.cpp',
-    'depends/deimgui/imgui_demo.cpp',
-    'depends/deimgui/imgui_tables.cpp',
-    'depends/deimgui/imgui_widgets.cpp',
-    'depends/deimgui/imgui_impl_sdl.cpp'
-]
-
-ig_lib = static_library('imgui', ig_src,
-    dependencies: dependency('SDL2'),
 )
 
 demo_src = [

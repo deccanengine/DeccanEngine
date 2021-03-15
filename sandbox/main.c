@@ -1,8 +1,4 @@
-#include "../corelib/Deccan.h"
-#define SOKOL_IMPL
-#define SOKOL_IMGUI_NO_SOKOL_APP
-#define SOKOL_GLCORE33
-#include "ImGui.h"
+#include <corelib/Deccan.h>
 #include "player.h"
 #include "Texture.h"
 
@@ -14,9 +10,7 @@ simgui_desc_t imgui_context = {0};
 
 void begin() {
     /* Start here */
-    igCreateContext(NULL);
-    ImGui_ImplSDL2_InitForOpenGL(DE_CoreGetWindow(), DE_RendererGetContext());
-    simgui_setup(&imgui_context);
+    DE_ImguiInit();
 
     // TODO: Introduce hooks and callbacks here
     DE_ComponentsRegisterAll();
@@ -52,19 +46,18 @@ void render() {
 
     DE_SceneSetCamera(&camera);
 
-    ImGui_ImplSDL2_NewFrame(DE_CoreGetWindow());
-    simgui_new_frame(viewport.x, viewport.y, 1.0f);
+    DE_ImguiBeginRender();
 
     igBegin("Main Window", NULL, 0);
     igText("Hello, World!");
     igEnd();
 
-    igRender();
-    simgui_render();
+    DE_ImguiEndRender();
 }
 
 void end() {
     /* Start here */
+    DE_ImguiQuit();
 }
 
 int main(int argc, char **argv) {

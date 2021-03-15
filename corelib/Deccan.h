@@ -19,7 +19,8 @@
 #include "Core/Input/Input.h"
 #include "Core/Input/InputCodes.h"
 
-#include "Modules/Modules.h"
+#include "Modules/Physics/Collision.h"
+#include "Modules/Imgui/Imgui.h"
 
 #include "Scene/Object.h"
 #include "Scene/Scene.h"
