@@ -9,7 +9,7 @@
 #include "Core.h"
 #include "Utils.h"
 
-char *DE_StringNew(const char *source) {
+DE_IMPL char *DE_StringNew(const char *source) {
     size_t len = strlen(source);
     char *string = DE_Alloc(sizeof(char), len + 1);
 
@@ -18,6 +18,6 @@ char *DE_StringNew(const char *source) {
     return string;
 }
 
-uint32_t DE_StringHash(const char *string) {
+DE_IMPL uint32_t DE_StringHash(const char *string) {
     return stbds_hash_string(string, DE_CoreProcessStartTime());
 }

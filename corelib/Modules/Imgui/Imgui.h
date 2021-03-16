@@ -1,12 +1,25 @@
-#pragma once
+/* Deccan Game Engine - C11 2D SDL Game Engine.
+ * Copyright 2020, 2021 Ayush Bardhan Tripathy
+ *
+ * This software is licensed under MIT License.
+ * See LICENSE.md included with this package for more info.
+ */
 
-#define SOKOL_IMGUI_NO_SOKOL_APP
+#pragma once
+#include "../../Config.h"
 #define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
 #include <depends/deimgui/cimgui.h>
-#include <depends/deimgui/imgui_impl_sdl.h>
-#include <depends/sokol/util/sokol_imgui.h>
 
-void DE_ImguiInit(void);
-void DE_ImguiQuit(void);
-void DE_ImguiBeginRender(void);
-void DE_ImguiEndRender(void);
+/////////////////////////////////////////////////
+// Constructor/destructor
+////////////////////////////////////////////////
+
+DE_API void DE_ImguiInit(void);
+DE_API void DE_ImguiQuit(void);
+
+/////////////////////////////////////////////////
+// Renderer
+////////////////////////////////////////////////
+
+DE_API void DE_ImguiBeginRender(void);
+DE_API void DE_ImguiEndRender(void);

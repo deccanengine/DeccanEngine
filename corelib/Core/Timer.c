@@ -7,25 +7,25 @@
 
 #include "Timer.h"
 
-void DE_TimerStart(DeccanTimer *timer) {
+DE_IMPL void DE_TimerStart(DeccanTimer *timer) {
     timer->startTicks = SDL_GetTicks();
     timer->pausedTicks = 0;
     timer->isRunning = true;
     timer->isPaused = false;
 }
 
-void DE_TimerStop(DeccanTimer *timer) {
+DE_IMPL void DE_TimerStop(DeccanTimer *timer) {
     timer->startTicks = 0;
     timer->pausedTicks = 0;
     timer->isRunning = false;
     timer->isPaused = false;
 }
 
-void DE_TimerReset(DeccanTimer *timer) {
+DE_IMPL void DE_TimerReset(DeccanTimer *timer) {
     DE_TimerStart(timer);
 }
 
-void DE_TimerPause(DeccanTimer *timer) {
+DE_IMPL void DE_TimerPause(DeccanTimer *timer) {
     if (timer->isRunning && !timer->isPaused) {
         timer->isPaused = true;
 
@@ -35,7 +35,7 @@ void DE_TimerPause(DeccanTimer *timer) {
     }
 }
 
-DeccanTime DE_TimerGetTime(DeccanTimer *timer) {
+DE_IMPL DeccanTime DE_TimerGetTime(DeccanTimer *timer) {
     float timeMS = 0.0f;
 
     if (timer->isRunning) {

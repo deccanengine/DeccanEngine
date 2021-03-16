@@ -1,37 +1,25 @@
+/* Deccan Game Engine - C11 2D SDL Game Engine.
+ * Copyright 2020, 2021 Ayush Bardhan Tripathy
+ *
+ * This software is licensed under MIT License.
+ * See LICENSE.md included with this package for more info.
+ */
+
 #include "PrimitiveGeometry.h"
 
-DeccanGeometry DE_PrimitiveCreateQuad() {
+DE_IMPL DeccanGeometry DE_PrimitiveCreateQuad() {
+    /* clang-format off */
     static const float vertices[] = {
-        /*   Position   */ /* Tex coord */
-        -0.5f,
-        0.5f,
-        0.0f,
-        0.0f,
-        0.0f,
-        0.5f,
-        0.5f,
-        0.0f,
-        1.0f,
-        0.0f,
-        0.5f,
-        -0.5f,
-        0.0f,
-        1.0f,
-        1.0f,
-        -0.5f,
-        -0.5f,
-        0.0f,
-        0.0f,
-        1.0f,
+        /*    Position    */ /* Tex coord */
+        -0.5f,  0.5f,  0.0f,   0.0f, 0.0f,
+         0.5f,  0.5f,  0.0f,   1.0f, 0.0f,
+         0.5f, -0.5f,  0.0f,   1.0f, 1.0f,
+        -0.5f, -0.5f,  0.0f,   0.0f, 1.0f,
     };
 
     static const int16_t indices[] = {
-        0,
-        1,
-        2,
-        0,
-        2,
-        3,
+        0, 1, 2,
+        0, 2, 3,
     };
 
     DeccanGeometry quad;
@@ -42,36 +30,27 @@ DeccanGeometry DE_PrimitiveCreateQuad() {
         .content = vertices,
     });
 
-    quad.ibuf = sg_make_buffer(
-        &(sg_buffer_desc){.type = SG_BUFFERTYPE_INDEXBUFFER, .size = sizeof(indices), .content = indices});
+    quad.ibuf = sg_make_buffer(&(sg_buffer_desc){
+        .type = SG_BUFFERTYPE_INDEXBUFFER, 
+        .size = sizeof(indices), 
+        .content = indices
+    });
 
     return quad;
+    /* clang-format on */
 }
 
-DeccanGeometry DE_PrimitiveCreateTriangle() {
+DE_IMPL DeccanGeometry DE_PrimitiveCreateTriangle() {
+    /* clang-format off */
     static const float vertices[] = {
-        /*   Position   */ /* Tex coord */
-        0.0f,
-        0.5f,
-        0.0f,
-        0.5f,
-        0.0f,
-        0.5f,
-        -0.5f,
-        0.0f,
-        1.0f,
-        1.0f,
-        -0.5f,
-        -0.5f,
-        0.0f,
-        0.0f,
-        1.0f,
+        /*    Position    */ /* Tex coord */
+         0.0f,  0.5f,  0.0f,   0.5f, 0.0f,
+         0.5f, -0.5f,  0.0f,   1.0f, 1.0f,
+        -0.5f, -0.5f,  0.0f,   0.0f, 1.0f,
     };
 
     static const int16_t indices[] = {
-        0,
-        1,
-        2,
+        0, 1, 2,
     };
 
     DeccanGeometry tri;
@@ -82,93 +61,38 @@ DeccanGeometry DE_PrimitiveCreateTriangle() {
         .content = vertices,
     });
 
-    tri.ibuf = sg_make_buffer(
-        &(sg_buffer_desc){.type = SG_BUFFERTYPE_INDEXBUFFER, .size = sizeof(indices), .content = indices});
+    tri.ibuf = sg_make_buffer(&(sg_buffer_desc){
+        .type = SG_BUFFERTYPE_INDEXBUFFER, 
+        .size = sizeof(indices), 
+        .content = indices
+    });
 
     return tri;
+    /* clang-format on */
 }
 
-DeccanGeometry DE_PrimitiveCreateCube() {
+DE_IMPL DeccanGeometry DE_PrimitiveCreateCube() {
+    /* clang-format off */
     static const float vertices[] = {
-        /*   Position   */ /* Tex coord */
-        -0.5f,
-        -0.5f,
-        -0.5f,
-        0.0f,
-        0.0f,
-        0.5f,
-        -0.5f,
-        -0.5f,
-        1.0f,
-        0.0f,
-        0.5f,
-        0.5f,
-        -0.5f,
-        1.0f,
-        1.0f,
-        -0.5f,
-        0.5f,
-        -0.5f,
-        0.0f,
-        1.0f,
+        /*    Position    */ /* Tex coord */
+        -0.5f, -0.5f, -0.5f,   0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,   1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,   1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,   0.0f, 1.0f,
 
-        -0.5f,
-        -0.5f,
-        0.5f,
-        0.0f,
-        0.0f,
-        0.5f,
-        -0.5f,
-        0.5f,
-        1.0f,
-        0.0f,
-        0.5f,
-        0.5f,
-        0.5f,
-        1.0f,
-        1.0f,
-        -0.5f,
-        0.5f,
-        0.5f,
-        0.0f,
-        1.0f,
+        -0.5f, -0.5f,  0.5f,   0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,   1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,   1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,   0.0f, 1.0f,
 
-        -0.5f,
-        -0.5f,
-        -0.5f,
-        0.0f,
-        0.0f,
-        -0.5f,
-        0.5f,
-        -0.5f,
-        1.0f,
-        0.0f,
-        -0.5f,
-        0.5f,
-        0.5f,
-        1.0f,
-        1.0f,
-        -0.5f,
-        -0.5f,
-        0.5f,
-        0.0f,
-        1.0f,
+        -0.5f, -0.5f, -0.5f,   0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,   1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,   1.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,   0.0f, 1.0f,
 
-        0.5f,
-        -0.5f,
-        -0.5f,
-        0.0f,
-        0.0f,
-        0.5f,
-        0.5f,
-        -0.5f,
-        1.0f,
-        0.0f,
-        0.5f,
-        0.5f,
-        0.5f,
-        1.0f,
-        1.0f,
+         0.5f, -0.5f, -0.5f,   0.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,   1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,   1.0f, 1.0f,
         0.5f,
         -0.5f,
         0.5f,
@@ -229,8 +153,12 @@ DeccanGeometry DE_PrimitiveCreateCube() {
         .content = vertices,
     });
 
-    cube.ibuf = sg_make_buffer(
-        &(sg_buffer_desc){.type = SG_BUFFERTYPE_INDEXBUFFER, .size = sizeof(indices), .content = indices});
+    cube.ibuf = sg_make_buffer(&(sg_buffer_desc){
+        .type = SG_BUFFERTYPE_INDEXBUFFER, 
+        .size = sizeof(indices), 
+        .content = indices
+    });
 
     return cube;
+    /* clang-format on */
 }

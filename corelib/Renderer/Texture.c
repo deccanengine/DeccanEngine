@@ -1,7 +1,15 @@
+/* Deccan Game Engine - C11 2D SDL Game Engine.
+ * Copyright 2020, 2021 Ayush Bardhan Tripathy
+ *
+ * This software is licensed under MIT License.
+ * See LICENSE.md included with this package for more info.
+ */
+
 #include "Texture.h"
 #include <assert.h>
 
-void CreateTexture(DeccanTexture *texture, int32_t width, int32_t height, int format, sg_image_content *image_content) {
+DE_PRIV void CreateTexture(
+    DeccanTexture *texture, int32_t width, int32_t height, int format, sg_image_content *image_content) {
     texture->width = width;
     texture->height = height;
     texture->pixel_format = format;
@@ -18,7 +26,7 @@ void CreateTexture(DeccanTexture *texture, int32_t width, int32_t height, int fo
     texture->image = sg_make_image(&desc);
 }
 
-void DE_TextureCreateFromMem(
+DE_IMPL void DE_TextureCreateFromMem(
     DeccanTexture *texture, int32_t width, int32_t height, size_t count, DeccanSurface *surfaces) {
     assert(&surfaces[0] != NULL);
 
@@ -28,7 +36,7 @@ void DE_TextureCreateFromMem(
     CreateTexture(texture, width, height, surfaces[0].format, &image_content);
 }
 
-void DE_TextureCreateBlankRGBA(DeccanTexture *texture, int32_t width, int32_t height, uint32_t color) {
+DE_IMPL void DE_TextureCreateBlankRGBA(DeccanTexture *texture, int32_t width, int32_t height, uint32_t color) {
     int size_bytes = sizeof(uint32_t) * width * height;
     uint32_t *pixels = malloc(size_bytes);
 
@@ -51,6 +59,6 @@ void DE_TextureCreateBlankRGBA(DeccanTexture *texture, int32_t width, int32_t he
     free(pixels);
 }
 
-void DE_TextureDestroy(DeccanTexture *texture) {
+DE_IMPL void DE_TextureDestroy(DeccanTexture *texture) {
     sg_destroy_image(texture->image);
 }

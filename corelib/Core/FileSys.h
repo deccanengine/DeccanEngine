@@ -7,6 +7,10 @@
 
 #include "../Config.h"
 
-SDL_RWops *DE_FSLocateFile(const char *file_name, bool is_binary);
-const char *DE_FSGetFileContent(SDL_RWops *file);
-const char *DE_FSGetFileExtension(const char *file_name);
+/////////////////////////////////////////////////
+// File actions
+////////////////////////////////////////////////
+
+DE_API SDL_RWops *DE_FSLocateFile(const char *file_name, bool is_binary);
+DE_API const char *DE_FSGetFileContent(SDL_RWops *file);
+DE_API const char *DE_FSGetFileExtension(const char *file_name);

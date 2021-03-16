@@ -1,7 +1,14 @@
+/* Deccan Game Engine - C11 2D SDL Game Engine.
+ * Copyright 2020, 2021 Ayush Bardhan Tripathy
+ *
+ * This software is licensed under MIT License.
+ * See LICENSE.md included with this package for more info.
+ */
+
 #include "GenericPipeline.h"
 #include "Renderer.h"
 
-static struct {
+DE_PRIV struct {
     sg_shader shader;
     sg_pipeline pip;
     sg_pass_action pass_action;
@@ -19,7 +26,7 @@ typedef struct FSParams {
     float color[4];
 } FSParams;
 
-void DE_GenericPipelineCreate() {
+DE_IMPL void DE_GenericPipelineCreate(void) {
     /* clang-format off */
     const char *vs_source =
         "#version 330\n"
@@ -111,12 +118,12 @@ void DE_GenericPipelineCreate() {
     /* clang-format on */
 }
 
-void DE_GenericPipelineDestroy() {
+DE_IMPL void DE_GenericPipelineDestroy(void) {
     sg_destroy_shader(GenericPipelineInfo.shader);
     sg_destroy_pipeline(GenericPipelineInfo.pip);
 }
 
-void DE_GenericPipelineBegin(DeccanCamera *camera) {
+DE_IMPL void DE_GenericPipelineBegin(DeccanCamera *camera) {
     vec4s clear_color = DE_RendererGetClearColor();
     glm_vec4_copy(clear_color.raw, GenericPipelineInfo.pass_action.colors[0].val);
 
@@ -127,7 +134,7 @@ void DE_GenericPipelineBegin(DeccanCamera *camera) {
     GenericPipelineInfo.camera = camera;
 }
 
-void DE_GenericPipelineDrawGeometry(DeccanGeometry geometry) {
+DE_IMPL void DE_GenericPipelineDrawGeometry(DeccanGeometry geometry) {
     sg_bindings binds = {
         .vertex_buffers[0] = geometry.vbuf,
         .index_buffer = geometry.ibuf,
@@ -150,6 +157,6 @@ void DE_GenericPipelineDrawGeometry(DeccanGeometry geometry) {
     sg_draw(0, geometry.index_count, 1);
 }
 
-void DE_GenericPipelineEnd() {
+DE_IMPL void DE_GenericPipelineEnd(void) {
     sg_end_pass();
 }

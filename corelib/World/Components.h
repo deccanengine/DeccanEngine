@@ -13,4 +13,8 @@
 #include "Components/Drawable.h"
 #include "Components/DrawableGeometry.h"
 
+/////////////////////////////////////////////////
+// Registrar
+////////////////////////////////////////////////
+
 DE_API void DE_ComponentsRegisterAll(void);

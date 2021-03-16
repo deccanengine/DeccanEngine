@@ -1,34 +1,42 @@
-#include "../../Config.h"
-#define SOKOL_GLCORE33
-#define SOKOL_IMGUI_IMPL
+/* Deccan Game Engine - C11 2D SDL Game Engine.
+ * Copyright 2020, 2021 Ayush Bardhan Tripathy
+ *
+ * This software is licensed under MIT License.
+ * See LICENSE.md included with this package for more info.
+ */
+
 #include "Imgui.h"
 #include "../../Core/Core.h"
 #include "../../Renderer/Renderer.h"
 
-DE_PRIV struct {
-    simgui_desc_t context;
-} ImguiInfo = {0};
+#define SOKOL_GLCORE33
+#define SOKOL_IMGUI_IMPL
+#define SOKOL_IMGUI_NO_SOKOL_APP
+#include <depends/deimgui/imgui_impl_sdl.h>
+#include <depends/sokol/util/sokol_imgui.h>
 
-void DE_ImguiInit(void) {
-   igCreateContext(NULL);
-   ImGui_ImplSDL2_InitForOpenGL(DE_CoreGetWindow(), DE_RendererGetContext());
-   simgui_setup(&ImguiInfo.context);
+DE_PRIV struct { simgui_desc_t context; } ImguiInfo = {0};
+
+DE_IMPL void DE_ImguiInit(void) {
+    igCreateContext(NULL);
+    ImGui_ImplSDL2_InitForOpenGL(DE_CoreGetWindow(), DE_RendererGetContext());
+    simgui_setup(&ImguiInfo.context);
 }
 
-void DE_ImguiQuit(void) {
+DE_IMPL void DE_ImguiQuit(void) {
     igDestroyContext(NULL);
     simgui_shutdown();
 }
 
-void DE_ImguiBeginRender(void) {
+DE_IMPL void DE_ImguiBeginRender(void) {
     vec2s viewport;
     DE_CoreGetResolution(viewport.raw);
 
     ImGui_ImplSDL2_NewFrame(DE_CoreGetWindow());
-    simgui_new_frame(viewport.x, viewport.y, 1.0f);
+    simgui_new_frame(viewport.x, viewport.y, DE_CoreGetDeltaTime());
 }
 
-void DE_ImguiEndRender(void) {
+DE_IMPL void DE_ImguiEndRender(void) {
     igRender();
     simgui_render();
 }

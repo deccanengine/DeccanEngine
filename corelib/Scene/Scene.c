@@ -8,7 +8,7 @@
 #include "Scene.h"
 #include "../World/Flecs.h"
 
-static struct {
+DE_PRIV struct {
     DeccanGameScene **scenes;
 
     bool is_adding;
@@ -21,28 +21,28 @@ static struct {
 // Scene internals
 ////////////////////////////////////////////////
 
-DeccanGameScene **DE_SceneGetSceneArray(void) {
+DE_IMPL DeccanGameScene **DE_SceneGetSceneArray(void) {
     return SceneInfo.scenes;
 }
 
-int DE_SceneGetSceneCount(void) {
+DE_IMPL int DE_SceneGetSceneCount(void) {
     return stbds_arrlen(SceneInfo.scenes);
 }
 
-void DE_SceneFreeAll(void) {
+DE_IMPL void DE_SceneFreeAll(void) {
     stbds_arrfree(SceneInfo.scenes);
 }
 
-void RegisterBaseComponent(DeccanGameScene *scene) {
+DE_IMPL void RegisterBaseComponent(DeccanGameScene *scene) {
     DE_FlecsRegisterComponent("Info", sizeof(DeccanObjectInfo), ECS_ALIGNOF(DeccanObjectInfo));
 }
 
-void ObjectFirstFrame(DeccanGameObject object) {
+DE_IMPL void ObjectFirstFrame(DeccanGameObject object) {
     DeccanObjectInfo *info = DE_ObjectGetComponent(object, "Info");
     info->AtFirstFrame(object);
 }
 
-void DE_SceneUpdate(void) {
+DE_IMPL void DE_SceneUpdate(void) {
     /* Add or remove scene (only one) */
     DE_SceneMakeChanges();
 
@@ -70,7 +70,7 @@ void DE_SceneUpdate(void) {
     DE_SceneIterateObject(DE_ObjectRender);
 }
 
-void DE_SceneQuit(void) {
+DE_IMPL void DE_SceneQuit(void) {
     /* at_end of scenes and objects */
     DeccanGameScene *currentScene = DE_SceneCurrentScene();
     currentScene->AtEnd();
@@ -93,10 +93,10 @@ void DE_SceneQuit(void) {
 // Constructor and destructor
 ////////////////////////////////////////////////
 
-void SceneNoneFunc(void) {
+DE_IMPL void SceneNoneFunc(void) {
 }
 
-DeccanGameScene *DE_SceneNewScene(const char *name) {
+DE_IMPL DeccanGameScene *DE_SceneNewScene(const char *name) {
     DeccanGameScene *scene = DE_Alloc(sizeof(DeccanGameScene), 1);
 
     scene->name = DE_StringNew(name);
@@ -112,7 +112,7 @@ DeccanGameScene *DE_SceneNewScene(const char *name) {
     return scene;
 }
 
-void DE_SceneAddScene(DeccanGameScene *scene, bool is_replacing) {
+DE_IMPL void DE_SceneAddScene(DeccanGameScene *scene, bool is_replacing) {
     if (scene == NULL) {
         DE_WARN("Invalid scene data");
         return;
@@ -123,11 +123,11 @@ void DE_SceneAddScene(DeccanGameScene *scene, bool is_replacing) {
     SceneInfo.is_adding = true;
 }
 
-void DE_SceneRemoveScene(void) {
+DE_IMPL void DE_SceneRemoveScene(void) {
     SceneInfo.is_removing = true;
 }
 
-void DE_SceneMakeChanges(void) {
+DE_IMPL void DE_SceneMakeChanges(void) {
     int32_t sceneCount = stbds_arrlen(SceneInfo.scenes);
     if (SceneInfo.is_adding) {
         SceneInfo.is_adding = false;
@@ -159,12 +159,12 @@ void DE_SceneMakeChanges(void) {
 // Object handling
 ////////////////////////////////////////////////
 
-void DE_SceneInstantiateObject(DeccanGameObject object) {
+DE_IMPL void DE_SceneInstantiateObject(DeccanGameObject object) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
     ecs_remove_entity(scene->world, object.entity, EcsPrefab);
 }
 
-DeccanGameObject DE_SceneGetObject(const char *name) {
+DE_IMPL DeccanGameObject DE_SceneGetObject(const char *name) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
     ecs_entity_t obj = ecs_lookup(scene->world, name);
 
@@ -173,7 +173,7 @@ DeccanGameObject DE_SceneGetObject(const char *name) {
     return object;
 }
 
-void DE_SceneIterateObject(void (*func)(DeccanGameObject this)) {
+DE_IMPL void DE_SceneIterateObject(void (*func)(DeccanGameObject this)) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 
     ecs_query_t *query = ecs_query_new(scene->world, "Info");
@@ -191,7 +191,7 @@ void DE_SceneIterateObject(void (*func)(DeccanGameObject this)) {
     }
 }
 
-void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject this)) {
+DE_IMPL void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject this)) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
 
     ecs_query_t *query = ecs_query_new(scene->world, "Info");
@@ -215,15 +215,15 @@ void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGameObject 
 // Scene status
 ////////////////////////////////////////////////
 
-DeccanGameScene *DE_SceneCurrentScene(void) {
+DE_IMPL DeccanGameScene *DE_SceneCurrentScene(void) {
     return SceneInfo.scenes[stbds_arrlen(SceneInfo.scenes) - 1];
 }
 
-void DE_ScenePauseScene(bool pause) {
+DE_IMPL void DE_ScenePauseScene(bool pause) {
     SceneInfo.scenes[stbds_arrlen(SceneInfo.scenes) - 1]->is_paused = pause;
 }
 
-bool DE_SceneIsScenePaused(void) {
+DE_IMPL bool DE_SceneIsScenePaused(void) {
     return SceneInfo.scenes[stbds_arrlen(SceneInfo.scenes) - 1]->is_paused;
 }
 
@@ -232,7 +232,7 @@ DE_IMPL void DE_SceneSetCamera(DeccanCamera *camera) {
     scene->camera = camera;
 }
 
-DE_IMPL DeccanCamera *DE_SceneGetCamera() {
+DE_IMPL DeccanCamera *DE_SceneGetCamera(void) {
     DeccanGameScene *scene = DE_SceneCurrentScene();
     return scene->camera;
 }

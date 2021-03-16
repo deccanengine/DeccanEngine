@@ -69,6 +69,9 @@ void DE_AppUpdate(void) {
                 DE_ClockDelay((int)(ticksPerFrame - deltaTime));
             }
         }
+
+        /* Update delta time */
+        deltaTime = DE_TimerGetTime(&frmTimer).milliseconds;
     }
 }
 

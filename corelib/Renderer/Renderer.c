@@ -1,6 +1,13 @@
+/* Deccan Game Engine - C11 2D SDL Game Engine.
+ * Copyright 2020, 2021 Ayush Bardhan Tripathy
+ *
+ * This software is licensed under MIT License.
+ * See LICENSE.md included with this package for more info.
+ */
+
 #include "Renderer.h"
 
-static struct {
+DE_PRIV struct {
     SDL_GLContext glcontext;
     SDL_Window *window;
 
@@ -15,7 +22,7 @@ static struct {
     .desc = {0},
 };
 
-void DE_RendererPreInit() {
+DE_IMPL void DE_RendererPreInit(void) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
@@ -23,7 +30,7 @@ void DE_RendererPreInit() {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 }
 
-void DE_RendererCreate(SDL_Window *window) {
+DE_IMPL void DE_RendererCreate(SDL_Window *window) {
     RendererInfo.window = window;
     RendererInfo.glcontext = SDL_GL_CreateContext(window);
     if (!RendererInfo.glcontext) {
@@ -37,35 +44,35 @@ void DE_RendererCreate(SDL_Window *window) {
     sg_setup(&RendererInfo.desc);
 }
 
-void DE_RendererDestroy() {
+DE_IMPL void DE_RendererDestroy(void) {
     sg_shutdown();
 
     if (RendererInfo.glcontext != NULL)
         SDL_GL_DeleteContext(RendererInfo.glcontext);
 }
 
-SDL_GLContext DE_RendererGetContext() {
-    return RendererInfo.glcontext;
-}
-
-void DE_RendererDraw() {
+DE_IMPL void DE_RendererDraw(void) {
     sg_commit();
 
     SDL_GL_SwapWindow(RendererInfo.window);
 }
 
-void DE_RendererSetViewport(vec2s viewport) {
+DE_IMPL SDL_GLContext DE_RendererGetContext(void) {
+    return RendererInfo.glcontext;
+}
+
+DE_IMPL void DE_RendererSetViewport(vec2s viewport) {
     RendererInfo.viewport = viewport;
 };
 
-void DE_RendererSetClearColor(vec4s color) {
+DE_IMPL void DE_RendererSetClearColor(vec4s color) {
     RendererInfo.clear_color = color;
 }
 
-vec2s DE_RendererGetViewport() {
+DE_IMPL vec2s DE_RendererGetViewport(void) {
     return RendererInfo.viewport;
 }
 
-vec4s DE_RendererGetClearColor() {
+DE_IMPL vec4s DE_RendererGetClearColor(void) {
     return RendererInfo.clear_color;
 }

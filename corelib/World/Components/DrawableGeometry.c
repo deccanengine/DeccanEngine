@@ -1,3 +1,10 @@
+/* Deccan Game Engine - C11 2D SDL Game Engine.
+ * Copyright 2020, 2021 Ayush Bardhan Tripathy
+ *
+ * This software is licensed under MIT License.
+ * See LICENSE.md included with this package for more info.
+ */
+
 #include "DrawableGeometry.h"
 #include "Drawable.h"
 #include "Transform.h"
@@ -6,7 +13,11 @@
 #include "../../Renderer/Texture.h"
 #include "../../Renderer/Color.h"
 
-DeccanTexture white_tex;
+DE_PRIV DeccanTexture white_tex;
+
+/////////////////////////////////////////////////
+// Registers/Constructors/Destructors
+////////////////////////////////////////////////
 
 void Draw(DeccanFlecsIter *it) {
     DeccanCompTransform *transform = DE_FlecsIterColumn(it, "Transform", 1);

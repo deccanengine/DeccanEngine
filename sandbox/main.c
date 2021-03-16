@@ -6,8 +6,6 @@ uint64_t count = 0;
 DeccanTimer timer;
 DeccanCamera camera;
 
-simgui_desc_t imgui_context = {0};
-
 void begin() {
     /* Start here */
     DE_ImguiInit();
