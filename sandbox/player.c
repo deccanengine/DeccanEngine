@@ -10,7 +10,6 @@ DeccanColor ColorList_White = (DeccanColor){255, 255, 255, 255}, ColorList_Black
 void _player_begin(DeccanGameObject this) {
     DeccanObjectInfo *info = DE_ObjectGetComponent(this, "Info");
 
-    // DE_ObjectSetComponent(this, "Color", &(DeccanColor){255, 0, 0, 255});
     DE_ObjectSetComponent(
         this, "Collider", &(DeccanCompCollider){.type = COLLIDER_Rect, .rect = {[0] = 0, [1] = 0, [2] = 50, [3] = 50}});
     DE_ObjectSetComponent(this, "Transform", &(DeccanCompTransform){.position = {[0] = 1.0f, [1] = 0.0f, [2] = 0.0f}});
@@ -21,9 +20,7 @@ void _player_begin(DeccanGameObject this) {
 
 void _player_step(DeccanGameObject this) {
     static float SpeedModifier = 2e-2f;
-
     DeccanCompTransform *state = DE_ObjectGetComponent(this, "Transform");
-    DeccanColor *color = DE_ObjectGetComponent(this, "Color");
 
     if (DE_InputKeyHeld(DECCAN_KEY_W)) {
         state->position[1] += SpeedModifier;
@@ -51,7 +48,7 @@ void _player_step(DeccanGameObject this) {
     vec2 pos;
     DE_InputGetMousePos(pos);
     if (DE_CompColliderCheckObjectWithVector(this, pos)) {
-        *color = ColorList_Orange;
+        // *color = ColorList_Orange;
         if (DE_InputButtonDown(DECCAN_BUTTON_LEFT)) {
             selected = true;
             offset[0] = pos[0] - state->position[0];
@@ -70,7 +67,12 @@ void _player_step(DeccanGameObject this) {
 
 void _player_render(DeccanGameObject this) {
     DeccanCompTransform *state = DE_ObjectGetComponent(this, "Transform");
-    DeccanColor *color = DE_ObjectGetComponent(this, "Color");
+
+    igBegin("Transform", NULL, 0);
+    igDragFloat("X", &state->position[0], 0.1f, 0.0f, 0.0f, "%.2f", 0);
+    igDragFloat("Y", &state->position[1], 0.1f, 0.0f, 0.0f, "%.2f", 0); 
+    igDragFloat("Z", &state->position[2], 0.1f, 0.0f, 0.0f, "%.2f", 0); 
+    igEnd();
 }
 
 void _player_end(DeccanGameObject this) {

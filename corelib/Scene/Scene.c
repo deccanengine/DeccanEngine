@@ -66,8 +66,8 @@ DE_IMPL void DE_SceneUpdate(void) {
     DE_SceneIterateObject(DE_ObjectUpdate);
 
     /* AtRender of scenes and objects */
+    DE_SceneIterateObject(DE_ObjectRender); // Temporarily here. TODO
     scene->AtRender();
-    DE_SceneIterateObject(DE_ObjectRender);
 }
 
 DE_IMPL void DE_SceneQuit(void) {

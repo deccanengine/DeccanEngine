@@ -22,13 +22,12 @@ void begin() {
     DE_ObjectMakePrefab(player);
     DE_SceneInstantiateObject(player);
 
-    DE_FlecsRegisterComponent("Color", sizeof(DeccanColor), ECS_ALIGNOF(DeccanColor));
-
     DE_CameraInit(&camera, 0.1f, 100.0f);
 }
 
 void step() {
     /* Start here */
+    DE_ImguiBeginRender();
 }
 
 void render() {
@@ -43,8 +42,6 @@ void render() {
     DE_CameraSetOrtho(&camera, 1.0f);
 
     DE_SceneSetCamera(&camera);
-
-    DE_ImguiBeginRender();
 
     igBegin("Main Window", NULL, 0);
     igText("Hello, World!");
