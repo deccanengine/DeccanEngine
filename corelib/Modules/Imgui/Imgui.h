@@ -7,6 +7,7 @@
 
 #pragma once
 #include "../../Config.h"
+#include "../../Core/Module/Module.h"
 #define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
 #include <depends/deimgui/cimgui.h>
 
@@ -23,3 +24,10 @@ DE_API void DE_ImguiQuit(void);
 
 DE_API void DE_ImguiBeginRender(void);
 DE_API void DE_ImguiEndRender(void);
+
+/////////////////////////////////////////////////
+// Module
+////////////////////////////////////////////////
+
+DE_API DeccanModule *DE_ImguiModule(void);
+

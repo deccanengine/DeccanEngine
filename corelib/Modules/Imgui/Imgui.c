@@ -40,3 +40,17 @@ DE_IMPL void DE_ImguiEndRender(void) {
     igRender();
     simgui_render();
 }
+
+/////////////////////////////////////////////////
+// Module
+////////////////////////////////////////////////
+
+DE_API DeccanModule *DE_ImguiModule(void) {
+    DeccanModule *imgui = DE_ModuleCreate("imgui");
+    imgui->AtBeginning = DE_ImguiInit;
+    imgui->AtStep = DE_ImguiBeginRender;
+    imgui->AtPostStep = DE_ImguiEndRender;
+    imgui->AtEnd = DE_ImguiQuit;
+    return imgui;
+}
+

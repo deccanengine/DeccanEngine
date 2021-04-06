@@ -8,7 +8,6 @@ DeccanCamera camera;
 
 void begin() {
     /* Start here */
-    DE_ImguiInit();
 
     // TODO: Introduce hooks and callbacks here
     DE_ComponentsRegisterAll();
@@ -27,7 +26,6 @@ void begin() {
 
 void step() {
     /* Start here */
-    DE_ImguiBeginRender();
 }
 
 void render() {
@@ -46,13 +44,10 @@ void render() {
     igBegin("Main Window", NULL, 0);
     igText("Hello, World!");
     igEnd();
-
-    DE_ImguiEndRender();
 }
 
 void end() {
     /* Start here */
-    DE_ImguiQuit();
 }
 
 int main(int argc, char **argv) {
@@ -79,6 +74,8 @@ int main(int argc, char **argv) {
         scene_mod->AtStep = step;
         scene_mod->AtPostStep = render;
         scene_mod->AtEnd = end;
+
+        DE_ScenePushModule(scene, DE_ImguiModule());
         DE_ScenePushModule(scene, scene_mod);
         DE_SceneAddScene(scene, false);
 
