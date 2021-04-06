@@ -13,40 +13,40 @@
 // Enums
 ////////////////////////////////////////////////
 
-typedef enum DeccanShellStage {
+typedef enum DeccanModuleStage {
     DE_SHELL_ATBEGINNING,
     DE_SHELL_ATSTEP,
     DE_SHELL_ATPOSTSTEP,
     DE_SHELL_ATEND
-} DeccanShellStage;
+} DeccanModuleStage;
 
 /////////////////////////////////////////////////
 // Structs
 ////////////////////////////////////////////////
 
-typedef struct DeccanShell {
+typedef struct DeccanModule {
     void (*AtBeginning)();
     void (*AtStep)();
     void (*AtPostStep)();
     void (*AtEnd)();
-} DeccanShell;
+} DeccanModule;
 
-typedef struct DeccanShellSys {
-    DeccanArray shells;
-} DeccanShellSys;
-
-/////////////////////////////////////////////////
-// Shell
-////////////////////////////////////////////////
-
-DE_API DeccanShell *DE_ShellCreate(const char *name);
-DE_API void DE_ShellDestroy(DeccanShell *shell);
+typedef struct DeccanModuleSys {
+    DeccanArray mods;
+} DeccanModuleSys;
 
 /////////////////////////////////////////////////
-// Shell System
+// Module
 ////////////////////////////////////////////////
 
-DE_API void DE_ShellSysCreate(DeccanShellSys *shsys);
-DE_API void DE_ShellSysDestroy(DeccanShellSys *shsys);
-DE_API void DE_ShellSysPush(DeccanShellSys *shsys, DeccanShell *shell);
-DE_API void DE_ShellSysIter(DeccanShellSys *shsys, DeccanShellStage stage, bool order);
+DE_API DeccanModule *DE_ModuleCreate(const char *name);
+DE_API void DE_ModuleDestroy(DeccanModule *mod);
+
+/////////////////////////////////////////////////
+// Module System
+////////////////////////////////////////////////
+
+DE_API void DE_ModuleSysCreate(DeccanModuleSys *modsys);
+DE_API void DE_ModuleSysDestroy(DeccanModuleSys *modsys);
+DE_API void DE_ModuleSysPush(DeccanModuleSys *modsys, DeccanModule *mod);
+DE_API void DE_ModuleSysIter(DeccanModuleSys *modsys, DeccanModuleStage stage, bool order);

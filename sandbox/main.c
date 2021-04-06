@@ -74,12 +74,12 @@ int main(int argc, char **argv) {
 
     if (DE_AppInit(&settings)) {
         DeccanGameScene *scene = DE_SceneNewScene("scene0");
-        DeccanShell *scene_shell = DE_ShellCreate("scene_shell");
-        scene_shell->AtBeginning = begin;
-        scene_shell->AtStep = step;
-        scene_shell->AtPostStep = render;
-        scene_shell->AtEnd = end;
-        DE_ScenePushShell(scene, scene_shell);
+        DeccanModule *scene_mod = DE_ModuleCreate("scene_mod");
+        scene_mod->AtBeginning = begin;
+        scene_mod->AtStep = step;
+        scene_mod->AtPostStep = render;
+        scene_mod->AtEnd = end;
+        DE_ScenePushModule(scene, scene_mod);
         DE_SceneAddScene(scene, false);
 
         DE_AppUpdate();

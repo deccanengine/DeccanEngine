@@ -52,30 +52,30 @@ DE_IMPL void DE_SceneUpdate(void) {
     /* First frame of the scene. Same as at_beginning for scene */
     if (scene->is_first_frame == true) {
         RegisterBaseComponent(scene);
-        DE_ShellSysIter(&scene->shellsys, DE_SHELL_ATBEGINNING, true);
+        DE_ModuleSysIter(&scene->modsys, DE_SHELL_ATBEGINNING, true);
         DE_SceneIterateObject(ObjectFirstFrame);
 
         scene->is_first_frame = false;
     }
 
     /* AtStep of scenes and objects */
-    DE_ShellSysIter(&scene->shellsys, DE_SHELL_ATSTEP, true);
+    DE_ModuleSysIter(&scene->modsys, DE_SHELL_ATSTEP, true);
     DE_FlecsUpdateWorld();
     DE_SceneIterateObject(DE_ObjectUpdate);
 
     /* AtPostStep (AtRender) of scenes and objects */
     DE_SceneIterateObject(DE_ObjectRender);
-    DE_ShellSysIter(&scene->shellsys, DE_SHELL_ATPOSTSTEP, false);
+    DE_ModuleSysIter(&scene->modsys, DE_SHELL_ATPOSTSTEP, false);
 }
 
 DE_IMPL void DE_SceneQuit(void) {
     /* AtEnd of scenes and objects */
     DeccanGameScene *scene = DE_SceneCurrentScene();
 
-    DE_ShellSysIter(&scene->shellsys, DE_SHELL_ATEND, false);
+    DE_ModuleSysIter(&scene->modsys, DE_SHELL_ATEND, false);
     DE_SceneIterateObject(DE_ObjectEnd);
 
-    DE_ShellSysDestroy(&scene->shellsys);
+    DE_ModuleSysDestroy(&scene->modsys);
 
     /* Dellocate everything */
     for (int i = 0; i < stbds_arrlen(SceneInfo.scenes); i++) {
@@ -103,7 +103,7 @@ DE_IMPL DeccanGameScene *DE_SceneNewScene(const char *name) {
     scene->world = ecs_init();
     scene->is_first_frame = true;
 
-    DE_ShellSysCreate(&scene->shellsys);
+    DE_ModuleSysCreate(&scene->modsys);
 
     return scene;
 }
@@ -152,11 +152,11 @@ DE_IMPL void DE_SceneMakeChanges(void) {
 }
 
 /////////////////////////////////////////////////
-// Shell systems
+// Module systems
 ////////////////////////////////////////////////
 
-DE_IMPL void DE_ScenePushShell(DeccanGameScene *scene, DeccanShell *shell) {
-    DE_ShellSysPush(&scene->shellsys, shell);
+DE_IMPL void DE_ScenePushModule(DeccanGameScene *scene, DeccanModule *mod) {
+    DE_ModuleSysPush(&scene->modsys, mod);
 }
 
 /////////////////////////////////////////////////
