@@ -16,6 +16,11 @@ DE_IMPL void DE_FlecsSystem(DeccanFlecsActionFunc iter, const char *name, const 
     ecs_new_system(scene->world, 0, name ? name : "system", type, sign, iter);
 }
 
+DE_IMPL void DE_FlecsUpdateWorld(void) {
+    DeccanGameScene *scene = DE_SceneCurrentScene();
+    ecs_progress(scene->world, 0);
+}
+
 /////////////////////////////////////////////////
 // Component
 ////////////////////////////////////////////////

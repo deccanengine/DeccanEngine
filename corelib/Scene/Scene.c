@@ -52,30 +52,30 @@ DE_IMPL void DE_SceneUpdate(void) {
     /* First frame of the scene. Same as at_beginning for scene */
     if (scene->is_first_frame == true) {
         RegisterBaseComponent(scene);
-
-        scene->AtFirstFrame();
-        scene->is_first_frame = false;
-
-        /* First frame of objects */
+        DE_ShellSysIter(&scene->shellsys, DE_SHELL_ATBEGINNING, true);
         DE_SceneIterateObject(ObjectFirstFrame);
+
+        scene->is_first_frame = false;
     }
 
     /* AtStep of scenes and objects */
-    scene->AtStep();
-    ecs_progress(scene->world, 0);
+    DE_ShellSysIter(&scene->shellsys, DE_SHELL_ATSTEP, true);
+    DE_FlecsUpdateWorld();
     DE_SceneIterateObject(DE_ObjectUpdate);
 
-    /* AtRender of scenes and objects */
-    DE_SceneIterateObject(DE_ObjectRender); // Temporarily here. TODO
-    scene->AtRender();
+    /* AtPostStep (AtRender) of scenes and objects */
+    DE_SceneIterateObject(DE_ObjectRender);
+    DE_ShellSysIter(&scene->shellsys, DE_SHELL_ATPOSTSTEP, false);
 }
 
 DE_IMPL void DE_SceneQuit(void) {
-    /* at_end of scenes and objects */
-    DeccanGameScene *currentScene = DE_SceneCurrentScene();
-    currentScene->AtEnd();
+    /* AtEnd of scenes and objects */
+    DeccanGameScene *scene = DE_SceneCurrentScene();
 
+    DE_ShellSysIter(&scene->shellsys, DE_SHELL_ATEND, false);
     DE_SceneIterateObject(DE_ObjectEnd);
+
+    DE_ShellSysDestroy(&scene->shellsys);
 
     /* Dellocate everything */
     for (int i = 0; i < stbds_arrlen(SceneInfo.scenes); i++) {
@@ -98,16 +98,12 @@ DE_IMPL void SceneNoneFunc(void) {
 
 DE_IMPL DeccanGameScene *DE_SceneNewScene(const char *name) {
     DeccanGameScene *scene = DE_Alloc(sizeof(DeccanGameScene), 1);
-
     scene->name = DE_StringNew(name);
     scene->is_paused = false;
     scene->world = ecs_init();
-
     scene->is_first_frame = true;
-    scene->AtFirstFrame = SceneNoneFunc;
-    scene->AtStep = SceneNoneFunc;
-    scene->AtRender = SceneNoneFunc;
-    scene->AtEnd = SceneNoneFunc;
+
+    DE_ShellSysCreate(&scene->shellsys);
 
     return scene;
 }
@@ -153,6 +149,14 @@ DE_IMPL void DE_SceneMakeChanges(void) {
             SceneInfo.scenes[sceneCount - 1]->is_paused = false;
         }
     }
+}
+
+/////////////////////////////////////////////////
+// Shell systems
+////////////////////////////////////////////////
+
+DE_IMPL void DE_ScenePushShell(DeccanGameScene *scene, DeccanShell *shell) {
+    DE_ShellSysPush(&scene->shellsys, shell);
 }
 
 /////////////////////////////////////////////////

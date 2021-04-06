@@ -70,8 +70,8 @@ void _player_render(DeccanGameObject this) {
 
     igBegin("Transform", NULL, 0);
     igDragFloat("X", &state->position[0], 0.1f, 0.0f, 0.0f, "%.2f", 0);
-    igDragFloat("Y", &state->position[1], 0.1f, 0.0f, 0.0f, "%.2f", 0); 
-    igDragFloat("Z", &state->position[2], 0.1f, 0.0f, 0.0f, "%.2f", 0); 
+    igDragFloat("Y", &state->position[1], 0.1f, 0.0f, 0.0f, "%.2f", 0);
+    igDragFloat("Z", &state->position[2], 0.1f, 0.0f, 0.0f, "%.2f", 0);
     igEnd();
 }
 

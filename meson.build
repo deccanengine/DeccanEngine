@@ -36,9 +36,11 @@ src = [
     'corelib/Core/SDLHelper.c',
     'corelib/Core/Asset/AssetManager.c',
     'corelib/Core/Input/Input.c',
+    'corelib/Core/Shell/Shell.c',
     'corelib/Core/FileSys.c',
     'corelib/Core/Timer.c',
     'corelib/Core/Variable.c',
+    'corelib/Core/Array.c',
     'corelib/Core/String.c',
     'corelib/Core/Utils.c',
 

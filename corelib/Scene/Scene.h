@@ -7,6 +7,7 @@
 
 #pragma once
 #include "../Config.h"
+#include "../Core/Shell/Shell.h"
 #include "../Core/Utils.h"
 #include "../Core/String.h"
 #include "../World/Camera.h"
@@ -28,10 +29,7 @@ typedef struct DeccanDeccanGameScene {
     ecs_world_t *world;
     DeccanCamera *camera;
 
-    void (*AtFirstFrame)(void);
-    void (*AtStep)(void);
-    void (*AtRender)(void);
-    void (*AtEnd)(void);
+    DeccanShellSys shellsys;
 } DeccanGameScene;
 
 /////////////////////////////////////////////////
@@ -52,6 +50,12 @@ DE_API DeccanGameScene *DE_SceneNewScene(const char *name);
 DE_API void DE_SceneAddScene(DeccanGameScene *scene, bool is_replacing);
 DE_API void DE_SceneRemoveScene(void);
 DE_API void DE_SceneMakeChanges(void);
+
+/////////////////////////////////////////////////
+// Shell systems
+////////////////////////////////////////////////
+
+DE_API void DE_ScenePushShell(DeccanGameScene *scene, DeccanShell *shell);
 
 /////////////////////////////////////////////////
 // Object handling

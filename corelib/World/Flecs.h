@@ -37,6 +37,7 @@ typedef ecs_iter_action_t DeccanFlecsActionFunc;
 ////////////////////////////////////////////////
 
 DE_API void DE_FlecsSystem(DeccanFlecsActionFunc iter, const char *name, const char *sign, DeccanFlecsType type);
+DE_API void DE_FlecsUpdateWorld(void);
 
 /////////////////////////////////////////////////
 // Component
