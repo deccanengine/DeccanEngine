@@ -14,6 +14,8 @@ bool DE_AppInit(DeccanSettings *settings) {
     DE_CoreInit(settings);
     DE_RendererCreate(DE_CoreGetWindow());
 
+    DE_SceneSysCreate();
+
     DE_GenericPipelineCreate();
 
     return true;

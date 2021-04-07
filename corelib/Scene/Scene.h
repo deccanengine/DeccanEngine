@@ -36,6 +36,7 @@ typedef struct DeccanDeccanGameScene {
 // Scene internals
 ////////////////////////////////////////////////
 
+DE_API void DE_SceneSysCreate(void);
 DE_API DeccanGameScene **DE_SceneGetSceneArray(void);
 DE_API int DE_SceneGetSceneCount(void);
 DE_API void DE_SceneFreeAll(void);
