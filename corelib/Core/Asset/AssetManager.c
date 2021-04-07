@@ -19,9 +19,9 @@ DE_PRIV struct {
 
 DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, DeccanAssetDescriptor *desc) {
     manager->system = NULL;
-    manager->asset_buffer = NULL;
-
     manager->desc = NULL;
+
+    DE_ArrayCreate(&manager->asset_buffer);
 
     for (int i = 0; i < count; i++) {
         stbds_shputs(manager->desc, desc[i]);
@@ -41,8 +41,8 @@ DE_IMPL void DE_AssetDestroyManager(DeccanAssetManager *manager) {
             uint32_t handle = asset_entry.value;
             uint32_t index = sx_handle_index(handle);
 
-            RawAsset asset = manager->asset_buffer[index];
-            desc.calls.Destroy(asset.internal_data);
+            RawAsset *asset = manager->asset_buffer.data[index];
+            desc.calls.Destroy(asset->internal_data);
         }
     }
 
@@ -52,9 +52,7 @@ DE_IMPL void DE_AssetDestroyManager(DeccanAssetManager *manager) {
         stbds_shfree(manager->system);
     }
 
-    if (manager->asset_buffer != NULL) {
-        stbds_arrfree(manager->asset_buffer);
-    }
+    DE_ArrayDestroy(&manager->asset_buffer);
 }
 
 DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager) {
@@ -96,7 +94,7 @@ DE_IMPL void *DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) 
     RawAsset raw_asset = {
         .internal_data = asset,
     };
-    stbds_arrput(Asset_Info.manager->asset_buffer, raw_asset);
+    DE_ArrayAddItem(&Asset_Info.manager->asset_buffer, (void *)&raw_asset);
 
     return asset;
 }
@@ -130,8 +128,8 @@ DE_IMPL void *DE_AssetGet(const char *type, const char *name) {
 
     uint32_t index = sx_handle_index(handle);
 
-    RawAsset asset = Asset_Info.manager->asset_buffer[index];
-    return asset.internal_data;
+    RawAsset *asset = Asset_Info.manager->asset_buffer.data[index];
+    return asset->internal_data;
 }
 
 DE_IMPL bool DE_AssetRemove(const char *type, const char *name) {
@@ -148,10 +146,10 @@ DE_IMPL bool DE_AssetRemove(const char *type, const char *name) {
 
     sx_handle_del(Asset_Info.manager->pool, handle);
 
-    RawAsset asset = Asset_Info.manager->asset_buffer[index];
-    desc.calls.Destroy(asset.internal_data);
+    RawAsset *asset = Asset_Info.manager->asset_buffer.data[index];
+    desc.calls.Destroy(asset->internal_data);
 
-    stbds_arrdel(Asset_Info.manager->asset_buffer, index);
+    DE_ArrayRemoveItem(&Asset_Info.manager->asset_buffer, index);
 
     return true;
 }
