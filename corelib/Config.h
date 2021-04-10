@@ -163,10 +163,6 @@
 #include <depends/stb/stb_image.h>
 #include <depends/stb/stb_ds.h>
 
-#include <depends/sx/include/sx/sx.h>
-#include <depends/sx/include/sx/allocator.h>
-#include <depends/sx/include/sx/handle.h>
-
 #include <depends/glad/include/glad/glad.h>
 
 #include <depends/sokol/sokol_gfx.h>

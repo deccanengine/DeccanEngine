@@ -20,7 +20,6 @@ ig_lib = static_library('imgui', ig_src,
 
 dep_incdir = [
     include_directories('proj'),
-    include_directories('depends/sx/include'),
     include_directories('depends/glad/include')
 ]
 

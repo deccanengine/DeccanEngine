@@ -11,5 +11,3 @@
 DE_API void *DE_Alloc(size_t size, int count);
 DE_API void *DE_Realloc(void *mem, size_t size);
 DE_API void DE_Free(void *mem);
-
-DE_API sx_alloc *DE_GetSXAlloc(void);

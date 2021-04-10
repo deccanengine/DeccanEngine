@@ -27,7 +27,7 @@ DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, Decc
         stbds_shputs(manager->desc, desc[i]);
     }
 
-    manager->pool = sx_handle_create_pool(DE_GetSXAlloc(), POOL_INITIAL_CAP);
+    manager->pool = DE_HandlePoolCreate(POOL_INITIAL_CAP);
 }
 
 DE_IMPL void DE_AssetDestroyManager(DeccanAssetManager *manager) {
@@ -39,14 +39,14 @@ DE_IMPL void DE_AssetDestroyManager(DeccanAssetManager *manager) {
             Asset asset_entry = asset_class[j];
 
             uint32_t handle = asset_entry.value;
-            uint32_t index = sx_handle_index(handle);
+            uint32_t index = DE_HandleIndex(Asset_Info.manager->pool, handle);
 
-            RawAsset *asset = manager->asset_buffer.data[index];
-            desc.calls.Destroy(asset->internal_data);
+            void *asset = manager->asset_buffer.data[index];
+            desc.calls.Destroy(asset);
         }
     }
 
-    sx_handle_destroy_pool(manager->pool, DE_GetSXAlloc());
+    DE_HandlePoolDestroy(manager->pool);
 
     if (manager->system != NULL) {
         stbds_shfree(manager->system);
@@ -78,12 +78,8 @@ DE_IMPL uint32_t DE_AssetLoad(const char *type, const char *name, SDL_RWops *fil
     }
 
     Asset *asset_class = stbds_shget(Asset_Info.manager->system, type);
-
-    if (sx_handle_full(Asset_Info.manager->pool)) {
-        sx_handle_grow_pool(Asset_Info.manager->pool, DE_GetSXAlloc());
-    }
-
-    uint32_t handle = sx_handle_new(Asset_Info.manager->pool);
+    
+    uint32_t handle = DE_HandleNew(Asset_Info.manager->pool);
 
     Asset asset_entry = {
         .key = name,
@@ -120,7 +116,7 @@ DE_IMPL uint32_t DE_AssetGet(const char *type, const char *name) {
     Asset *asset_class = stbds_shget(Asset_Info.manager->system, type);
 
     uint32_t handle = stbds_shget(asset_class, name);
-    if ((handle == 0 || sx_handle_valid(Asset_Info.manager->pool, handle)) == false) {
+    if (DE_HandleValid(Asset_Info.manager->pool, handle) == false) { 
         DE_ERROR("Cannot find asset: %s", name);
         return NULL;
     }
@@ -129,7 +125,7 @@ DE_IMPL uint32_t DE_AssetGet(const char *type, const char *name) {
 }
 
 DE_IMPL void *DE_AssetGetRaw(uint32_t handle) {
-    uint32_t index = sx_handle_index(handle);
+    uint32_t index = DE_HandleIndex(Asset_Info.manager->pool, handle); 
     void *asset = Asset_Info.manager->asset_buffer.data[index];
     return asset;
 }
@@ -139,17 +135,17 @@ DE_IMPL bool DE_AssetRemove(const char *type, const char *name) {
     Asset *asset_class = stbds_shget(Asset_Info.manager->system, type);
 
     uint32_t handle = stbds_shget(asset_class, name);
-    if (handle == 0 || sx_handle_valid(Asset_Info.manager->pool, handle) == false) {
+    if (DE_HandleValid(Asset_Info.manager->pool, handle) == false) {
         DE_ERROR("Asset '%s' cannot be removed because it is not found", name);
         return false;
     }
 
-    uint32_t index = sx_handle_index(handle);
+    uint32_t index = DE_HandleIndex(Asset_Info.manager->pool, handle);
 
-    sx_handle_del(Asset_Info.manager->pool, handle);
+    DE_HandleDelete(Asset_Info.manager->pool, handle);
 
-    RawAsset *asset = Asset_Info.manager->asset_buffer.data[index];
-    desc.calls.Destroy(asset->internal_data);
+    void *asset = Asset_Info.manager->asset_buffer.data[index];
+    desc.calls.Destroy(asset);
 
     DE_ArrayRemoveItem(&Asset_Info.manager->asset_buffer, index);
 

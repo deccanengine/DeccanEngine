@@ -8,6 +8,7 @@
 #pragma once
 #include "../../Config.h"
 #include "../Array.h"
+#include "../Handle.h"
 #include "AssetDescriptor.h"
 
 /////////////////////////////////////////////////
@@ -28,7 +29,8 @@ typedef struct DeccanAssetManager {
     DeccanAssetDescriptor *desc;
     AssetSystem *system;
     DeccanArray asset_buffer; /* Array of RawAsset */
-    sx_handle_pool *pool;
+    //sx_handle_pool *pool;
+    DeccanHandlePool *pool;
 } DeccanAssetManager;
 
 /////////////////////////////////////////////////

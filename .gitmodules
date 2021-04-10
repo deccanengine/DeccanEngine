@@ -10,9 +10,6 @@
 [submodule "depends/flecs"]
 	path = depends/flecs
 	url = https://github.com/SanderMertens/flecs.git
-[submodule "depends/sx"]
-	path = depends/sx
-	url = https://github.com/septag/sx/
 [submodule "depends/sokol"]
 	path = depends/sokol
 	url = https://github.com/floooh/sokol
