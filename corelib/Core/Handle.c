@@ -6,15 +6,18 @@
 
 DeccanHandlePool *DE_HandlePoolCreate(int capacity) {
     if (capacity <= 0) 
-        return;
+        return NULL;
 
     DeccanHandlePool *pool = DE_Alloc(sizeof(DeccanHandlePool), 1);
     pool->dense  = DE_Alloc(sizeof(DeccanHandle), capacity);
     pool->sparse = DE_Alloc(sizeof(uint32_t), capacity);
     pool->length = 0;
+    pool->capacity = capacity;
     for (int i = 0; i < pool->capacity; i += 1) {
         pool->dense[i] = i;
     }
+
+    return pool;
 }
 
 void DE_HandlePoolDestroy(DeccanHandlePool *pool) {
@@ -29,8 +32,8 @@ void DE_HandlePoolDestroy(DeccanHandlePool *pool) {
 
 DeccanHandle DE_HandleNew(DeccanHandlePool *pool) {
     if (pool->length < pool->capacity) {
-        int index = length;
-        length += 1;
+        int index = pool->length;
+        pool->length += 1;
 
         DeccanHandle handle = pool->dense[index];
         pool->sparse[handle] = index;

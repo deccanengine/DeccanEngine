@@ -41,6 +41,7 @@ src = [
     'corelib/Core/Timer.c',
     'corelib/Core/Variable.c',
     'corelib/Core/Array.c',
+    'corelib/Core/Handle.c',
     'corelib/Core/String.c',
     'corelib/Core/Utils.c',
 
