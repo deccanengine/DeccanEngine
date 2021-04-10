@@ -24,10 +24,6 @@ typedef struct AssetSystem {
     Asset *value;
 } AssetSystem;
 
-typedef struct RawAsset {
-    void *internal_data;
-} RawAsset;
-
 typedef struct DeccanAssetManager {
     DeccanAssetDescriptor *desc;
     AssetSystem *system;
@@ -44,10 +40,11 @@ DE_API void DE_AssetDestroyManager(DeccanAssetManager *manager);
 
 DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager);
 
-DE_API void *DE_AssetLoad(const char *type, const char *name, SDL_RWops *file);
-DE_API void *DE_AssetLoadFromFile(const char *type, const char *name, const char *file_name, bool is_binary);
-DE_API void *DE_AssetLoadFromMem(const char *type, const char *name, size_t size, void *memory);
+DE_API uint32_t DE_AssetLoad(const char *type, const char *name, SDL_RWops *file);
+DE_API uint32_t DE_AssetLoadFromFile(const char *type, const char *name, const char *file_name, bool is_binary);
+DE_API uint32_t DE_AssetLoadFromMem(const char *type, const char *name, size_t size, void *memory);
 
-DE_API void *DE_AssetGet(const char *type, const char *file_name);
+DE_API uint32_t DE_AssetGet(const char *type, const char *file_name);
+DE_API void *DE_AssetGetRaw(uint32_t handle);
 
 DE_API bool DE_AssetRemove(const char *type, const char *name);

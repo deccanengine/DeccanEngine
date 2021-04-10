@@ -59,7 +59,7 @@ DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager) {
     Asset_Info.manager = manager;
 }
 
-DE_IMPL void *DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) {
+DE_IMPL uint32_t DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) {
     if (file == NULL) {
         return NULL;
     }
@@ -83,23 +83,22 @@ DE_IMPL void *DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) 
         sx_handle_grow_pool(Asset_Info.manager->pool, DE_GetSXAlloc());
     }
 
+    uint32_t handle = sx_handle_new(Asset_Info.manager->pool);
+
     Asset asset_entry = {
         .key = name,
-        .value = sx_handle_new(Asset_Info.manager->pool),
+        .value = handle,
     };
 
     stbds_shputs(asset_class, asset_entry);
     stbds_shput(Asset_Info.manager->system, type, asset_class);
 
-    RawAsset raw_asset = {
-        .internal_data = asset,
-    };
-    DE_ArrayAddItem(&Asset_Info.manager->asset_buffer, (void *)&raw_asset);
+    DE_ArrayAddItem(&Asset_Info.manager->asset_buffer, (void *)asset);
 
-    return asset;
+    return handle;
 }
 
-DE_IMPL void *DE_AssetLoadFromFile(const char *type, const char *name, const char *file_name, bool is_binary) {
+DE_IMPL uint32_t DE_AssetLoadFromFile(const char *type, const char *name, const char *file_name, bool is_binary) {
     SDL_RWops *file = SDL_RWFromFile(file_name, (is_binary ? "rb" : "r"));
     if (file == NULL) {
         DE_ERROR("Cannot load file: %s: %s", file_name, SDL_GetError());
@@ -108,7 +107,7 @@ DE_IMPL void *DE_AssetLoadFromFile(const char *type, const char *name, const cha
     return DE_AssetLoad(type, name, file);
 }
 
-DE_IMPL void *DE_AssetLoadFromMem(const char *type, const char *name, size_t size, void *memory) {
+DE_IMPL uint32_t DE_AssetLoadFromMem(const char *type, const char *name, size_t size, void *memory) {
     SDL_RWops *file = SDL_RWFromMem(memory, size);
     if (file == NULL) {
         DE_ERROR("Cannot read memory block: %s", SDL_GetError());
@@ -117,19 +116,22 @@ DE_IMPL void *DE_AssetLoadFromMem(const char *type, const char *name, size_t siz
     return DE_AssetLoad(type, name, file);
 }
 
-DE_IMPL void *DE_AssetGet(const char *type, const char *name) {
+DE_IMPL uint32_t DE_AssetGet(const char *type, const char *name) {
     Asset *asset_class = stbds_shget(Asset_Info.manager->system, type);
 
     uint32_t handle = stbds_shget(asset_class, name);
-    if (handle == 0 || sx_handle_valid(Asset_Info.manager->pool, handle) == false) {
+    if ((handle == 0 || sx_handle_valid(Asset_Info.manager->pool, handle)) == false) {
         DE_ERROR("Cannot find asset: %s", name);
         return NULL;
     }
 
-    uint32_t index = sx_handle_index(handle);
+    return handle;
+}
 
-    RawAsset *asset = Asset_Info.manager->asset_buffer.data[index];
-    return asset->internal_data;
+DE_IMPL void *DE_AssetGetRaw(uint32_t handle) {
+    uint32_t index = sx_handle_index(handle);
+    void *asset = Asset_Info.manager->asset_buffer.data[index];
+    return asset;
 }
 
 DE_IMPL bool DE_AssetRemove(const char *type, const char *name) {
