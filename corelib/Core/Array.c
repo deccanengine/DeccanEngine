@@ -14,11 +14,11 @@
 DE_IMPL void DE_ArrayCreate(DeccanArray *array) {
     array->length = 0;
     array->capacity = 5;
-    array->data = malloc(sizeof(void *) * array->capacity);
+    array->data = DE_Alloc(sizeof(void *), array->capacity);
 }
 
 DE_IMPL void DE_ArrayDestroy(DeccanArray *array) {
-    free(array->data);
+    DE_Free(array->data);
 }
 
 /////////////////////////////////////////////////
@@ -28,7 +28,7 @@ DE_IMPL void DE_ArrayDestroy(DeccanArray *array) {
 DE_IMPL void CheckGrowArray(DeccanArray *array) {
     if (array->length <= array->capacity) {
         array->capacity += 5;
-        array->data = realloc(array->data, sizeof(void *) * array->capacity);
+        array->data = DE_Realloc(array->data, sizeof(void *) * array->capacity);
     }
 }
 
@@ -39,7 +39,7 @@ DE_IMPL void DE_ArrayAddItem(DeccanArray *array, void *item) {
 
 DE_IMPL bool IndexBound(DeccanArray *array, uint32_t index) {
     if (index > array->length || index < 0) {
-        printf("Index out of bounds\n");
+        DE_WARN("Array index out of bounds\n");
         return false;
     }
     return true;
