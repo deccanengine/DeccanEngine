@@ -114,7 +114,6 @@ DE_IMPL void DE_GenericPipelineCreate(void) {
             .val = {0.0f, 0.0f, 0.0f, 1.0f},
         },
     };
-
     /* clang-format on */
 }
 
@@ -134,27 +133,30 @@ DE_IMPL void DE_GenericPipelineBegin(DeccanCamera *camera) {
     GenericPipelineInfo.camera = camera;
 }
 
-DE_IMPL void DE_GenericPipelineDrawGeometry(DeccanGeometry geometry) {
+DE_IMPL void DE_GenericPipelineDraw(DeccanDrawAction action) {
+    // TODO: shaders taking material directly
     sg_bindings binds = {
-        .vertex_buffers[0] = geometry.vbuf,
-        .index_buffer = geometry.ibuf,
-        .fs_images[0] = geometry.image,
+        .vertex_buffers[0] = action.geometry->vbuf,
+        .index_buffer = action.geometry->ibuf,
+        .fs_images[0] = action.material->image,
     };
 
     VSParams vs_params = {
-        .transform = geometry.transform,
+        .transform = action.transform,
         .view_matrix = GenericPipelineInfo.camera->cam.view,
         .projection_matrix = GenericPipelineInfo.camera->proj,
     };
 
+    DeccanColor color = action.material->color;
+    // TODO: color conversion
     FSParams fs_params = {
-        .color = {geometry.color[0], geometry.color[1], geometry.color[2], geometry.color[3]},
+        .color = { color.r, color.g, color.b, color.a },
     };
 
     sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &vs_params, sizeof(VSParams));
     sg_apply_uniforms(SG_SHADERSTAGE_FS, 0, &fs_params, sizeof(FSParams));
     sg_apply_bindings(&binds);
-    sg_draw(0, geometry.index_count, 1);
+    sg_draw(0, action.geometry->index_count, 1);
 }
 
 DE_IMPL void DE_GenericPipelineEnd(void) {

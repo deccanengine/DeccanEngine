@@ -7,6 +7,7 @@
 
 #pragma once
 #include "../Config.h"
+#include "Color.h"
 
 /////////////////////////////////////////////////
 // Structs
@@ -14,8 +15,16 @@
 
 typedef struct DeccanGeometry {
     sg_buffer vbuf, ibuf;
-    sg_image image;
-    mat4s transform;
-    float color[4];
     uint16_t index_count;
 } DeccanGeometry;
+
+typedef struct DeccanMaterial {
+    sg_image image;
+    DeccanColor color;
+} DeccanMaterial;
+
+typedef struct DeccanDrawAction {
+    DeccanGeometry *geometry;
+    DeccanMaterial *material;
+    mat4s transform;
+} DeccanDrawAction;

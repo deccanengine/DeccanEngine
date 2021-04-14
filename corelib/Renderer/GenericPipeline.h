@@ -23,5 +23,5 @@ DE_API void DE_GenericPipelineDestroy(void);
 ////////////////////////////////////////////////
 
 DE_API void DE_GenericPipelineBegin(DeccanCamera *camera);
-DE_API void DE_GenericPipelineDrawGeometry(DeccanGeometry geometry);
+DE_API void DE_GenericPipelineDraw(DeccanDrawAction action);
 DE_API void DE_GenericPipelineEnd(void);

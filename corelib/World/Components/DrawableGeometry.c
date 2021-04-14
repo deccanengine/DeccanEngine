@@ -25,20 +25,19 @@ void Draw(DeccanFlecsIter *it) {
     DeccanCompDrawableGeometry *drawable_geometry = DE_FlecsIterColumn(it, "DrawableGeometry", 3);
 
     for (int i = 0; i < it->count; i++) {
-        DeccanColor color = drawable[i].color;
-        DeccanGeometry geometry = drawable_geometry[i].geometry;
-
         mat4s transmat = glms_mat4_identity();
         glm_translate(transmat.raw, transform->position);
 
-        geometry.color[0] = color.r;
-        geometry.color[1] = color.g;
-        geometry.color[2] = color.b;
-        geometry.color[3] = color.a;
-        geometry.image = white_tex.image;
-        geometry.transform = transmat;
+        DeccanMaterial material;
+        material.color = drawable[i].color;
+        material.image = white_tex.image;
 
-        DE_GenericPipelineDrawGeometry(geometry);
+        DeccanDrawAction action;
+        action.geometry = &drawable_geometry[i].geometry;
+        action.transform = transmat;
+        action.material = &material;
+
+        DE_GenericPipelineDraw(action);
     }
 }
 
