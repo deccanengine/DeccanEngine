@@ -7,6 +7,7 @@
 
 #pragma once
 #include "../Config.h"
+#include "../Core/Utils.h"
 
 /////////////////////////////////////////////////
 // Structs

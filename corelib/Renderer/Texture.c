@@ -6,7 +6,6 @@
  */
 
 #include "Texture.h"
-#include <assert.h>
 
 DE_PRIV void CreateTexture(
     DeccanTexture *texture, int32_t width, int32_t height, int format, sg_image_content *image_content) {
@@ -38,7 +37,7 @@ DE_IMPL void DE_TextureCreateFromMem(
 
 DE_IMPL void DE_TextureCreateBlankRGBA(DeccanTexture *texture, int32_t width, int32_t height, uint32_t color) {
     int size_bytes = sizeof(uint32_t) * width * height;
-    uint32_t *pixels = malloc(size_bytes);
+    uint32_t *pixels = DE_Alloc(size_bytes, 1);
 
     for (int w = 0; w < width; w++) {
         for (int h = 0; h < height; h++) {
@@ -56,7 +55,7 @@ DE_IMPL void DE_TextureCreateBlankRGBA(DeccanTexture *texture, int32_t width, in
 
     CreateTexture(texture, width, height, SG_PIXELFORMAT_RGBA8, &image_content);
 
-    free(pixels);
+    DE_Free(pixels);
 }
 
 DE_IMPL void DE_TextureDestroy(DeccanTexture *texture) {

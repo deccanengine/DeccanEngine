@@ -9,5 +9,9 @@
 #include "../../Config.h"
 #include "../../Renderer/Texture.h"
 
+/////////////////////////////////////////////////
+// Sprite asset
+////////////////////////////////////////////////
+
 void *DE_SpriteAssetCreate(char *mem, size_t size);
 bool DE_SpriteAssetDestroy(void *asset);

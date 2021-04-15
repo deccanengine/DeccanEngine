@@ -7,6 +7,10 @@
 
 #include "Sprite.h"
 
+/////////////////////////////////////////////////
+// Sprite asset
+////////////////////////////////////////////////
+
 void *DE_SpriteAssetCreate(char *mem, size_t size) {
     int32_t width, height;
 
@@ -15,7 +19,8 @@ void *DE_SpriteAssetCreate(char *mem, size_t size) {
      * stb_image will handle it. */
     stbi_uc *data = stbi_load_from_memory(mem, size, &width, &height, NULL, STBI_rgb_alpha);
     if (data == NULL) {
-        DE_WARN("Cannot load image: %s", path);
+        // TODO: pass in asset name for error handling
+        DE_WARN("Cannot load image");
     }
 
     DeccanSurface surfaces[] = {
