@@ -37,6 +37,7 @@
 #include "World/Camera.h"
 #include "World/Flecs.h"
 #include "World/Components.h"
+#include "World/Resources/Sprite.h"
 
 DE_API bool DE_AppInit(DeccanSettings *settings);
 DE_API void DE_AppUpdate(void);

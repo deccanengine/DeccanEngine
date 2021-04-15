@@ -62,6 +62,7 @@ src = [
     'corelib/World/Components/Transform.c',
     'corelib/World/Components/Drawable.c',
     'corelib/World/Components/DrawableGeometry.c',
+    'corelib/World/Resources/Sprite.c',
 
     'corelib/Main/Main.c',
     'corelib/Main/Sources.c',
@@ -87,7 +88,6 @@ de_dep = declare_dependency(
 demo_src = [
     'sandbox/main.c',
     'sandbox/player.c',
-    'sandbox/Texture.c'
 ]
 
 executable('demo', demo_src, 
