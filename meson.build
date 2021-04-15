@@ -57,6 +57,7 @@ src = [
     
     'corelib/World/Camera.c',
     'corelib/World/Flecs.c',
+    'corelib/World/DefaultAssets.c',
     'corelib/World/Components.c',
     'corelib/World/Components/Collider.c',
     'corelib/World/Components/Transform.c',

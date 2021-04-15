@@ -36,6 +36,7 @@
 
 #include "World/Camera.h"
 #include "World/Flecs.h"
+#include "World/DefaultAssets.h"
 #include "World/Components.h"
 #include "World/Resources/Sprite.h"
 
