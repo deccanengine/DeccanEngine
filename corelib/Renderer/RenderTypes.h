@@ -8,6 +8,7 @@
 #pragma once
 #include "../Config.h"
 #include "Color.h"
+#include "Texture.h"
 
 /////////////////////////////////////////////////
 // Structs
@@ -19,12 +20,12 @@ typedef struct DeccanGeometry {
 } DeccanGeometry;
 
 typedef struct DeccanMaterial {
-    sg_image image;
     DeccanColor color;
 } DeccanMaterial;
 
 typedef struct DeccanDrawAction {
     DeccanGeometry *geometry;
     DeccanMaterial *material;
+    DeccanTexture *texture; // TODO: array of textures
     mat4s transform;
 } DeccanDrawAction;

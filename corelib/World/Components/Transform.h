@@ -18,9 +18,3 @@ typedef struct DeccanCompTransform {
     vec3 scale;
     vec3 rotation;
 } DeccanCompTransform;
-
-/////////////////////////////////////////////////
-// Registers/Constructors/Destructors
-////////////////////////////////////////////////
-
-DE_API void DE_CompTransformRegister(void);

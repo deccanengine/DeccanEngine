@@ -5,13 +5,15 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include "Drawable.h"
-#include "../Flecs.h"
+#pragma once
+#include "../../Config.h"
+#include "../../Renderer/RenderTypes.h"
 
 /////////////////////////////////////////////////
-// Registers/Constructors/Destructors
+// Structs
 ////////////////////////////////////////////////
 
-void DE_CompDrawableRegister(void) {
-    DE_FlecsRegisterComponent("Drawable", sizeof(DeccanCompDrawable), ECS_ALIGNOF(DeccanCompDrawable));
-}
+typedef struct DeccanCompSpriteRenderer {
+    DeccanMaterial material;
+    DeccanTexture *texture; 
+} DeccanCompSpriteRenderer;

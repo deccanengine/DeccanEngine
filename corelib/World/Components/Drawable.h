@@ -16,9 +16,3 @@
 typedef struct DeccanCompDrawable {
     DeccanColor color;
 } DeccanCompDrawable;
-
-/////////////////////////////////////////////////
-// Registers/Constructors/Destructors
-////////////////////////////////////////////////
-
-void DE_CompDrawableRegister(void);

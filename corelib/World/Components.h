@@ -12,6 +12,7 @@
 #include "Components/Transform.h"
 #include "Components/Drawable.h"
 #include "Components/DrawableGeometry.h"
+#include "Components/SpriteRenderer.h"
 
 /////////////////////////////////////////////////
 // Registrar

@@ -138,7 +138,7 @@ DE_IMPL void DE_GenericPipelineDraw(DeccanDrawAction action) {
     sg_bindings binds = {
         .vertex_buffers[0] = action.geometry->vbuf,
         .index_buffer = action.geometry->ibuf,
-        .fs_images[0] = action.material->image,
+        .fs_images[0] = action.texture->image,
     };
 
     VSParams vs_params = {

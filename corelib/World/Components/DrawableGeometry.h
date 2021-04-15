@@ -8,6 +8,7 @@
 #pragma once
 #include "../../Config.h"
 #include "../../Renderer/RenderTypes.h"
+#include "../../Renderer/Texture.h"
 
 /////////////////////////////////////////////////
 // Structs
@@ -15,10 +16,5 @@
 
 typedef struct DeccanCompDrawableGeometry {
     DeccanGeometry geometry;
+    DeccanTexture *texture;
 } DeccanCompDrawableGeometry;
-
-/////////////////////////////////////////////////
-// Registers/Constructors/Destructors
-////////////////////////////////////////////////
-
-void DE_CompDrawableGeometryRegister(void);

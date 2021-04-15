@@ -10,14 +10,6 @@
 #include "../../Modules/Physics/Collision.h"
 
 /////////////////////////////////////////////////
-// Registers/Constructors/Destructors
-////////////////////////////////////////////////
-
-DE_IMPL void DE_CompColliderRegister(void) {
-    DE_FlecsRegisterComponent("Collider", sizeof(DeccanCompCollider), ECS_ALIGNOF(DeccanCompCollider));
-}
-
-/////////////////////////////////////////////////
 // Collision checking
 ////////////////////////////////////////////////
 #define COLLISION_CHECK_HEADER(obj)                                                                                    \

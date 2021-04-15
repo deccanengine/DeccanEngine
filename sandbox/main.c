@@ -1,6 +1,5 @@
 #include <corelib/Deccan.h>
 #include "player.h"
-#include "Texture.h"
 
 uint64_t count = 0;
 DeccanTimer timer;
@@ -11,6 +10,7 @@ void begin() {
 
     // TODO: Introduce hooks and callbacks here
     DE_ComponentsRegisterAll();
+    DE_SystemsRegisterAll();
 
     DeccanGameObject player = DE_ObjectNewObject("main player");
     DeccanObjectInfo *info = DE_ObjectGetComponent(player, "Info");
@@ -20,6 +20,8 @@ void begin() {
     info->AtEnd = _player_end;
     DE_ObjectMakePrefab(player);
     DE_SceneInstantiateObject(player);
+
+    DE_AssetLoadFromFile("texture", "logo.png", "602.png", false);
 
     DE_CameraInit(&camera, 0.1f, 100.0f);
 }
@@ -37,7 +39,7 @@ void render() {
 
     camera.cam.position = (vec3s){0.0f, 0.0f, 1.0f};
     DE_CameraSetViewport(&camera, viewport);
-    DE_CameraSetOrtho(&camera, 1.0f);
+    DE_CameraSetOrtho(&camera, 3.0f);
 
     DE_SceneSetCamera(&camera);
 
@@ -53,10 +55,9 @@ void end() {
 int main(int argc, char **argv) {
     DE_UNUSED(argc);
     DE_UNUSED(argv);
-
-    DeccanAssetManager manager;
-    DE_AssetInitManager(&manager, 0, NULL);
-    DE_AssetSetManagerInst(&manager);
+    
+    DeccanAssetManager *manager = DE_MakeDefaultAssetManager();
+    DE_AssetSetManagerInst(manager);
 
     DeccanSettings settings = {0};
     settings.title = "Test";
@@ -82,7 +83,8 @@ int main(int argc, char **argv) {
         DE_AppUpdate();
     }
 
-    DE_AssetDestroyManager(&manager);
+    DE_AssetDestroyManager(manager);
+    DE_Free(manager);
 
     atexit(DE_AppQuit);
 

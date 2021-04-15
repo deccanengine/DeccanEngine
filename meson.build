@@ -59,10 +59,9 @@ src = [
     'corelib/World/Flecs.c',
     'corelib/World/DefaultAssets.c',
     'corelib/World/Components.c',
-    'corelib/World/Components/Collider.c',
-    'corelib/World/Components/Transform.c',
-    'corelib/World/Components/Drawable.c',
-    'corelib/World/Components/DrawableGeometry.c',
+    'corelib/World/Components/ColliderExtras.c',
+    'corelib/World/Systems.c',
+    'corelib/World/Systems/Rendering.c',
     'corelib/World/Resources/Sprite.c',
 
     'corelib/Main/Main.c',

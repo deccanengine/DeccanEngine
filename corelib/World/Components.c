@@ -7,9 +7,20 @@
 
 #include "Components.h"
 
+/////////////////////////////////////////////////
+// Registrar
+////////////////////////////////////////////////
+
 DE_IMPL void DE_ComponentsRegisterAll(void) {
-    DE_CompColliderRegister();
-    DE_CompTransformRegister();
-    DE_CompDrawableRegister();
-    DE_CompDrawableGeometryRegister();
+    DE_FlecsRegisterComponent("Transform", sizeof(DeccanCompTransform), ECS_ALIGNOF(DeccanCompTransform));
+
+    DE_FlecsRegisterComponent("Collider", sizeof(DeccanCompCollider), ECS_ALIGNOF(DeccanCompCollider));
+
+    DE_FlecsRegisterComponent("Drawable", sizeof(DeccanCompDrawable), ECS_ALIGNOF(DeccanCompDrawable));
+
+    DE_FlecsRegisterComponent("DrawableGeometry", sizeof(DeccanCompDrawableGeometry), 
+        ECS_ALIGNOF(DeccanCompDrawableGeometry));
+
+    DE_FlecsRegisterComponent("SpriteRenderer", sizeof(DeccanCompSpriteRenderer), 
+        ECS_ALIGNOF(DeccanCompSpriteRenderer));
 }

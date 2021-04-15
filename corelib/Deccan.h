@@ -38,6 +38,7 @@
 #include "World/Flecs.h"
 #include "World/DefaultAssets.h"
 #include "World/Components.h"
+#include "World/Systems.h"
 #include "World/Resources/Sprite.h"
 
 DE_API bool DE_AppInit(DeccanSettings *settings);

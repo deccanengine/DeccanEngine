@@ -10,12 +10,22 @@ DeccanColor ColorList_White = (DeccanColor){255, 255, 255, 255}, ColorList_Black
 void _player_begin(DeccanGameObject this) {
     DeccanObjectInfo *info = DE_ObjectGetComponent(this, "Info");
 
-    DE_ObjectSetComponent(
-        this, "Collider", &(DeccanCompCollider){.type = COLLIDER_Rect, .rect = {[0] = 0, [1] = 0, [2] = 50, [3] = 50}});
-    DE_ObjectSetComponent(this, "Transform", &(DeccanCompTransform){.position = {[0] = 1.0f, [1] = 0.0f, [2] = 0.0f}});
-    DE_ObjectSetComponent(this, "Drawable", &(DeccanCompDrawable){.color = {0, 255, 255, 255}});
-    DE_ObjectSetComponent(
-        this, "DrawableGeometry", &(DeccanCompDrawableGeometry){.geometry = DE_PrimitiveCreateQuad()});
+    DE_ObjectSetComponent(this, "Collider", &(DeccanCompCollider){
+        .type = COLLIDER_Rect, 
+        .rect = { [0] = 0, [1] = 0, [2] = 50, [3] = 50 }
+    });
+
+    DE_ObjectSetComponent(this, "Transform", &(DeccanCompTransform){
+        .position = { [0] = 1.0f, [1] = 0.0f, [2] = 0.0f },
+        .scale = { [0] = 5.0f, [1] = 5.0f, [2] = 1.0f }
+    });
+
+    DE_ObjectSetComponent(this, "SpriteRenderer", &(DeccanCompSpriteRenderer){
+        .texture = DE_AssetGetRaw(DE_AssetGet("texture", "logo.png")),
+        .material = (DeccanMaterial){
+            .color = (DeccanColor){ 1, 1, 1, 1 },
+        },
+    });
 }
 
 void _player_step(DeccanGameObject this) {
