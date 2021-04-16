@@ -47,6 +47,7 @@ src = [
     'corelib/Modules/Physics/Collision.c',
     'corelib/Modules/Imgui/Imgui.c',
 
+    'corelib/Renderer/Color.c',
     'corelib/Renderer/GenericPipeline.c',
     'corelib/Renderer/PrimitiveGeometry.c',
     'corelib/Renderer/Renderer.c',

@@ -23,7 +23,7 @@ void _player_begin(DeccanGameObject this) {
     DE_ObjectSetComponent(this, "DrawableSprite", &(DeccanCompDrawableSprite){
         .texture = DE_AssetGetRaw(DE_AssetGet("texture", "logo.png")),
         .material = (DeccanMaterial){
-            .color = (DeccanColor){ 1, 1, 1, 1 },
+            .color = (DeccanColor){ 255, 255, 255, 255 },
         },
     });
 }

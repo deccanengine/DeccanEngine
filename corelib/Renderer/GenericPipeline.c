@@ -147,11 +147,10 @@ DE_IMPL void DE_GenericPipelineDraw(DeccanDrawAction action) {
         .projection_matrix = GenericPipelineInfo.camera->proj,
     };
 
-    DeccanColor color = action.material->color;
-    // TODO: color conversion
-    FSParams fs_params = {
-        .color = { color.r, color.g, color.b, color.a },
-    };
+    DeccanColor color = DE_ColorRBGToFloats(action.material->color);
+    
+    FSParams fs_params = { 0 };
+    memcpy(fs_params.color, color.norm, sizeof(float[4]));
 
     sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &vs_params, sizeof(VSParams));
     sg_apply_uniforms(SG_SHADERSTAGE_FS, 0, &fs_params, sizeof(FSParams));

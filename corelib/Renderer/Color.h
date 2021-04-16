@@ -12,9 +12,19 @@
 // Struct
 ////////////////////////////////////////////////
 
-typedef struct DeccanColor {
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
-    uint8_t a;
+typedef union DeccanColor {
+    struct {
+        uint8_t r;
+        uint8_t g;
+        uint8_t b;
+        uint8_t a;
+    };
+    float norm[4];
 } DeccanColor;
+
+/////////////////////////////////////////////////
+// Color conversions
+////////////////////////////////////////////////
+
+DE_API DeccanColor DE_ColorRBGToFloats(DeccanColor col);
+DE_API DeccanColor DE_ColorFloatsToRBG(DeccanColor col);
