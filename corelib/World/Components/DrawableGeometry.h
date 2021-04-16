@@ -17,4 +17,5 @@
 typedef struct DeccanCompDrawableGeometry {
     DeccanGeometry geometry;
     DeccanTexture *texture;
+    DeccanMaterial material;
 } DeccanCompDrawableGeometry;

@@ -5,14 +5,13 @@
  * See LICENSE.md included with this package for more info.
  */
 
-#include "../Components/SpriteRenderer.h"
+#include "../Components/DrawableSprite.h"
 #include "../Flecs.h"
 #include "../../Renderer/RenderTypes.h"
 #include "../../Renderer/GenericPipeline.h"
 #include "../Components/Transform.h"
-#include "../Components/Drawable.h"
 #include "../Components/DrawableGeometry.h"
-#include "../Components/SpriteRenderer.h"
+#include "../Components/DrawableSprite.h"
 
 /////////////////////////////////////////////////
 // Rendering systems
@@ -20,7 +19,7 @@
 
 DE_PRIV void WorldSpriteRendering(DeccanFlecsIter *it) {
     DeccanCompTransform *transform = DE_FlecsIterColumn(it, "Transform", 1);
-    DeccanCompSpriteRenderer *sprrender = DE_FlecsIterColumn(it, "SpriteRenderer", 2);
+    DeccanCompDrawableSprite *sprrender = DE_FlecsIterColumn(it, "DrawableSprite", 2);
 
     for (int i = 0; i < it->count; i++) {
         mat4s transmat = glms_mat4_identity();
@@ -41,29 +40,25 @@ DE_PRIV void WorldSpriteRendering(DeccanFlecsIter *it) {
 
 DE_PRIV void WorldArbitaryGeometryRendering(DeccanFlecsIter *it) {
     DeccanCompTransform *transform = DE_FlecsIterColumn(it, "Transform", 1);
-    DeccanCompDrawable *drawable = DE_FlecsIterColumn(it, "Drawable", 2);
-    DeccanCompDrawableGeometry *drawable_geometry = DE_FlecsIterColumn(it, "DrawableGeometry", 3);
+    DeccanCompDrawableGeometry *arbrender = DE_FlecsIterColumn(it, "DrawableGeometry", 2);
 
     for (int i = 0; i < it->count; i++) {
         mat4s transmat = glms_mat4_identity();
         glm_translate(transmat.raw, transform->position);
         glm_scale(transmat.raw, transform->scale);
 
-        DeccanMaterial material;
-        material.color = drawable[i].color;
-
         DeccanDrawAction action;
-        action.geometry = &drawable_geometry[i].geometry;
+        action.geometry = &arbrender[i].geometry;
         action.transform = transmat;
-        action.material = &material;
-        action.texture = drawable_geometry[i].texture;
+        action.material = &arbrender[i].material;
+        action.texture = arbrender[i].texture;
         
         DE_GenericPipelineDraw(action);
     }
 }
 
 DE_IMPL void DE_SystemInitRendering(void) {
-    DE_FlecsSystem(WorldSpriteRendering, "SpriteRendering", "Transform, SpriteRenderer", DECCAN_ECS_TYPE_ON_UPDATE);
+    DE_FlecsSystem(WorldSpriteRendering, "DrawableSpriteRendering", "Transform, DrawableSprite", DECCAN_ECS_TYPE_ON_UPDATE);
 
-    DE_FlecsSystem(WorldArbitaryGeometryRendering, "ArbitaryGeometryRendering", "Transform, Drawable, DrawableGeometry", DECCAN_ECS_TYPE_ON_UPDATE);
+    DE_FlecsSystem(WorldArbitaryGeometryRendering, "DrawableGeometryRendering", "Transform, DrawableGeometry", DECCAN_ECS_TYPE_ON_UPDATE);
 }

@@ -13,7 +13,7 @@
 // Structs
 ////////////////////////////////////////////////
 
-typedef struct DeccanCompSpriteRenderer {
+typedef struct DeccanCompDrawableSprite {
     DeccanMaterial material;
     DeccanTexture *texture; 
-} DeccanCompSpriteRenderer;
+} DeccanCompDrawableSprite;

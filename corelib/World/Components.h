@@ -10,9 +10,8 @@
 #include "../Config.h"
 #include "Components/Collider.h"
 #include "Components/Transform.h"
-#include "Components/Drawable.h"
 #include "Components/DrawableGeometry.h"
-#include "Components/SpriteRenderer.h"
+#include "Components/DrawableSprite.h"
 
 /////////////////////////////////////////////////
 // Registrar
