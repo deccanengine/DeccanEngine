@@ -20,7 +20,7 @@ void _player_begin(DeccanGameObject this) {
         .scale = { [0] = 5.0f, [1] = 5.0f, [2] = 1.0f }
     });
 
-    DE_ObjectSetComponent(this, "SpriteRenderer", &(DeccanCompSpriteRenderer){
+    DE_ObjectSetComponent(this, "DrawableSprite", &(DeccanCompDrawableSprite){
         .texture = DE_AssetGetRaw(DE_AssetGet("texture", "logo.png")),
         .material = (DeccanMaterial){
             .color = (DeccanColor){ 1, 1, 1, 1 },
