@@ -69,7 +69,7 @@ DE_IMPL void DE_GenericPipelineCreate(void) {
         },
         .fs = {
             .images = {
-                [0] = { .name = "tex", .type = SG_IMAGETYPE_2D, },
+                [0] = { .name = "tex", .image_type = SG_IMAGETYPE_2D, },
             },
             .uniform_blocks = {
                 [0] = {
@@ -87,31 +87,31 @@ DE_IMPL void DE_GenericPipelineCreate(void) {
     GenericPipelineInfo.pip = sg_make_pipeline(&(sg_pipeline_desc){
         .shader = GenericPipelineInfo.shader,
         .index_type = SG_INDEXTYPE_UINT16,
+        .cull_mode = SG_CULLMODE_BACK,
         .layout = {
             .attrs = {
                 [0].format = SG_VERTEXFORMAT_FLOAT3,
                 [1].format = SG_VERTEXFORMAT_FLOAT2,
             }
         },
-        .blend = {
-            .enabled = true,
-            .src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA,
-            .dst_factor_rgb = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
-            .color_write_mask = SG_COLORMASK_RGB,
+        .colors[0] = {
+            .write_mask = SG_COLORMASK_RGB,
+            .blend = {
+                .enabled = true,
+                .src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA,
+                .dst_factor_rgb = SG_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+            },
         },
-        .depth_stencil = {
-            .depth_compare_func = SG_COMPAREFUNC_LESS_EQUAL,
-            .depth_write_enabled = true,
-        },
-        .rasterizer = {
-            .cull_mode = SG_CULLMODE_BACK,
+        .depth = {
+            .compare = SG_COMPAREFUNC_LESS_EQUAL,
+            .write_enabled = true,
         },
     });
 
     GenericPipelineInfo.pass_action = (sg_pass_action){
         .colors[0] = {
             .action = SG_ACTION_CLEAR,
-            .val = {0.0f, 0.0f, 0.0f, 1.0f},
+            .value = {0.0f, 0.0f, 0.0f, 1.0f},
         },
     };
     /* clang-format on */
@@ -123,8 +123,8 @@ DE_IMPL void DE_GenericPipelineDestroy(void) {
 }
 
 DE_IMPL void DE_GenericPipelineBegin(DeccanCamera *camera) {
-    vec4s clear_color = DE_RendererGetClearColor();
-    glm_vec4_copy(clear_color.raw, GenericPipelineInfo.pass_action.colors[0].val);
+    vec4s clear_color = DE_RendererGetClearColor(); 
+    memcpy(&GenericPipelineInfo.pass_action.colors[0].value, clear_color.raw, sizeof(sg_color));
 
     vec2s viewport = DE_RendererGetViewport();
     sg_begin_default_pass(&GenericPipelineInfo.pass_action, (uint32_t)viewport.x, (uint32_t)viewport.y);
@@ -152,8 +152,8 @@ DE_IMPL void DE_GenericPipelineDraw(DeccanDrawAction action) {
     FSParams fs_params = { 0 };
     memcpy(fs_params.color, color.norm, sizeof(float[4]));
 
-    sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &vs_params, sizeof(VSParams));
-    sg_apply_uniforms(SG_SHADERSTAGE_FS, 0, &fs_params, sizeof(FSParams));
+    sg_apply_uniforms(SG_SHADERSTAGE_VS, 0, &SG_RANGE(vs_params));
+    sg_apply_uniforms(SG_SHADERSTAGE_FS, 0, &SG_RANGE(fs_params));
     sg_apply_bindings(&binds);
     sg_draw(0, action.geometry->index_count, 1);
 }

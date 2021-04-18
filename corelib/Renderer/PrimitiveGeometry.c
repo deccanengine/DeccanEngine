@@ -27,14 +27,12 @@ DE_IMPL DeccanGeometry DE_PrimitiveCreateQuad() {
         quad.index_count = 6;
 
         quad.vbuf = sg_make_buffer(&(sg_buffer_desc){
-            .size = sizeof(vertices),
-            .content = vertices,
+            .data = SG_RANGE(vertices),
         });
 
         quad.ibuf = sg_make_buffer(&(sg_buffer_desc){
             .type = SG_BUFFERTYPE_INDEXBUFFER, 
-            .size = sizeof(indices), 
-            .content = indices
+            .data = SG_RANGE(indices),
         });
     }
 
@@ -60,14 +58,12 @@ DE_IMPL DeccanGeometry DE_PrimitiveCreateTriangle() {
         tri.index_count = 3;
 
         tri.vbuf = sg_make_buffer(&(sg_buffer_desc){
-            .size = sizeof(vertices),
-            .content = vertices,
+            .data = SG_RANGE(vertices),
         });
 
         tri.ibuf = sg_make_buffer(&(sg_buffer_desc){
             .type = SG_BUFFERTYPE_INDEXBUFFER, 
-            .size = sizeof(indices), 
-            .content = indices
+            .data = SG_RANGE(indices),
         });
     }
 
@@ -124,14 +120,12 @@ DE_IMPL DeccanGeometry DE_PrimitiveCreateCube() {
         cube.index_count = 36;
 
         cube.vbuf = sg_make_buffer(&(sg_buffer_desc){
-            .size = sizeof(vertices),
-            .content = vertices,
+            .data = SG_RANGE(vertices),
         });
 
         cube.ibuf = sg_make_buffer(&(sg_buffer_desc){
             .type = SG_BUFFERTYPE_INDEXBUFFER, 
-            .size = sizeof(indices), 
-            .content = indices
+            .data = SG_RANGE(indices),
         });
     }
 

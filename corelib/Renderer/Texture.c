@@ -7,8 +7,8 @@
 
 #include "Texture.h"
 
-DE_PRIV void CreateTexture(
-    DeccanTexture *texture, int32_t width, int32_t height, int format, sg_image_content *image_content) {
+DE_PRIV void CreateTexture(DeccanTexture *texture, int32_t width, int32_t height, int format, 
+    sg_image_data *image_content) {
     texture->width = width;
     texture->height = height;
     texture->pixel_format = format;
@@ -19,7 +19,7 @@ DE_PRIV void CreateTexture(
         .pixel_format = texture->pixel_format,
         .min_filter = SG_FILTER_NEAREST,
         .mag_filter = SG_FILTER_NEAREST,
-        .content = *image_content,
+        .data = *image_content,
     };
 
     texture->image = sg_make_image(&desc);
@@ -29,8 +29,10 @@ DE_IMPL void DE_TextureCreateFromMem(
     DeccanTexture *texture, int32_t width, int32_t height, size_t count, DeccanSurface *surfaces) {
     assert(&surfaces[0] != NULL);
 
-    sg_image_content image_content;
-    memcpy(&image_content, surfaces, sizeof(sg_subimage_content) * count);
+    sg_image_data image_content;
+    for (int i = 0; i < count; i += 1) {
+        image_content.subimage[0][i] = (sg_range){ surfaces[i].data, surfaces[i].size };
+    }
 
     CreateTexture(texture, width, height, surfaces[0].format, &image_content);
 }
@@ -45,12 +47,8 @@ DE_IMPL void DE_TextureCreateBlankRGBA(DeccanTexture *texture, int32_t width, in
         }
     }
 
-    sg_image_content image_content = {
-        .subimage[0][0] =
-            {
-                .ptr = pixels,
-                .size = size_bytes,
-            },
+    sg_image_data image_content = {
+        .subimage[0][0] = SG_RANGE(pixels),
     };
 
     CreateTexture(texture, width, height, SG_PIXELFORMAT_RGBA8, &image_content);
