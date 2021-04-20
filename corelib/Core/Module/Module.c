@@ -38,7 +38,7 @@ DE_IMPL void DE_ModuleSysCreate(DeccanModuleSys *modsys) {
 
 DE_IMPL void DE_ModuleSysDestroy(DeccanModuleSys *modsys) {
     for (int i = 0; i < modsys->mods.length; i += 1) {
-        DE_ModuleDestroy((DeccanModule *)&modsys->mods.data[i]);
+        DE_ModuleDestroy((DeccanModule *)modsys->mods.data[i]);
     }
 
     DE_ArrayDestroy(&modsys->mods);

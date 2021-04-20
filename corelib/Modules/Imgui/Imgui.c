@@ -18,13 +18,11 @@
 DE_PRIV struct { simgui_desc_t context; } ImguiInfo = {0};
 
 DE_IMPL void DE_ImguiInit(void) {
-    igCreateContext(NULL);
+    simgui_setup(&ImguiInfo.context);   
     ImGui_ImplSDL2_InitForOpenGL(DE_CoreGetWindow(), DE_RendererGetContext());
-    simgui_setup(&ImguiInfo.context);
 }
 
 DE_IMPL void DE_ImguiQuit(void) {
-    igDestroyContext(NULL);
     simgui_shutdown();
 }
 
