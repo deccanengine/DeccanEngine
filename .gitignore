@@ -1,18 +1,6 @@
 # Deccan Engine
 
-# Executables
-*.exe
-test
-demo
-
-# Build files
-*.o
-*.ninja
-.ninja_log
-.ninja_deps
-**/meson-logs/*.txt
-**/meson-dist/
-**/compile_commands.json
+# Build directories
 builddir/
 build/
 
@@ -27,6 +15,11 @@ build/
 
 # Vim text editor
 *.swp
+*.swo
 
 # Lite text editor
 .lite_*.lua
+
+# KDevelop IDE
+*.kdev4
+.kdev4/*
