@@ -10,6 +10,7 @@
 DE_PRIV struct {
     SDL_GLContext glcontext;
     SDL_Window *window;
+    DeccanFramebuffer *fb;
 
     sg_desc desc;
 
@@ -18,6 +19,7 @@ DE_PRIV struct {
 } RendererInfo = {
     .glcontext = NULL,
     .window = NULL,
+    .fb = NULL,
 
     .desc = {0},
 };
@@ -40,6 +42,12 @@ DE_IMPL void DE_RendererCreate(SDL_Window *window) {
     if (!gladLoadGL()) {
         printf("Couldn't load GLAD without context\n");
     }
+    
+    RendererInfo.desc.context = (sg_context_desc){
+        .color_format = SG_PIXELFORMAT_RGBA8,
+        .depth_format = SG_PIXELFORMAT_DEPTH,
+        .sample_count = 4,
+    };
 
     sg_setup(&RendererInfo.desc);
 }
@@ -69,10 +77,18 @@ DE_IMPL void DE_RendererSetClearColor(vec4s color) {
     RendererInfo.clear_color = color;
 }
 
+DE_IMPL void DE_RendererSetFramebuffer(DeccanFramebuffer *fb) {
+    RendererInfo.fb = fb;
+}
+
 DE_IMPL vec2s DE_RendererGetViewport(void) {
     return RendererInfo.viewport;
 }
 
 DE_IMPL vec4s DE_RendererGetClearColor(void) {
     return RendererInfo.clear_color;
+}
+
+DE_IMPL DeccanFramebuffer *DE_RendererGetFramebuffer(void) {
+    return RendererInfo.fb;
 }

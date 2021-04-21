@@ -88,6 +88,7 @@ DE_IMPL void DE_GenericPipelineCreate(void) {
         .shader = GenericPipelineInfo.shader,
         .index_type = SG_INDEXTYPE_UINT16,
         .cull_mode = SG_CULLMODE_BACK,
+        .sample_count = 4,
         .layout = {
             .attrs = {
                 [0].format = SG_VERTEXFORMAT_FLOAT3,
@@ -96,6 +97,7 @@ DE_IMPL void DE_GenericPipelineCreate(void) {
         },
         .colors[0] = {
             .write_mask = SG_COLORMASK_RGB,
+            .pixel_format = SG_PIXELFORMAT_RGBA8,
             .blend = {
                 .enabled = true,
                 .src_factor_rgb = SG_BLENDFACTOR_SRC_ALPHA,
@@ -103,6 +105,7 @@ DE_IMPL void DE_GenericPipelineCreate(void) {
             },
         },
         .depth = {
+            .pixel_format = SG_PIXELFORMAT_DEPTH,
             .compare = SG_COMPAREFUNC_LESS_EQUAL,
             .write_enabled = true,
         },
@@ -126,8 +129,15 @@ DE_IMPL void DE_GenericPipelineBegin(DeccanCamera *camera) {
     vec4s clear_color = DE_RendererGetClearColor(); 
     memcpy(&GenericPipelineInfo.pass_action.colors[0].value, clear_color.raw, sizeof(sg_color));
 
-    vec2s viewport = DE_RendererGetViewport();
-    sg_begin_default_pass(&GenericPipelineInfo.pass_action, (uint32_t)viewport.x, (uint32_t)viewport.y);
+    DeccanFramebuffer *fb = DE_RendererGetFramebuffer();
+    if (fb != NULL) {
+        sg_begin_pass(fb->pass, &GenericPipelineInfo.pass_action);
+    }
+    else {
+        vec2s viewport = DE_RendererGetViewport();
+        sg_begin_default_pass(&GenericPipelineInfo.pass_action, (uint32_t)viewport.x, (uint32_t)viewport.y);
+    }
+
     sg_apply_pipeline(GenericPipelineInfo.pip);
 
     GenericPipelineInfo.camera = camera;

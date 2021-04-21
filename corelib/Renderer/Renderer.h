@@ -7,6 +7,7 @@
 
 #pragma once
 #include "../Config.h"
+#include "Framebuffer.h"
 
 /////////////////////////////////////////////////
 // Renderer
@@ -24,5 +25,7 @@ DE_API void DE_RendererDraw(void);
 DE_API SDL_GLContext DE_RendererGetContext(void);
 DE_API void DE_RendererSetViewport(vec2s viewport);
 DE_API void DE_RendererSetClearColor(vec4s color);
+DE_API void DE_RendererSetFramebuffer(DeccanFramebuffer *fb);
 DE_API vec2s DE_RendererGetViewport(void);
 DE_API vec4s DE_RendererGetClearColor(void);
+DE_API DeccanFramebuffer *DE_RendererGetFramebuffer(void);

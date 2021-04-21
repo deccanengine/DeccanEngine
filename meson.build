@@ -52,6 +52,7 @@ src = [
     'corelib/Renderer/PrimitiveGeometry.c',
     'corelib/Renderer/Renderer.c',
     'corelib/Renderer/Texture.c',
+    'corelib/Renderer/Framebuffer.c',
     
     'corelib/Scene/Object.c',
     'corelib/Scene/Scene.c',
