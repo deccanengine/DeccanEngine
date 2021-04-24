@@ -11,7 +11,6 @@
 #include "Core/Core.h"
 #include "Core/SDLHelper.h"
 #include "Core/FileSys.h"
-#include "Core/Variable.h"
 #include "Core/Array.h"
 #include "Core/Utils.h"
 #include "Core/Timer.h"

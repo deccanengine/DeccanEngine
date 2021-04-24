@@ -38,7 +38,6 @@ src = [
     'corelib/Core/Module/Module.c',
     'corelib/Core/FileSys.c',
     'corelib/Core/Timer.c',
-    'corelib/Core/Variable.c',
     'corelib/Core/Array.c',
     'corelib/Core/Handle.c',
     'corelib/Core/String.c',

@@ -7,7 +7,6 @@
 
 #pragma once
 #include "../Config.h"
-#include "../Core/Variable.h"
 #include "../Core/Utils.h"
 
 /////////////////////////////////////////////////
@@ -32,8 +31,6 @@ typedef struct DeccanObjectInfo {
     void (*AtStep)(DeccanGameObject object);
     void (*AtRender)(DeccanGameObject object);
     void (*AtEnd)(DeccanGameObject object);
-
-    DeccanVarManager vars;
 } DeccanObjectInfo;
 
 typedef struct DeccanGameObject {

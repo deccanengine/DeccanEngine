@@ -53,9 +53,6 @@ DE_IMPL void DE_ObjectFreeObject(DeccanGameObject obj) {
     if (info->active)
         info->AtEnd(obj);
 
-    /* Free the messaging system */
-    DE_VarQuit(&info->vars);
-
     /* Free */
     ecs_delete(scene->world, obj.entity);
 }
@@ -112,9 +109,6 @@ DE_IMPL void DE_ObjectUpdate(DeccanGameObject obj) {
         return;
 
     if (info->is_beginning) {
-        /* Initialize messaging system */
-        DE_VarInit(&info->vars);
-
         info->AtBeginning(obj);
         info->is_beginning = false;
         DE_ObjectSetComponent(obj, "Info", info);

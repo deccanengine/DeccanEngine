@@ -19,8 +19,6 @@ DE_PRIV struct {
     uint32_t proc_start_time;
 
     DeccanSettings settings;
-    DeccanVarManager vars;
-
 #ifdef DE_DEBUG
     FILE *logfile;
 #endif
@@ -62,7 +60,6 @@ DE_IMPL int DE_CoreInit(DeccanSettings *settings) {
     stbds_rand_seed(Core_Info.proc_start_time);
 
     DE_InputInit();
-    DE_VarInit(&Core_Info.vars);
 
     return 1;
 }
@@ -71,7 +68,6 @@ DE_IMPL void DE_CoreQuit(void) {
 #ifdef DE_DEBUG
     fclose(Core_Info.logfile);
 #endif
-    DE_VarQuit(&Core_Info.vars);
     SDL_DestroyWindow(Core_Info.window);
 
     TTF_Quit();
@@ -205,10 +201,6 @@ DE_IMPL uint32_t DE_CoreProcessStartTime(void) {
 
 DE_IMPL SDL_Window *DE_CoreGetWindow(void) {
     return Core_Info.window;
-}
-
-DE_IMPL DeccanVarManager *DE_CoreGetVarManager(void) {
-    return &Core_Info.vars;
 }
 
 DE_IMPL DeccanSettings *DE_CoreGetSettings(void) {
