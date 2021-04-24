@@ -61,12 +61,12 @@ DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager) {
 
 DE_IMPL uint32_t DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) {
     if (file == NULL) {
-        return NULL;
+        return -1;
     }
 
     char *data = DE_FSGetFileContent(file);
     if (data == NULL) {
-        return NULL;
+        return -1;
     }
 
     DeccanAssetDescriptor desc = stbds_shgets(Asset_Info.manager->desc, type);
@@ -74,7 +74,7 @@ DE_IMPL uint32_t DE_AssetLoad(const char *type, const char *name, SDL_RWops *fil
     void *asset = desc.calls.Create(data, SDL_RWsize(file));
     if (asset == NULL) {
         DE_ERROR("Could not create asset: %s", name);
-        return NULL;
+        return -1;
     }
 
     Asset *asset_class = stbds_shget(Asset_Info.manager->system, type);
@@ -98,7 +98,7 @@ DE_IMPL uint32_t DE_AssetLoadFromFile(const char *type, const char *name, const 
     SDL_RWops *file = SDL_RWFromFile(file_name, (is_binary ? "rb" : "r"));
     if (file == NULL) {
         DE_ERROR("Cannot load file: %s: %s", file_name, SDL_GetError());
-        return NULL;
+        return -1;
     }
     return DE_AssetLoad(type, name, file);
 }
@@ -107,7 +107,7 @@ DE_IMPL uint32_t DE_AssetLoadFromMem(const char *type, const char *name, size_t 
     SDL_RWops *file = SDL_RWFromMem(memory, size);
     if (file == NULL) {
         DE_ERROR("Cannot read memory block: %s", SDL_GetError());
-        return NULL;
+        return -1;
     }
     return DE_AssetLoad(type, name, file);
 }
@@ -118,16 +118,17 @@ DE_IMPL uint32_t DE_AssetGet(const char *type, const char *name) {
     uint32_t handle = stbds_shget(asset_class, name);
     if (DE_HandleValid(Asset_Info.manager->pool, handle) == false) { 
         DE_ERROR("Cannot find asset: %s", name);
-        return NULL;
+        return -1;
     }
 
     return handle;
 }
 
 DE_IMPL void *DE_AssetGetRaw(uint32_t handle) {
-    uint32_t index = DE_HandleIndex(Asset_Info.manager->pool, handle); 
-    void *asset = Asset_Info.manager->asset_buffer.data[index];
-    return asset;
+    uint32_t index = DE_HandleIndex(Asset_Info.manager->pool, handle);
+    if (index == -1)
+        return NULL;
+    return Asset_Info.manager->asset_buffer.data[index];
 }
 
 DE_IMPL bool DE_AssetRemove(const char *type, const char *name) {
