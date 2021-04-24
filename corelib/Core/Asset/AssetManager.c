@@ -64,7 +64,7 @@ DE_IMPL uint32_t DE_AssetLoad(const char *type, const char *name, SDL_RWops *fil
         return -1;
     }
 
-    char *data = DE_FSGetFileContent(file);
+    const char *data = DE_FSGetFileContent(file);
     if (data == NULL) {
         return -1;
     }

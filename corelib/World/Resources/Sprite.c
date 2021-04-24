@@ -11,7 +11,7 @@
 // Sprite asset
 ////////////////////////////////////////////////
 
-void *DE_SpriteAssetCreate(char *mem, size_t size) {
+void *DE_SpriteAssetCreate(const char *mem, size_t size) {
     int32_t width, height;
 
     /* We dont need to collect the number of channels
@@ -37,4 +37,5 @@ void *DE_SpriteAssetCreate(char *mem, size_t size) {
 bool DE_SpriteAssetDestroy(void *asset) {
     DE_TextureDestroy((DeccanTexture *)asset);
     DE_Free((DeccanTexture *)asset);
+    return true;
 }
