@@ -34,8 +34,12 @@ DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, Decc
     }
 }
 
+DE_PRIV void AssetDestroyFunc(uint64_t index, AssetEntry value) {
+    AssetList_destroy(&value.entries);
+}
+
 DE_IMPL void DE_AssetDestroyManager(DeccanAssetManager *manager) {
-    // TODO: hashtable_map() function doesn't exists
+    AssetTable_map(&manager->assets, AssetDestroyFunc);
     AssetTable_destroy(&manager->assets);
     DE_HandlePoolDestroy(manager->pool);
     DE_ArrayDestroy(&manager->asset_buffer);
