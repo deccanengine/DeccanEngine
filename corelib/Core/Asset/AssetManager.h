@@ -9,27 +9,30 @@
 #include "../../Config.h"
 #include "../Array.h"
 #include "../Handle.h"
+#include "../String.h"
 #include "AssetDescriptor.h"
+
+/////////////////////////////////////////////////
+// Generation
+////////////////////////////////////////////////
+
+ZPL_TABLE_DECLARE(, AssetList, AssetList_, uint32_t);
+
+typedef struct AssetEntry {
+    DeccanAssetDescriptor desc;
+    AssetList entries;
+} AssetEntry;
+
+ZPL_TABLE_DECLARE(, AssetTable, AssetTable_, AssetEntry);
+
 
 /////////////////////////////////////////////////
 // Structs
 ////////////////////////////////////////////////
 
-typedef struct Asset {
-    const char *key;
-    uint32_t value;
-} Asset;
-
-typedef struct AssetSystem {
-    const char *key;
-    Asset *value;
-} AssetSystem;
-
 typedef struct DeccanAssetManager {
-    DeccanAssetDescriptor *desc;
-    AssetSystem *system;
+    AssetTable assets;
     DeccanArray asset_buffer; /* Array of RawAsset */
-    //sx_handle_pool *pool;
     DeccanHandlePool *pool;
 } DeccanAssetManager;
 

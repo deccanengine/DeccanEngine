@@ -57,7 +57,6 @@ DE_IMPL int DE_CoreInit(DeccanSettings *settings) {
 #endif
 
     Core_Info.proc_start_time = SDL_GetTicks();
-    stbds_rand_seed(Core_Info.proc_start_time);
 
     DE_InputInit();
 

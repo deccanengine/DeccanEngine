@@ -12,7 +12,7 @@
 #define STBI_NO_PIC
 #define STBI_NO_PNM
 
-#define STB_DS_IMPLEMENTATION
+#define ZPL_IMPL
 
 #define SOKOL_IMPL
 #define SOKOL_GLCORE33

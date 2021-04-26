@@ -152,6 +152,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
+#define ZPL_NANO
+#define ZPL_ENABLE_HASHING
+#include <depends/zpl/code/zpl.h>
+
 #include <depends/log.c/src/log.h>
 
 #include <depends/cglm/include/cglm/cglm.h>
@@ -159,9 +163,7 @@
 
 #include <depends/flecs/flecs.h>
 
-#define STBDS_NO_SHORT_NAMES
 #include <depends/stb/stb_image.h>
-#include <depends/stb/stb_ds.h>
 
 #include <depends/glad/include/glad/glad.h>
 

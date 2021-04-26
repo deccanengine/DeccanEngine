@@ -16,3 +16,6 @@
 [submodule "depends/deimgui"]
 	path = depends/deimgui
 	url = https://github.com/deccanengine/deimgui
+[submodule "depends/zpl"]
+	path = depends/zpl
+	url = https://github.com/zpl-c/zpl
