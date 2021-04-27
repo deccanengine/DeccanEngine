@@ -9,32 +9,37 @@
 #include "../World/Flecs.h"
 
 DE_PRIV struct {
-    DeccanArray scenes;
+    zpl_array(DeccanGameScene *) scenes;
 
     bool is_adding;
     bool is_removing;
     bool is_replacing;
     DeccanGameScene *changed_scene;
-} SceneInfo = {.scenes = NULL, .is_adding = false, .is_removing = false, .changed_scene = NULL};
+} SceneInfo = {
+    .scenes = NULL, 
+    .is_adding = false, 
+    .is_removing = false, 
+    .changed_scene = NULL
+};
 
 /////////////////////////////////////////////////
 // Scene internals
 ////////////////////////////////////////////////
 
 DE_IMPL void DE_SceneSysCreate(void) {
-    DE_ArrayCreate(&SceneInfo.scenes);
+    zpl_array_init(SceneInfo.scenes, zpl_heap_allocator());
 }
 
 DE_IMPL DeccanGameScene **DE_SceneGetSceneArray(void) {
-    return (DeccanGameScene **)SceneInfo.scenes.data;
+    return SceneInfo.scenes;
 }
 
 DE_IMPL int DE_SceneGetSceneCount(void) {
-    return SceneInfo.scenes.length;
+    return zpl_array_count(SceneInfo.scenes);
 }
 
 DE_IMPL void DE_SceneFreeAll(void) {
-    DE_ArrayDestroy(&SceneInfo.scenes);
+    zpl_array_free(SceneInfo.scenes);
 }
 
 DE_IMPL void RegisterBaseComponent(DeccanGameScene *scene) {
@@ -82,8 +87,8 @@ DE_IMPL void DE_SceneQuit(void) {
     DE_ModuleSysDestroy(&scene->modsys);
 
     /* Dellocate everything */
-    for (int i = 0; i < SceneInfo.scenes.length; i++) {
-        DeccanGameScene *scene = SceneInfo.scenes.data[i];
+    for (int i = 0; i < DE_SceneGetSceneCount(); i += 1) {
+        DeccanGameScene *scene = SceneInfo.scenes[i];
 
         DE_SceneIterateObject(DE_ObjectDeleteObject);
 
@@ -97,8 +102,7 @@ DE_IMPL void DE_SceneQuit(void) {
 // Constructor and destructor
 ////////////////////////////////////////////////
 
-DE_IMPL void SceneNoneFunc(void) {
-}
+DE_IMPL void SceneNoneFunc(void) { }
 
 DE_IMPL DeccanGameScene *DE_SceneNewScene(const char *name) {
     DeccanGameScene *scene = DE_Alloc(sizeof(DeccanGameScene), 1);
@@ -128,30 +132,29 @@ DE_IMPL void DE_SceneRemoveScene(void) {
 }
 
 DE_IMPL void DE_SceneMakeChanges(void) {
-    int32_t scene_count = SceneInfo.scenes.length;
+    int32_t scene_count = DE_SceneGetSceneCount();
     if (SceneInfo.is_adding) {
         SceneInfo.is_adding = false;
 
         if (scene_count != 0) {
             if (SceneInfo.is_replacing) {
-                DE_ArrayRemoveLastItem(&SceneInfo.scenes);
+                zpl_array_pop(SceneInfo.scenes);
             }
             else {
-                DeccanGameScene *scene = SceneInfo.scenes.data[scene_count - 1];
+                DeccanGameScene *scene = SceneInfo.scenes[scene_count - 1];
                 scene->is_paused = true;
             }
         }
 
-        /* TODO: This should return a boolean? */ 
-        DE_ArrayAddItem(&SceneInfo.scenes, (void *)SceneInfo.changed_scene);
+        zpl_array_append(SceneInfo.scenes, SceneInfo.changed_scene);
     }
     else if (SceneInfo.is_removing) {
         SceneInfo.is_removing = false;
 
         if (scene_count > 1) {
-            DE_ArrayRemoveLastItem(&SceneInfo.scenes);
+            zpl_array_pop(SceneInfo.scenes);
 
-            DeccanGameScene *scene = SceneInfo.scenes.data[scene_count - 1];
+            DeccanGameScene *scene = SceneInfo.scenes[scene_count - 1];
             scene->is_paused = false;
         }
     }
@@ -226,7 +229,7 @@ DE_IMPL void DE_SceneIterateObjectOfType(const char *tag, void (*func)(DeccanGam
 ////////////////////////////////////////////////
 
 DE_IMPL DeccanGameScene *DE_SceneCurrentScene(void) {
-    return (DeccanGameScene *)DE_ArrayGetLastItem(&SceneInfo.scenes);
+    return zpl_array_back(SceneInfo.scenes); 
 }
 
 DE_IMPL void DE_ScenePauseScene(bool pause) {
