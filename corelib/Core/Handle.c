@@ -61,7 +61,7 @@ void DE_HandleDelete(DeccanHandlePool *pool, DeccanHandle handle) {
 }
 
 uint32_t DE_HandleIndex(DeccanHandlePool *pool, DeccanHandle handle) {
-    return pool->sparse[handle];
+    return (handle == DE_INVALID_HANDLE) ? DE_INVALID_HANDLE : pool->sparse[handle];
 }
 
 bool DE_HandleValid(DeccanHandlePool *pool, DeccanHandle handle) {
