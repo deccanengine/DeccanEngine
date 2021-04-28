@@ -45,7 +45,7 @@
 #elif defined(__MINGW32__)
     #define DE_COMPILER_MINGW
 #else
-    // TODO: Pelles C and others?
+    /* No other compilers are planned! */
     #error This C compiler is not supported
 #endif
 
@@ -62,7 +62,7 @@
 // See: https://sourceforge.net/p/predef/wiki/OperatingSystems/
 #if defined(__ANDROID__)
     /* Android must be checked first because
-     * android defined both __ANDROID__ and __linux__ */
+     * android defines both __ANDROID__ and __linux__ */
     #define DE_OS_ANDROID
 
 #elif defined(__linux__)
@@ -103,39 +103,6 @@
 #else
     #error This Operating System is not supported
 #endif
-
-/////////////////////////////////////////////////
-/* Disable warnings */
-/////////////////////////////////////////////////
-// See: https://www.fluentcpp.com/2019/08/30/how-to-disable-a-warning-in-cpp/
-#if defined(DE_COMPILER_MSVC)
-    #define DE_DISABLE_WARNING        __pragma(warning(push))
-    #define DE_ENABLE_WARNING         __pragma(warning(pop))
-    #define DE_WARNING(warningNumber) __pragma(warning(disable: warningNumber))
-
-    // TODO
-    #define DE_DISABLE_WARNING_NO_UNUSED_VALUE
-    #define DE_DISABLE_WARNING_NO_UNUSED_PARAM
-    #define DE_DISABLE_WARNING_IMPLICIT_FALLTHROUGH
-
-#elif defined(DE_COMPILER_GCC) || defined(DE_COMPILER_MINGW) || defined(DE_COMPILER_CLANG)
-    #define DE_DISABLE_WARNING      _Pragma("GCC diagnostic push")
-    #define DE_ENABLE_WARNING       _Pragma("GCC diagnostic pop")
-    #define DE_WARNING(warningName) _Pragma("GCC diagnostic ignored \"" warningName "\"")
-
-    #define DE_DISABLE_WARNING_NO_UNUSED_VALUE      DE_WARNING("-Wunused-value")
-    #define DE_DISABLE_WARNING_NO_UNUSED_PARAM      DE_WARNING("-Wunused-parameter")
-    #define DE_DISABLE_WARNING_IMPLICIT_FALLTHROUGH DE_WARNING("-Wimplicit-fallthrough")
-
-#else
-    #define DE_DISABLE_WARNING
-    #define DE_ENABLE_WARNING
-    #define DE_WARNING
-
-    #define DE_DISABLE_WARNING_NO_UNUSED_VALUE
-    #define DE_DISABLE_WARNING_NO_UNUSED_PARAM
-    #define DE_DISABLE_WARNING_IMPLICIT_FALLTHROUGH
- #endif
 
 /////////////////////////////////////////////////
 /* Define basic constants */

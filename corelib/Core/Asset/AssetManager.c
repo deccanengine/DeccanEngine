@@ -21,14 +21,14 @@ ZPL_TABLE_DEFINE(asset_list_t, asset_list_, uint32_t);
 ZPL_TABLE_DEFINE(asset_table_t, asset_table_, asset_entry_t);
 
 DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, DeccanAssetDescriptor *desc) {
-    zpl_array_init(manager->asset_buffer, zpl_heap_allocator());
-    asset_table_init(&manager->assets, zpl_heap_allocator());
+    zpl_array_init(manager->asset_buffer, DE_ZPLAllocator());
+    asset_table_init(&manager->assets, DE_ZPLAllocator());
     manager->pool = DE_HandlePoolCreate(POOL_INITIAL_CAP);
 
     for (int i = 0; i < count; i++) {
         asset_entry_t entry;
         entry.desc = desc[i];
-        asset_list_init(&entry.entries, zpl_heap_allocator());
+        asset_list_init(&entry.entries, DE_ZPLAllocator());
         asset_table_set(&manager->assets, DE_StringHash(desc[i].key, strlen(desc[i].key)), entry);
     }
 }

@@ -27,7 +27,7 @@ DE_PRIV struct {
 ////////////////////////////////////////////////
 
 DE_IMPL void DE_SceneSysCreate(void) {
-    zpl_array_init(SceneInfo.scenes, zpl_heap_allocator());
+    zpl_array_init(SceneInfo.scenes, DE_ZPLAllocator());
 }
 
 DE_IMPL DeccanGameScene **DE_SceneGetSceneArray(void) {

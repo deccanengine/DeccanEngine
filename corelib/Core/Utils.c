@@ -23,3 +23,8 @@ DE_IMPL void DE_Free(void *mem) {
         mem = NULL;
     }
 }
+
+DE_IMPL zpl_allocator DE_ZPLAllocator(void) {
+    // TODO: make allocator
+    return zpl_heap_allocator();
+}

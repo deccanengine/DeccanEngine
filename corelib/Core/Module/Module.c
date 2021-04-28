@@ -33,7 +33,7 @@ DE_IMPL void DE_ModuleDestroy(DeccanModule *mod) {
 ////////////////////////////////////////////////
 
 DE_IMPL void DE_ModuleSysCreate(DeccanModuleSys *modsys) {
-    zpl_array_init(modsys->mods, zpl_heap_allocator());
+    zpl_array_init(modsys->mods, DE_ZPLAllocator());
 }
 
 DE_IMPL void DE_ModuleSysDestroy(DeccanModuleSys *modsys) {
