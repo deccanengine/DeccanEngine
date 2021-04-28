@@ -21,7 +21,7 @@
 // Structs
 ////////////////////////////////////////////////
 
-typedef struct DeccanDeccanGameScene {
+typedef struct DeccanGameScene {
     char *name;
     bool is_paused;
     bool is_first_frame;

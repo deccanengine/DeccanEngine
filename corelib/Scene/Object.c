@@ -147,7 +147,11 @@ DE_IMPL void DE_ObjectSetComponent(DeccanGameObject obj, const char *name, void 
 }
 
 DE_IMPL void *DE_ObjectGetComponent(DeccanGameObject obj, const char *name) {
-    return DE_FlecsGetComponent(obj.entity, name);
+    void *component = DE_FlecsGetComponent(obj.entity, name);
+    if (component == NULL) {
+        DE_ERROR("Component %s does not exists on object %s", name, DE_ObjectGetName(obj));
+        return NULL;
+    }
 }
 
 DE_IMPL void DE_ObjectRemoveComponent(DeccanGameObject obj, const char *name) {

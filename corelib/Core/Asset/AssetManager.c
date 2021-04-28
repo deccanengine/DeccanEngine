@@ -96,7 +96,7 @@ DE_IMPL uint32_t DE_AssetGet(const char *type, const char *name) {
     asset_entry_t *entry = asset_table_get(&Asset_Info.manager->assets, DE_StringHash(type, strlen(type)));
     uint32_t *handle = asset_list_get(&entry->entries, DE_StringHash(name, strlen(name)));
     if ((handle == NULL) || DE_HandleValid(Asset_Info.manager->pool, *handle) == false) { 
-        DE_ERROR("Cannot find asset: %s", name);
+        DE_WARN("Cannot find asset: %s", name);
         return -1;
     }
 
