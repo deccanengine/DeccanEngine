@@ -17,32 +17,31 @@ DE_PRIV struct {
     .manager = NULL,
 };
 
-
-ZPL_TABLE_DEFINE(AssetList, AssetList_, uint32_t);
-ZPL_TABLE_DEFINE(AssetTable, AssetTable_, AssetEntry);
+ZPL_TABLE_DEFINE(asset_list_t, asset_list_, uint32_t);
+ZPL_TABLE_DEFINE(asset_table_t, asset_table_, asset_entry_t);
 
 DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, DeccanAssetDescriptor *desc) {
-    DE_ArrayCreate(&manager->asset_buffer);
-    AssetTable_init(&manager->assets, zpl_heap_allocator());
+    zpl_array_init(manager->asset_buffer, zpl_heap_allocator());
+    asset_table_init(&manager->assets, zpl_heap_allocator());
     manager->pool = DE_HandlePoolCreate(POOL_INITIAL_CAP);
 
     for (int i = 0; i < count; i++) {
-        AssetEntry entry;
+        asset_entry_t entry;
         entry.desc = desc[i];
-        AssetList_init(&entry.entries, zpl_heap_allocator());
-        AssetTable_set(&manager->assets, DE_StringHash(desc[i].key, strlen(desc[i].key)), entry);
+        asset_list_init(&entry.entries, zpl_heap_allocator());
+        asset_table_set(&manager->assets, DE_StringHash(desc[i].key, strlen(desc[i].key)), entry);
     }
 }
 
-DE_PRIV void AssetDestroyFunc(uint64_t index, AssetEntry value) {
-    AssetList_destroy(&value.entries);
+DE_PRIV void AssetDestroyFunc(uint64_t index, asset_entry_t value) {
+    asset_list_destroy(&value.entries);
 }
 
 DE_IMPL void DE_AssetDestroyManager(DeccanAssetManager *manager) {
-    AssetTable_map(&manager->assets, AssetDestroyFunc);
-    AssetTable_destroy(&manager->assets);
+    asset_table_map(&manager->assets, AssetDestroyFunc);
+    asset_table_destroy(&manager->assets);
     DE_HandlePoolDestroy(manager->pool);
-    DE_ArrayDestroy(&manager->asset_buffer);
+    zpl_array_free(manager->asset_buffer);
 }
 
 DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager) {
@@ -59,7 +58,7 @@ DE_IMPL uint32_t DE_AssetLoad(const char *type, const char *name, SDL_RWops *fil
         return -1;
     }
     
-    AssetEntry *entry = AssetTable_get(&Asset_Info.manager->assets, DE_StringHash(type, strlen(type)));
+    asset_entry_t *entry = asset_table_get(&Asset_Info.manager->assets, DE_StringHash(type, strlen(type)));
     
     void *asset = entry->desc.calls.Create(data, SDL_RWsize(file));
     if (asset == NULL) {
@@ -69,8 +68,8 @@ DE_IMPL uint32_t DE_AssetLoad(const char *type, const char *name, SDL_RWops *fil
 
     uint32_t handle = DE_HandleNew(Asset_Info.manager->pool);
 
-    AssetList_set(&entry->entries, DE_StringHash(name, strlen(name)), handle);
-    DE_ArrayAddItem(&Asset_Info.manager->asset_buffer, (void *)asset);
+    asset_list_set(&entry->entries, DE_StringHash(name, strlen(name)), handle);
+    zpl_array_append(Asset_Info.manager->asset_buffer, asset);
 
     return handle;
 }
@@ -94,8 +93,8 @@ DE_IMPL uint32_t DE_AssetLoadFromMem(const char *type, const char *name, size_t 
 }
 
 DE_IMPL uint32_t DE_AssetGet(const char *type, const char *name) {
-    AssetEntry *entry = AssetTable_get(&Asset_Info.manager->assets, DE_StringHash(type, strlen(type)));
-    uint32_t handle = *AssetList_get(&entry->entries, DE_StringHash(name, strlen(name)));
+    asset_entry_t *entry = asset_table_get(&Asset_Info.manager->assets, DE_StringHash(type, strlen(type)));
+    uint32_t handle = *asset_list_get(&entry->entries, DE_StringHash(name, strlen(name)));
     if (DE_HandleValid(Asset_Info.manager->pool, handle) == false) { 
         DE_ERROR("Cannot find asset: %s", name);
         return -1;
@@ -108,12 +107,12 @@ DE_IMPL void *DE_AssetGetRaw(uint32_t handle) {
     uint32_t index = DE_HandleIndex(Asset_Info.manager->pool, handle);
     if (index == -1)
         return NULL;
-    return Asset_Info.manager->asset_buffer.data[index];
+    return Asset_Info.manager->asset_buffer[index];
 }
 
 DE_IMPL bool DE_AssetRemove(const char *type, const char *name) {
-    AssetEntry *entry = AssetTable_get(&Asset_Info.manager->assets, DE_StringHash(type, strlen(type)));
-    uint32_t handle = *AssetList_get(&entry->entries, DE_StringHash(name, strlen(name)));
+    asset_entry_t *entry = asset_table_get(&Asset_Info.manager->assets, DE_StringHash(type, strlen(type)));
+    uint32_t handle = *asset_list_get(&entry->entries, DE_StringHash(name, strlen(name)));
     if (DE_HandleValid(Asset_Info.manager->pool, handle) == false) {
         DE_ERROR("Asset '%s' cannot be removed because it is not found", name);
         return false;
@@ -123,12 +122,12 @@ DE_IMPL bool DE_AssetRemove(const char *type, const char *name) {
 
     DE_HandleDelete(Asset_Info.manager->pool, handle);
 
-    void *asset = Asset_Info.manager->asset_buffer.data[index];
+    void *asset = Asset_Info.manager->asset_buffer[index];
     entry->desc.calls.Destroy(asset);
 
-    DE_ArrayRemoveItem(&Asset_Info.manager->asset_buffer, index);
-    
-    AssetList_remove(&entry->entries, DE_StringHash(name, strlen(name)));
+    zpl_array_remove_at(Asset_Info.manager->asset_buffer, index);
+
+    asset_list_remove(&entry->entries, DE_StringHash(name, strlen(name)));
 
     return true;
 }

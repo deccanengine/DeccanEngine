@@ -16,23 +16,22 @@
 // Generation
 ////////////////////////////////////////////////
 
-ZPL_TABLE_DECLARE(, AssetList, AssetList_, uint32_t);
+ZPL_TABLE_DECLARE(, asset_list_t, asset_list_, uint32_t);
 
-typedef struct AssetEntry {
+typedef struct asset_entry_t {
     DeccanAssetDescriptor desc;
-    AssetList entries;
-} AssetEntry;
+    asset_list_t entries;
+} asset_entry_t;
 
-ZPL_TABLE_DECLARE(, AssetTable, AssetTable_, AssetEntry);
-
+ZPL_TABLE_DECLARE(, asset_table_t, asset_table_, asset_entry_t);
 
 /////////////////////////////////////////////////
 // Structs
 ////////////////////////////////////////////////
 
 typedef struct DeccanAssetManager {
-    AssetTable assets;
-    DeccanArray asset_buffer; /* Array of RawAsset */
+    asset_table_t assets;
+    zpl_array(void *) asset_buffer;
     DeccanHandlePool *pool;
 } DeccanAssetManager;
 
