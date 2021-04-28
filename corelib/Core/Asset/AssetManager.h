@@ -7,7 +7,6 @@
 
 #pragma once
 #include "../../Config.h"
-#include "../Array.h"
 #include "../Handle.h"
 #include "../String.h"
 #include "AssetDescriptor.h"

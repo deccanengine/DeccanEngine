@@ -7,7 +7,6 @@
 
 #pragma once
 #include "../../Config.h"
-#include "../Array.h"
 
 /////////////////////////////////////////////////
 // Enums
@@ -32,7 +31,7 @@ typedef struct DeccanModule {
 } DeccanModule;
 
 typedef struct DeccanModuleSys {
-    DeccanArray mods;
+    zpl_array(DeccanModule *) mods;
 } DeccanModuleSys;
 
 /////////////////////////////////////////////////

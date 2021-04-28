@@ -33,19 +33,19 @@ DE_IMPL void DE_ModuleDestroy(DeccanModule *mod) {
 ////////////////////////////////////////////////
 
 DE_IMPL void DE_ModuleSysCreate(DeccanModuleSys *modsys) {
-    DE_ArrayCreate(&modsys->mods);
+    zpl_array_init(modsys->mods, zpl_heap_allocator());
 }
 
 DE_IMPL void DE_ModuleSysDestroy(DeccanModuleSys *modsys) {
-    for (int i = 0; i < modsys->mods.length; i += 1) {
-        DE_ModuleDestroy((DeccanModule *)modsys->mods.data[i]);
+    for (int i = 0; i < zpl_array_count(modsys->mods); i += 1) {
+        DE_ModuleDestroy(modsys->mods[i]);
     }
 
-    DE_ArrayDestroy(&modsys->mods);
+    zpl_array_free(modsys->mods);
 }
 
 DE_IMPL void DE_ModuleSysPush(DeccanModuleSys *modsys, DeccanModule *mod) {
-    DE_ArrayAddItem(&modsys->mods, (void *)mod);
+    zpl_array_append(modsys->mods, mod);
 }
 
 DE_PRIV void ModuleStage(DeccanModule *mod, DeccanModuleStage stage) {
@@ -60,13 +60,13 @@ DE_PRIV void ModuleStage(DeccanModule *mod, DeccanModuleStage stage) {
 
 DE_IMPL void DE_ModuleSysIter(DeccanModuleSys *modsys, DeccanModuleStage stage, bool order) {
     if (order) {
-        for (int i = 0; i < modsys->mods.length; i += 1) {
-            ModuleStage((DeccanModule *)modsys->mods.data[i], stage);
+        for (int i = 0; i < zpl_array_count(modsys->mods); i += 1) {
+            ModuleStage(modsys->mods[i], stage);
         }
     }
     else {
-        for (int i = modsys->mods.length - 1; i >= 0; i -= 1) {
-            ModuleStage((DeccanModule *)modsys->mods.data[i], stage);
+        for (int i = zpl_array_count(modsys->mods) - 1; i >= 0; i -= 1) {
+            ModuleStage(modsys->mods[i], stage);
         }
     }
 }
