@@ -13,11 +13,13 @@
 
 DE_PRIV struct {
     DeccanAssetManager *manager;
+    DeccanAssetHandle invalid_asset;
 } Asset_Info = {
     .manager = NULL,
+    .invalid_asset = { -1 },
 };
 
-ZPL_TABLE_DEFINE(asset_list_t, asset_list_, uint32_t);
+ZPL_TABLE_DEFINE(asset_list_t, asset_list_, DeccanAssetHandle);
 ZPL_TABLE_DEFINE(asset_table_t, asset_table_, asset_entry_t);
 
 DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, DeccanAssetDescriptor *desc) {
@@ -48,14 +50,14 @@ DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager) {
     Asset_Info.manager = manager;
 }
 
-DE_IMPL uint32_t DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) {
+DE_IMPL DeccanAssetHandle DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) {
     if (file == NULL) {
-        return -1;
+        return Asset_Info.invalid_asset;
     }
 
     const char *data = DE_FSGetFileContent(file);
     if (data == NULL) {
-        return -1;
+        return Asset_Info.invalid_asset;
     }
     
     asset_entry_t *entry = asset_table_get(&Asset_Info.manager->assets, DE_StringHash(type, strlen(type)));
@@ -63,10 +65,11 @@ DE_IMPL uint32_t DE_AssetLoad(const char *type, const char *name, SDL_RWops *fil
     void *asset = entry->desc.calls.Create(data, SDL_RWsize(file));
     if (asset == NULL) {
         DE_ERROR("Could not create asset: %s", name);
-        return -1;
+        return Asset_Info.invalid_asset;
     }
 
-    uint32_t handle = DE_HandleNew(Asset_Info.manager->pool);
+    DeccanAssetHandle handle;
+    handle.id = DE_HandleNew(Asset_Info.manager->pool);
 
     asset_list_set(&entry->entries, DE_StringHash(name, strlen(name)), handle);
     zpl_array_append(Asset_Info.manager->asset_buffer, asset);
@@ -74,37 +77,37 @@ DE_IMPL uint32_t DE_AssetLoad(const char *type, const char *name, SDL_RWops *fil
     return handle;
 }
 
-DE_IMPL uint32_t DE_AssetLoadFromFile(const char *type, const char *name, const char *file_name, bool is_binary) {
+DE_IMPL DeccanAssetHandle DE_AssetLoadFromFile(const char *type, const char *name, const char *file_name, bool is_binary) {
     SDL_RWops *file = SDL_RWFromFile(file_name, (is_binary ? "rb" : "r"));
     if (file == NULL) {
         DE_ERROR("Cannot load file: %s: %s", file_name, SDL_GetError());
-        return -1;
+        return Asset_Info.invalid_asset;
     }
     return DE_AssetLoad(type, name, file);
 }
 
-DE_IMPL uint32_t DE_AssetLoadFromMem(const char *type, const char *name, size_t size, void *memory) {
+DE_IMPL DeccanAssetHandle DE_AssetLoadFromMem(const char *type, const char *name, size_t size, void *memory) {
     SDL_RWops *file = SDL_RWFromMem(memory, size);
     if (file == NULL) {
         DE_ERROR("Cannot read memory block: %s", SDL_GetError());
-        return -1;
+        return Asset_Info.invalid_asset;
     }
     return DE_AssetLoad(type, name, file);
 }
 
-DE_IMPL uint32_t DE_AssetGet(const char *type, const char *name) {
+DE_IMPL DeccanAssetHandle DE_AssetGet(const char *type, const char *name) {
     asset_entry_t *entry = asset_table_get(&Asset_Info.manager->assets, DE_StringHash(type, strlen(type)));
-    uint32_t *handle = asset_list_get(&entry->entries, DE_StringHash(name, strlen(name)));
-    if ((handle == NULL) || DE_HandleValid(Asset_Info.manager->pool, *handle) == false) { 
+    DeccanAssetHandle *handle = asset_list_get(&entry->entries, DE_StringHash(name, strlen(name)));
+    if ((handle == NULL) || DE_HandleValid(Asset_Info.manager->pool, handle->id) == false) { 
         DE_WARN("Cannot find asset: %s", name);
-        return -1;
+        return Asset_Info.invalid_asset;
     }
 
     return *handle;
 }
 
-DE_IMPL void *DE_AssetGetRaw(uint32_t handle) {
-    uint32_t index = DE_HandleIndex(Asset_Info.manager->pool, handle);
+DE_IMPL void *DE_AssetGetRaw(DeccanAssetHandle handle) {
+    uint32_t index = DE_HandleIndex(Asset_Info.manager->pool, handle.id);
     if (index == -1)
         return NULL;
     return Asset_Info.manager->asset_buffer[index];
@@ -112,13 +115,16 @@ DE_IMPL void *DE_AssetGetRaw(uint32_t handle) {
 
 DE_IMPL bool DE_AssetRemove(const char *type, const char *name) {
     asset_entry_t *entry = asset_table_get(&Asset_Info.manager->assets, DE_StringHash(type, strlen(type)));
-    uint32_t handle = *asset_list_get(&entry->entries, DE_StringHash(name, strlen(name)));
-    if (DE_HandleValid(Asset_Info.manager->pool, handle) == false) {
+    
+    DeccanAssetHandle *handle = asset_list_get(&entry->entries, DE_StringHash(name, strlen(name)));
+    if ((handle == NULL) || DE_HandleValid(Asset_Info.manager->pool, handle->id) == false) { 
         DE_ERROR("Asset '%s' cannot be removed because it is not found", name);
         return false;
     }
 
-    uint32_t index = DE_HandleIndex(Asset_Info.manager->pool, handle);
+    uint32_t index = DE_HandleIndex(Asset_Info.manager->pool, handle->id);
+    if (index == -1)
+        return false;
 
     DE_HandleDelete(Asset_Info.manager->pool, handle);
 

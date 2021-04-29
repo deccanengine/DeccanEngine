@@ -15,7 +15,11 @@
 // Generation
 ////////////////////////////////////////////////
 
-ZPL_TABLE_DECLARE(, asset_list_t, asset_list_, uint32_t);
+typedef struct DeccanAssetHandle {
+    uint32_t id;
+} DeccanAssetHandle;
+
+ZPL_TABLE_DECLARE(, asset_list_t, asset_list_, DeccanAssetHandle);
 
 typedef struct asset_entry_t {
     DeccanAssetDescriptor desc;
@@ -43,11 +47,11 @@ DE_API void DE_AssetDestroyManager(DeccanAssetManager *manager);
 
 DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager);
 
-DE_API uint32_t DE_AssetLoad(const char *type, const char *name, SDL_RWops *file);
-DE_API uint32_t DE_AssetLoadFromFile(const char *type, const char *name, const char *file_name, bool is_binary);
-DE_API uint32_t DE_AssetLoadFromMem(const char *type, const char *name, size_t size, void *memory);
+DE_API DeccanAssetHandle DE_AssetLoad(const char *type, const char *name, SDL_RWops *file);
+DE_API DeccanAssetHandle DE_AssetLoadFromFile(const char *type, const char *name, const char *file_name, bool is_binary);
+DE_API DeccanAssetHandle DE_AssetLoadFromMem(const char *type, const char *name, size_t size, void *memory);
 
-DE_API uint32_t DE_AssetGet(const char *type, const char *file_name);
-DE_API void *DE_AssetGetRaw(uint32_t handle);
+DE_API DeccanAssetHandle DE_AssetGet(const char *type, const char *file_name);
+DE_API void *DE_AssetGetRaw(DeccanAssetHandle handle);
 
 DE_API bool DE_AssetRemove(const char *type, const char *name);
