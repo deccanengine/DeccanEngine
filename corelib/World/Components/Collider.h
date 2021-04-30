@@ -7,8 +7,8 @@
 
 #pragma once
 #include "../../Config.h"
-#include "../../Scene/Object.h"
 #include "../../Core/Utils.h"
+#include "../Object.h"
 
 /////////////////////////////////////////////////
 // Enums

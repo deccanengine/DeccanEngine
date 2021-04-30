@@ -52,9 +52,8 @@ src = [
     'corelib/Renderer/Texture.c',
     'corelib/Renderer/Framebuffer.c',
     
-    'corelib/Scene/Object.c',
-    'corelib/Scene/Scene.c',
-    
+    'corelib/World/Object.c',
+    'corelib/World/Scene.c', 
     'corelib/World/Camera.c',
     'corelib/World/Flecs.c',
     'corelib/World/DefaultAssets.c',

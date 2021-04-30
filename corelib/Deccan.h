@@ -22,9 +22,6 @@
 #include "Modules/Physics/Collision.h"
 #include "Modules/Imgui/Imgui.h"
 
-#include "Scene/Object.h"
-#include "Scene/Scene.h"
-
 #include "Renderer/Color.h"
 #include "Renderer/GenericPipeline.h"
 #include "Renderer/PrimitiveGeometry.h"
@@ -32,6 +29,8 @@
 #include "Renderer/RenderTypes.h"
 #include "Renderer/Texture.h"
 
+#include "World/Object.h"
+#include "World/Scene.h"
 #include "World/Camera.h"
 #include "World/Flecs.h"
 #include "World/DefaultAssets.h"
