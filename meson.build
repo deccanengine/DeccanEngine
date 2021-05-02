@@ -6,23 +6,10 @@ project('deccan-engine', ['c', 'cpp'], license: 'mit')
 
 CC = meson.get_compiler('c')
 
-ig_src = [
-    'depends/deimgui/cimgui.cpp',
-    'depends/deimgui/imgui.cpp',
-    'depends/deimgui/imgui_draw.cpp',
-    'depends/deimgui/imgui_demo.cpp',
-    'depends/deimgui/imgui_tables.cpp',
-    'depends/deimgui/imgui_widgets.cpp',
-    'depends/deimgui/imgui_impl_sdl.cpp'
-]
-
-ig_lib = static_library('imgui', ig_src,
-    dependencies: dependency('SDL2'),
-)
-
 src = []        # Sources of deccancore.so
 demo_src = []   # Sources of demo (sandbox application)
 
+subdir('depends')
 subdir('src')
 
 ####################################################
