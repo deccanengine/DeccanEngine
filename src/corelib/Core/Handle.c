@@ -4,13 +4,13 @@
 // Handle Pool
 ////////////////////////////////////////////////////////////////////////////////
 
-DeccanHandlePool *DE_HandlePoolCreate(int capacity) {
+deccan_handle_pool_t *deccan_handle_pool_create(int capacity) {
     if (capacity <= 0) 
         return NULL;
 
-    DeccanHandlePool *pool = DE_Alloc(sizeof(DeccanHandlePool), 1);
-    pool->dense  = DE_Alloc(sizeof(DeccanHandle), capacity);
-    pool->sparse = DE_Alloc(sizeof(uint32_t), capacity);
+    deccan_handle_pool_t *pool = deccan_alloc(sizeof(deccan_handle_pool_t), 1);
+    pool->dense  = deccan_alloc(sizeof(deccan_handle_t), capacity);
+    pool->sparse = deccan_alloc(sizeof(uint32_t), capacity);
     pool->length = 0;
     pool->capacity = capacity;
     for (int i = 0; i < pool->capacity; i += 1) {
@@ -22,30 +22,30 @@ DeccanHandlePool *DE_HandlePoolCreate(int capacity) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void DE_HandlePoolDestroy(DeccanHandlePool *pool) {
-    DE_Free(pool->sparse);
-    DE_Free(pool->dense);
-    DE_Free(pool);
+void deccan_handle_pool_destroy(deccan_handle_pool_t *pool) {
+    deccan_free(pool->sparse);
+    deccan_free(pool->dense);
+    deccan_free(pool);
 }
 
 /////////////////////////////////////////////////////////////////////////////////
 // Handle
 ////////////////////////////////////////////////////////////////////////////////
 
-DeccanHandle DE_HandleNew(DeccanHandlePool *pool) {
+deccan_handle_t deccan_handle_new(deccan_handle_pool_t *pool) {
     if (pool->length < pool->capacity) {
         int index = pool->length;
         pool->length += 1;
 
-        DeccanHandle handle = pool->dense[index];
+        deccan_handle_t handle = pool->dense[index];
         pool->sparse[handle] = index;
         return handle;
     }
     else {
         pool->capacity *= 2;
-        pool->dense = DE_Realloc(pool->dense, pool->capacity);
-        pool->sparse = DE_Realloc(pool->sparse, pool->capacity);
-        return DE_HandleNew(pool);
+        pool->dense = deccan_realloc(pool->dense, pool->capacity);
+        pool->sparse = deccan_realloc(pool->sparse, pool->capacity);
+        return deccan_handle_new(pool);
     }
 
     return -1;
@@ -53,11 +53,11 @@ DeccanHandle DE_HandleNew(DeccanHandlePool *pool) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void DE_HandleDelete(DeccanHandlePool *pool, DeccanHandle handle) {
+void deccan_handle_delete(deccan_handle_pool_t *pool, deccan_handle_t handle) {
     uint32_t index = pool->sparse[handle];
     pool->length -= 1;
 
-    DeccanHandle last_handle = pool->dense[pool->length];
+    deccan_handle_t last_handle = pool->dense[pool->length];
 
     pool->dense[pool->length] = handle;
     pool->sparse[last_handle] = index;
@@ -66,13 +66,13 @@ void DE_HandleDelete(DeccanHandlePool *pool, DeccanHandle handle) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-uint32_t DE_HandleIndex(DeccanHandlePool *pool, DeccanHandle handle) {
+uint32_t deccan_handle_index(deccan_handle_pool_t *pool, deccan_handle_t handle) {
     return (handle == DE_INVALID_HANDLE) ? DE_INVALID_HANDLE : pool->sparse[handle];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool DE_HandleValid(DeccanHandlePool *pool, DeccanHandle handle) {
+bool deccan_handle_valid(deccan_handle_pool_t *pool, deccan_handle_t handle) {
     uint32_t index = pool->sparse[handle];
     return index < pool->length && pool->dense[index] == handle; 
 }

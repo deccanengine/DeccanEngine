@@ -21,59 +21,59 @@
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct DeccanGameScene {
+typedef struct deccan_game_scene_t {
     char *name;
     bool is_paused;
     bool is_first_frame;
 
     ecs_world_t *world;
-    DeccanCamera *camera;
+    deccan_camera_t *camera;
 
-    DeccanModuleSys modsys;
-} DeccanGameScene;
+    deccan_module_sys_t modsys;
+} deccan_game_scene_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Scene internals
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API void DE_SceneSysCreate(void);
-DE_API DeccanGameScene **DE_SceneGetSceneArray(void);
-DE_API int DE_SceneGetSceneCount(void);
-DE_API void DE_SceneFreeAll(void);
-DE_API void DE_SceneUpdate(void);
-DE_API void DE_SceneQuit(void);
+DE_API void deccan_scene_sys_create(void);
+DE_API deccan_game_scene_t **deccan_scene_get_scene_array(void);
+DE_API int deccan_scene_get_scene_count(void);
+DE_API void deccan_scene_free_all(void);
+DE_API void deccan_scene_update(void);
+DE_API void deccan_scene_quit(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Constructor and destructor
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API DeccanGameScene *DE_SceneNewScene(const char *name);
-DE_API void DE_SceneAddScene(DeccanGameScene *scene, bool is_replacing);
-DE_API void DE_SceneRemoveScene(void);
-DE_API void DE_SceneMakeChanges(void);
+DE_API deccan_game_scene_t *deccan_scene_new_scene(const char *name);
+DE_API void deccan_scene_add_scene(deccan_game_scene_t *scene, bool is_replacing);
+DE_API void deccan_scene_remove_scene(void);
+DE_API void deccan_scene_make_changes(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Module systems
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API void DE_ScenePushModule(DeccanGameScene *scene, DeccanModule *mod);
+DE_API void deccan_scene_push_module(deccan_game_scene_t *scene, deccan_module_t *mod);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Object handling
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API void DE_SceneInstantiateObject(DeccanGameObject object);
-DE_API DeccanGameObject DE_SceneGetObject(const char *name);
-DE_API void DE_SceneIterateObject(void (*func)(DeccanGameObject this));
-DE_API void DE_SceneIterateObjectOfType(const char *type, void (*func)(DeccanGameObject this));
+DE_API void deccan_scene_instantiate_object(deccan_game_object_t object);
+DE_API deccan_game_object_t deccan_scene_get_object(const char *name);
+DE_API void deccan_scene_iterate_object(void (*func)(deccan_game_object_t this));
+DE_API void deccan_scene_iterate_object_of_type(const char *type, void (*func)(deccan_game_object_t this));
 
 ////////////////////////////////////////////////////////////////////////////////
 // Scene status
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API DeccanGameScene *DE_SceneCurrentScene(void);
-DE_API void DE_ScenePauseScene(bool pause);
-DE_API bool DE_SceneIsScenePaused(void);
+DE_API deccan_game_scene_t *deccan_scene_current_scene(void);
+DE_API void deccan_scene_pause_scene(bool pause);
+DE_API bool deccan_scene_is_scene_paused(void);
 
-DE_API void DE_SceneSetCamera(DeccanCamera *camera);
-DE_API DeccanCamera *DE_SceneGetCamera(void);
+DE_API void deccan_scene_set_camera(deccan_camera_t *camera);
+DE_API deccan_camera_t *deccan_scene_get_camera(void);

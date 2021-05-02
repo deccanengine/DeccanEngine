@@ -11,6 +11,6 @@
 // File actions
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API SDL_RWops *DE_FSLocateFile(const char *file_name, bool is_binary);
-DE_API const char *DE_FSGetFileContent(SDL_RWops *file);
-DE_API const char *DE_FSGetFileExtension(const char *file_name);
+DE_API SDL_RWops *deccan_fs_locate_file(const char *file_name, bool is_binary);
+DE_API const char *deccan_fs_get_file_content(SDL_RWops *file);
+DE_API const char *deccan_fs_get_file_extension(const char *file_name);

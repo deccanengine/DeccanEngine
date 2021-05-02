@@ -13,4 +13,4 @@
 // Default Asset Manager
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API DeccanAssetManager *DE_MakeDefaultAssetManager(void);
+DE_API deccan_asset_manager_t *deccan_make_default_asset_manager(void);

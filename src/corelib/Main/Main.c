@@ -7,83 +7,83 @@
 
 #include "../Deccan.h"
 
-bool DE_AppInit(DeccanSettings *settings) {
-    DE_SDLInit();
+bool deccan_app_init(deccan_settings_t *settings) {
+    deccan_sdl_init();
 
-    DE_RendererPreInit();
-    DE_CoreInit(settings);
-    DE_RendererCreate(DE_CoreGetWindow());
+    deccan_renderer_pre_init();
+    deccan_core_init(settings);
+    deccan_renderer_create(deccan_core_get_window());
 
-    DE_SceneSysCreate();
+    deccan_scene_sys_create();
 
-    DE_GenericPipelineCreate();
+    deccan_generic_pipeline_create();
 
     return true;
 }
 
-void DE_AppUpdate(void) {
-    DeccanTimer fpsTimer;
-    DeccanTimer frmTimer;
+void deccan_app_update(void) {
+    deccan_timer_t fpsTimer;
+    deccan_timer_t frmTimer;
 
-    DE_TimerStart(&fpsTimer); /* To calculate FPS */
+    deccan_timer_start(&fpsTimer); /* To calculate FPS */
 
     int32_t frameCount;
     float fpsAverage = 0.0f;
     float deltaTime = 0.0f;
 
-    DeccanSettings *settings = DE_CoreGetSettings();
+    deccan_settings_t *settings = deccan_core_get_settings();
 
-    DE_SceneMakeChanges();
+    deccan_scene_make_changes();
 
-    while (DE_CoreIsRunning()) {
-        DE_TimerStart(&frmTimer);
+    while (deccan_core_is_running()) {
+        deccan_timer_start(&frmTimer);
 
         /* Calculate FPS */
-        fpsAverage = frameCount / DE_TimerGetTime(&fpsTimer).seconds;
+        fpsAverage = frameCount / deccan_timer_get_time(&fpsTimer).seconds;
         if (fpsAverage > 20000) {
             fpsAverage = 0.0f;
         }
 
-        DE_CoreUpdate(fpsAverage, deltaTime);
+        deccan_core_update(fpsAverage, deltaTime);
 
         vec2s viewport;
-        DE_CoreGetResolution(viewport.raw);
-        DE_RendererSetViewport(viewport);
+        deccan_core_get_resolution(viewport.raw);
+        deccan_renderer_set_viewport(viewport);
 
         /* Update and render the scene */
-        DE_GenericPipelineBegin(DE_SceneGetCamera());
-        DE_SceneUpdate();
-        DE_GenericPipelineEnd();
+        deccan_generic_pipeline_begin(deccan_scene_get_camera());
+        deccan_scene_update();
+        deccan_generic_pipeline_end();
 
         /* Render everything */
-        DE_RendererDraw();
+        deccan_renderer_draw();
 
         /* Increment the frame counter */
         frameCount++;
 
         /* Current ticks per frame i.e delta time */
-        deltaTime = DE_TimerGetTime(&frmTimer).milliseconds;
+        deltaTime = deccan_timer_get_time(&frmTimer).milliseconds;
 
         /* Limit FPS */
         if ((!settings->vsync) && (settings->fps > 20.0f)) {
             float ticksPerFrame = (1000.0f / settings->fps); /* Required ticks per frame */
             if (deltaTime < ticksPerFrame) {
-                DE_ClockDelay((int)(ticksPerFrame - deltaTime));
+                deccan_clock_delay((int)(ticksPerFrame - deltaTime));
             }
         }
 
         /* Update delta time */
-        deltaTime = DE_TimerGetTime(&frmTimer).milliseconds;
+        deltaTime = deccan_timer_get_time(&frmTimer).milliseconds;
     }
 }
 
-void DE_AppQuit(void) {
-    DE_SceneQuit();
+void deccan_app_quit(void) {
+    deccan_scene_quit();
 
-    DE_SceneFreeAll();
+    deccan_scene_free_all();
 
-    DE_GenericPipelineDestroy();
-    DE_RendererDestroy();
+    deccan_generic_pipeline_destroy();
+    deccan_renderer_destroy();
 
-    DE_CoreQuit();
+    deccan_core_quit();
 }

@@ -13,8 +13,8 @@
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct DeccanCompTransform {
+typedef struct deccan_comp_transform_t {
     vec3 position;
     vec3 scale;
     vec3 rotation;
-} DeccanCompTransform;
+} deccan_comp_transform_t;

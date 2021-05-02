@@ -7,19 +7,19 @@
 
 #include "Utils.h"
 
-DE_IMPL void *DE_Alloc(size_t size, int count) {
+DE_IMPL void *deccan_alloc(size_t size, int count) {
     return SDL_malloc(size * count);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void *DE_Realloc(void *mem, size_t size) {
+DE_IMPL void *deccan_realloc(void *mem, size_t size) {
     return SDL_realloc(mem, size);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_Free(void *mem) {
+DE_IMPL void deccan_free(void *mem) {
     if (!mem)
         return;
     else {
@@ -30,7 +30,7 @@ DE_IMPL void DE_Free(void *mem) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL zpl_allocator DE_ZPLAllocator(void) {
+DE_IMPL zpl_allocator deccan_z_p_l_allocator(void) {
     // TODO: make allocator
     return zpl_heap_allocator();
 }

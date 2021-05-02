@@ -11,7 +11,7 @@
 // Sprite asset
 ////////////////////////////////////////////////////////////////////////////////
 
-void *DE_SpriteAssetCreate(const char *mem, size_t size) {
+void *deccan_sprite_asset_create(const char *mem, size_t size) {
     int32_t width, height;
 
     /* We dont need to collect the number of channels
@@ -23,12 +23,12 @@ void *DE_SpriteAssetCreate(const char *mem, size_t size) {
         DE_WARN("Cannot load image");
     }
 
-    DeccanSurface surfaces[] = {
+    deccan_surface_t surfaces[] = {
         { data, size, SG_PIXELFORMAT_RGBA8 },
     };
 
-    DeccanTexture *texture = DE_Alloc(sizeof(DeccanTexture), 1);
-    DE_TextureCreateFromMem(texture, width, height, 1, surfaces);
+    deccan_texture_t *texture = deccan_alloc(sizeof(deccan_texture_t), 1);
+    deccan_texture_create_from_mem(texture, width, height, 1, surfaces);
     
     stbi_image_free(data);
     return texture;
@@ -36,8 +36,8 @@ void *DE_SpriteAssetCreate(const char *mem, size_t size) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool DE_SpriteAssetDestroy(void *asset) {
-    DE_TextureDestroy((DeccanTexture *)asset);
-    DE_Free((DeccanTexture *)asset);
+bool deccan_sprite_asset_destroy(void *asset) {
+    deccan_texture_destroy((deccan_texture_t *)asset);
+    deccan_free((deccan_texture_t *)asset);
     return true;
 }

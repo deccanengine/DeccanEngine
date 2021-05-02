@@ -12,20 +12,20 @@
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct DeccanFramebufferInfo {
+typedef struct deccan_framebuffer_info_t {
     vec2s dim;
-} DeccanFramebufferInfo;
+} deccan_framebuffer_info_t;
 
-typedef struct DeccanFramebuffer {
-    DeccanFramebufferInfo info;
+typedef struct deccan_framebuffer_t {
+    deccan_framebuffer_info_t info;
     sg_image color_img, depth_img;
     sg_pass pass;
-} DeccanFramebuffer;
+} deccan_framebuffer_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Framebuffer
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API void DE_FramebufferCreate(DeccanFramebuffer *fb);
-DE_API void DE_FramebufferDestroy(DeccanFramebuffer *fb);
-DE_API void DE_FramebufferUpdate(DeccanFramebuffer *fb);
+DE_API void deccan_framebuffer_create(deccan_framebuffer_t *fb);
+DE_API void deccan_framebuffer_destroy(deccan_framebuffer_t *fb);
+DE_API void deccan_framebuffer_update(deccan_framebuffer_t *fb);

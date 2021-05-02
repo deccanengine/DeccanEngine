@@ -7,7 +7,7 @@
 
 #include "Timer.h"
 
-DE_IMPL void DE_TimerStart(DeccanTimer *timer) {
+DE_IMPL void deccan_timer_start(deccan_timer_t *timer) {
     timer->startTicks = SDL_GetTicks();
     timer->pausedTicks = 0;
     timer->isRunning = true;
@@ -16,7 +16,7 @@ DE_IMPL void DE_TimerStart(DeccanTimer *timer) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_TimerStop(DeccanTimer *timer) {
+DE_IMPL void deccan_timer_stop(deccan_timer_t *timer) {
     timer->startTicks = 0;
     timer->pausedTicks = 0;
     timer->isRunning = false;
@@ -25,13 +25,13 @@ DE_IMPL void DE_TimerStop(DeccanTimer *timer) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_TimerReset(DeccanTimer *timer) {
-    DE_TimerStart(timer);
+DE_IMPL void deccan_timer_reset(deccan_timer_t *timer) {
+    deccan_timer_start(timer);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_TimerPause(DeccanTimer *timer) {
+DE_IMPL void deccan_timer_pause(deccan_timer_t *timer) {
     if (timer->isRunning && !timer->isPaused) {
         timer->isPaused = true;
 
@@ -43,7 +43,7 @@ DE_IMPL void DE_TimerPause(DeccanTimer *timer) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL DeccanTime DE_TimerGetTime(DeccanTimer *timer) {
+DE_IMPL deccan_time_t deccan_timer_get_time(deccan_timer_t *timer) {
     float timeMS = 0.0f;
 
     if (timer->isRunning) {
@@ -55,7 +55,7 @@ DE_IMPL DeccanTime DE_TimerGetTime(DeccanTimer *timer) {
         }
     }
 
-    DeccanTime time;
+    deccan_time_t time;
     time.milliseconds = timeMS;
     time.seconds = timeMS / 1000.0f;
 

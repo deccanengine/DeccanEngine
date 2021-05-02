@@ -10,5 +10,5 @@
 
 typedef char *Str;
 
-DE_API char *DE_StringNew(const char *source);
-DE_API uint32_t DE_StringHash(const char *string, int length);
+DE_API char *deccan_string_new(const char *source);
+DE_API uint32_t deccan_string_hash(const char *string, int length);

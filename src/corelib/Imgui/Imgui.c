@@ -17,32 +17,32 @@
 
 DE_PRIV struct { 
     simgui_desc_t context; 
-} ImguiInfo = {0};
+} imgui_info = {0};
 
-DE_IMPL void DE_ImguiInit(void) {
-    simgui_setup(&ImguiInfo.context);   
-    ImGui_ImplSDL2_InitForOpenGL(DE_CoreGetWindow(), DE_RendererGetContext());
+DE_IMPL void deccan_imgui_init(void) {
+    simgui_setup(&imgui_info.context);   
+    ImGui_ImplSDL2_InitForOpenGL(deccan_core_get_window(), deccan_renderer_get_context());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_ImguiQuit(void) {
+DE_IMPL void deccan_imgui_quit(void) {
     simgui_shutdown();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_ImguiBeginRender(void) {
+DE_IMPL void deccan_imgui_begin_render(void) {
     vec2s viewport;
-    DE_CoreGetResolution(viewport.raw);
+    deccan_core_get_resolution(viewport.raw);
 
-    ImGui_ImplSDL2_NewFrame(DE_CoreGetWindow());
-    simgui_new_frame(viewport.x, viewport.y, DE_CoreGetDeltaTime());
+    ImGui_ImplSDL2_NewFrame(deccan_core_get_window());
+    simgui_new_frame(viewport.x, viewport.y, deccan_core_get_delta_time());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_ImguiEndRender(void) {
+DE_IMPL void deccan_imgui_end_render(void) {
     igRender();
     simgui_render();
 }
@@ -51,12 +51,12 @@ DE_IMPL void DE_ImguiEndRender(void) {
 // Module
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API DeccanModule *DE_ImguiModule(void) {
-    DeccanModule *imgui = DE_ModuleCreate("imgui");
-    imgui->AtBeginning = DE_ImguiInit;
-    imgui->AtStep = DE_ImguiBeginRender;
-    imgui->AtPostStep = DE_ImguiEndRender;
-    imgui->AtEnd = DE_ImguiQuit;
+DE_API deccan_module_t *deccan_imgui_module(void) {
+    deccan_module_t *imgui = deccan_module_create("imgui");
+    imgui->AtBeginning = deccan_imgui_init;
+    imgui->AtStep = deccan_imgui_begin_render;
+    imgui->AtPostStep = deccan_imgui_end_render;
+    imgui->AtEnd = deccan_imgui_quit;
     return imgui;
 }
 

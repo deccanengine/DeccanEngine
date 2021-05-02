@@ -17,4 +17,4 @@
 // Registrar
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API void DE_ComponentsRegisterAll(void);
+DE_API void deccan_components_register_all(void);

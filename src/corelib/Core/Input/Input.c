@@ -11,7 +11,7 @@ DE_PRIV struct {
     SDL_Event event;
     uint8_t currKeys[SDL_NUM_SCANCODES];
     uint8_t prevKeys[SDL_NUM_SCANCODES];
-} Input_Info = {0};
+} input_info = {0};
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -22,43 +22,43 @@ DE_PRIV struct {
 // Input management
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL SDL_Event *DE_InputGetEventHandler(void) {
-    return &Input_Info.event;
+DE_IMPL SDL_Event *deccan_input_get_event_handler(void) {
+    return &input_info.event;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_InputInit(void) {
-    memcpy(Input_Info.prevKeys, "\0", sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
-    memcpy(Input_Info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
+DE_IMPL void deccan_input_init(void) {
+    memcpy(input_info.prevKeys, "\0", sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
+    memcpy(input_info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_InputUpdate(void) {
-    memcpy(Input_Info.prevKeys, Input_Info.currKeys, sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
-    memcpy(Input_Info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
+DE_IMPL void deccan_input_update(void) {
+    memcpy(input_info.prevKeys, input_info.currKeys, sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
+    memcpy(input_info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
 
-    Input_Info.event.wheel.x = 0;
-    Input_Info.event.wheel.y = 0;
+    input_info.event.wheel.x = 0;
+    input_info.event.wheel.y = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Keyboard functions
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL DeccanKeyState DE_InputGetKey(int key_code) {
-    DeccanKeyState key = {false, false, false};
+DE_IMPL deccan_key_state_t deccan_input_get_key(int key_code) {
+    deccan_key_state_t key = {false, false, false};
 
     if (KEY_IN_BOUNDS(key_code)) {
-        if (Input_Info.currKeys[key_code]) {
-            if (!Input_Info.prevKeys[key_code]) {
+        if (input_info.currKeys[key_code]) {
+            if (!input_info.prevKeys[key_code]) {
                 key.IsPressed = true;
             }
             key.IsHeld = true;
         }
         else {
-            if (Input_Info.prevKeys[key_code]) {
+            if (input_info.prevKeys[key_code]) {
                 key.IsReleased = true;
             }
         }
@@ -69,9 +69,9 @@ DE_IMPL DeccanKeyState DE_InputGetKey(int key_code) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_InputKeyPressed(int key_code) {
+DE_IMPL bool deccan_input_key_pressed(int key_code) {
     if (KEY_IN_BOUNDS(key_code)) {
-        return Input_Info.currKeys[key_code] && !Input_Info.prevKeys[key_code];
+        return input_info.currKeys[key_code] && !input_info.prevKeys[key_code];
     }
     else {
         return false;
@@ -80,9 +80,9 @@ DE_IMPL bool DE_InputKeyPressed(int key_code) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_InputKeyReleased(int key_code) {
+DE_IMPL bool deccan_input_key_released(int key_code) {
     if (KEY_IN_BOUNDS(key_code)) {
-        return !Input_Info.currKeys[key_code] && Input_Info.prevKeys[key_code];
+        return !input_info.currKeys[key_code] && input_info.prevKeys[key_code];
     }
     else {
         return false;
@@ -91,9 +91,9 @@ DE_IMPL bool DE_InputKeyReleased(int key_code) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_InputKeyHeld(int key_code) {
+DE_IMPL bool deccan_input_key_held(int key_code) {
     if (KEY_IN_BOUNDS(key_code)) {
-        return Input_Info.currKeys[key_code];
+        return input_info.currKeys[key_code];
     }
     else {
         return false;
@@ -104,15 +104,15 @@ DE_IMPL bool DE_InputKeyHeld(int key_code) {
 // Mouse functions
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL DeccanMouseState DE_InputGetMouseButton(int button_code) {
-    DeccanMouseState button = {false, false};
+DE_IMPL deccan_mouse_state_t deccan_input_get_mouse_button(int button_code) {
+    deccan_mouse_state_t button = {false, false};
 
     if (BUTTON_IN_BOUNDS(button_code)) {
-        if (Input_Info.event.button.button == button_code) {
-            if (Input_Info.event.type == SDL_MOUSEBUTTONDOWN) {
+        if (input_info.event.button.button == button_code) {
+            if (input_info.event.type == SDL_MOUSEBUTTONDOWN) {
                 button.IsDown = true;
             }
-            else if (Input_Info.event.type == SDL_MOUSEBUTTONUP) {
+            else if (input_info.event.type == SDL_MOUSEBUTTONUP) {
                 button.IsUp = true;
             }
         }
@@ -123,9 +123,9 @@ DE_IMPL DeccanMouseState DE_InputGetMouseButton(int button_code) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_InputButtonDown(int button_code) {
+DE_IMPL bool deccan_input_button_down(int button_code) {
     if (BUTTON_IN_BOUNDS(button_code)) {
-        return Input_Info.event.type == SDL_MOUSEBUTTONDOWN && Input_Info.event.button.button == button_code;
+        return input_info.event.type == SDL_MOUSEBUTTONDOWN && input_info.event.button.button == button_code;
     }
     else {
         return false;
@@ -134,9 +134,9 @@ DE_IMPL bool DE_InputButtonDown(int button_code) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_InputButtonUp(int button_code) {
+DE_IMPL bool deccan_input_button_up(int button_code) {
     if (BUTTON_IN_BOUNDS(button_code)) {
-        return Input_Info.event.type == SDL_MOUSEBUTTONUP && Input_Info.event.button.button == button_code;
+        return input_info.event.type == SDL_MOUSEBUTTONUP && input_info.event.button.button == button_code;
     }
     else {
         return false;
@@ -145,7 +145,7 @@ DE_IMPL bool DE_InputButtonUp(int button_code) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_InputGetMousePos(vec2 pos) {
+DE_IMPL void deccan_input_get_mouse_pos(vec2 pos) {
     int32_t x, y;
     SDL_GetMouseState(&x, &y);
     pos[0] = (float)x;
@@ -154,13 +154,13 @@ DE_IMPL void DE_InputGetMousePos(vec2 pos) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL int DE_InputMouseScrollHorizontal(void) {
-    if (Input_Info.event.type == SDL_MOUSEWHEEL) {
-        if (Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) {
-            return Input_Info.event.wheel.x;
+DE_IMPL int deccan_input_mouse_scroll_horizontal(void) {
+    if (input_info.event.type == SDL_MOUSEWHEEL) {
+        if (input_info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) {
+            return input_info.event.wheel.x;
         }
         else {
-            return -Input_Info.event.wheel.x;
+            return -input_info.event.wheel.x;
         }
     }
     return 0;
@@ -168,13 +168,13 @@ DE_IMPL int DE_InputMouseScrollHorizontal(void) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL int DE_InputMouseScrollVertical(void) {
-    if (Input_Info.event.type == SDL_MOUSEWHEEL) {
-        if (Input_Info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) {
-            return Input_Info.event.wheel.y;
+DE_IMPL int deccan_input_mouse_scroll_vertical(void) {
+    if (input_info.event.type == SDL_MOUSEWHEEL) {
+        if (input_info.event.wheel.direction == SDL_MOUSEWHEEL_NORMAL) {
+            return input_info.event.wheel.y;
         }
         else {
-            return -Input_Info.event.wheel.y;
+            return -input_info.event.wheel.y;
         }
     }
     return 0;

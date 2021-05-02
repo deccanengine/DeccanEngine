@@ -13,5 +13,5 @@
 // Sprite asset
 ////////////////////////////////////////////////////////////////////////////////
 
-void *DE_SpriteAssetCreate(const char *mem, size_t size);
-bool DE_SpriteAssetDestroy(void *asset);
+void *deccan_sprite_asset_create(const char *mem, size_t size);
+bool deccan_sprite_asset_destroy(void *asset);

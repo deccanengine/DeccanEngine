@@ -8,24 +8,24 @@
 #pragma once
 #include "../Config.h"
 
-typedef struct DeccanTime {
+typedef struct deccan_time_t {
     float seconds;
     float milliseconds;
-} DeccanTime;
+} deccan_time_t;
 
-typedef struct DeccanTimer {
+typedef struct deccan_timer_t {
     float startTicks;
     float pausedTicks;
     bool isRunning;
     bool isPaused;
-} DeccanTimer;
+} deccan_timer_t;
 
-static inline void DE_ClockDelay(int32_t ms) {
+static inline void deccan_clock_delay(int32_t ms) {
     SDL_Delay(ms);
 }
 
-DE_API void DE_TimerStart(DeccanTimer *timer);
-DE_API void DE_TimerStop(DeccanTimer *timer);
-DE_API void DE_TimerPause(DeccanTimer *timer);
-DE_API void DE_TimerReset(DeccanTimer *timer);
-DE_API DeccanTime DE_TimerGetTime(DeccanTimer *timer);
+DE_API void deccan_timer_start(deccan_timer_t *timer);
+DE_API void deccan_timer_stop(deccan_timer_t *timer);
+DE_API void deccan_timer_pause(deccan_timer_t *timer);
+DE_API void deccan_timer_reset(deccan_timer_t *timer);
+DE_API deccan_time_t deccan_timer_get_time(deccan_timer_t *timer);

@@ -10,13 +10,13 @@
 DE_PRIV struct {
     SDL_GLContext glcontext;
     SDL_Window *window;
-    DeccanFramebuffer *fb;
+    deccan_framebuffer_t *fb;
 
     sg_desc desc;
 
     vec2s viewport;
     vec4s clear_color;
-} RendererInfo = {
+} renderer_info = {
     .glcontext = NULL,
     .window = NULL,
     .fb = NULL,
@@ -26,7 +26,7 @@ DE_PRIV struct {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_RendererPreInit(void) {
+DE_IMPL void deccan_renderer_pre_init(void) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
@@ -36,10 +36,10 @@ DE_IMPL void DE_RendererPreInit(void) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_RendererCreate(SDL_Window *window) {
-    RendererInfo.window = window;
-    RendererInfo.glcontext = SDL_GL_CreateContext(window);
-    if (!RendererInfo.glcontext) {
+DE_IMPL void deccan_renderer_create(SDL_Window *window) {
+    renderer_info.window = window;
+    renderer_info.glcontext = SDL_GL_CreateContext(window);
+    if (!renderer_info.glcontext) {
         printf("Cannot create GL context: %s\n", SDL_GetError());
     }
 
@@ -47,70 +47,70 @@ DE_IMPL void DE_RendererCreate(SDL_Window *window) {
         printf("Couldn't load GLAD without context\n");
     }
     
-    RendererInfo.desc.context = (sg_context_desc){
+    renderer_info.desc.context = (sg_context_desc){
         .color_format = SG_PIXELFORMAT_RGBA8,
         .depth_format = SG_PIXELFORMAT_DEPTH,
         .sample_count = 4,
     };
 
-    sg_setup(&RendererInfo.desc);
+    sg_setup(&renderer_info.desc);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_RendererDestroy(void) {
+DE_IMPL void deccan_renderer_destroy(void) {
     sg_shutdown();
 
-    if (RendererInfo.glcontext != NULL)
-        SDL_GL_DeleteContext(RendererInfo.glcontext);
+    if (renderer_info.glcontext != NULL)
+        SDL_GL_DeleteContext(renderer_info.glcontext);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_RendererDraw(void) {
+DE_IMPL void deccan_renderer_draw(void) {
     sg_commit();
 
-    SDL_GL_SwapWindow(RendererInfo.window);
+    SDL_GL_SwapWindow(renderer_info.window);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL SDL_GLContext DE_RendererGetContext(void) {
-    return RendererInfo.glcontext;
+DE_IMPL SDL_GLContext deccan_renderer_get_context(void) {
+    return renderer_info.glcontext;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_RendererSetViewport(vec2s viewport) {
-    RendererInfo.viewport = viewport;
+DE_IMPL void deccan_renderer_set_viewport(vec2s viewport) {
+    renderer_info.viewport = viewport;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_RendererSetClearColor(vec4s color) {
-    RendererInfo.clear_color = color;
+DE_IMPL void deccan_renderer_set_clear_color(vec4s color) {
+    renderer_info.clear_color = color;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_RendererSetFramebuffer(DeccanFramebuffer *fb) {
-    RendererInfo.fb = fb;
+DE_IMPL void deccan_renderer_set_framebuffer(deccan_framebuffer_t *fb) {
+    renderer_info.fb = fb;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL vec2s DE_RendererGetViewport(void) {
-    return RendererInfo.viewport;
+DE_IMPL vec2s deccan_renderer_get_viewport(void) {
+    return renderer_info.viewport;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL vec4s DE_RendererGetClearColor(void) {
-    return RendererInfo.clear_color;
+DE_IMPL vec4s deccan_renderer_get_clear_color(void) {
+    return renderer_info.clear_color;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL DeccanFramebuffer *DE_RendererGetFramebuffer(void) {
-    return RendererInfo.fb;
+DE_IMPL deccan_framebuffer_t *deccan_renderer_get_framebuffer(void) {
+    return renderer_info.fb;
 }

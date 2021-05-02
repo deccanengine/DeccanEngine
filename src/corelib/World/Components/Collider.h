@@ -18,14 +18,14 @@ typedef enum {
     COLLIDER_Vec, 
     COLLIDER_Rect, 
     COLLIDER_Circle 
-} DeccanCompColliderType;
+} deccan_comp_collider_type_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct DeccanCompCollider {
-    DeccanCompColliderType type;
+typedef struct deccan_comp_collider_t {
+    deccan_comp_collider_type_t type;
     union {
         struct {
             vec2 vec;
@@ -37,14 +37,14 @@ typedef struct DeccanCompCollider {
             vec3 circle;
         };
     };
-} DeccanCompCollider;
+} deccan_comp_collider_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Collision checking
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API bool DE_CompColliderCheckObject(DeccanGameObject obj1, DeccanGameObject obj2);
-DE_API bool DE_CompColliderCheckObjectWithVector(DeccanGameObject obj, vec2 vec);
-DE_API bool DE_CompColliderCheckObjectWithRect(DeccanGameObject obj, vec4 vec);
-DE_API bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject obj, vec3 vec);
-DE_API bool DE_CompColliderCheck(const char *name1, const char *name2);
+DE_API bool deccan_comp_collider_check_object(deccan_game_object_t obj1, deccan_game_object_t obj2);
+DE_API bool deccan_comp_collider_check_object_with_vector(deccan_game_object_t obj, vec2 vec);
+DE_API bool deccan_comp_collider_check_object_with_rect(deccan_game_object_t obj, vec4 vec);
+DE_API bool deccan_comp_collider_check_object_with_circle(deccan_game_object_t obj, vec3 vec);
+DE_API bool deccan_comp_collider_check(const char *name1, const char *name2);

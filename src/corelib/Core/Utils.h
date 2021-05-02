@@ -8,7 +8,7 @@
 #pragma once
 #include "../Config.h"
 
-DE_API void *DE_Alloc(size_t size, int count);
-DE_API void *DE_Realloc(void *mem, size_t size);
-DE_API void DE_Free(void *mem);
-DE_API zpl_allocator DE_ZPLAllocator(void);
+DE_API void *deccan_alloc(size_t size, int count);
+DE_API void *deccan_realloc(void *mem, size_t size);
+DE_API void deccan_free(void *mem);
+DE_API zpl_allocator deccan_z_p_l_allocator(void);

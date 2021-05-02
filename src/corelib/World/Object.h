@@ -17,51 +17,51 @@
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct DeccanGameObject DeccanGameObject;
+typedef struct deccan_game_object_t deccan_game_object_t;
 
-typedef struct DeccanObjectInfo {
+typedef struct deccan_object_info_t {
     bool visible;
     bool active;
     bool to_remove;
 
     bool is_beginning;
 
-    void (*AtFirstFrame)(DeccanGameObject object);
-    void (*AtBeginning)(DeccanGameObject object);
-    void (*AtStep)(DeccanGameObject object);
-    void (*AtRender)(DeccanGameObject object);
-    void (*AtEnd)(DeccanGameObject object);
-} DeccanObjectInfo;
+    void (*AtFirstFrame)(deccan_game_object_t object);
+    void (*AtBeginning)(deccan_game_object_t object);
+    void (*AtStep)(deccan_game_object_t object);
+    void (*AtRender)(deccan_game_object_t object);
+    void (*AtEnd)(deccan_game_object_t object);
+} deccan_object_info_t;
 
-typedef struct DeccanGameObject {
+typedef struct deccan_game_object_t {
     ecs_entity_t entity;
-} DeccanGameObject;
+} deccan_game_object_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Initialization and instantiator functions
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API DeccanGameObject DE_ObjectNewObject(const char *name);
-DE_API void DE_ObjectDeleteObject(DeccanGameObject obj);
-DE_API void DE_ObjectFreeObject(DeccanGameObject obj);
-DE_API bool DE_ObjectIsValid(DeccanGameObject obj);
+DE_API deccan_game_object_t deccan_object_new_object(const char *name);
+DE_API void deccan_object_delete_object(deccan_game_object_t obj);
+DE_API void deccan_object_free_object(deccan_game_object_t obj);
+DE_API bool deccan_object_is_valid(deccan_game_object_t obj);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Prefab and hierarchy functions
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API DeccanGameObject DE_ObjectMakeCopy(DeccanGameObject object);
-DE_API void DE_ObjectMakePrefab(DeccanGameObject object);
-DE_API void DE_ObjectSetParent(DeccanGameObject object, DeccanGameObject parent);
-DE_API void DE_ObjectAddChild(DeccanGameObject object, DeccanGameObject child);
+DE_API deccan_game_object_t deccan_object_make_copy(deccan_game_object_t object);
+DE_API void deccan_object_make_prefab(deccan_game_object_t object);
+DE_API void deccan_object_set_parent(deccan_game_object_t object, deccan_game_object_t parent);
+DE_API void deccan_object_add_child(deccan_game_object_t object, deccan_game_object_t child);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Update
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API void DE_ObjectUpdate(DeccanGameObject obj);
-DE_API void DE_ObjectRender(DeccanGameObject obj);
-DE_API void DE_ObjectEnd(DeccanGameObject obj);
+DE_API void deccan_object_update(deccan_game_object_t obj);
+DE_API void deccan_object_render(deccan_game_object_t obj);
+DE_API void deccan_object_end(deccan_game_object_t obj);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Messaging
@@ -71,21 +71,21 @@ DE_API void DE_ObjectEnd(DeccanGameObject obj);
 // Component
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API void DE_ObjectSetComponent(DeccanGameObject obj, const char *name, void *component);
-DE_API void *DE_ObjectGetComponent(DeccanGameObject obj, const char *name);
-DE_API void DE_ObjectRemoveComponent(DeccanGameObject obj, const char *name);
+DE_API void deccan_object_set_component(deccan_game_object_t obj, const char *name, void *component);
+DE_API void *deccan_object_get_component(deccan_game_object_t obj, const char *name);
+DE_API void deccan_object_remove_component(deccan_game_object_t obj, const char *name);
 
-DE_API void DE_ObjectSetName(DeccanGameObject obj, const char *name);
-DE_API const char *DE_ObjectGetName(DeccanGameObject obj);
+DE_API void deccan_object_set_name(deccan_game_object_t obj, const char *name);
+DE_API const char *deccan_object_get_name(deccan_game_object_t obj);
 
-DE_API void DE_ObjectSetTag(DeccanGameObject obj, const char *name);
-DE_API bool DE_ObjectHasTag(DeccanGameObject obj, const char *name);
+DE_API void deccan_object_set_tag(deccan_game_object_t obj, const char *name);
+DE_API bool deccan_object_has_tag(deccan_game_object_t obj, const char *name);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Getters and Setters
 ////////////////////////////////////////////////////////////////////////////////
-DE_API bool DE_ObjectIsHidden(DeccanGameObject obj);
-DE_API void DE_ObjectHide(DeccanGameObject obj, bool hide);
+DE_API bool deccan_object_is_hidden(deccan_game_object_t obj);
+DE_API void deccan_object_hide(deccan_game_object_t obj, bool hide);
 
-DE_API bool DE_ObjectIsActive(DeccanGameObject obj);
-DE_API void DE_ObjectActivate(DeccanGameObject obj, bool act);
+DE_API bool deccan_object_is_active(deccan_game_object_t obj);
+DE_API void deccan_object_activate(deccan_game_object_t obj, bool act);

@@ -12,44 +12,44 @@
 // Enums
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef enum DeccanCameraType { 
+typedef enum deccan_camera_type_t { 
     DECCAN_CAMERA_ORTHOGRAPHIC = 0, 
     DECCAN_CAMERA_PERSPECTIVE 
-} DeccanCameraType;
+} deccan_camera_type_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct DeccanView {
+typedef struct deccan_view_t {
     mat4s view;
     vec3s position;
     float yaw;
     float pitch;
     float roll;
-} DeccanView;
+} deccan_view_t;
 
-typedef struct DeccanCamera {
-    DeccanView cam;
-    DeccanCameraType type;
+typedef struct deccan_camera_t {
+    deccan_view_t cam;
+    deccan_camera_type_t type;
     mat4s proj;
     float near;
     float far;
     float aspect_ratio;
-} DeccanCamera;
+} deccan_camera_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // View
 ////////////////////////////////////////////////////////////////////////////////
 
-void DE_ViewInit(DeccanView *camera, vec3s position);
-void DE_ViewUpdate(DeccanView *camera);
+void deccan_view_init(deccan_view_t *camera, vec3s position);
+void deccan_view_update(deccan_view_t *camera);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Camera
 ////////////////////////////////////////////////////////////////////////////////
 
-void DE_CameraInit(DeccanCamera *camera, float near, float far);
-void DE_CameraSetViewport(DeccanCamera *camera, vec2s viewport);
-void DE_CameraSetOrtho(DeccanCamera *camera, float size);
-void DE_CameraSetPersp(DeccanCamera *camera, float vfov);
+void deccan_camera_init(deccan_camera_t *camera, float near, float far);
+void deccan_camera_set_viewport(deccan_camera_t *camera, vec2s viewport);
+void deccan_camera_set_ortho(deccan_camera_t *camera, float size);
+void deccan_camera_set_persp(deccan_camera_t *camera, float vfov);

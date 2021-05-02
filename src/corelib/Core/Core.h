@@ -16,7 +16,7 @@
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct DeccanSettings {
+typedef struct deccan_settings_t {
     char *title;
     vec2 resolution;
     bool fullscreen;
@@ -24,29 +24,29 @@ typedef struct DeccanSettings {
     bool resizable;
     bool closeOnEscape;
     float fps;
-} DeccanSettings;
+} deccan_settings_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Core functions
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API int DE_CoreInit(DeccanSettings *settings);
-DE_API void DE_CoreQuit(void);
-DE_API void DE_CoreUpdate(float fpsAverage, float deltaTime);
-DE_API void DE_CoreSetTitle(const char *name);
-DE_API void DE_CoreSetResolution(vec2 mode);
-DE_API void DE_CoreToogleFullscreen(void);
-DE_API void DE_CoreToogleVsync(bool vsync);
-DE_API void DE_CoreSetFramerateLimit(float fps);
-DE_API const char *DE_CoreGetTitle(void);
-DE_API void DE_CoreGetResolution(vec2 res);
-DE_API bool DE_CoreIsFullscreened(void);
-DE_API bool DE_CoreIsVsyncEnabled(void);
-DE_API bool DE_CoreIsResizable(void);
-DE_API bool DE_CoreIsRunning(void);
-DE_API float DE_CoreGetFramerateLimit(void);
-DE_API float DE_CoreGetAverageFramerate(void);
-DE_API float DE_CoreGetDeltaTime(void);
-DE_API uint32_t DE_CoreProcessStartTime(void);
-DE_API SDL_Window *DE_CoreGetWindow(void);
-DE_API DeccanSettings *DE_CoreGetSettings(void);
+DE_API int deccan_core_init(deccan_settings_t *settings);
+DE_API void deccan_core_quit(void);
+DE_API void deccan_core_update(float fpsAverage, float deltaTime);
+DE_API void deccan_core_set_title(const char *name);
+DE_API void deccan_core_set_resolution(vec2 mode);
+DE_API void deccan_core_toogle_fullscreen(void);
+DE_API void deccan_core_toogle_vsync(bool vsync);
+DE_API void deccan_core_set_framerate_limit(float fps);
+DE_API const char *deccan_core_get_title(void);
+DE_API void deccan_core_get_resolution(vec2 res);
+DE_API bool deccan_core_is_fullscreened(void);
+DE_API bool deccan_core_is_vsync_enabled(void);
+DE_API bool deccan_core_is_resizable(void);
+DE_API bool deccan_core_is_running(void);
+DE_API float deccan_core_get_framerate_limit(void);
+DE_API float deccan_core_get_average_framerate(void);
+DE_API float deccan_core_get_delta_time(void);
+DE_API uint32_t deccan_core_process_start_time(void);
+DE_API SDL_Window *deccan_core_get_window(void);
+DE_API deccan_settings_t *deccan_core_get_settings(void);

@@ -15,13 +15,13 @@
 // Pipeline constructor/destructor
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API void DE_GenericPipelineCreate(void);
-DE_API void DE_GenericPipelineDestroy(void);
+DE_API void deccan_generic_pipeline_create(void);
+DE_API void deccan_generic_pipeline_destroy(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Pipeline action
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API void DE_GenericPipelineBegin(DeccanCamera *camera);
-DE_API void DE_GenericPipelineDraw(DeccanDrawAction action);
-DE_API void DE_GenericPipelineEnd(void);
+DE_API void deccan_generic_pipeline_begin(deccan_camera_t *camera);
+DE_API void deccan_generic_pipeline_draw(deccan_draw_action_t action);
+DE_API void deccan_generic_pipeline_end(void);

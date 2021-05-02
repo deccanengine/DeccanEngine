@@ -18,11 +18,11 @@ DE_PRIV struct {
     float deltaTime;
     uint32_t proc_start_time;
 
-    DeccanSettings settings;
+    deccan_settings_t settings;
 #ifdef DE_DEBUG
     FILE *logfile;
 #endif
-} Core_Info = {
+} core_info = {
     .isRunning = true,
     .isSettingsDirty = true,
 };
@@ -32,8 +32,8 @@ DE_PRIV struct {
 // Core functions
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL int DE_CoreInit(DeccanSettings *settings) {
-    Core_Info.settings = *settings;
+DE_IMPL int deccan_core_init(deccan_settings_t *settings) {
+    core_info.settings = *settings;
 
     /* Create window */
     SDL_WindowFlags window_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;
@@ -45,35 +45,35 @@ DE_IMPL int DE_CoreInit(DeccanSettings *settings) {
         window_flags |= SDL_WINDOW_RESIZABLE;
     }
 
-    if ((Core_Info.window = SDL_CreateWindow(Core_Info.settings.title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-             Core_Info.settings.resolution[0], Core_Info.settings.resolution[1], window_flags)) == NULL) {
+    if ((core_info.window = SDL_CreateWindow(core_info.settings.title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+             core_info.settings.resolution[0], core_info.settings.resolution[1], window_flags)) == NULL) {
         DE_FATAL("Could not create window: %s", SDL_GetError());
     }
 
 #ifdef DE_DEBUG
     /* Open the log file */
-    Core_Info.logfile = fopen("report.log", "w");
-    if (Core_Info.logfile == NULL) {
+    core_info.logfile = fopen("report.log", "w");
+    if (core_info.logfile == NULL) {
         DE_ERROR("Could not create/open log file");
     }
 
-    log_add_fp(Core_Info.logfile, 0);
+    log_add_fp(core_info.logfile, 0);
 #endif
 
-    Core_Info.proc_start_time = SDL_GetTicks();
+    core_info.proc_start_time = SDL_GetTicks();
 
-    DE_InputInit();
+    deccan_input_init();
 
     return 1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_CoreQuit(void) {
+DE_IMPL void deccan_core_quit(void) {
 #ifdef DE_DEBUG
-    fclose(Core_Info.logfile);
+    fclose(core_info.logfile);
 #endif
-    SDL_DestroyWindow(Core_Info.window);
+    SDL_DestroyWindow(core_info.window);
 
     TTF_Quit();
     SDL_Quit();
@@ -81,169 +81,169 @@ DE_IMPL void DE_CoreQuit(void) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_CoreUpdate(float fpsAverage, float deltaTime) {
+DE_IMPL void deccan_core_update(float fpsAverage, float deltaTime) {
     /* Handle some events */
-    SDL_Event *event = DE_InputGetEventHandler();
+    SDL_Event *event = deccan_input_get_event_handler();
 
     if (SDL_PollEvent(event)) {
         switch (event->type) {
         /* Handle close event */
         case SDL_QUIT: {
-            Core_Info.isRunning = false;
+            core_info.isRunning = false;
             break;
         }
 
         /* Handle close on escape key event */
         case SDL_KEYDOWN: {
             /* Close on Escape Key */
-            if (event->key.keysym.sym == SDLK_ESCAPE && Core_Info.settings.closeOnEscape) {
-                Core_Info.isRunning = false;
+            if (event->key.keysym.sym == SDLK_ESCAPE && core_info.settings.closeOnEscape) {
+                core_info.isRunning = false;
                 break;
             }
         }
         }
     }
 
-    if (Core_Info.isSettingsDirty) {
-        SDL_SetWindowTitle(Core_Info.window, Core_Info.settings.title);
+    if (core_info.isSettingsDirty) {
+        SDL_SetWindowTitle(core_info.window, core_info.settings.title);
 
-        if (Core_Info.settings.fullscreen) {
-            SDL_SetWindowFullscreen(Core_Info.window, true);
+        if (core_info.settings.fullscreen) {
+            SDL_SetWindowFullscreen(core_info.window, true);
 
             SDL_DisplayMode disp = {
-                SDL_PIXELFORMAT_UNKNOWN, Core_Info.settings.resolution[0], Core_Info.settings.resolution[1], 0, 0};
+                SDL_PIXELFORMAT_UNKNOWN, core_info.settings.resolution[0], core_info.settings.resolution[1], 0, 0};
 
-            if (SDL_SetWindowDisplayMode(Core_Info.window, &disp) > 0) {
+            if (SDL_SetWindowDisplayMode(core_info.window, &disp) > 0) {
                 DE_WARN("Cannot set fullscreen window mode: %s", SDL_GetError());
             }
 
-            SDL_MaximizeWindow(Core_Info.window);
+            SDL_MaximizeWindow(core_info.window);
         }
         else {
-            SDL_SetWindowFullscreen(Core_Info.window, false);
-            SDL_SetWindowSize(Core_Info.window, Core_Info.settings.resolution[0], Core_Info.settings.resolution[1]);
+            SDL_SetWindowFullscreen(core_info.window, false);
+            SDL_SetWindowSize(core_info.window, core_info.settings.resolution[0], core_info.settings.resolution[1]);
         }
 
         // Issue: Not working in some Windows environment
-        if (SDL_GL_SetSwapInterval(Core_Info.settings.vsync ? 1 : 0) == -1) {
+        if (SDL_GL_SetSwapInterval(core_info.settings.vsync ? 1 : 0) == -1) {
             DE_WARN("VSync is not supported: %s", SDL_GetError());
         }
 
-        Core_Info.isSettingsDirty = false;
+        core_info.isSettingsDirty = false;
     }
 
     /* Update the input key states */
-    DE_InputUpdate();
+    deccan_input_update();
 
-    Core_Info.fpsAverage = fpsAverage;
-    Core_Info.deltaTime = deltaTime;
+    core_info.fpsAverage = fpsAverage;
+    core_info.deltaTime = deltaTime;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 /* Core Settings Setters */
-DE_IMPL void DE_CoreSetTitle(const char *name) {
-    DE_Free(Core_Info.settings.title);
-    Core_Info.settings.title = DE_StringNew(name);
-    Core_Info.isSettingsDirty = true;
+DE_IMPL void deccan_core_set_title(const char *name) {
+    deccan_free(core_info.settings.title);
+    core_info.settings.title = deccan_string_new(name);
+    core_info.isSettingsDirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_CoreSetResolution(vec2 resolution) {
-    glm_vec2_copy(resolution, Core_Info.settings.resolution);
-    Core_Info.isSettingsDirty = true;
+DE_IMPL void deccan_core_set_resolution(vec2 resolution) {
+    glm_vec2_copy(resolution, core_info.settings.resolution);
+    core_info.isSettingsDirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_CoreToogleFullscreen(void) {
-    Core_Info.settings.fullscreen = !Core_Info.settings.fullscreen;
-    Core_Info.isSettingsDirty = true;
+DE_IMPL void deccan_core_toogle_fullscreen(void) {
+    core_info.settings.fullscreen = !core_info.settings.fullscreen;
+    core_info.isSettingsDirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_CoreToogleVsync(bool vsync) {
-    Core_Info.settings.vsync = vsync;
-    Core_Info.isSettingsDirty = true;
+DE_IMPL void deccan_core_toogle_vsync(bool vsync) {
+    core_info.settings.vsync = vsync;
+    core_info.isSettingsDirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_CoreSetFramerateLimit(float fps) {
-    Core_Info.settings.fps = fps;
+DE_IMPL void deccan_core_set_framerate_limit(float fps) {
+    core_info.settings.fps = fps;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 /* Core Settings Getters */
-DE_IMPL const char *DE_CoreGetTitle(void) {
-    return Core_Info.settings.title;
+DE_IMPL const char *deccan_core_get_title(void) {
+    return core_info.settings.title;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_CoreGetResolution(vec2 res) {
-    glm_vec2_copy(Core_Info.settings.resolution, res);
+DE_IMPL void deccan_core_get_resolution(vec2 res) {
+    glm_vec2_copy(core_info.settings.resolution, res);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_CoreIsFullscreened(void) {
-    return Core_Info.settings.fullscreen;
+DE_IMPL bool deccan_core_is_fullscreened(void) {
+    return core_info.settings.fullscreen;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_CoreIsVsyncEnabled(void) {
-    return Core_Info.settings.vsync;
+DE_IMPL bool deccan_core_is_vsync_enabled(void) {
+    return core_info.settings.vsync;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_CoreIsResizable(void) {
-    return Core_Info.settings.resizable;
+DE_IMPL bool deccan_core_is_resizable(void) {
+    return core_info.settings.resizable;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_CoreIsRunning(void) {
-    return Core_Info.isRunning;
+DE_IMPL bool deccan_core_is_running(void) {
+    return core_info.isRunning;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL float DE_CoreGetFramerateLimit(void) {
-    return Core_Info.settings.fps;
+DE_IMPL float deccan_core_get_framerate_limit(void) {
+    return core_info.settings.fps;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL float DE_CoreGetAverageFramerate(void) {
-    return Core_Info.fpsAverage;
+DE_IMPL float deccan_core_get_average_framerate(void) {
+    return core_info.fpsAverage;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL float DE_CoreGetDeltaTime(void) {
-    return Core_Info.deltaTime;
+DE_IMPL float deccan_core_get_delta_time(void) {
+    return core_info.deltaTime;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL uint32_t DE_CoreProcessStartTime(void) {
-    return Core_Info.proc_start_time;
+DE_IMPL uint32_t deccan_core_process_start_time(void) {
+    return core_info.proc_start_time;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL SDL_Window *DE_CoreGetWindow(void) {
-    return Core_Info.window;
+DE_IMPL SDL_Window *deccan_core_get_window(void) {
+    return core_info.window;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL DeccanSettings *DE_CoreGetSettings(void) {
-    return &Core_Info.settings;
+DE_IMPL deccan_settings_t *deccan_core_get_settings(void) {
+    return &core_info.settings;
 }

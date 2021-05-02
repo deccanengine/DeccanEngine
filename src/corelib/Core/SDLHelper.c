@@ -7,7 +7,7 @@
 
 #include "SDLHelper.h"
 
-DE_IMPL void DE_SDLInit(void) {
+DE_IMPL void deccan_sdl_init(void) {
     int flags = SDL_INIT_VIDEO;
     if (SDL_Init(flags) != 0) {
         DE_FATAL("Could not initialize SDL2: %s", SDL_GetError());

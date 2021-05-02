@@ -101,7 +101,7 @@ typedef enum {
     DECCAN_KEY_UP,
 
     DECCAN_KEY_TOTAL_COUNT
-} DeccanKeyCode;
+} deccan_key_code_t;
 
 typedef enum {
     DECCAN_BUTTON_LEFT,
@@ -111,4 +111,4 @@ typedef enum {
     DECCAN_BUTTON_X2,
 
     DECCAN_BUTTON_TOTAL_COUNT
-} DeccanButtonCode;
+} deccan_button_code_t;

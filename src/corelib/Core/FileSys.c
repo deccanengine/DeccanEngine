@@ -8,7 +8,7 @@
 #include "FileSys.h"
 #include "Utils.h"
 
-DE_IMPL SDL_RWops *DE_FSLocateFile(const char *file_name, bool is_binary) {
+DE_IMPL SDL_RWops *deccan_fs_locate_file(const char *file_name, bool is_binary) {
     SDL_RWops *file = SDL_RWFromFile(file_name, (is_binary ? "rb" : "r"));
     if (file == NULL) {
         DE_ERROR("File '%s' not found: %s", file_name, SDL_GetError());
@@ -20,11 +20,11 @@ DE_IMPL SDL_RWops *DE_FSLocateFile(const char *file_name, bool is_binary) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL const char *DE_FSGetFileContent(SDL_RWops *file) {
+DE_IMPL const char *deccan_fs_get_file_content(SDL_RWops *file) {
     int64_t size = SDL_RWsize(file);
 
     if (size > 0) {
-        char *content = DE_Alloc(sizeof(char), size + 1);
+        char *content = deccan_alloc(sizeof(char), size + 1);
         SDL_RWread(file, content, sizeof(char), size + 1);
         content[size] = '\0';
 
@@ -40,7 +40,7 @@ DE_IMPL const char *DE_FSGetFileContent(SDL_RWops *file) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL const char *DE_FSGetFileExtension(const char *file_name) {
+DE_IMPL const char *deccan_fs_get_file_extension(const char *file_name) {
     const char *ext = strrchr(file_name, '.');
     if (ext) {
         return ext + 1;

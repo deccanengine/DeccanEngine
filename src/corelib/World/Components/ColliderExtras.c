@@ -14,13 +14,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #define COLLISION_CHECK_HEADER(obj)                                                                                    \
-    const char *name = DE_ObjectGetName(obj);                                                                          \
-    DeccanCompCollider *c = DE_ObjectGetComponent(obj, "Collider");                                                    \
+    const char *name = deccan_object_get_name(obj);                                                                          \
+    deccan_comp_collider_t *c = deccan_object_get_component(obj, "Collider");                                                    \
     if (c == NULL) {                                                                                                   \
         DE_WARN("Collider component not found in object: %s", name);                                                   \
         return false;                                                                                                  \
     }                                                                                                                  \
-    DeccanCompTransform *state = DE_ObjectGetComponent(obj, "Transform");                                              \
+    deccan_comp_transform_t *state = deccan_object_get_component(obj, "Transform");                                              \
     if (state == NULL) {                                                                                               \
         DE_WARN("State component not found in object: %s", name);                                                      \
         return false;                                                                                                  \
@@ -30,23 +30,23 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_CompColliderCheckObject(DeccanGameObject obj1, DeccanGameObject obj2) {
+DE_IMPL bool deccan_comp_collider_check_object(deccan_game_object_t obj1, deccan_game_object_t obj2) {
     COLLISION_CHECK_HEADER(obj1);
 
     switch (c->type) {
     case COLLIDER_Vec: {
         vec2 vec = {p[0] + c->vec[0], p[1] + c->vec[1]};
-        return DE_CompColliderCheckObjectWithVector(obj2, vec);
+        return deccan_comp_collider_check_object_with_vector(obj2, vec);
     }
 
     case COLLIDER_Rect: {
         vec4 rect = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
-        return DE_CompColliderCheckObjectWithRect(obj2, rect);
+        return deccan_comp_collider_check_object_with_rect(obj2, rect);
     }
 
     case COLLIDER_Circle: {
         vec3 circle = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
-        return DE_CompColliderCheckObjectWithCircle(obj2, circle);
+        return deccan_comp_collider_check_object_with_circle(obj2, circle);
     }
 
     default: { return false; }
@@ -55,23 +55,23 @@ DE_IMPL bool DE_CompColliderCheckObject(DeccanGameObject obj1, DeccanGameObject 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_CompColliderCheckObjectWithVector(DeccanGameObject obj, vec2 vec) {
+DE_IMPL bool deccan_comp_collider_check_object_with_vector(deccan_game_object_t obj, vec2 vec) {
     COLLISION_CHECK_HEADER(obj);
 
     switch (c->type) {
     case COLLIDER_Vec: {
         vec2 vec2 = {p[0] + c->vec[0], p[1] + c->vec[1]};
-        return DE_CollisionVecVec(vec, vec2);
+        return deccan_collision_vec_vec(vec, vec2);
     }
 
     case COLLIDER_Rect: {
         vec4 rect = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
-        return DE_CollisionVecRect(vec, rect);
+        return deccan_collision_vec_rect(vec, rect);
     }
 
     case COLLIDER_Circle: {
         vec3 circle = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
-        return DE_CollisionCircleVec(circle, vec);
+        return deccan_collision_circle_vec(circle, vec);
     }
 
     default: { return false; }
@@ -80,23 +80,23 @@ DE_IMPL bool DE_CompColliderCheckObjectWithVector(DeccanGameObject obj, vec2 vec
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_CompColliderCheckObjectWithRect(DeccanGameObject obj, vec4 rect) {
+DE_IMPL bool deccan_comp_collider_check_object_with_rect(deccan_game_object_t obj, vec4 rect) {
     COLLISION_CHECK_HEADER(obj);
 
     switch (c->type) {
     case COLLIDER_Vec: {
         vec2 vec = {p[0] + c->vec[0], p[1] + c->vec[1]};
-        return DE_CollisionVecRect(vec, rect);
+        return deccan_collision_vec_rect(vec, rect);
     }
 
     case COLLIDER_Rect: {
         vec4 rect2 = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
-        return DE_CollisionRectRect(rect, rect2);
+        return deccan_collision_rect_rect(rect, rect2);
     }
 
     case COLLIDER_Circle: {
         vec3 circle = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
-        return DE_CollisionRectCircle(rect, circle);
+        return deccan_collision_rect_circle(rect, circle);
     }
 
     default: { return false; }
@@ -105,23 +105,23 @@ DE_IMPL bool DE_CompColliderCheckObjectWithRect(DeccanGameObject obj, vec4 rect)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject obj, vec3 circle) {
+DE_IMPL bool deccan_comp_collider_check_object_with_circle(deccan_game_object_t obj, vec3 circle) {
     COLLISION_CHECK_HEADER(obj);
 
     switch (c->type) {
     case COLLIDER_Vec: {
         vec2 vec = {p[0] + c->vec[0], p[1] + c->vec[1]};
-        return DE_CollisionCircleVec(circle, vec);
+        return deccan_collision_circle_vec(circle, vec);
     }
 
     case COLLIDER_Rect: {
         vec4 rect = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
-        return DE_CollisionRectCircle(rect, circle);
+        return deccan_collision_rect_circle(rect, circle);
     }
 
     case COLLIDER_Circle: {
         vec3 circle2 = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
-        return DE_CollisionCircleCircle(circle, circle2);
+        return deccan_collision_circle_circle(circle, circle2);
     }
 
     default: { return false; }
@@ -130,8 +130,8 @@ DE_IMPL bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject obj, vec3 cir
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL bool DE_CompColliderCheck(const char *name1, const char *name2) {
-    DeccanGameObject obj1 = DE_SceneGetObject(name1);
-    DeccanGameObject obj2 = DE_SceneGetObject(name2);
-    return DE_CompColliderCheckObject(obj1, obj2);
+DE_IMPL bool deccan_comp_collider_check(const char *name1, const char *name2) {
+    deccan_game_object_t obj1 = deccan_scene_get_object(name1);
+    deccan_game_object_t obj2 = deccan_scene_get_object(name2);
+    return deccan_comp_collider_check_object(obj1, obj2);
 }

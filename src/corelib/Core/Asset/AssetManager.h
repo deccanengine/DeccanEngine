@@ -15,14 +15,14 @@
 // Generation
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct DeccanAssetHandle {
+typedef struct deccan_asset_handle_t {
     uint32_t id;
-} DeccanAssetHandle;
+} deccan_asset_handle_t;
 
-ZPL_TABLE_DECLARE(, asset_list_t, asset_list_, DeccanAssetHandle);
+ZPL_TABLE_DECLARE(, asset_list_t, asset_list_, deccan_asset_handle_t);
 
 typedef struct asset_entry_t {
-    DeccanAssetDescriptor desc;
+    deccan_asset_descriptor_t desc;
     asset_list_t entries;
 } asset_entry_t;
 
@@ -32,26 +32,26 @@ ZPL_TABLE_DECLARE(, asset_table_t, asset_table_, asset_entry_t);
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct DeccanAssetManager {
+typedef struct deccan_asset_manager_t {
     asset_table_t assets;
     zpl_array(void *) asset_buffer;
-    DeccanHandlePool *pool;
-} DeccanAssetManager;
+    deccan_handle_pool_t *pool;
+} deccan_asset_manager_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Asset Manager
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, DeccanAssetDescriptor *desc);
-DE_API void DE_AssetDestroyManager(DeccanAssetManager *manager);
+DE_API void deccan_asset_init_manager(deccan_asset_manager_t *manager, size_t count, deccan_asset_descriptor_t *desc);
+DE_API void deccan_asset_destroy_manager(deccan_asset_manager_t *manager);
 
-DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager);
+DE_API void deccan_asset_set_manager_inst(deccan_asset_manager_t *manager);
 
-DE_API DeccanAssetHandle DE_AssetLoad(const char *type, const char *name, SDL_RWops *file);
-DE_API DeccanAssetHandle DE_AssetLoadFromFile(const char *type, const char *name, const char *file_name, bool is_binary);
-DE_API DeccanAssetHandle DE_AssetLoadFromMem(const char *type, const char *name, size_t size, void *memory);
+DE_API deccan_asset_handle_t deccan_asset_load(const char *type, const char *name, SDL_RWops *file);
+DE_API deccan_asset_handle_t deccan_asset_load_from_file(const char *type, const char *name, const char *file_name, bool is_binary);
+DE_API deccan_asset_handle_t deccan_asset_load_from_mem(const char *type, const char *name, size_t size, void *memory);
 
-DE_API DeccanAssetHandle DE_AssetGet(const char *type, const char *file_name);
-DE_API void *DE_AssetGetRaw(DeccanAssetHandle handle);
+DE_API deccan_asset_handle_t deccan_asset_get(const char *type, const char *file_name);
+DE_API void *deccan_asset_get_raw(deccan_asset_handle_t handle);
 
-DE_API bool DE_AssetRemove(const char *type, const char *name);
+DE_API bool deccan_asset_remove(const char *type, const char *name);

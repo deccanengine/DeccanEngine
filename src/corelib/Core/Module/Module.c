@@ -16,8 +16,8 @@ DE_PRIV void NullFunction() { }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL DeccanModule *DE_ModuleCreate(const char *name) {
-    DeccanModule *mod = DE_Alloc(sizeof(DeccanModule), 1);
+DE_IMPL deccan_module_t *deccan_module_create(const char *name) {
+    deccan_module_t *mod = deccan_alloc(sizeof(deccan_module_t), 1);
     mod->AtBeginning = NullFunction;
     mod->AtStep = NullFunction;
     mod->AtPostStep = NullFunction;
@@ -27,23 +27,23 @@ DE_IMPL DeccanModule *DE_ModuleCreate(const char *name) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_ModuleDestroy(DeccanModule *mod) {
-    DE_Free(mod);
+DE_IMPL void deccan_module_destroy(deccan_module_t *mod) {
+    deccan_free(mod);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Module System
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_ModuleSysCreate(DeccanModuleSys *modsys) {
-    zpl_array_init(modsys->mods, DE_ZPLAllocator());
+DE_IMPL void deccan_module_sys_create(deccan_module_sys_t *modsys) {
+    zpl_array_init(modsys->mods, deccan_z_p_l_allocator());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_ModuleSysDestroy(DeccanModuleSys *modsys) {
+DE_IMPL void deccan_module_sys_destroy(deccan_module_sys_t *modsys) {
     for (int i = 0; i < zpl_array_count(modsys->mods); i += 1) {
-        DE_ModuleDestroy(modsys->mods[i]);
+        deccan_module_destroy(modsys->mods[i]);
     }
 
     zpl_array_free(modsys->mods);
@@ -51,13 +51,13 @@ DE_IMPL void DE_ModuleSysDestroy(DeccanModuleSys *modsys) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_ModuleSysPush(DeccanModuleSys *modsys, DeccanModule *mod) {
+DE_IMPL void deccan_module_sys_push(deccan_module_sys_t *modsys, deccan_module_t *mod) {
     zpl_array_append(modsys->mods, mod);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_PRIV void ModuleStage(DeccanModule *mod, DeccanModuleStage stage) {
+DE_PRIV void ModuleStage(deccan_module_t *mod, deccan_module_stage_t stage) {
     switch (stage) {
     case DE_SHELL_ATBEGINNING: mod->AtBeginning(); break;
     case DE_SHELL_ATSTEP: mod->AtStep(); break;
@@ -69,7 +69,7 @@ DE_PRIV void ModuleStage(DeccanModule *mod, DeccanModuleStage stage) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_ModuleSysIter(DeccanModuleSys *modsys, DeccanModuleStage stage, bool order) {
+DE_IMPL void deccan_module_sys_iter(deccan_module_sys_t *modsys, deccan_module_stage_t stage, bool order) {
     if (order) {
         for (int i = 0; i < zpl_array_count(modsys->mods); i += 1) {
             ModuleStage(modsys->mods[i], stage);

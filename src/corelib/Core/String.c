@@ -9,9 +9,9 @@
 #include "Core.h"
 #include "Utils.h"
 
-DE_IMPL char *DE_StringNew(const char *source) {
+DE_IMPL char *deccan_string_new(const char *source) {
     size_t len = strlen(source);
-    char *string = DE_Alloc(sizeof(char), len + 1);
+    char *string = deccan_alloc(sizeof(char), len + 1);
 
     strncpy(string, source, len);
     string[len] = '\0';
@@ -20,6 +20,6 @@ DE_IMPL char *DE_StringNew(const char *source) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL uint32_t DE_StringHash(const char *string, int length) {
+DE_IMPL uint32_t deccan_string_hash(const char *string, int length) {
     return zpl_adler32((const void *)string, length);
 }

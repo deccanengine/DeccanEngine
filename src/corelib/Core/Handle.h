@@ -15,27 +15,27 @@
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef uint32_t DeccanHandle;
+typedef uint32_t deccan_handle_t;
 
-typedef struct DeccanHandlePool {
-    DeccanHandle *dense;
+typedef struct deccan_handle_pool_t {
+    deccan_handle_t *dense;
     uint32_t *sparse;
     int length;
     int capacity;
-} DeccanHandlePool;
+} deccan_handle_pool_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Handle Pool
 ////////////////////////////////////////////////////////////////////////////////
 
-DeccanHandlePool *DE_HandlePoolCreate(int capacity);
-void DE_HandlePoolDestroy(DeccanHandlePool *pool);
+deccan_handle_pool_t *deccan_handle_pool_create(int capacity);
+void deccan_handle_pool_destroy(deccan_handle_pool_t *pool);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Handle
 ////////////////////////////////////////////////////////////////////////////////
 
-DeccanHandle DE_HandleNew(DeccanHandlePool *pool);
-void DE_HandleDelete(DeccanHandlePool *pool, DeccanHandle handle);
-uint32_t DE_HandleIndex(DeccanHandlePool *pool, DeccanHandle handle);
-bool DE_HandleValid(DeccanHandlePool *pool, DeccanHandle handle);
+deccan_handle_t deccan_handle_new(deccan_handle_pool_t *pool);
+void deccan_handle_delete(deccan_handle_pool_t *pool, deccan_handle_t handle);
+uint32_t deccan_handle_index(deccan_handle_pool_t *pool, deccan_handle_t handle);
+bool deccan_handle_valid(deccan_handle_pool_t *pool, deccan_handle_t handle);

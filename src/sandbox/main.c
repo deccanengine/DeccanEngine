@@ -2,28 +2,28 @@
 #include "player.h"
 
 uint64_t count = 0;
-DeccanTimer timer;
-DeccanCamera camera;
+deccan_timer_t timer;
+deccan_camera_t camera;
 
 void begin() {
     /* Start here */
 
     // TODO: Introduce hooks and callbacks here
-    DE_ComponentsRegisterAll();
-    DE_SystemsRegisterAll();
+    deccan_components_register_all();
+    deccan_systems_register_all();
 
-    DeccanGameObject player = DE_ObjectNewObject("main player");
-    DeccanObjectInfo *info = DE_ObjectGetComponent(player, "Info");
+    deccan_game_object_t player = deccan_object_new_object("main player");
+    deccan_object_info_t *info = deccan_object_get_component(player, "Info");
     info->AtBeginning = _player_begin;
     info->AtStep = _player_step;
     info->AtRender = _player_render;
     info->AtEnd = _player_end;
-    DE_ObjectMakePrefab(player);
-    DE_SceneInstantiateObject(player);
+    deccan_object_make_prefab(player);
+    deccan_scene_instantiate_object(player);
 
-    DE_AssetLoadFromFile("texture", "logo.png", "602.png", false);
+    deccan_asset_load_from_file("texture", "logo.png", "602.png", false);
 
-    DE_CameraInit(&camera, 0.1f, 100.0f);
+    deccan_camera_init(&camera, 0.1f, 100.0f);
 }
 
 void step() {
@@ -33,15 +33,15 @@ void step() {
 void render() {
     /* Start here */
     vec2s viewport;
-    DE_CoreGetResolution(viewport.raw);
+    deccan_core_get_resolution(viewport.raw);
 
-    DE_RendererSetClearColor((vec4s){0.0f, 0.0f, 0.0f, 1.0f});
+    deccan_renderer_set_clear_color((vec4s){0.0f, 0.0f, 0.0f, 1.0f});
 
     camera.cam.position = (vec3s){0.0f, 0.0f, 1.0f};
-    DE_CameraSetViewport(&camera, viewport);
-    DE_CameraSetOrtho(&camera, 3.0f);
+    deccan_camera_set_viewport(&camera, viewport);
+    deccan_camera_set_ortho(&camera, 3.0f);
 
-    DE_SceneSetCamera(&camera);
+    deccan_scene_set_camera(&camera);
 
     igBegin("Main Window", NULL, 0);
     igText("Hello, World!");
@@ -56,10 +56,10 @@ int main(int argc, char **argv) {
     DE_UNUSED(argc);
     DE_UNUSED(argv);
     
-    DeccanAssetManager *manager = DE_MakeDefaultAssetManager();
-    DE_AssetSetManagerInst(manager);
+    deccan_asset_manager_t *manager = deccan_make_default_asset_manager();
+    deccan_asset_set_manager_inst(manager);
 
-    DeccanSettings settings = {0};
+    deccan_settings_t settings = {0};
     settings.title = "Test";
     settings.resolution[0] = settings.resolution[1] = 640.0f;
     settings.fullscreen = false;
@@ -68,25 +68,25 @@ int main(int argc, char **argv) {
     settings.closeOnEscape = true;
     settings.fps = 120.0f;
 
-    if (DE_AppInit(&settings)) {
-        DeccanGameScene *scene = DE_SceneNewScene("scene0");
-        DeccanModule *scene_mod = DE_ModuleCreate("scene_mod");
+    if (deccan_app_init(&settings)) {
+        deccan_game_scene_t *scene = deccan_scene_new_scene("scene0");
+        deccan_module_t *scene_mod = deccan_module_create("scene_mod");
         scene_mod->AtBeginning = begin;
         scene_mod->AtStep = step;
         scene_mod->AtPostStep = render;
         scene_mod->AtEnd = end;
 
-        DE_ScenePushModule(scene, DE_ImguiModule());
-        DE_ScenePushModule(scene, scene_mod);
-        DE_SceneAddScene(scene, false);
+        deccan_scene_push_module(scene, deccan_imgui_module());
+        deccan_scene_push_module(scene, scene_mod);
+        deccan_scene_add_scene(scene, false);
 
-        DE_AppUpdate();
+        deccan_app_update();
     }
 
-    DE_AssetDestroyManager(manager);
-    DE_Free(manager);
+    deccan_asset_destroy_manager(manager);
+    deccan_free(manager);
 
-    atexit(DE_AppQuit);
+    atexit(deccan_app_quit);
 
     return 0;
 }

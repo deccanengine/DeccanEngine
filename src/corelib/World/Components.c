@@ -11,14 +11,14 @@
 // Registrar
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_ComponentsRegisterAll(void) {
-    DE_FlecsRegisterComponent("Transform", sizeof(DeccanCompTransform), ECS_ALIGNOF(DeccanCompTransform));
+DE_IMPL void deccan_components_register_all(void) {
+    deccan_flecs_register_component("Transform", sizeof(deccan_comp_transform_t), ECS_ALIGNOF(deccan_comp_transform_t));
 
-    DE_FlecsRegisterComponent("Collider", sizeof(DeccanCompCollider), ECS_ALIGNOF(DeccanCompCollider));
+    deccan_flecs_register_component("Collider", sizeof(deccan_comp_collider_t), ECS_ALIGNOF(deccan_comp_collider_t));
 
-    DE_FlecsRegisterComponent("DrawableGeometry", sizeof(DeccanCompDrawableGeometry), 
-        ECS_ALIGNOF(DeccanCompDrawableGeometry));
+    deccan_flecs_register_component("DrawableGeometry", sizeof(deccan_comp_drawable_geometry_t), 
+        ECS_ALIGNOF(deccan_comp_drawable_geometry_t));
 
-    DE_FlecsRegisterComponent("DrawableSprite", sizeof(DeccanCompDrawableSprite), 
-        ECS_ALIGNOF(DeccanCompDrawableSprite));
+    deccan_flecs_register_component("DrawableSprite", sizeof(deccan_comp_drawable_sprite_t), 
+        ECS_ALIGNOF(deccan_comp_drawable_sprite_t));
 }

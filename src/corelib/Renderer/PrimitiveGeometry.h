@@ -13,6 +13,6 @@
 // Geometry resources
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API DeccanGeometry DE_PrimitiveCreateQuad(void);
-DE_API DeccanGeometry DE_PrimitiveCreateTriangle(void);
-DE_API DeccanGeometry DE_PrimitiveCreateCube(void);
+DE_API deccan_geometry_t deccan_primitive_create_quad(void);
+DE_API deccan_geometry_t deccan_primitive_create_triangle(void);
+DE_API deccan_geometry_t deccan_primitive_create_cube(void);

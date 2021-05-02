@@ -14,8 +14,8 @@
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct DeccanCompDrawableGeometry {
-    DeccanGeometry geometry;
-    DeccanTexture *texture;
-    DeccanMaterial material;
-} DeccanCompDrawableGeometry;
+typedef struct deccan_comp_drawable_geometry_t {
+    deccan_geometry_t geometry;
+    deccan_texture_t *texture;
+    deccan_material_t material;
+} deccan_comp_drawable_geometry_t;

@@ -39,6 +39,6 @@
 #include "World/Systems.h"
 #include "World/Resources/Sprite.h"
 
-DE_API bool DE_AppInit(DeccanSettings *settings);
-DE_API void DE_AppUpdate(void);
-DE_API void DE_AppQuit(void);
+DE_API bool deccan_app_init(deccan_settings_t *settings);
+DE_API void deccan_app_update(void);
+DE_API void deccan_app_quit(void);

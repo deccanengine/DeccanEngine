@@ -13,16 +13,16 @@
 // Default Asset Manager
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL DeccanAssetManager *DE_MakeDefaultAssetManager(void) {
-    DeccanAssetDescriptor desc[] = {
+DE_IMPL deccan_asset_manager_t *deccan_make_default_asset_manager(void) {
+    deccan_asset_descriptor_t desc[] = {
         {
             .key = "texture",
-            .calls.Create = DE_SpriteAssetCreate,
-            .calls.Destroy = DE_SpriteAssetDestroy,
+            .calls.Create = deccan_sprite_asset_create,
+            .calls.Destroy = deccan_sprite_asset_destroy,
         },
     };
 
-    DeccanAssetManager *manager = DE_Alloc(sizeof(DeccanAssetManager), 1);
-    DE_AssetInitManager(manager, 1, desc);
+    deccan_asset_manager_t *manager = deccan_alloc(sizeof(deccan_asset_manager_t), 1);
+    deccan_asset_init_manager(manager, 1, desc);
     return manager;
 }

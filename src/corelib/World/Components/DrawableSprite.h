@@ -13,7 +13,7 @@
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct DeccanCompDrawableSprite {
-    DeccanMaterial material;
-    DeccanTexture *texture; 
-} DeccanCompDrawableSprite;
+typedef struct deccan_comp_drawable_sprite_t {
+    deccan_material_t material;
+    deccan_texture_t *texture; 
+} deccan_comp_drawable_sprite_t;

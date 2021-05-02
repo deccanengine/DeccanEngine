@@ -12,14 +12,14 @@
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct AssetCallbacks {
+typedef struct asset_callbacks_t {
     void *(*Create)(const char *mem, size_t size);
     bool (*Destroy)(void *asset);
-} AssetCallbacks;
+} asset_callbacks_t;
 
-typedef struct DeccanAssetDescriptor {
+typedef struct deccan_asset_descriptor_t {
     const char *key;
     const char **ext; /* Unused for now! */
     bool is_binary;   /* Unused for now! */
-    AssetCallbacks calls;
-} DeccanAssetDescriptor;
+    asset_callbacks_t calls;
+} deccan_asset_descriptor_t;

@@ -7,7 +7,7 @@
 
 #include "Texture.h"
 
-DE_PRIV void CreateTexture(DeccanTexture *texture, int32_t width, int32_t height, int format, 
+DE_PRIV void CreateTexture(deccan_texture_t *texture, int32_t width, int32_t height, int format, 
     sg_image_data *image_content) {
     texture->width = width;
     texture->height = height;
@@ -27,8 +27,8 @@ DE_PRIV void CreateTexture(DeccanTexture *texture, int32_t width, int32_t height
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_TextureCreateFromMem(
-    DeccanTexture *texture, int32_t width, int32_t height, size_t count, DeccanSurface *surfaces) {
+DE_IMPL void deccan_texture_create_from_mem(
+    deccan_texture_t *texture, int32_t width, int32_t height, size_t count, deccan_surface_t *surfaces) {
     assert(&surfaces[0] != NULL);
 
     sg_image_data image_content;
@@ -41,9 +41,9 @@ DE_IMPL void DE_TextureCreateFromMem(
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_TextureCreateBlankRGBA(DeccanTexture *texture, int32_t width, int32_t height, uint32_t color) {
+DE_IMPL void deccan_texture_create_blank_r_g_b_a(deccan_texture_t *texture, int32_t width, int32_t height, uint32_t color) {
     int size_bytes = sizeof(uint32_t) * width * height;
-    uint32_t *pixels = DE_Alloc(size_bytes, 1);
+    uint32_t *pixels = deccan_alloc(size_bytes, 1);
 
     for (int w = 0; w < width; w++) {
         for (int h = 0; h < height; h++) {
@@ -57,11 +57,11 @@ DE_IMPL void DE_TextureCreateBlankRGBA(DeccanTexture *texture, int32_t width, in
 
     CreateTexture(texture, width, height, SG_PIXELFORMAT_RGBA8, &image_content);
 
-    DE_Free(pixels);
+    deccan_free(pixels);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_TextureDestroy(DeccanTexture *texture) {
+DE_IMPL void deccan_texture_destroy(deccan_texture_t *texture) {
     sg_destroy_image(texture->image);
 }

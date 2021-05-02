@@ -7,7 +7,7 @@
 
 #include "PrimitiveGeometry.h"
 
-DE_IMPL DeccanGeometry DE_PrimitiveCreateQuad() {
+DE_IMPL deccan_geometry_t deccan_primitive_create_quad() {
     /* clang-format off */
     static const float vertices[] = {
         /*    Position    */ /* Tex coord */
@@ -22,7 +22,7 @@ DE_IMPL DeccanGeometry DE_PrimitiveCreateQuad() {
         0, 2, 3,
     };
 
-    static DeccanGeometry quad;
+    static deccan_geometry_t quad;
     if (quad.index_count == 0) {
         quad.index_count = 6;
 
@@ -42,7 +42,7 @@ DE_IMPL DeccanGeometry DE_PrimitiveCreateQuad() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL DeccanGeometry DE_PrimitiveCreateTriangle() {
+DE_IMPL deccan_geometry_t deccan_primitive_create_triangle() {
     /* clang-format off */
     static const float vertices[] = {
         /*    Position    */ /* Tex coord */
@@ -55,7 +55,7 @@ DE_IMPL DeccanGeometry DE_PrimitiveCreateTriangle() {
         0, 1, 2,
     };
 
-    static DeccanGeometry tri;
+    static deccan_geometry_t tri;
     if (tri.index_count == 0) {
         tri.index_count = 3;
 
@@ -75,7 +75,7 @@ DE_IMPL DeccanGeometry DE_PrimitiveCreateTriangle() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL DeccanGeometry DE_PrimitiveCreateCube() {
+DE_IMPL deccan_geometry_t deccan_primitive_create_cube() {
     /* clang-format off */
     static const float vertices[] = {
         /*    Position    */ /* Tex coord */
@@ -119,7 +119,7 @@ DE_IMPL DeccanGeometry DE_PrimitiveCreateCube() {
         22, 21, 20, 23, 22, 20
     };
 
-    static DeccanGeometry cube;
+    static deccan_geometry_t cube;
     if (cube.index_count == 0) {
         cube.index_count = 36;
 

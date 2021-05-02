@@ -4,6 +4,6 @@
 // Registrar
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_SystemsRegisterAll(void) {
-    DE_SystemInitRendering();
+DE_IMPL void deccan_systems_register_all(void) {
+    deccan_system_init_rendering();
 }

@@ -14,18 +14,18 @@
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct DeccanGeometry {
+typedef struct deccan_geometry_t {
     sg_buffer vbuf, ibuf;
     uint16_t index_count;
-} DeccanGeometry;
+} deccan_geometry_t;
 
-typedef struct DeccanMaterial {
-    DeccanColor color;
-} DeccanMaterial;
+typedef struct deccan_material_t {
+    deccan_color_t color;
+} deccan_material_t;
 
-typedef struct DeccanDrawAction {
-    DeccanGeometry *geometry;
-    DeccanMaterial *material;
-    DeccanTexture *texture; // TODO: array of textures
+typedef struct deccan_draw_action_t {
+    deccan_geometry_t *geometry;
+    deccan_material_t *material;
+    deccan_texture_t *texture; // TODO: array of textures
     mat4s transform;
-} DeccanDrawAction;
+} deccan_draw_action_t;

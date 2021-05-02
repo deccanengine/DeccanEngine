@@ -20,9 +20,9 @@
 // Collisions
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API bool DE_CollisionVecVec(vec2 v1, vec2 v2);
-DE_API bool DE_CollisionRectRect(vec4 r1, vec4 r2);
-DE_API bool DE_CollisionCircleCircle(vec3 c1, vec3 c2);
-DE_API bool DE_CollisionVecRect(vec2 vec, vec4 rect);
-DE_API bool DE_CollisionCircleVec(vec3 circle, vec2 vec);
-DE_API bool DE_CollisionRectCircle(vec4 rect, vec3 circle);
+DE_API bool deccan_collision_vec_vec(vec2 v1, vec2 v2);
+DE_API bool deccan_collision_rect_rect(vec4 r1, vec4 r2);
+DE_API bool deccan_collision_circle_circle(vec3 c1, vec3 c2);
+DE_API bool deccan_collision_vec_rect(vec2 vec, vec4 rect);
+DE_API bool deccan_collision_circle_vec(vec3 circle, vec2 vec);
+DE_API bool deccan_collision_rect_circle(vec4 rect, vec3 circle);

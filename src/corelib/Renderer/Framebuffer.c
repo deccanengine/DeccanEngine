@@ -11,7 +11,7 @@
 // Framebuffer
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_FramebufferCreate(DeccanFramebuffer *fb) {
+DE_IMPL void deccan_framebuffer_create(deccan_framebuffer_t *fb) {
     sg_image_desc img_desc = (sg_image_desc){
         .render_target = true,
         .width = fb->info.dim.x,
@@ -36,7 +36,7 @@ DE_IMPL void DE_FramebufferCreate(DeccanFramebuffer *fb) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_FramebufferDestroy(DeccanFramebuffer *fb) {
+DE_IMPL void deccan_framebuffer_destroy(deccan_framebuffer_t *fb) {
     sg_destroy_image(fb->color_img);
     sg_destroy_image(fb->depth_img);
     sg_destroy_pass(fb->pass);
@@ -44,7 +44,7 @@ DE_IMPL void DE_FramebufferDestroy(DeccanFramebuffer *fb) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_FramebufferUpdate(DeccanFramebuffer *fb) {
-    DE_FramebufferDestroy(fb);
-    DE_FramebufferCreate(fb);
+DE_IMPL void deccan_framebuffer_update(deccan_framebuffer_t *fb) {
+    deccan_framebuffer_destroy(fb);
+    deccan_framebuffer_create(fb);
 }

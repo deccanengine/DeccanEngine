@@ -17,40 +17,40 @@ typedef struct {
     bool IsPressed;
     bool IsReleased;
     bool IsHeld;
-} DeccanKeyState;
+} deccan_key_state_t;
 
 typedef struct {
     bool IsDown;
     bool IsUp;
-} DeccanMouseState;
+} deccan_mouse_state_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Input management
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API SDL_Event *DE_InputGetEventHandler(void);
-DE_API void DE_InputInit(void);
-DE_API void DE_InputUpdate(void);
+DE_API SDL_Event *deccan_input_get_event_handler(void);
+DE_API void deccan_input_init(void);
+DE_API void deccan_input_update(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Keyboard functions
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API DeccanKeyState DE_InputGetKey(int key_code);
+DE_API deccan_key_state_t deccan_input_get_key(int key_code);
 
-DE_API bool DE_InputKeyPressed(int key_code);
-DE_API bool DE_InputKeyReleased(int key_code);
-DE_API bool DE_InputKeyHeld(int key_code);
+DE_API bool deccan_input_key_pressed(int key_code);
+DE_API bool deccan_input_key_released(int key_code);
+DE_API bool deccan_input_key_held(int key_code);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Mouse functions
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API DeccanMouseState DE_InputGetMouseButton(int button_code);
+DE_API deccan_mouse_state_t deccan_input_get_mouse_button(int button_code);
 
-DE_API bool DE_InputButtonDown(int button_code);
-DE_API bool DE_InputButtonUp(int button_code);
+DE_API bool deccan_input_button_down(int button_code);
+DE_API bool deccan_input_button_up(int button_code);
 
-DE_API void DE_InputGetMousePos(vec2 pos);
-DE_API int DE_InputMouseScrollHorizontal(void);
-DE_API int DE_InputMouseScrollVertical(void);
+DE_API void deccan_input_get_mouse_pos(vec2 pos);
+DE_API int deccan_input_mouse_scroll_horizontal(void);
+DE_API int deccan_input_mouse_scroll_vertical(void);

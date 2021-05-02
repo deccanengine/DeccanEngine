@@ -12,40 +12,40 @@
 // Enums
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef enum DeccanModuleStage {
+typedef enum deccan_module_stage_t {
     DE_SHELL_ATBEGINNING,
     DE_SHELL_ATSTEP,
     DE_SHELL_ATPOSTSTEP,
     DE_SHELL_ATEND
-} DeccanModuleStage;
+} deccan_module_stage_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Structs
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct DeccanModule {
+typedef struct deccan_module_t {
     void (*AtBeginning)();
     void (*AtStep)();
     void (*AtPostStep)();
     void (*AtEnd)();
-} DeccanModule;
+} deccan_module_t;
 
-typedef struct DeccanModuleSys {
-    zpl_array(DeccanModule *) mods;
-} DeccanModuleSys;
+typedef struct deccan_module_sys_t {
+    zpl_array(deccan_module_t *) mods;
+} deccan_module_sys_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Module
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API DeccanModule *DE_ModuleCreate(const char *name);
-DE_API void DE_ModuleDestroy(DeccanModule *mod);
+DE_API deccan_module_t *deccan_module_create(const char *name);
+DE_API void deccan_module_destroy(deccan_module_t *mod);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Module System
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_API void DE_ModuleSysCreate(DeccanModuleSys *modsys);
-DE_API void DE_ModuleSysDestroy(DeccanModuleSys *modsys);
-DE_API void DE_ModuleSysPush(DeccanModuleSys *modsys, DeccanModule *mod);
-DE_API void DE_ModuleSysIter(DeccanModuleSys *modsys, DeccanModuleStage stage, bool order);
+DE_API void deccan_module_sys_create(deccan_module_sys_t *modsys);
+DE_API void deccan_module_sys_destroy(deccan_module_sys_t *modsys);
+DE_API void deccan_module_sys_push(deccan_module_sys_t *modsys, deccan_module_t *mod);
+DE_API void deccan_module_sys_iter(deccan_module_sys_t *modsys, deccan_module_stage_t stage, bool order);

@@ -13,8 +13,8 @@ DE_PRIV struct {
     sg_pipeline pip;
     sg_pass_action pass_action;
 
-    DeccanCamera *camera;
-} GenericPipelineInfo = {0};
+    deccan_camera_t *camera;
+} generic_pipeline_info = {0};
 
 typedef struct VSParams {
     mat4s transform;
@@ -28,7 +28,7 @@ typedef struct FSParams {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_GenericPipelineCreate(void) {
+DE_IMPL void deccan_generic_pipeline_create(void) {
     /* clang-format off */
     const char *vs_source =
         "#version 330\n"
@@ -56,7 +56,7 @@ DE_IMPL void DE_GenericPipelineCreate(void) {
         "    frag_color = tex_color;\n"
         "}\n";
 
-    GenericPipelineInfo.shader = sg_make_shader(&(sg_shader_desc){
+    generic_pipeline_info.shader = sg_make_shader(&(sg_shader_desc){
         .vs = {
             .uniform_blocks = {
                 [0] = {
@@ -86,8 +86,8 @@ DE_IMPL void DE_GenericPipelineCreate(void) {
         .fs.source = fs_source,
     });
 
-    GenericPipelineInfo.pip = sg_make_pipeline(&(sg_pipeline_desc){
-        .shader = GenericPipelineInfo.shader,
+    generic_pipeline_info.pip = sg_make_pipeline(&(sg_pipeline_desc){
+        .shader = generic_pipeline_info.shader,
         .index_type = SG_INDEXTYPE_UINT16,
         .cull_mode = SG_CULLMODE_BACK,
         .sample_count = 4,
@@ -113,7 +113,7 @@ DE_IMPL void DE_GenericPipelineCreate(void) {
         },
     });
 
-    GenericPipelineInfo.pass_action = (sg_pass_action){
+    generic_pipeline_info.pass_action = (sg_pass_action){
         .colors[0] = {
             .action = SG_ACTION_CLEAR,
             .value = {0.0f, 0.0f, 0.0f, 1.0f},
@@ -124,34 +124,34 @@ DE_IMPL void DE_GenericPipelineCreate(void) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_GenericPipelineDestroy(void) {
-    sg_destroy_shader(GenericPipelineInfo.shader);
-    sg_destroy_pipeline(GenericPipelineInfo.pip);
+DE_IMPL void deccan_generic_pipeline_destroy(void) {
+    sg_destroy_shader(generic_pipeline_info.shader);
+    sg_destroy_pipeline(generic_pipeline_info.pip);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_GenericPipelineBegin(DeccanCamera *camera) {
-    vec4s clear_color = DE_RendererGetClearColor(); 
-    memcpy(&GenericPipelineInfo.pass_action.colors[0].value, clear_color.raw, sizeof(sg_color));
+DE_IMPL void deccan_generic_pipeline_begin(deccan_camera_t *camera) {
+    vec4s clear_color = deccan_renderer_get_clear_color(); 
+    memcpy(&generic_pipeline_info.pass_action.colors[0].value, clear_color.raw, sizeof(sg_color));
 
-    DeccanFramebuffer *fb = DE_RendererGetFramebuffer();
+    deccan_framebuffer_t *fb = deccan_renderer_get_framebuffer();
     if (fb != NULL) {
-        sg_begin_pass(fb->pass, &GenericPipelineInfo.pass_action);
+        sg_begin_pass(fb->pass, &generic_pipeline_info.pass_action);
     }
     else {
-        vec2s viewport = DE_RendererGetViewport();
-        sg_begin_default_pass(&GenericPipelineInfo.pass_action, (uint32_t)viewport.x, (uint32_t)viewport.y);
+        vec2s viewport = deccan_renderer_get_viewport();
+        sg_begin_default_pass(&generic_pipeline_info.pass_action, (uint32_t)viewport.x, (uint32_t)viewport.y);
     }
 
-    sg_apply_pipeline(GenericPipelineInfo.pip);
+    sg_apply_pipeline(generic_pipeline_info.pip);
 
-    GenericPipelineInfo.camera = camera;
+    generic_pipeline_info.camera = camera;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_GenericPipelineDraw(DeccanDrawAction action) {
+DE_IMPL void deccan_generic_pipeline_draw(deccan_draw_action_t action) {
     // TODO: shaders taking material directly
     sg_bindings binds = {
         .vertex_buffers[0] = action.geometry->vbuf,
@@ -161,11 +161,11 @@ DE_IMPL void DE_GenericPipelineDraw(DeccanDrawAction action) {
 
     VSParams vs_params = {
         .transform = action.transform,
-        .view_matrix = GenericPipelineInfo.camera->cam.view,
-        .projection_matrix = GenericPipelineInfo.camera->proj,
+        .view_matrix = generic_pipeline_info.camera->cam.view,
+        .projection_matrix = generic_pipeline_info.camera->proj,
     };
 
-    DeccanColor color = DE_ColorRBGToFloats(action.material->color);
+    deccan_color_t color = deccan_color_r_b_g_to_floats(action.material->color);
     
     FSParams fs_params = { 0 };
     memcpy(fs_params.color, color.norm, sizeof(float[4]));
@@ -178,6 +178,6 @@ DE_IMPL void DE_GenericPipelineDraw(DeccanDrawAction action) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void DE_GenericPipelineEnd(void) {
+DE_IMPL void deccan_generic_pipeline_end(void) {
     sg_end_pass();
 }
