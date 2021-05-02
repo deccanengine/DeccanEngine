@@ -7,7 +7,7 @@
 
 #include "Collider.h"
 #include "Transform.h"
-#include "../../Modules/Physics/Collision.h"
+#include "../../Physics/Collision.h"
 
 /////////////////////////////////////////////////
 // Collision checking

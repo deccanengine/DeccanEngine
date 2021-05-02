@@ -19,8 +19,9 @@
 #include "Core/Input/InputCodes.h"
 #include "Core/Module/Module.h"
 
-#include "Modules/Physics/Collision.h"
-#include "Modules/Imgui/Imgui.h"
+#include "Physics/Collision.h"
+
+#include "Imgui/Imgui.h"
 
 #include "Renderer/Color.h"
 #include "Renderer/GenericPipeline.h"

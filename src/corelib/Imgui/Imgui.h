@@ -6,8 +6,8 @@
  */
 
 #pragma once
-#include "../../Config.h"
-#include "../../Core/Module/Module.h"
+#include "../Config.h"
+#include "../Core/Module/Module.h"
 #define CIMGUI_DEFINE_ENUMS_AND_STRUCTS
 #include <depends/deimgui/cimgui.h>
 

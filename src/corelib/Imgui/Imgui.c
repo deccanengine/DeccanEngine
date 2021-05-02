@@ -6,8 +6,8 @@
  */
 
 #include "Imgui.h"
-#include "../../Core/Core.h"
-#include "../../Renderer/Renderer.h"
+#include "../Core/Core.h"
+#include "../Renderer/Renderer.h"
 
 #define SOKOL_GLCORE33
 #define SOKOL_IMGUI_IMPL
