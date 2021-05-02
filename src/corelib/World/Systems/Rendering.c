@@ -13,9 +13,9 @@
 #include "../Components/DrawableGeometry.h"
 #include "../Components/DrawableSprite.h"
 
-/////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // Rendering systems
-////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 DE_PRIV void WorldSpriteRendering(DeccanFlecsIter *it) {
     DeccanCompTransform *transform = DE_FlecsIterColumn(it, "Transform", 1);
@@ -38,6 +38,8 @@ DE_PRIV void WorldSpriteRendering(DeccanFlecsIter *it) {
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_PRIV void WorldArbitaryGeometryRendering(DeccanFlecsIter *it) {
     DeccanCompTransform *transform = DE_FlecsIterColumn(it, "Transform", 1);
     DeccanCompDrawableGeometry *arbrender = DE_FlecsIterColumn(it, "DrawableGeometry", 2);
@@ -56,6 +58,8 @@ DE_PRIV void WorldArbitaryGeometryRendering(DeccanFlecsIter *it) {
         DE_GenericPipelineDraw(action);
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_SystemInitRendering(void) {
     DE_FlecsSystem(WorldSpriteRendering, "DrawableSpriteRendering", "Transform, DrawableSprite", DECCAN_ECS_TYPE_ON_UPDATE);

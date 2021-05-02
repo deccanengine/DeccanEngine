@@ -18,6 +18,8 @@ DE_IMPL SDL_RWops *DE_FSLocateFile(const char *file_name, bool is_binary) {
     return file;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL const char *DE_FSGetFileContent(SDL_RWops *file) {
     int64_t size = SDL_RWsize(file);
 
@@ -35,6 +37,8 @@ DE_IMPL const char *DE_FSGetFileContent(SDL_RWops *file) {
 
     return NULL;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL const char *DE_FSGetFileExtension(const char *file_name) {
     const char *ext = strrchr(file_name, '.');

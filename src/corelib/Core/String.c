@@ -18,6 +18,8 @@ DE_IMPL char *DE_StringNew(const char *source) {
     return string;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL uint32_t DE_StringHash(const char *string, int length) {
     return zpl_adler32((const void *)string, length);
 }

@@ -24,6 +24,8 @@ DE_PRIV struct {
     .desc = {0},
 };
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_RendererPreInit(void) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
@@ -31,6 +33,8 @@ DE_IMPL void DE_RendererPreInit(void) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_RendererCreate(SDL_Window *window) {
     RendererInfo.window = window;
@@ -52,6 +56,8 @@ DE_IMPL void DE_RendererCreate(SDL_Window *window) {
     sg_setup(&RendererInfo.desc);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_RendererDestroy(void) {
     sg_shutdown();
 
@@ -59,35 +65,51 @@ DE_IMPL void DE_RendererDestroy(void) {
         SDL_GL_DeleteContext(RendererInfo.glcontext);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_RendererDraw(void) {
     sg_commit();
 
     SDL_GL_SwapWindow(RendererInfo.window);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL SDL_GLContext DE_RendererGetContext(void) {
     return RendererInfo.glcontext;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_RendererSetViewport(vec2s viewport) {
     RendererInfo.viewport = viewport;
-};
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_RendererSetClearColor(vec4s color) {
     RendererInfo.clear_color = color;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_RendererSetFramebuffer(DeccanFramebuffer *fb) {
     RendererInfo.fb = fb;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL vec2s DE_RendererGetViewport(void) {
     return RendererInfo.viewport;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL vec4s DE_RendererGetClearColor(void) {
     return RendererInfo.clear_color;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL DeccanFramebuffer *DE_RendererGetFramebuffer(void) {
     return RendererInfo.fb;

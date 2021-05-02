@@ -15,16 +15,22 @@
 #include <depends/deimgui/imgui_impl_sdl.h>
 #include <depends/sokol/util/sokol_imgui.h>
 
-DE_PRIV struct { simgui_desc_t context; } ImguiInfo = {0};
+DE_PRIV struct { 
+    simgui_desc_t context; 
+} ImguiInfo = {0};
 
 DE_IMPL void DE_ImguiInit(void) {
     simgui_setup(&ImguiInfo.context);   
     ImGui_ImplSDL2_InitForOpenGL(DE_CoreGetWindow(), DE_RendererGetContext());
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_ImguiQuit(void) {
     simgui_shutdown();
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_ImguiBeginRender(void) {
     vec2s viewport;
@@ -34,14 +40,16 @@ DE_IMPL void DE_ImguiBeginRender(void) {
     simgui_new_frame(viewport.x, viewport.y, DE_CoreGetDeltaTime());
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_ImguiEndRender(void) {
     igRender();
     simgui_render();
 }
 
-/////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 // Module
-////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 DE_API DeccanModule *DE_ImguiModule(void) {
     DeccanModule *imgui = DE_ModuleCreate("imgui");

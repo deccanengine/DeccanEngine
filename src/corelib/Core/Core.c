@@ -27,7 +27,11 @@ DE_PRIV struct {
     .isSettingsDirty = true,
 };
 
-/* Core */
+
+////////////////////////////////////////////////////////////////////////////////
+// Core functions
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL int DE_CoreInit(DeccanSettings *settings) {
     Core_Info.settings = *settings;
 
@@ -63,6 +67,8 @@ DE_IMPL int DE_CoreInit(DeccanSettings *settings) {
     return 1;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_CoreQuit(void) {
 #ifdef DE_DEBUG
     fclose(Core_Info.logfile);
@@ -72,6 +78,8 @@ DE_IMPL void DE_CoreQuit(void) {
     TTF_Quit();
     SDL_Quit();
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_CoreUpdate(float fpsAverage, float deltaTime) {
     /* Handle some events */
@@ -131,6 +139,8 @@ DE_IMPL void DE_CoreUpdate(float fpsAverage, float deltaTime) {
     Core_Info.deltaTime = deltaTime;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 /* Core Settings Setters */
 DE_IMPL void DE_CoreSetTitle(const char *name) {
     DE_Free(Core_Info.settings.title);
@@ -138,69 +148,101 @@ DE_IMPL void DE_CoreSetTitle(const char *name) {
     Core_Info.isSettingsDirty = true;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_CoreSetResolution(vec2 resolution) {
     glm_vec2_copy(resolution, Core_Info.settings.resolution);
     Core_Info.isSettingsDirty = true;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_CoreToogleFullscreen(void) {
     Core_Info.settings.fullscreen = !Core_Info.settings.fullscreen;
     Core_Info.isSettingsDirty = true;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_CoreToogleVsync(bool vsync) {
     Core_Info.settings.vsync = vsync;
     Core_Info.isSettingsDirty = true;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_CoreSetFramerateLimit(float fps) {
     Core_Info.settings.fps = fps;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 /* Core Settings Getters */
 DE_IMPL const char *DE_CoreGetTitle(void) {
     return Core_Info.settings.title;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_CoreGetResolution(vec2 res) {
     glm_vec2_copy(Core_Info.settings.resolution, res);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL bool DE_CoreIsFullscreened(void) {
     return Core_Info.settings.fullscreen;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL bool DE_CoreIsVsyncEnabled(void) {
     return Core_Info.settings.vsync;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL bool DE_CoreIsResizable(void) {
     return Core_Info.settings.resizable;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL bool DE_CoreIsRunning(void) {
     return Core_Info.isRunning;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL float DE_CoreGetFramerateLimit(void) {
     return Core_Info.settings.fps;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL float DE_CoreGetAverageFramerate(void) {
     return Core_Info.fpsAverage;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL float DE_CoreGetDeltaTime(void) {
     return Core_Info.deltaTime;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL uint32_t DE_CoreProcessStartTime(void) {
     return Core_Info.proc_start_time;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL SDL_Window *DE_CoreGetWindow(void) {
     return Core_Info.window;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL DeccanSettings *DE_CoreGetSettings(void) {
     return &Core_Info.settings;

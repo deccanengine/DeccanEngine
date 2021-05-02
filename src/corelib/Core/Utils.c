@@ -11,9 +11,13 @@ DE_IMPL void *DE_Alloc(size_t size, int count) {
     return SDL_malloc(size * count);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void *DE_Realloc(void *mem, size_t size) {
     return SDL_realloc(mem, size);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_Free(void *mem) {
     if (!mem)
@@ -23,6 +27,8 @@ DE_IMPL void DE_Free(void *mem) {
         mem = NULL;
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL zpl_allocator DE_ZPLAllocator(void) {
     // TODO: make allocator

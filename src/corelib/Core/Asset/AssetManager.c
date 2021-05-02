@@ -11,6 +11,8 @@
 
 #define POOL_INITIAL_CAP 100
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_PRIV struct {
     DeccanAssetManager *manager;
     DeccanAssetHandle invalid_asset;
@@ -19,8 +21,12 @@ DE_PRIV struct {
     .invalid_asset = { -1 },
 };
 
+////////////////////////////////////////////////////////////////////////////////
+
 ZPL_TABLE_DEFINE(asset_list_t, asset_list_, DeccanAssetHandle);
 ZPL_TABLE_DEFINE(asset_table_t, asset_table_, asset_entry_t);
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, DeccanAssetDescriptor *desc) {
     zpl_array_init(manager->asset_buffer, DE_ZPLAllocator());
@@ -35,9 +41,13 @@ DE_IMPL void DE_AssetInitManager(DeccanAssetManager *manager, size_t count, Decc
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_PRIV void AssetDestroyFunc(uint64_t index, asset_entry_t value) {
     asset_list_destroy(&value.entries);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_AssetDestroyManager(DeccanAssetManager *manager) {
     asset_table_map(&manager->assets, AssetDestroyFunc);
@@ -46,9 +56,13 @@ DE_IMPL void DE_AssetDestroyManager(DeccanAssetManager *manager) {
     zpl_array_free(manager->asset_buffer);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_API void DE_AssetSetManagerInst(DeccanAssetManager *manager) {
     Asset_Info.manager = manager;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL DeccanAssetHandle DE_AssetLoad(const char *type, const char *name, SDL_RWops *file) {
     if (file == NULL) {
@@ -77,6 +91,8 @@ DE_IMPL DeccanAssetHandle DE_AssetLoad(const char *type, const char *name, SDL_R
     return handle;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL DeccanAssetHandle DE_AssetLoadFromFile(const char *type, const char *name, const char *file_name, bool is_binary) {
     SDL_RWops *file = SDL_RWFromFile(file_name, (is_binary ? "rb" : "r"));
     if (file == NULL) {
@@ -86,6 +102,8 @@ DE_IMPL DeccanAssetHandle DE_AssetLoadFromFile(const char *type, const char *nam
     return DE_AssetLoad(type, name, file);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL DeccanAssetHandle DE_AssetLoadFromMem(const char *type, const char *name, size_t size, void *memory) {
     SDL_RWops *file = SDL_RWFromMem(memory, size);
     if (file == NULL) {
@@ -94,6 +112,8 @@ DE_IMPL DeccanAssetHandle DE_AssetLoadFromMem(const char *type, const char *name
     }
     return DE_AssetLoad(type, name, file);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL DeccanAssetHandle DE_AssetGet(const char *type, const char *name) {
     asset_entry_t *entry = asset_table_get(&Asset_Info.manager->assets, DE_StringHash(type, strlen(type)));
@@ -106,12 +126,16 @@ DE_IMPL DeccanAssetHandle DE_AssetGet(const char *type, const char *name) {
     return *handle;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void *DE_AssetGetRaw(DeccanAssetHandle handle) {
     uint32_t index = DE_HandleIndex(Asset_Info.manager->pool, handle.id);
     if (index == -1)
         return NULL;
     return Asset_Info.manager->asset_buffer[index];
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL bool DE_AssetRemove(const char *type, const char *name) {
     asset_entry_t *entry = asset_table_get(&Asset_Info.manager->assets, DE_StringHash(type, strlen(type)));

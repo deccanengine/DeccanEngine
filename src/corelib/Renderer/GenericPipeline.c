@@ -26,6 +26,8 @@ typedef struct FSParams {
     float color[4];
 } FSParams;
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_GenericPipelineCreate(void) {
     /* clang-format off */
     const char *vs_source =
@@ -120,10 +122,14 @@ DE_IMPL void DE_GenericPipelineCreate(void) {
     /* clang-format on */
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_GenericPipelineDestroy(void) {
     sg_destroy_shader(GenericPipelineInfo.shader);
     sg_destroy_pipeline(GenericPipelineInfo.pip);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_GenericPipelineBegin(DeccanCamera *camera) {
     vec4s clear_color = DE_RendererGetClearColor(); 
@@ -142,6 +148,8 @@ DE_IMPL void DE_GenericPipelineBegin(DeccanCamera *camera) {
 
     GenericPipelineInfo.camera = camera;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_GenericPipelineDraw(DeccanDrawAction action) {
     // TODO: shaders taking material directly
@@ -167,6 +175,8 @@ DE_IMPL void DE_GenericPipelineDraw(DeccanDrawAction action) {
     sg_apply_bindings(&binds);
     sg_draw(0, action.geometry->index_count, 1);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_GenericPipelineEnd(void) {
     sg_end_pass();

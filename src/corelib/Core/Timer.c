@@ -14,6 +14,8 @@ DE_IMPL void DE_TimerStart(DeccanTimer *timer) {
     timer->isPaused = false;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_TimerStop(DeccanTimer *timer) {
     timer->startTicks = 0;
     timer->pausedTicks = 0;
@@ -21,9 +23,13 @@ DE_IMPL void DE_TimerStop(DeccanTimer *timer) {
     timer->isPaused = false;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_TimerReset(DeccanTimer *timer) {
     DE_TimerStart(timer);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_TimerPause(DeccanTimer *timer) {
     if (timer->isRunning && !timer->isPaused) {
@@ -34,6 +40,8 @@ DE_IMPL void DE_TimerPause(DeccanTimer *timer) {
         timer->startTicks = 0;
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL DeccanTime DE_TimerGetTime(DeccanTimer *timer) {
     float timeMS = 0.0f;

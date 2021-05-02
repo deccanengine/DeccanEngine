@@ -9,9 +9,10 @@
 #include "Transform.h"
 #include "../../Physics/Collision.h"
 
-/////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // Collision checking
-////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 #define COLLISION_CHECK_HEADER(obj)                                                                                    \
     const char *name = DE_ObjectGetName(obj);                                                                          \
     DeccanCompCollider *c = DE_ObjectGetComponent(obj, "Collider");                                                    \
@@ -26,6 +27,8 @@
     }                                                                                                                  \
     vec3 p;                                                                                                            \
     glm_vec3_copy(state->position, p);
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL bool DE_CompColliderCheckObject(DeccanGameObject obj1, DeccanGameObject obj2) {
     COLLISION_CHECK_HEADER(obj1);
@@ -50,6 +53,8 @@ DE_IMPL bool DE_CompColliderCheckObject(DeccanGameObject obj1, DeccanGameObject 
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL bool DE_CompColliderCheckObjectWithVector(DeccanGameObject obj, vec2 vec) {
     COLLISION_CHECK_HEADER(obj);
 
@@ -72,6 +77,8 @@ DE_IMPL bool DE_CompColliderCheckObjectWithVector(DeccanGameObject obj, vec2 vec
     default: { return false; }
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL bool DE_CompColliderCheckObjectWithRect(DeccanGameObject obj, vec4 rect) {
     COLLISION_CHECK_HEADER(obj);
@@ -96,6 +103,8 @@ DE_IMPL bool DE_CompColliderCheckObjectWithRect(DeccanGameObject obj, vec4 rect)
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject obj, vec3 circle) {
     COLLISION_CHECK_HEADER(obj);
 
@@ -118,6 +127,8 @@ DE_IMPL bool DE_CompColliderCheckObjectWithCircle(DeccanGameObject obj, vec3 cir
     default: { return false; }
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL bool DE_CompColliderCheck(const char *name1, const char *name2) {
     DeccanGameObject obj1 = DE_SceneGetObject(name1);

@@ -25,6 +25,8 @@ DE_PRIV void CreateTexture(DeccanTexture *texture, int32_t width, int32_t height
     texture->image = sg_make_image(&desc);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL void DE_TextureCreateFromMem(
     DeccanTexture *texture, int32_t width, int32_t height, size_t count, DeccanSurface *surfaces) {
     assert(&surfaces[0] != NULL);
@@ -36,6 +38,8 @@ DE_IMPL void DE_TextureCreateFromMem(
 
     CreateTexture(texture, width, height, surfaces[0].format, &image_content);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_TextureCreateBlankRGBA(DeccanTexture *texture, int32_t width, int32_t height, uint32_t color) {
     int size_bytes = sizeof(uint32_t) * width * height;
@@ -55,6 +59,8 @@ DE_IMPL void DE_TextureCreateBlankRGBA(DeccanTexture *texture, int32_t width, in
 
     DE_Free(pixels);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void DE_TextureDestroy(DeccanTexture *texture) {
     sg_destroy_image(texture->image);

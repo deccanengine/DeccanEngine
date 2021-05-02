@@ -40,6 +40,8 @@ DE_IMPL DeccanGeometry DE_PrimitiveCreateQuad() {
     /* clang-format on */
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 DE_IMPL DeccanGeometry DE_PrimitiveCreateTriangle() {
     /* clang-format off */
     static const float vertices[] = {
@@ -70,6 +72,8 @@ DE_IMPL DeccanGeometry DE_PrimitiveCreateTriangle() {
     return tri;
     /* clang-format on */
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL DeccanGeometry DE_PrimitiveCreateCube() {
     /* clang-format off */
