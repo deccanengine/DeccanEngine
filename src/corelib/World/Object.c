@@ -13,7 +13,7 @@
 // Initialization and instantiator functions
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_PRIV void ObjectNoneFunc(deccan_game_object_t obj) {
+DE_PRIV void object_none_func(deccan_game_object_t obj) {
     DE_UNUSED(obj);
 }
 
@@ -30,11 +30,11 @@ DE_IMPL deccan_game_object_t deccan_object_new_object(const char *name) {
     info.active = true;
     info.to_remove = false;
     info.is_beginning = true;
-    info.AtFirstFrame = ObjectNoneFunc;
-    info.AtBeginning = ObjectNoneFunc;
-    info.AtStep = ObjectNoneFunc;
-    info.AtRender = ObjectNoneFunc;
-    info.AtEnd = ObjectNoneFunc;
+    info.at_first_frame = object_none_func;
+    info.at_beginning = object_none_func;
+    info.at_step = object_none_func;
+    info.at_render = object_none_func;
+    info.at_end = object_none_func;
 
     deccan_object_set_name(obj, name);
     deccan_object_set_component(obj, "Info", &info);
@@ -57,7 +57,7 @@ DE_IMPL void deccan_object_free_object(deccan_game_object_t obj) {
     deccan_object_info_t *info = deccan_object_get_component(obj, "Info");
 
     if (info->active)
-        info->AtEnd(obj);
+        info->at_end(obj);
 
     /* Free */
     ecs_delete(scene->world, obj.entity);
@@ -123,12 +123,12 @@ DE_IMPL void deccan_object_update(deccan_game_object_t obj) {
         return;
 
     if (info->is_beginning) {
-        info->AtBeginning(obj);
+        info->at_beginning(obj);
         info->is_beginning = false;
         deccan_object_set_component(obj, "Info", info);
     }
     else {
-        info->AtStep(obj);
+        info->at_step(obj);
     }
 }
 
@@ -141,7 +141,7 @@ DE_IMPL void deccan_object_render(deccan_game_object_t obj) {
         return;
 
     if (!info->is_beginning) {
-        info->AtRender(obj);
+        info->at_render(obj);
     }
 }
 
@@ -153,7 +153,7 @@ DE_IMPL void deccan_object_end(deccan_game_object_t obj) {
     if (!info->active)
         return;
 
-    info->AtEnd(obj);
+    info->at_end(obj);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -12,16 +12,16 @@
 // Module
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_PRIV void NullFunction() { }
+DE_PRIV void module_none_func() { }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL deccan_module_t *deccan_module_create(const char *name) {
     deccan_module_t *mod = deccan_alloc(sizeof(deccan_module_t), 1);
-    mod->AtBeginning = NullFunction;
-    mod->AtStep = NullFunction;
-    mod->AtPostStep = NullFunction;
-    mod->AtEnd = NullFunction;
+    mod->at_beginning = module_none_func;
+    mod->at_step = module_none_func;
+    mod->at_post_step = module_none_func;
+    mod->at_end = module_none_func;
     return mod;
 }
 
@@ -57,12 +57,12 @@ DE_IMPL void deccan_module_sys_push(deccan_module_sys_t *modsys, deccan_module_t
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_PRIV void ModuleStage(deccan_module_t *mod, deccan_module_stage_t stage) {
+DE_PRIV void module_stage(deccan_module_t *mod, deccan_module_stage_t stage) {
     switch (stage) {
-    case DE_SHELL_ATBEGINNING: mod->AtBeginning(); break;
-    case DE_SHELL_ATSTEP: mod->AtStep(); break;
-    case DE_SHELL_ATPOSTSTEP: mod->AtPostStep(); break;
-    case DE_SHELL_ATEND: mod->AtEnd(); break;
+    case DE_SHELL_ATBEGINNING: mod->at_beginning(); break;
+    case DE_SHELL_ATSTEP: mod->at_step(); break;
+    case DE_SHELL_ATPOSTSTEP: mod->at_post_step(); break;
+    case DE_SHELL_ATEND: mod->at_end(); break;
     default: break; /* Huh? */
     }
 }
@@ -72,12 +72,12 @@ DE_PRIV void ModuleStage(deccan_module_t *mod, deccan_module_stage_t stage) {
 DE_IMPL void deccan_module_sys_iter(deccan_module_sys_t *modsys, deccan_module_stage_t stage, bool order) {
     if (order) {
         for (int i = 0; i < zpl_array_count(modsys->mods); i += 1) {
-            ModuleStage(modsys->mods[i], stage);
+            module_stage(modsys->mods[i], stage);
         }
     }
     else {
         for (int i = zpl_array_count(modsys->mods) - 1; i >= 0; i -= 1) {
-            ModuleStage(modsys->mods[i], stage);
+            module_stage(modsys->mods[i], stage);
         }
     }
 }

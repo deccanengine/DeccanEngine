@@ -14,10 +14,10 @@ void begin() {
 
     deccan_game_object_t player = deccan_object_new_object("main player");
     deccan_object_info_t *info = deccan_object_get_component(player, "Info");
-    info->AtBeginning = _player_begin;
-    info->AtStep = _player_step;
-    info->AtRender = _player_render;
-    info->AtEnd = _player_end;
+    info->at_beginning = _player_begin;
+    info->at_step = _player_step;
+    info->at_render = _player_render;
+    info->at_end = _player_end;
     deccan_object_make_prefab(player);
     deccan_scene_instantiate_object(player);
 
@@ -65,16 +65,16 @@ int main(int argc, char **argv) {
     settings.fullscreen = false;
     settings.vsync = false; // Probably not working in some environments, report
     settings.resizable = false;
-    settings.closeOnEscape = true;
+    settings.close_on_escape = true;
     settings.fps = 120.0f;
 
     if (deccan_app_init(&settings)) {
         deccan_game_scene_t *scene = deccan_scene_new_scene("scene0");
         deccan_module_t *scene_mod = deccan_module_create("scene_mod");
-        scene_mod->AtBeginning = begin;
-        scene_mod->AtStep = step;
-        scene_mod->AtPostStep = render;
-        scene_mod->AtEnd = end;
+        scene_mod->at_beginning = begin;
+        scene_mod->at_step = step;
+        scene_mod->at_post_step = render;
+        scene_mod->at_end = end;
 
         deccan_scene_push_module(scene, deccan_imgui_module());
         deccan_scene_push_module(scene, scene_mod);

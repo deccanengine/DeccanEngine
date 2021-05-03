@@ -8,19 +8,19 @@
 #include "Timer.h"
 
 DE_IMPL void deccan_timer_start(deccan_timer_t *timer) {
-    timer->startTicks = SDL_GetTicks();
-    timer->pausedTicks = 0;
-    timer->isRunning = true;
-    timer->isPaused = false;
+    timer->start_ticks = SDL_GetTicks();
+    timer->paused_ticks = 0;
+    timer->is_running = true;
+    timer->is_paused = false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void deccan_timer_stop(deccan_timer_t *timer) {
-    timer->startTicks = 0;
-    timer->pausedTicks = 0;
-    timer->isRunning = false;
-    timer->isPaused = false;
+    timer->start_ticks = 0;
+    timer->paused_ticks = 0;
+    timer->is_running = false;
+    timer->is_paused = false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -32,32 +32,32 @@ DE_IMPL void deccan_timer_reset(deccan_timer_t *timer) {
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void deccan_timer_pause(deccan_timer_t *timer) {
-    if (timer->isRunning && !timer->isPaused) {
-        timer->isPaused = true;
+    if (timer->is_running && !timer->is_paused) {
+        timer->is_paused = true;
 
         /* Calculate the paused ticks */
-        timer->pausedTicks = SDL_GetTicks() - timer->startTicks;
-        timer->startTicks = 0;
+        timer->paused_ticks = SDL_GetTicks() - timer->start_ticks;
+        timer->start_ticks = 0;
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL deccan_time_t deccan_timer_get_time(deccan_timer_t *timer) {
-    float timeMS = 0.0f;
+    float time_ms = 0.0f;
 
-    if (timer->isRunning) {
-        if (timer->isPaused) {
-            timeMS = timer->pausedTicks;
+    if (timer->is_running) {
+        if (timer->is_paused) {
+            time_ms = timer->paused_ticks;
         }
         else {
-            timeMS = SDL_GetTicks() - timer->startTicks;
+            time_ms = SDL_GetTicks() - timer->start_ticks;
         }
     }
 
     deccan_time_t time;
-    time.milliseconds = timeMS;
-    time.seconds = timeMS / 1000.0f;
+    time.milliseconds = time_ms;
+    time.seconds = time_ms / 1000.0f;
 
     return time;
 }

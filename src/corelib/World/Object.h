@@ -26,11 +26,11 @@ typedef struct deccan_object_info_t {
 
     bool is_beginning;
 
-    void (*AtFirstFrame)(deccan_game_object_t object);
-    void (*AtBeginning)(deccan_game_object_t object);
-    void (*AtStep)(deccan_game_object_t object);
-    void (*AtRender)(deccan_game_object_t object);
-    void (*AtEnd)(deccan_game_object_t object);
+    void (*at_first_frame)(deccan_game_object_t object);
+    void (*at_beginning)(deccan_game_object_t object);
+    void (*at_step)(deccan_game_object_t object);
+    void (*at_render)(deccan_game_object_t object);
+    void (*at_end)(deccan_game_object_t object);
 } deccan_object_info_t;
 
 typedef struct deccan_game_object_t {

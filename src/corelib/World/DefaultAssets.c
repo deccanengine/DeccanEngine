@@ -17,8 +17,8 @@ DE_IMPL deccan_asset_manager_t *deccan_make_default_asset_manager(void) {
     deccan_asset_descriptor_t desc[] = {
         {
             .key = "texture",
-            .calls.Create = deccan_sprite_asset_create,
-            .calls.Destroy = deccan_sprite_asset_destroy,
+            .calls.create = deccan_sprite_asset_create,
+            .calls.destroy = deccan_sprite_asset_destroy,
         },
     };
 

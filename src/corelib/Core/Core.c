@@ -11,11 +11,11 @@
 DE_PRIV struct {
     SDL_Window *window;
 
-    bool isRunning;
-    bool isSettingsDirty;
+    bool is_running;
+    bool is_settings_dirty;
 
-    float fpsAverage;
-    float deltaTime;
+    float fps_average;
+    float delta_time;
     uint32_t proc_start_time;
 
     deccan_settings_t settings;
@@ -23,8 +23,8 @@ DE_PRIV struct {
     FILE *logfile;
 #endif
 } core_info = {
-    .isRunning = true,
-    .isSettingsDirty = true,
+    .is_running = true,
+    .is_settings_dirty = true,
 };
 
 
@@ -81,7 +81,7 @@ DE_IMPL void deccan_core_quit(void) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void deccan_core_update(float fpsAverage, float deltaTime) {
+DE_IMPL void deccan_core_update(float fps_average, float delta_time) {
     /* Handle some events */
     SDL_Event *event = deccan_input_get_event_handler();
 
@@ -89,22 +89,22 @@ DE_IMPL void deccan_core_update(float fpsAverage, float deltaTime) {
         switch (event->type) {
         /* Handle close event */
         case SDL_QUIT: {
-            core_info.isRunning = false;
+            core_info.is_running = false;
             break;
         }
 
         /* Handle close on escape key event */
         case SDL_KEYDOWN: {
             /* Close on Escape Key */
-            if (event->key.keysym.sym == SDLK_ESCAPE && core_info.settings.closeOnEscape) {
-                core_info.isRunning = false;
+            if (event->key.keysym.sym == SDLK_ESCAPE && core_info.settings.close_on_escape) {
+                core_info.is_running = false;
                 break;
             }
         }
         }
     }
 
-    if (core_info.isSettingsDirty) {
+    if (core_info.is_settings_dirty) {
         SDL_SetWindowTitle(core_info.window, core_info.settings.title);
 
         if (core_info.settings.fullscreen) {
@@ -129,14 +129,14 @@ DE_IMPL void deccan_core_update(float fpsAverage, float deltaTime) {
             DE_WARN("VSync is not supported: %s", SDL_GetError());
         }
 
-        core_info.isSettingsDirty = false;
+        core_info.is_settings_dirty = false;
     }
 
     /* Update the input key states */
     deccan_input_update();
 
-    core_info.fpsAverage = fpsAverage;
-    core_info.deltaTime = deltaTime;
+    core_info.fps_average = fps_average;
+    core_info.delta_time = delta_time;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -145,28 +145,28 @@ DE_IMPL void deccan_core_update(float fpsAverage, float deltaTime) {
 DE_IMPL void deccan_core_set_title(const char *name) {
     deccan_free(core_info.settings.title);
     core_info.settings.title = deccan_string_new(name);
-    core_info.isSettingsDirty = true;
+    core_info.is_settings_dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void deccan_core_set_resolution(vec2 resolution) {
     glm_vec2_copy(resolution, core_info.settings.resolution);
-    core_info.isSettingsDirty = true;
+    core_info.is_settings_dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void deccan_core_toogle_fullscreen(void) {
     core_info.settings.fullscreen = !core_info.settings.fullscreen;
-    core_info.isSettingsDirty = true;
+    core_info.is_settings_dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void deccan_core_toogle_vsync(bool vsync) {
     core_info.settings.vsync = vsync;
-    core_info.isSettingsDirty = true;
+    core_info.is_settings_dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -209,7 +209,7 @@ DE_IMPL bool deccan_core_is_resizable(void) {
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL bool deccan_core_is_running(void) {
-    return core_info.isRunning;
+    return core_info.is_running;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -221,13 +221,13 @@ DE_IMPL float deccan_core_get_framerate_limit(void) {
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL float deccan_core_get_average_framerate(void) {
-    return core_info.fpsAverage;
+    return core_info.fps_average;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL float deccan_core_get_delta_time(void) {
-    return core_info.deltaTime;
+    return core_info.delta_time;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

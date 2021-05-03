@@ -22,7 +22,7 @@ typedef struct deccan_settings_t {
     bool fullscreen;
     bool vsync;
     bool resizable;
-    bool closeOnEscape;
+    bool close_on_escape;
     float fps;
 } deccan_settings_t;
 

@@ -24,10 +24,10 @@ typedef enum deccan_module_stage_t {
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef struct deccan_module_t {
-    void (*AtBeginning)();
-    void (*AtStep)();
-    void (*AtPostStep)();
-    void (*AtEnd)();
+    void (*at_beginning)();
+    void (*at_step)();
+    void (*at_post_step)();
+    void (*at_end)();
 } deccan_module_t;
 
 typedef struct deccan_module_sys_t {

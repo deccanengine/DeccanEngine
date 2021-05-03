@@ -9,8 +9,8 @@
 
 DE_PRIV struct {
     SDL_Event event;
-    uint8_t currKeys[SDL_NUM_SCANCODES];
-    uint8_t prevKeys[SDL_NUM_SCANCODES];
+    uint8_t currkeys[SDL_NUM_SCANCODES];
+    uint8_t prevkeys[SDL_NUM_SCANCODES];
 } input_info = {0};
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -29,15 +29,15 @@ DE_IMPL SDL_Event *deccan_input_get_event_handler(void) {
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void deccan_input_init(void) {
-    memcpy(input_info.prevKeys, "\0", sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
-    memcpy(input_info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
+    memcpy(input_info.prevkeys, "\0", sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
+    memcpy(input_info.currkeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void deccan_input_update(void) {
-    memcpy(input_info.prevKeys, input_info.currKeys, sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
-    memcpy(input_info.currKeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
+    memcpy(input_info.prevkeys, input_info.currkeys, sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
+    memcpy(input_info.currkeys, SDL_GetKeyboardState(NULL), sizeof(uint8_t) * (SDL_NUM_SCANCODES - 1));
 
     input_info.event.wheel.x = 0;
     input_info.event.wheel.y = 0;
@@ -51,14 +51,14 @@ DE_IMPL deccan_key_state_t deccan_input_get_key(int key_code) {
     deccan_key_state_t key = {false, false, false};
 
     if (KEY_IN_BOUNDS(key_code)) {
-        if (input_info.currKeys[key_code]) {
-            if (!input_info.prevKeys[key_code]) {
+        if (input_info.currkeys[key_code]) {
+            if (!input_info.prevkeys[key_code]) {
                 key.IsPressed = true;
             }
             key.IsHeld = true;
         }
         else {
-            if (input_info.prevKeys[key_code]) {
+            if (input_info.prevkeys[key_code]) {
                 key.IsReleased = true;
             }
         }
@@ -71,7 +71,7 @@ DE_IMPL deccan_key_state_t deccan_input_get_key(int key_code) {
 
 DE_IMPL bool deccan_input_key_pressed(int key_code) {
     if (KEY_IN_BOUNDS(key_code)) {
-        return input_info.currKeys[key_code] && !input_info.prevKeys[key_code];
+        return input_info.currkeys[key_code] && !input_info.prevkeys[key_code];
     }
     else {
         return false;
@@ -82,7 +82,7 @@ DE_IMPL bool deccan_input_key_pressed(int key_code) {
 
 DE_IMPL bool deccan_input_key_released(int key_code) {
     if (KEY_IN_BOUNDS(key_code)) {
-        return !input_info.currKeys[key_code] && input_info.prevKeys[key_code];
+        return !input_info.currkeys[key_code] && input_info.prevkeys[key_code];
     }
     else {
         return false;
@@ -93,7 +93,7 @@ DE_IMPL bool deccan_input_key_released(int key_code) {
 
 DE_IMPL bool deccan_input_key_held(int key_code) {
     if (KEY_IN_BOUNDS(key_code)) {
-        return input_info.currKeys[key_code];
+        return input_info.currkeys[key_code];
     }
     else {
         return false;

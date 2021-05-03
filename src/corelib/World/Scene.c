@@ -58,7 +58,7 @@ DE_IMPL void RegisterBaseComponent(deccan_game_scene_t *scene) {
 
 DE_IMPL void ObjectFirstFrame(deccan_game_object_t object) {
     deccan_object_info_t *info = deccan_object_get_component(object, "Info");
-    info->AtFirstFrame(object);
+    info->at_first_frame(object);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -114,10 +114,6 @@ DE_IMPL void deccan_scene_quit(void) {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Constructor and destructor
-////////////////////////////////////////////////////////////////////////////////
-
-DE_IMPL void SceneNoneFunc(void) { }
-
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL deccan_game_scene_t *deccan_scene_new_scene(const char *name) {

@@ -11,7 +11,7 @@ void _player_begin(deccan_game_object_t this) {
     deccan_object_info_t *info = deccan_object_get_component(this, "Info");
 
     deccan_object_set_component(this, "Collider", &(deccan_comp_collider_t){
-        .type = COLLIDER_Rect, 
+        .type = DECCAN_COLLIDER_RECT, 
         .rect = { [0] = 0, [1] = 0, [2] = 50, [3] = 50 }
     });
 
@@ -93,10 +93,13 @@ void _none_begin(deccan_game_object_t this) {
     deccan_game_object_t player = deccan_scene_get_object("main player");
     deccan_comp_transform_t *statePlayer = deccan_object_get_component(player, "Transform");
 
-    deccan_object_set_component(this, "Transform",
-        &(deccan_comp_transform_t){.position = {[0] = statePlayer->position[0], [1] = statePlayer->position[1]}});
-    deccan_object_set_component(
-        this, "Collider", &(deccan_comp_collider_t){.type = COLLIDER_Rect, .rect = {[0] = 0, [1] = 0, [2] = 40, [3] = 40}});
+    deccan_object_set_component(this, "Transform", &(deccan_comp_transform_t){
+        .position = { [0] = statePlayer->position[0], [1] = statePlayer->position[1] }
+    });
+    deccan_object_set_component(this, "Collider", &(deccan_comp_collider_t){
+        .type = DECCAN_COLLIDER_RECT, 
+        .rect = {[0] = 0, [1] = 0, [2] = 40, [3] = 40}
+    });
     deccan_object_set_tag(this, "isEnemy");
 }
 

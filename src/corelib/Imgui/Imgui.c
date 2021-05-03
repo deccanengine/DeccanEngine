@@ -53,10 +53,10 @@ DE_IMPL void deccan_imgui_end_render(void) {
 
 DE_API deccan_module_t *deccan_imgui_module(void) {
     deccan_module_t *imgui = deccan_module_create("imgui");
-    imgui->AtBeginning = deccan_imgui_init;
-    imgui->AtStep = deccan_imgui_begin_render;
-    imgui->AtPostStep = deccan_imgui_end_render;
-    imgui->AtEnd = deccan_imgui_quit;
+    imgui->at_beginning = deccan_imgui_init;
+    imgui->at_step = deccan_imgui_begin_render;
+    imgui->at_post_step = deccan_imgui_end_render;
+    imgui->at_end = deccan_imgui_quit;
     return imgui;
 }
 

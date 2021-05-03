@@ -76,7 +76,7 @@ DE_IMPL deccan_asset_handle_t deccan_asset_load(const char *type, const char *na
     
     asset_entry_t *entry = asset_table_get(&asset_info.manager->assets, deccan_string_hash(type, strlen(type)));
     
-    void *asset = entry->desc.calls.Create(data, SDL_RWsize(file));
+    void *asset = entry->desc.calls.create(data, SDL_RWsize(file));
     if (asset == NULL) {
         DE_ERROR("Could not create asset: %s", name);
         return asset_info.invalid_asset;
@@ -153,7 +153,7 @@ DE_IMPL bool deccan_asset_remove(const char *type, const char *name) {
     deccan_handle_delete(asset_info.manager->pool, handle);
 
     void *asset = asset_info.manager->asset_buffer[index];
-    entry->desc.calls.Destroy(asset);
+    entry->desc.calls.destroy(asset);
 
     zpl_array_remove_at(asset_info.manager->asset_buffer, index);
 

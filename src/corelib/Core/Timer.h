@@ -14,10 +14,10 @@ typedef struct deccan_time_t {
 } deccan_time_t;
 
 typedef struct deccan_timer_t {
-    float startTicks;
-    float pausedTicks;
-    bool isRunning;
-    bool isPaused;
+    float start_ticks;
+    float paused_ticks;
+    bool is_running;
+    bool is_paused;
 } deccan_timer_t;
 
 static inline void deccan_clock_delay(int32_t ms) {

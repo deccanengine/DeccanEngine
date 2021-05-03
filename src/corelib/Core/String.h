@@ -8,7 +8,5 @@
 #pragma once
 #include "../Config.h"
 
-typedef char *Str;
-
 DE_API char *deccan_string_new(const char *source);
 DE_API uint32_t deccan_string_hash(const char *string, int length);

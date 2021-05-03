@@ -13,8 +13,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef struct asset_callbacks_t {
-    void *(*Create)(const char *mem, size_t size);
-    bool (*Destroy)(void *asset);
+    void *(*create)(const char *mem, size_t size);
+    bool (*destroy)(void *asset);
 } asset_callbacks_t;
 
 typedef struct deccan_asset_descriptor_t {
