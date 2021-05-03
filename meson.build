@@ -1,25 +1,25 @@
+####################################################
+# Deccan Engine
+####################################################
+
 project('deccan-engine', ['c', 'cpp'], license: 'mit')
 
-cc = meson.get_compiler('c')
-m_dep  = cc.find_library('m')
-dl_dep = cc.find_library('dl')
+CC = meson.get_compiler('c')
 
-ig_src = [
-    'depends/deimgui/cimgui.cpp',
-    'depends/deimgui/imgui.cpp',
-    'depends/deimgui/imgui_draw.cpp',
-    'depends/deimgui/imgui_demo.cpp',
-    'depends/deimgui/imgui_tables.cpp',
-    'depends/deimgui/imgui_widgets.cpp',
-    'depends/deimgui/imgui_impl_sdl.cpp'
-]
+src = []        # Sources of deccancore.so
+demo_src = []   # Sources of demo (sandbox application)
 
-ig_lib = static_library('imgui', ig_src,
-    dependencies: dependency('SDL2'),
-)
+subdir('depends')
+subdir('src')
 
-dep_incdir = [
-    include_directories('proj'),
+####################################################
+# Dependencies
+####################################################
+
+m_dep  = CC.find_library('m')   # libm
+dl_dep = CC.find_library('dl')  # libdl
+
+deps_incdir = [
     include_directories('depends/glad/include')
 ]
 
@@ -30,67 +30,37 @@ deps = [
     dl_dep
 ]
 
-src = [
-    'corelib/Core/Core.c',
-    'corelib/Core/SDLHelper.c',
-    'corelib/Core/Asset/AssetManager.c',
-    'corelib/Core/Input/Input.c',
-    'corelib/Core/Module/Module.c',
-    'corelib/Core/FileSys.c',
-    'corelib/Core/Timer.c',
-    'corelib/Core/Handle.c',
-    'corelib/Core/String.c',
-    'corelib/Core/Utils.c',
-
-    'corelib/Modules/Physics/Collision.c',
-    'corelib/Modules/Imgui/Imgui.c',
-
-    'corelib/Renderer/Color.c',
-    'corelib/Renderer/GenericPipeline.c',
-    'corelib/Renderer/PrimitiveGeometry.c',
-    'corelib/Renderer/Renderer.c',
-    'corelib/Renderer/Texture.c',
-    'corelib/Renderer/Framebuffer.c',
-    
-    'corelib/Scene/Object.c',
-    'corelib/Scene/Scene.c',
-    
-    'corelib/World/Camera.c',
-    'corelib/World/Flecs.c',
-    'corelib/World/DefaultAssets.c',
-    'corelib/World/Components.c',
-    'corelib/World/Components/ColliderExtras.c',
-    'corelib/World/Systems.c',
-    'corelib/World/Systems/Rendering.c',
-    'corelib/World/Resources/Sprite.c',
-
-    'corelib/Main/Main.c',
-    'corelib/Main/Sources.c',
-]
+####################################################
+# Deccan Core
+####################################################
 
 de_lib = shared_library('deccancore', src,
     name_prefix: '',
     dependencies: deps,
-    include_directories: dep_incdir,
+    include_directories: deps_incdir,
     link_with: ig_lib,
     c_args: [
         '-D_REENTRANT',
         '-DLOG_USE_COLOR',
         '-DDE_DEBUG',
-    ]
+    ],
+    install: true,
 )
 
 de_dep = declare_dependency(
     link_with: de_lib,
-    include_directories: 'corelib'
+    include_directories: '.'
 )
 
-demo_src = [
-    'sandbox/main.c',
-    'sandbox/player.c',
-]
+####################################################
+# Demo
+####################################################
 
 executable('demo', demo_src, 
     link_with: [de_lib, ig_lib],
     dependencies: deps,
+    include_directories: [ 
+        include_directories('src/'), 
+        deps_incdir 
+    ]
 )

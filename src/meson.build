@@ -1,0 +1,2 @@
+subdir('corelib')
+subdir('sandbox')

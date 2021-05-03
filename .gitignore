@@ -1,4 +1,6 @@
+####################################################
 # Deccan Engine
+####################################################
 
 # Build directories
 builddir/
@@ -23,3 +25,6 @@ build/
 # KDevelop IDE
 *.kdev4
 .kdev4/*
+
+# VS Cod(e/ium)
+.vscode/*
