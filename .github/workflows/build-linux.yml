@@ -1,0 +1,25 @@
+name: Linux Build
+
+on: [ push, pull_request ]
+
+jobs: 
+  Linux:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Get SDL2 and SDL2_ttf
+        run: |
+          sudo apt update
+          sudo apt install build-essential pkg-config
+          sudo apt install libSDL2-dev libSDL2_ttf-dev
+      - uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: build
+          directory: builddir
+
