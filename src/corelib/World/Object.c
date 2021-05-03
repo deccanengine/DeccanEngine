@@ -172,6 +172,7 @@ DE_IMPL void *deccan_object_get_component(deccan_game_object_t obj, const char *
         DE_ERROR("Component %s does not exists on object %s", name, deccan_object_get_name(obj));
         return NULL;
     }
+    return component;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
