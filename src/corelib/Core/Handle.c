@@ -67,7 +67,7 @@ void deccan_handle_delete(deccan_handle_pool_t *pool, deccan_handle_t handle) {
 ////////////////////////////////////////////////////////////////////////////////
 
 uint32_t deccan_handle_index(deccan_handle_pool_t *pool, deccan_handle_t handle) {
-    return (handle == DE_INVALID_HANDLE) ? DE_INVALID_HANDLE : pool->sparse[handle];
+    return (handle == DE_INVALID_HANDLE) ? -1 : pool->sparse[handle];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
