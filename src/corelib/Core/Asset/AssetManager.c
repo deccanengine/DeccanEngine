@@ -150,7 +150,7 @@ DE_IMPL bool deccan_asset_remove(const char *type, const char *name) {
     if (index == -1)
         return false;
 
-    deccan_handle_delete(asset_info.manager->pool, handle);
+    deccan_handle_delete(asset_info.manager->pool, handle->id);
 
     void *asset = asset_info.manager->asset_buffer[index];
     entry->desc.calls.destroy(asset);
