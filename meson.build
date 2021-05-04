@@ -9,9 +9,6 @@ CC = meson.get_compiler('c')
 src = []        # Sources of deccancore.so
 demo_src = []   # Sources of demo (sandbox application)
 
-subdir('depends')
-subdir('src')
-
 ####################################################
 # Dependencies
 ####################################################
@@ -24,11 +21,12 @@ deps_incdir = [
 ]
 
 deps = [
-    dependency('SDL2'), 
-    dependency('SDL2_ttf'), 
     m_dep,
     dl_dep
 ]
+
+subdir('depends')
+subdir('src')
 
 ####################################################
 # Deccan Core
