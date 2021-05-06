@@ -1,36 +1,28 @@
 # Deccan Engine
 ![Deccan Engine](/resources/deccan-logo.svg?raw=true)
 
-[![GitHub](https://img.shields.io/github/license/iddev5/DeccanEngine)](LICENSE.md)
+[![License](https://img.shields.io/github/license/deccanengine/deccanengine?color=00e500)](LICENSE.md)
 [![Discord](https://img.shields.io/discord/681837246567022609?label=discord)](https://discord.gg/bNwnxwn)
+[![Twitter](https://img.shields.io/twitter/follow/iddev5?color=0080ff&label=twitter&style=plastic)](https://twitter.com/iddev5)
+[![Wiki](https://img.shields.io/badge/github-wiki-ff7000)](https://github.com/deccanengine/deccanengine/wiki)
 
 Deccan Engine is an Open-Source Cross-Platform 2D Game Engine written in C11. Powered by SDL2.
-- Lightweight and simple framework design
-- Basic scene manager
-- Versatile and easy-to-use Entity Component System
-- Input system supporting keyboard and mouse states and events
-- Asset management system
-- Flexible helper structs and functions, such as Vectors, Timers etc.
+- Written in pure C11 with a simple API
+- ImGui enabled for sandbox and editor (*upcoming!*)
+- Entity Component System using [flecs](https://github.com/sandermertens/flecs)
+- OpenGL based renderer using state-independent [sokol-gfx](https://github.com/floooh/sokol)
+- Extendable and clean design with least amount of cross-wirings
+
+## Status
+Platform | Status
+---------|--------------
+Linux    | [![Linux](https://github.com/deccanengine/DeccanEngine/workflows/Linux%20Build/badge.svg)](https://github.com/deccanengine/deccanengine/actions)
+Windows  | [![Windows](https://github.com/deccanengine/DeccanEngine/workflows/Windows%20Build/badge.svg)](https://github.com/deccanengine/deccanengine/actions)
+
 
 ## Getting Started
-Clone the repository using git:
-```
-git clone --recursive https://www.github.com/iddev5/DeccanEngine
-```
-
-Recursively getting the repository automatically downloads the submodule dependencies.
-The external dependencies are SDL2 and SDL2_ttf only which has to be installed separately from your vendor.
-
-Then build using:
-```
-meson builddir
-ninja -C builddir
-```
-
-For non-POSIX Windows, CMake is needed for handling dependencies as it cannot properly use pkg-config.
-
-## Example
-Currently not much is available in terms of demo/example as the project is in heavy progress, however you can check out ``sandbox`` which is automatically built when the engine is built.
+The [wiki](https://github.com/deccanengine/deccanengine/wiki) has detailed instructions on getting the source, configuring the environment and compiling the engine.  
+Currently not much is available in terms of demo/example as the project is in heavy progress, however you can check out ``src/sandbox`` which is automatically built when the engine is built.
 
 ## License
 This software is licensed under the terms of MIT License (See [LICENSE.md](LICENSE.md)).  
