@@ -9,26 +9,33 @@ CC = meson.get_compiler('c')
 src = []        # Sources of deccancore.so
 demo_src = []   # Sources of demo (sandbox application)
 
-subdir('depends')
-subdir('src')
-
 ####################################################
 # Dependencies
 ####################################################
 
-m_dep  = CC.find_library('m')   # libm
-dl_dep = CC.find_library('dl')  # libdl
+m_dep  = CC.find_library('m', required: false)   # libm
+dl_dep = CC.find_library('dl', required: false)  # libdl
 
 deps_incdir = [
     include_directories('depends/glad/include')
 ]
 
+sdl2_dep = dependency('SDL2', required: false)
+sdl2_ttf_dep = dependency('SDL2_ttf', required: false)
+
 deps = [
-    dependency('SDL2'), 
-    dependency('SDL2_ttf'), 
+    sdl2_dep, 
+    sdl2_ttf_dep, 
     m_dep,
     dl_dep
 ]
+
+####################################################
+# Sources
+####################################################
+
+subdir('depends')
+subdir('src')
 
 ####################################################
 # Deccan Core
