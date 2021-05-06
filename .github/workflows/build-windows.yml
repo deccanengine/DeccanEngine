@@ -1,0 +1,20 @@
+name: Windows Build
+
+on: [ push, pull_requests ]
+
+jobs: 
+  Windows-Non-POSIX:
+    timeout-minutes: 10
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - uses: ilammy/msvc-dev-cmd@v1
+      - uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: build
+          directory: builddir

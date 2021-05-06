@@ -38,7 +38,7 @@
 // See: https://sourceforge.net/p/predef/wiki/Compilers/
 #if defined(__clang__)
     #define DE_COMPILER_CLANG
-#elif defined(_MSC_VER_)
+#elif defined(_MSC_VER)
     #define DE_COMPILER_MSVC
 #elif defined(__GNUC__)
     #define DE_COMPILER_GCC
