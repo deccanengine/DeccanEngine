@@ -21,7 +21,17 @@ deps_incdir = [
 ]
 
 sdl2_dep = dependency('SDL2', required: false)
-sdl2_ttf_dep = dependency('SDL2_ttf', required: false)
+sdl2_ttf_dep = dependency('SDL2_ttf', required: false) 
+
+if not sdl2_dep.found()
+    sdl2_warp = subproject('sdl2')
+    sdl2_dep = sdl2_warp.get_variable('sdl2_dep')
+endif
+
+if not sdl2_ttf_dep.found()
+    sdl2_ttf_wrap = subproject('sdl2_ttf')
+    sdl2_ttf_dep = sdl2_ttf_wrap.get_variable('sdl2_ttf_dep')
+endif
 
 deps = [
     sdl2_dep, 

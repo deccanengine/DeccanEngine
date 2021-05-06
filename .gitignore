@@ -2,6 +2,9 @@
 # Deccan Engine
 ####################################################
 
+# Git files
+!.gitignore
+
 # Build directories
 builddir/
 build/
