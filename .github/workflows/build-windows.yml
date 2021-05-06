@@ -1,6 +1,6 @@
 name: Windows Build
 
-on: [ push, pull_requests ]
+on: [ push, pull_request ]
 
 jobs: 
   Windows-Non-POSIX:
