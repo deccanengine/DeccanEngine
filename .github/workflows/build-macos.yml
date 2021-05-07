@@ -3,7 +3,7 @@ name: MacOS Build
 on: [ push, pull_request ]
 
 jobs: 
-  Linux:
+  MacOS:
     timeout-minutes: 10
     runs-on: macOS-latest
     steps:
