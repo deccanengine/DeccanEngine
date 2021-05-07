@@ -17,6 +17,7 @@ Deccan Engine is an Open-Source Cross-Platform 2D Game Engine written in C11. Po
 Platform | Status
 ---------|--------------
 Linux    | [![Linux](https://github.com/deccanengine/DeccanEngine/workflows/Linux%20Build/badge.svg)](https://github.com/deccanengine/deccanengine/actions)
+MacOS    | [![MacOS](https://github.com/deccanengine/deccanengine/workflows/MacOS%20Build/badge.svg)](https://github.com/deccanengine/deccanengine/actions)
 Windows  | [![Windows](https://github.com/deccanengine/DeccanEngine/workflows/Windows%20Build/badge.svg)](https://github.com/deccanengine/deccanengine/actions)
 
 
