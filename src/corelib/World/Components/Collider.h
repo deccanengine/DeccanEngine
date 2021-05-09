@@ -28,13 +28,13 @@ typedef struct deccan_comp_collider_t {
     deccan_comp_collider_type_t type;
     union {
         struct {
-            vec2 vec;
+            vec2s vec;
         };
         struct {
-            vec4 rect;
+            vec4s rect;
         };
         struct {
-            vec3 circle;
+            vec3s circle;
         };
     };
 } deccan_comp_collider_t;

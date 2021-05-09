@@ -12,12 +12,12 @@ void _player_begin(deccan_game_object_t this) {
 
     deccan_object_set_component(this, "Collider", &(deccan_comp_collider_t){
         .type = DECCAN_COLLIDER_RECT, 
-        .rect = { [0] = 0, [1] = 0, [2] = 50, [3] = 50 }
+        .rect = { .x = 0, .y = 0, .z = 50, .w = 50 }
     });
 
     deccan_object_set_component(this, "Transform", &(deccan_comp_transform_t){
-        .position = { [0] = 1.0f, [1] = 0.0f, [2] = 0.0f },
-        .scale = { [0] = 5.0f, [1] = 5.0f, [2] = 1.0f }
+        .position = { .x = 1.0f, .y = 0.0f, .z = 0.0f },
+        .scale = { .x = 5.0f, .y = 5.0f, .z = 1.0f }
     });
 
     deccan_object_set_component(this, "DrawableSprite", &(deccan_comp_drawable_sprite_t){
@@ -33,16 +33,16 @@ void _player_step(deccan_game_object_t this) {
     deccan_comp_transform_t *state = deccan_object_get_component(this, "Transform");
 
     if (deccan_input_key_held(DECCAN_KEY_W)) {
-        state->position[1] += SpeedModifier;
+        state->position.y += SpeedModifier;
     }
     else if (deccan_input_key_held(DECCAN_KEY_S)) {
-        state->position[1] -= SpeedModifier;
+        state->position.y -= SpeedModifier;
     }
     else if (deccan_input_key_held(DECCAN_KEY_A)) {
-        state->position[0] -= SpeedModifier;
+        state->position.x -= SpeedModifier;
     }
     else if (deccan_input_key_held(DECCAN_KEY_D)) {
-        state->position[0] += SpeedModifier;
+        state->position.x += SpeedModifier;
     }
 
     if (deccan_input_key_released(DECCAN_KEY_O)) {
@@ -54,15 +54,15 @@ void _player_step(deccan_game_object_t this) {
 
     /* Center the camera on player */
     // Camera_CenterOn(this);
-
+    
     vec2 pos;
     deccan_input_get_mouse_pos(pos);
     if (deccan_comp_collider_check_object_with_vector(this, pos)) {
         // *color = ColorList_Orange;
         if (deccan_input_button_down(DECCAN_BUTTON_LEFT)) {
             selected = true;
-            offset[0] = pos[0] - state->position[0];
-            offset[1] = pos[1] - state->position[1];
+            offset[0] = pos[0] - state->position.x;
+            offset[1] = pos[1] - state->position.y;
         }
         else if (deccan_input_button_up(DECCAN_BUTTON_LEFT)) {
             selected = false;
@@ -70,8 +70,8 @@ void _player_step(deccan_game_object_t this) {
     }
 
     if (selected) {
-        state->position[0] = pos[0] - offset[0];
-        state->position[1] = pos[1] - offset[1];
+        state->position.x = pos[0] - offset[0];
+        state->position.y = pos[1] - offset[1];
     }
 }
 
@@ -79,9 +79,9 @@ void _player_render(deccan_game_object_t this) {
     deccan_comp_transform_t *state = deccan_object_get_component(this, "Transform");
 
     igBegin("Transform", NULL, 0);
-    igDragFloat("X", &state->position[0], 0.1f, 0.0f, 0.0f, "%.2f", 0);
-    igDragFloat("Y", &state->position[1], 0.1f, 0.0f, 0.0f, "%.2f", 0);
-    igDragFloat("Z", &state->position[2], 0.1f, 0.0f, 0.0f, "%.2f", 0);
+    igDragFloat("X", &state->position.x, 0.1f, 0.0f, 0.0f, "%.2f", 0);
+    igDragFloat("Y", &state->position.y, 0.1f, 0.0f, 0.0f, "%.2f", 0);
+    igDragFloat("Z", &state->position.z, 0.1f, 0.0f, 0.0f, "%.2f", 0);
     igEnd();
 }
 
@@ -94,11 +94,11 @@ void _none_begin(deccan_game_object_t this) {
     deccan_comp_transform_t *statePlayer = deccan_object_get_component(player, "Transform");
 
     deccan_object_set_component(this, "Transform", &(deccan_comp_transform_t){
-        .position = { [0] = statePlayer->position[0], [1] = statePlayer->position[1] }
+        .position = { .x = statePlayer->position.x, .y = statePlayer->position.y }
     });
     deccan_object_set_component(this, "Collider", &(deccan_comp_collider_t){
         .type = DECCAN_COLLIDER_RECT, 
-        .rect = {[0] = 0, [1] = 0, [2] = 40, [3] = 40}
+        .rect = { .x = 0, .y = 0, .z = 40, .w = 40}
     });
     deccan_object_set_tag(this, "isEnemy");
 }

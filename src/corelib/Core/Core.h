@@ -18,7 +18,7 @@
 
 typedef struct deccan_settings_t {
     char *title;
-    vec2 resolution;
+    vec2s resolution;
     bool fullscreen;
     bool vsync;
     bool resizable;
@@ -34,12 +34,12 @@ DE_API int deccan_core_init(deccan_settings_t *settings);
 DE_API void deccan_core_quit(void);
 DE_API void deccan_core_update(float fpsAverage, float deltaTime);
 DE_API void deccan_core_set_title(const char *name);
-DE_API void deccan_core_set_resolution(vec2 mode);
+DE_API void deccan_core_set_resolution(vec2s mode);
 DE_API void deccan_core_toogle_fullscreen(void);
 DE_API void deccan_core_toogle_vsync(bool vsync);
 DE_API void deccan_core_set_framerate_limit(float fps);
 DE_API const char *deccan_core_get_title(void);
-DE_API void deccan_core_get_resolution(vec2 res);
+DE_API vec2s deccan_core_get_resolution(void);
 DE_API bool deccan_core_is_fullscreened(void);
 DE_API bool deccan_core_is_vsync_enabled(void);
 DE_API bool deccan_core_is_resizable(void);

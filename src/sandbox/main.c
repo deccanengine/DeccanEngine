@@ -32,8 +32,7 @@ void step() {
 
 void render() {
     /* Start here */
-    vec2s viewport;
-    deccan_core_get_resolution(viewport.raw);
+    vec2s viewport = deccan_core_get_resolution();
 
     deccan_renderer_set_clear_color((vec4s){0.0f, 0.0f, 0.0f, 1.0f});
 
@@ -61,7 +60,7 @@ int main(int argc, char **argv) {
 
     deccan_settings_t settings = {0};
     settings.title = "Test";
-    settings.resolution[0] = settings.resolution[1] = 640.0f;
+    settings.resolution = (vec2s){ 640.0f, 640.0f };
     settings.fullscreen = false;
     settings.vsync = false; // Probably not working in some environments, report
     settings.resizable = false;

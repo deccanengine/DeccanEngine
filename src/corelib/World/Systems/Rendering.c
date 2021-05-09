@@ -23,8 +23,8 @@ DE_PRIV void WorldSpriteRendering(deccan_flecs_iter_t *it) {
 
     for (int i = 0; i < it->count; i++) {
         mat4s transmat = glms_mat4_identity();
-        glm_translate(transmat.raw, transform->position);
-        glm_scale(transmat.raw, transform->scale);
+        transmat = glms_translate(transmat, transform->position);
+        transmat = glms_scale(transmat, transform->scale);
 
         deccan_geometry_t quad = deccan_primitive_create_quad();
 
@@ -46,8 +46,8 @@ DE_PRIV void WorldArbitaryGeometryRendering(deccan_flecs_iter_t *it) {
 
     for (int i = 0; i < it->count; i++) {
         mat4s transmat = glms_mat4_identity();
-        glm_translate(transmat.raw, transform->position);
-        glm_scale(transmat.raw, transform->scale);
+        transmat = glms_translate(transmat, transform->position);
+        transmat = glms_scale(transmat, transform->scale);
 
         deccan_draw_action_t action;
         action.geometry = &arbrender[i].geometry;

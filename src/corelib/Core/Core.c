@@ -46,7 +46,7 @@ DE_IMPL int deccan_core_init(deccan_settings_t *settings) {
     }
 
     if ((core_info.window = SDL_CreateWindow(core_info.settings.title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-             core_info.settings.resolution[0], core_info.settings.resolution[1], window_flags)) == NULL) {
+             core_info.settings.resolution.x, core_info.settings.resolution.y, window_flags)) == NULL) {
         DE_FATAL("Could not create window: %s", SDL_GetError());
     }
 
@@ -111,7 +111,7 @@ DE_IMPL void deccan_core_update(float fps_average, float delta_time) {
             SDL_SetWindowFullscreen(core_info.window, true);
 
             SDL_DisplayMode disp = {
-                SDL_PIXELFORMAT_UNKNOWN, core_info.settings.resolution[0], core_info.settings.resolution[1], 0, 0};
+                SDL_PIXELFORMAT_UNKNOWN, core_info.settings.resolution.x, core_info.settings.resolution.y, 0, 0};
 
             if (SDL_SetWindowDisplayMode(core_info.window, &disp) > 0) {
                 DE_WARN("Cannot set fullscreen window mode: %s", SDL_GetError());
@@ -121,7 +121,7 @@ DE_IMPL void deccan_core_update(float fps_average, float delta_time) {
         }
         else {
             SDL_SetWindowFullscreen(core_info.window, false);
-            SDL_SetWindowSize(core_info.window, core_info.settings.resolution[0], core_info.settings.resolution[1]);
+            SDL_SetWindowSize(core_info.window, core_info.settings.resolution.x, core_info.settings.resolution.y);
         }
 
         // Issue: Not working in some Windows environment
@@ -150,8 +150,8 @@ DE_IMPL void deccan_core_set_title(const char *name) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void deccan_core_set_resolution(vec2 resolution) {
-    glm_vec2_copy(resolution, core_info.settings.resolution);
+DE_IMPL void deccan_core_set_resolution(vec2s resolution) {
+    core_info.settings.resolution = resolution;
     core_info.is_settings_dirty = true;
 }
 
@@ -184,8 +184,8 @@ DE_IMPL const char *deccan_core_get_title(void) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void deccan_core_get_resolution(vec2 res) {
-    glm_vec2_copy(core_info.settings.resolution, res);
+DE_IMPL vec2s deccan_core_get_resolution(void) {
+    return core_info.settings.resolution;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

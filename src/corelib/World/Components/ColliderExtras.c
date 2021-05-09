@@ -25,8 +25,7 @@
         DE_WARN("State component not found in object: %s", name);                                                      \
         return false;                                                                                                  \
     }                                                                                                                  \
-    vec3 p;                                                                                                            \
-    glm_vec3_copy(state->position, p);
+    vec3s p = state->position;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -35,17 +34,17 @@ DE_IMPL bool deccan_comp_collider_check_object(deccan_game_object_t obj1, deccan
 
     switch (c->type) {
     case DECCAN_COLLIDER_VEC: {
-        vec2 vec = {p[0] + c->vec[0], p[1] + c->vec[1]};
+        vec2 vec = {p.x + c->vec.x, p.y + c->vec.y};
         return deccan_comp_collider_check_object_with_vector(obj2, vec);
     }
 
     case DECCAN_COLLIDER_RECT: {
-        vec4 rect = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
+        vec4 rect = {p.x + c->rect.x, p.y + c->rect.y, c->rect.z, c->rect.w};
         return deccan_comp_collider_check_object_with_rect(obj2, rect);
     }
 
     case DECCAN_COLLIDER_CIRCLE: {
-        vec3 circle = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
+        vec3 circle = {p.x + c->circle.x, p.y + c->circle.y, c->circle.z};
         return deccan_comp_collider_check_object_with_circle(obj2, circle);
     }
 
@@ -60,17 +59,17 @@ DE_IMPL bool deccan_comp_collider_check_object_with_vector(deccan_game_object_t 
 
     switch (c->type) {
     case DECCAN_COLLIDER_VEC: {
-        vec2 vec2 = {p[0] + c->vec[0], p[1] + c->vec[1]};
+        vec2 vec2 = {p.x + c->vec.x, p.y + c->vec.y};
         return deccan_collision_vec_vec(vec, vec2);
     }
 
     case DECCAN_COLLIDER_RECT: {
-        vec4 rect = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
+        vec4 rect = {p.x + c->rect.x, p.y + c->rect.y, c->rect.z, c->rect.w};
         return deccan_collision_vec_rect(vec, rect);
     }
 
     case DECCAN_COLLIDER_CIRCLE: {
-        vec3 circle = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
+        vec3 circle = {p.x + c->circle.x, p.y + c->circle.y, c->circle.z};
         return deccan_collision_circle_vec(circle, vec);
     }
 
@@ -85,17 +84,17 @@ DE_IMPL bool deccan_comp_collider_check_object_with_rect(deccan_game_object_t ob
 
     switch (c->type) {
     case DECCAN_COLLIDER_VEC: {
-        vec2 vec = {p[0] + c->vec[0], p[1] + c->vec[1]};
+        vec2 vec = {p.x + c->vec.x, p.y + c->vec.y};
         return deccan_collision_vec_rect(vec, rect);
     }
 
     case DECCAN_COLLIDER_RECT: {
-        vec4 rect2 = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
+        vec4 rect2 = {p.x + c->rect.x, p.y + c->rect.y, c->rect.z, c->rect.w};
         return deccan_collision_rect_rect(rect, rect2);
     }
 
     case DECCAN_COLLIDER_CIRCLE: {
-        vec3 circle = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
+        vec3 circle = {p.x + c->circle.x, p.y + c->circle.y, c->circle.z};
         return deccan_collision_rect_circle(rect, circle);
     }
 
@@ -110,17 +109,17 @@ DE_IMPL bool deccan_comp_collider_check_object_with_circle(deccan_game_object_t 
 
     switch (c->type) {
     case DECCAN_COLLIDER_VEC: {
-        vec2 vec = {p[0] + c->vec[0], p[1] + c->vec[1]};
+        vec2 vec = {p.x + c->vec.x, p.y + c->vec.y};
         return deccan_collision_circle_vec(circle, vec);
     }
 
     case DECCAN_COLLIDER_RECT: {
-        vec4 rect = {p[0] + c->rect[0], p[1] + c->rect[1], c->rect[2], c->rect[3]};
+        vec4 rect = {p.x + c->rect.x, p.y + c->rect.y, c->rect.z, c->rect.w};
         return deccan_collision_rect_circle(rect, circle);
     }
 
     case DECCAN_COLLIDER_CIRCLE: {
-        vec3 circle2 = {p[0] + c->circle[0], p[1] + c->circle[1], c->circle[2]};
+        vec3 circle2 = {p.x + c->circle.x, p.y + c->circle.y, c->circle.z};
         return deccan_collision_circle_circle(circle, circle2);
     }
 

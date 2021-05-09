@@ -46,8 +46,7 @@ void deccan_app_update(void) {
 
         deccan_core_update(fpsAverage, deltaTime);
 
-        vec2s viewport;
-        deccan_core_get_resolution(viewport.raw);
+        vec2s viewport = deccan_core_get_resolution();
         deccan_renderer_set_viewport(viewport);
 
         /* Update and render the scene */

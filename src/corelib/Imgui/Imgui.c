@@ -33,8 +33,7 @@ DE_IMPL void deccan_imgui_quit(void) {
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void deccan_imgui_begin_render(void) {
-    vec2s viewport;
-    deccan_core_get_resolution(viewport.raw);
+    vec2s viewport = deccan_core_get_resolution();
 
     ImGui_ImplSDL2_NewFrame(deccan_core_get_window());
     simgui_new_frame(viewport.x, viewport.y, deccan_core_get_delta_time());

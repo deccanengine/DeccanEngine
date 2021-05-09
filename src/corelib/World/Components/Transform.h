@@ -14,7 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef struct deccan_comp_transform_t {
-    vec3 position;
-    vec3 scale;
-    vec3 rotation;
+    vec3s position;
+    vec3s scale;
+    vec3s rotation;
 } deccan_comp_transform_t;
