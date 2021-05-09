@@ -145,11 +145,11 @@ DE_IMPL bool deccan_input_button_up(int button_code) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL void deccan_input_get_mouse_pos(vec2 pos) {
+DE_IMPL vec2s deccan_input_get_mouse_pos(void) {
     int32_t x, y;
     SDL_GetMouseState(&x, &y);
-    pos[0] = (float)x;
-    pos[1] = (float)y;
+    
+    return (vec2s){ (float)x, (float)y };
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -51,6 +51,6 @@ DE_API deccan_mouse_state_t deccan_input_get_mouse_button(int button_code);
 DE_API bool deccan_input_button_down(int button_code);
 DE_API bool deccan_input_button_up(int button_code);
 
-DE_API void deccan_input_get_mouse_pos(vec2 pos);
+DE_API vec2s deccan_input_get_mouse_pos(void);
 DE_API int deccan_input_mouse_scroll_horizontal(void);
 DE_API int deccan_input_mouse_scroll_vertical(void);
