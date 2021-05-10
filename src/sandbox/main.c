@@ -55,8 +55,8 @@ int main(int argc, char **argv) {
     DE_UNUSED(argc);
     DE_UNUSED(argv);
     
-    deccan_asset_manager_t *manager = deccan_make_default_asset_manager();
-    deccan_asset_set_manager_inst(manager);
+    deccan_asset_manager_t manager = deccan_make_default_asset_manager();
+    deccan_asset_set_manager_inst(&manager);
 
     deccan_settings_t settings = {0};
     settings.title = "Test";
@@ -82,8 +82,7 @@ int main(int argc, char **argv) {
         deccan_app_update();
     }
 
-    deccan_asset_destroy_manager(manager);
-    deccan_free(manager);
+    deccan_asset_destroy_manager(&manager);
 
     atexit(deccan_app_quit);
 

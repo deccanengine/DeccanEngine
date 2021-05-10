@@ -13,7 +13,7 @@
 // Default Asset Manager
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL deccan_asset_manager_t *deccan_make_default_asset_manager(void) {
+DE_IMPL deccan_asset_manager_t deccan_make_default_asset_manager(void) {
     deccan_asset_descriptor_t desc[] = {
         {
             .key = "texture",
@@ -22,7 +22,7 @@ DE_IMPL deccan_asset_manager_t *deccan_make_default_asset_manager(void) {
         },
     };
 
-    deccan_asset_manager_t *manager = deccan_alloc(sizeof(deccan_asset_manager_t), 1);
-    deccan_asset_init_manager(manager, 1, desc);
+    deccan_asset_manager_t manager;
+    deccan_asset_init_manager(&manager, 1, desc);
     return manager;
 }
