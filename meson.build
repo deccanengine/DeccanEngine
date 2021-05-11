@@ -7,6 +7,7 @@ project('deccan-engine', ['c', 'cpp'], license: 'mit')
 CC = meson.get_compiler('c')
 
 src = []        # Sources of deccancore.so
+edit_src = []   # Sources of editor
 demo_src = []   # Sources of demo (sandbox application)
 
 ####################################################
@@ -67,6 +68,19 @@ de_lib = shared_library('deccancore', src,
 de_dep = declare_dependency(
     link_with: de_lib,
     include_directories: '.'
+)
+
+####################################################
+# Editor
+####################################################
+
+executable('editor', edit_src,
+    link_with: [de_lib, ig_lib],
+    dependencies: deps,
+    include_directories: [
+        include_directories('src/'), 
+        deps_incdir 
+    ]
 )
 
 ####################################################
