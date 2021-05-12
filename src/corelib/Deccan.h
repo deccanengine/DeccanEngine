@@ -20,6 +20,10 @@
 #include "Core/Module/Module.h"
 
 #include "Physics/Collision.h"
+#include "Physics/Physics.h"
+#include "Physics/Components.h"
+#include "Physics/Components/RigidBody.h"
+#include "Physics/Systems.h"
 
 #include "Imgui/Imgui.h"
 

@@ -16,6 +16,7 @@ demo_src = []   # Sources of demo (sandbox application)
 
 m_dep  = CC.find_library('m', required: false)   # libm
 dl_dep = CC.find_library('dl', required: false)  # libdl
+thread_dep = dependency('threads')
 
 deps_incdir = [
     include_directories('depends/glad/include')
@@ -34,11 +35,21 @@ if not sdl2_ttf_dep.found()
     sdl2_ttf_dep = sdl2_ttf_wrap.get_variable('sdl2_ttf_dep')
 endif
 
+cmake = import('cmake')
+
+opt_var = cmake.subproject_options()
+opt_var.append_link_args('-pthread')
+
+cm2d = cmake.subproject('Chipmunk2D', options: opt_var)
+cm2d_dep = cm2d.dependency('chipmunk')
+
 deps = [
     sdl2_dep, 
     sdl2_ttf_dep, 
+    cm2d_dep,
     m_dep,
-    dl_dep
+    dl_dep,
+    thread_dep, 
 ]
 
 ####################################################

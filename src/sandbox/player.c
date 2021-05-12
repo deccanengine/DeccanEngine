@@ -17,7 +17,7 @@ void _player_begin(deccan_game_object_t this) {
 
     deccan_object_set_component(this, "Transform", &(deccan_comp_transform_t){
         .position = { .x = 1.0f, .y = 0.0f, .z = 0.0f },
-        .scale = { .x = 5.0f, .y = 5.0f, .z = 1.0f },
+        .scale = { .x = 1.0f, .y = 1.0f, .z = 1.0f },
         .rotation = { .z = DE_PI/3 },
     });
 
@@ -26,6 +26,10 @@ void _player_begin(deccan_game_object_t this) {
         .material = (deccan_material_t){
             .color = (deccan_color_t){ 255, 255, 255, 255 },
         },
+    });
+
+    deccan_object_set_component(this, "RigidBody", &(deccan_comp_rigid_body_t){
+        .body = NULL,
     });
 }
 

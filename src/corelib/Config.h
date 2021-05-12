@@ -122,6 +122,8 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include <chipmunk/chipmunk.h>
+
 #define ZPL_NANO
 #define ZPL_ENABLE_HASHING
 #include <depends/zpl/code/zpl.h>

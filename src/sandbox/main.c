@@ -12,6 +12,9 @@ void begin() {
     deccan_components_register_all();
     deccan_systems_register_all();
 
+    deccan_physics_components_register_all();
+    deccan_physics_systems_register_all();
+
     deccan_game_object_t player = deccan_object_new_object("main player");
     deccan_object_info_t *info = deccan_object_get_component(player, "Info");
     info->at_beginning = _player_begin;
@@ -76,6 +79,7 @@ int main(int argc, char **argv) {
         scene_mod->at_end = end;
 
         deccan_scene_push_module(scene, deccan_imgui_module());
+        deccan_scene_push_module(scene, deccan_physics_module());
         deccan_scene_push_module(scene, scene_mod);
         deccan_scene_add_scene(scene, false);
 
