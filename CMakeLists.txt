@@ -8,11 +8,16 @@ project(DeccanEngine
     LANGUAGES C CXX
 )
 
-set(SDL_INCLUDE_DIR "depends/SDL/include")
-set(TTF_INCLUDE_DIR "depends/SDL_ttf")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/proj/cmake")
 
-add_subdirectory(depends/SDL)
-add_subdirectory(depends/SDL_ttf)
+if (WIN32)
+    set(SDL2_PATH "depends/SDL")
+    set(SDL2_TTF_PATH "depends/SDL_ttf")
+endif (WIN32)
+
+find_package(SDL2 REQUIRED)
+find_package(SDL2_ttf REQUIRED)
+
 add_subdirectory(depends/deimgui)
 
 ####################################################
@@ -34,8 +39,8 @@ target_include_directories(deccancore PUBLIC
     "."
     "src"
     "depends/glad/include/"
-    ${SDL_INCLUDE_DIR}
-    ${TTF_INCLUDE_DIR}
+    ${SDL2_INCLUDE_DIR}
+    ${SDL2_TTF_INCLUDE_DIR}
 )
 
 target_link_libraries(deccancore PUBLIC deimgui SDL2 SDL2_ttf)
