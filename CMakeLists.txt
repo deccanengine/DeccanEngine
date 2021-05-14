@@ -43,7 +43,7 @@ target_include_directories(deccancore PUBLIC
     ${SDL2_TTF_INCLUDE_DIR}
 )
 
-target_link_libraries(deccancore PUBLIC deimgui SDL2 SDL2_ttf)
+target_link_libraries(deccancore PUBLIC deimgui ${SDL2_LIBRARY} ${SDL2_TTF_LIBRARIES})
 
 ####################################################
 # Demo
