@@ -19,9 +19,3 @@
 [submodule "depends/zpl"]
 	path = depends/zpl
 	url = https://github.com/zpl-c/zpl
-[submodule "depends/SDL"]
-	path = depends/SDL
-	url = https://github.com/libsdl-org/SDL.git
-[submodule "depends/SDL_ttf"]
-	path = depends/SDL_ttf
-	url = https://github.com/libsdl-org/SDL_ttf
