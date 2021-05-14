@@ -124,20 +124,20 @@
 
 #define ZPL_NANO
 #define ZPL_ENABLE_HASHING
-#include <depends/zpl/code/zpl.h>
+#include <zpl.h>
 
-#include <depends/log.c/src/log.h>
+#include <log.h>
 
-#include <depends/cglm/include/cglm/cglm.h>
-#include <depends/cglm/include/cglm/struct.h>
+#include <cglm/cglm.h>
+#include <cglm/struct.h>
 
-#include <depends/flecs/flecs.h>
+#include <flecs.h>
 
-#include <depends/stb/stb_image.h>
+#include <stb/stb_image.h>
 
-#include <depends/glad/include/glad/glad.h>
+#include <glad/glad.h>
 
-#include <depends/sokol/sokol_gfx.h>
+#include <sokol/sokol_gfx.h>
 
 /////////////////////////////////////////////////////////////////////////////////
 /* Library API */

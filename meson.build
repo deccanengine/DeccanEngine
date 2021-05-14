@@ -18,7 +18,12 @@ m_dep  = CC.find_library('m', required: false)   # libm
 dl_dep = CC.find_library('dl', required: false)  # libdl
 
 deps_incdir = [
-    include_directories('depends/glad/include')
+    'depends/glad/include',
+    'depends/zpl/code',
+    'depends/log.c/src',
+    'depends/cglm/include',
+    'depends/flecs',
+    'depends/',
 ]
 
 sdl2_dep = dependency('SDL2', required: false)
