@@ -8,26 +8,12 @@ project(DeccanEngine
     LANGUAGES C CXX
 )
 
+set(SDL_INCLUDE_DIR "depends/SDL/include")
+set(TTF_INCLUDE_DIR "depends/SDL_ttf")
+
 add_subdirectory(depends/SDL)
 add_subdirectory(depends/SDL_ttf)
-
-set(SDL_INCLUDE_DIR "depends/SDL/include")
-set(TTF_INCLUDE_DIR "depends/SDL_ttf/")
-
-file(GLOB imgui_sources "depends/deimgui/*.cpp")
-file(GLOB imgui_headers "depends/deimgui/*.h")
-
-add_library(deimgui
-    STATIC
-    ${imgui_sources}
-    ${imgui_headers}
-)
-
-set_target_properties(deimgui PROPERTIES LINKER_LANGUAGE CXX)
-
-target_include_directories(deimgui PUBLIC
-    ${SDL_INCLUDE_DIR}
-)
+add_subdirectory(depends/deimgui)
 
 ####################################################
 # Deccan Core
