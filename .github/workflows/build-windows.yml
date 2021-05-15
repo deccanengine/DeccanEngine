@@ -16,8 +16,8 @@ jobs:
         uses: symbitic/install-cmake@master
       - name: Get SDL2 and SDL2_ttf
         run: |
-          cmd /c "scripts/install_sdl_on_windows.bat"
+          cmd.exe /c "scripts/install_sdl_on_windows.bat"
       - name: Build
         run: |
-          cmake -S . -B builddir -G Ninja -DCMAKE_CXX_FLAGS="-fPIC" -DCMAKE_C_FLAGS="-Wall"
+          cmake -S . -B builddir -G Ninja
           cmake --build builddir
