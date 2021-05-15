@@ -51,11 +51,7 @@ void end() {
     /* Start here */
 }
 
-
-#ifdef __cplusplus
-    extern "C"
-#endif
-int main(int argc, char *argv[]) {
+int main(int argc, char **argv) {
     DE_UNUSED(argc);
     DE_UNUSED(argv);
     
