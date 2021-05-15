@@ -16,7 +16,7 @@ jobs:
         uses: symbitic/install-cmake@master
       - name: Get SDL2 and SDL2_ttf
         run: |
-          cmd /c ./scripts/install_sdl_on_windows.bat
+          call "scripts\install_sdl_on_windows.bat"
           if ($LASTEXITCODE -le 7) { exit 0 } else { exit 1 }
       - name: Build
         run: |
