@@ -11,7 +11,7 @@
 // View
 ////////////////////////////////////////////////////////////////////////////////
 
-void deccan_view_init(deccan_view_t *camera, vec3s position) {
+DE_IMPL void deccan_view_init(deccan_view_t *camera, vec3s position) {
     camera->position = position;
     camera->yaw = 0.0f;
     camera->pitch = 0.0f;
@@ -20,7 +20,7 @@ void deccan_view_init(deccan_view_t *camera, vec3s position) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void deccan_view_update(deccan_view_t *camera) {
+DE_IMPL void deccan_view_update(deccan_view_t *camera) {
     mat4s transform = glms_mat4_identity();
 
     transform = glms_rotate_x(transform, glm_rad(camera->roll));
@@ -36,7 +36,7 @@ void deccan_view_update(deccan_view_t *camera) {
 // Camera
 ////////////////////////////////////////////////////////////////////////////////
 
-void deccan_camera_init(deccan_camera_t *camera, float near, float far) {
+DE_IMPL void deccan_camera_init(deccan_camera_t *camera, float near, float far) {
     deccan_view_init(&camera->cam, (vec3s){.x = 0.0f, .y = 0.0f, .z = 1.0f});
 
     camera->proj = glms_mat4_identity();
@@ -47,7 +47,7 @@ void deccan_camera_init(deccan_camera_t *camera, float near, float far) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void deccan_camera_set_viewport(deccan_camera_t *camera, vec2s viewport) {
+DE_IMPL void deccan_camera_set_viewport(deccan_camera_t *camera, vec2s viewport) {
     if (viewport.y <= 0)
         return;
     camera->aspect_ratio = (float)(viewport.x / viewport.y);
@@ -55,7 +55,7 @@ void deccan_camera_set_viewport(deccan_camera_t *camera, vec2s viewport) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void deccan_camera_set_ortho(deccan_camera_t *camera, float size) {
+DE_IMPL void deccan_camera_set_ortho(deccan_camera_t *camera, float size) {
     camera->proj =
         glms_ortho(-camera->aspect_ratio * size, camera->aspect_ratio * size, -size, size, camera->near, camera->far);
 
@@ -64,7 +64,7 @@ void deccan_camera_set_ortho(deccan_camera_t *camera, float size) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void deccan_camera_set_persp(deccan_camera_t *camera, float vfov) {
+DE_IMPL void deccan_camera_set_persp(deccan_camera_t *camera, float vfov) {
     camera->proj = glms_perspective(glm_rad(vfov), camera->aspect_ratio, camera->near, camera->far);
 
     deccan_view_update(&camera->cam);

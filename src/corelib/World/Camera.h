@@ -42,14 +42,14 @@ typedef struct deccan_camera_t {
 // View
 ////////////////////////////////////////////////////////////////////////////////
 
-void deccan_view_init(deccan_view_t *camera, vec3s position);
-void deccan_view_update(deccan_view_t *camera);
+DE_API void deccan_view_init(deccan_view_t *camera, vec3s position);
+DE_API void deccan_view_update(deccan_view_t *camera);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Camera
 ////////////////////////////////////////////////////////////////////////////////
 
-void deccan_camera_init(deccan_camera_t *camera, float near, float far);
-void deccan_camera_set_viewport(deccan_camera_t *camera, vec2s viewport);
-void deccan_camera_set_ortho(deccan_camera_t *camera, float size);
-void deccan_camera_set_persp(deccan_camera_t *camera, float vfov);
+DE_API void deccan_camera_init(deccan_camera_t *camera, float near, float far);
+DE_API void deccan_camera_set_viewport(deccan_camera_t *camera, vec2s viewport);
+DE_API void deccan_camera_set_ortho(deccan_camera_t *camera, float size);
+DE_API void deccan_camera_set_persp(deccan_camera_t *camera, float vfov);
