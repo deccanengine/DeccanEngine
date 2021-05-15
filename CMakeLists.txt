@@ -37,8 +37,12 @@ set_target_properties(deccancore PROPERTIES LINKER_LANGUAGE C)
 
 target_include_directories(deccancore PUBLIC
     "."
-    "src"
-    "depends/glad/include/"
+    "depends/glad/include"
+    "depends/zpl/code"
+    "depends/log.c/src"
+    "depends/cglm/include"
+    "depends/flecs"
+    "depends/"
     ${SDL2_INCLUDE_DIR}
     ${SDL2_TTF_INCLUDE_DIR}
 )
@@ -59,4 +63,5 @@ add_executable(demo
 
 set_target_properties(demo PROPERTIES LINKER_LANGUAGE C)
 
+target_include_directories(demo PUBLIC "src")
 target_link_libraries(demo PUBLIC deccancore)
