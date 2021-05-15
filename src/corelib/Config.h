@@ -147,11 +147,11 @@
 #define DE_SHARED_LIB
 
 #ifdef DE_SHARED_LIB
-    #ifdef DE_COMPILER_MSVC 
+    #ifdef DE_OS_WIN 
         #ifdef DE_LIBRARY_EXPORT
-            #define DE_API __declspec(dllexport)
+            #define DE_API extern __declspec(dllexport)
         #else
-            #define DE_API __declspec(dllimport)
+            #define DE_API extern __declspec(dllimport)
         #endif
     #else
         #define DE_API extern

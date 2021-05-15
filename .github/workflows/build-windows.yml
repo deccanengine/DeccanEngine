@@ -1,0 +1,24 @@
+name: Windows Build
+
+on: [ push, pull_request ]
+
+jobs: 
+  Windows-Non-POSIX:
+    timeout-minutes: 10
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Get MSVC Dev Tools
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: Get CMake
+        uses: symbitic/install-cmake@master
+      - name: Get SDL2 and SDL2_ttf
+        run: |
+          cmd /c "scripts\install_sdl_on_windows.bat"
+          if ($LASTEXITCODE -le 7) { exit 0 } else { exit 1 }
+      - name: Build
+        run: |
+          cmake -S . -B builddir -G Ninja
+          cmake --build builddir

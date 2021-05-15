@@ -13,6 +13,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/proj/cmake")
 if (WIN32)
     set(SDL2_PATH "depends/SDL")
     set(SDL2_TTF_PATH "depends/SDL_ttf")
+
+    add_compile_definitions(SDL_MAIN_HANDLED=1)
 endif (WIN32)
 
 find_package(SDL2 REQUIRED)
@@ -33,7 +35,14 @@ add_library(deccancore
     ${de_headers}
 )
 
-set_target_properties(deccancore PROPERTIES LINKER_LANGUAGE C)
+if (WIN32)
+    set_target_properties(deccancore PROPERTIES 
+        LINKER_LANGUAGE C
+        DEFINE_SYMBOL DE_LIBRARY_EXPORT
+    )
+else (WIN32)
+    set_target_properties(deccancore PROPERTIES LINKER_LANGUAGE C)
+endif (WIN32)
 
 target_include_directories(deccancore PUBLIC
     "."
