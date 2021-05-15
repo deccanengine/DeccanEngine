@@ -16,15 +16,7 @@ jobs:
         uses: symbitic/install-cmake@master
       - name: Get SDL2 and SDL2_ttf
         run: |
-          mkdir temp
-          nuget install sdl2.nuget -ExcludeVersion -NonInteractive -OutputDirectory temp\
-          nuget install sdl2_ttf.nuget -ExcludeVersion -NonInteractive -OutputDirectory temp\
-          robocopy temp\sdl2.nuget\build\native\include\ depends\SDL
-          robocopy temp\sdl2_ttf.nuget\build\native\include\ depends\SDL_ttf
-          robocopy temp\sdl2.nuget\build\native\lib\x64\dynamic\ depends\SDL
-          robocopy temp\sdl2_ttf.nuget\build\native\lib\x64\dynamic\ depends\SDL_ttf
-          robocopy temp\sdl2.nuget.redist\build\native\bin\x64\dynamic\ depends\SDL
-          robocopy temp\sdl2_ttf.nuget.redist\build\native\bin\x64\dynamic\ depends\SDL_ttf
+          cmd /c ./scripts/install_sdl_on_windows.bat
           if ($LASTEXITCODE -le 7) { exit 0 } else { exit 1 }
       - name: Build
         run: |
