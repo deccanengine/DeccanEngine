@@ -25,6 +25,7 @@ jobs:
           robocopy temp\sdl2_ttf.nuget\build\native\lib\x64\dynamic\ depends\SDL_ttf
           robocopy temp\sdl2.nuget.redist\build\native\bin\x64\dynamic\ depends\SDL
           robocopy temp\sdl2_ttf.nuget.redist\build\native\bin\x64\dynamic\ depends\SDL_ttf
+          if ($LASTEXITCODE -le 7) { exit 0 } else { exit 1 }
       - name: Build
         run: |
           cmake -S . -B builddir -G Ninja
