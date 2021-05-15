@@ -18,6 +18,9 @@ build/
 *.so
 *.a
 
+# CMakeFiles
+!CMakeLists.txt
+
 # Vim text editor
 *.swp
 *.swo
