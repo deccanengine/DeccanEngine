@@ -35,7 +35,14 @@ add_library(deccancore
     ${de_headers}
 )
 
-set_target_properties(deccancore PROPERTIES LINKER_LANGUAGE C)
+if (WIN32)
+    set_target_properties(deccancore PROPERTIES 
+        LINKER_LANGUAGE C
+        DEFINE_SYMBOL DE_LIBRARY_EXPORT
+    )
+else (WIN32)
+    set_target_properties(deccancore PROPERTIES LINKER_LANGUAGE C)
+endif (WIN32)
 
 target_include_directories(deccancore PUBLIC
     "."
