@@ -29,14 +29,14 @@ ZPL_TABLE_DEFINE(asset_table_t, asset_table_, asset_entry_t);
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void deccan_asset_init_manager(deccan_asset_manager_t *manager, size_t count, deccan_asset_descriptor_t *desc) {
-    zpl_array_init(manager->asset_buffer, deccan_z_p_l_allocator());
-    asset_table_init(&manager->assets, deccan_z_p_l_allocator());
+    zpl_array_init(manager->asset_buffer, deccan_zpl_allocator());
+    asset_table_init(&manager->assets, deccan_zpl_allocator());
     manager->pool = deccan_handle_pool_create(POOL_INITIAL_CAP);
 
     for (int i = 0; i < count; i++) {
         asset_entry_t entry;
         entry.desc = desc[i];
-        asset_list_init(&entry.entries, deccan_z_p_l_allocator());
+        asset_list_init(&entry.entries, deccan_zpl_allocator());
         asset_table_set(&manager->assets, deccan_string_hash(desc[i].key, strlen(desc[i].key)), entry);
     }
 }

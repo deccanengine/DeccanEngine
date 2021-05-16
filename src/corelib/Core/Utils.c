@@ -30,7 +30,7 @@ DE_IMPL void deccan_free(void *mem) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-DE_IMPL zpl_allocator deccan_z_p_l_allocator(void) {
+DE_IMPL zpl_allocator deccan_zpl_allocator(void) {
     // TODO: make allocator
     return zpl_heap_allocator();
 }

@@ -36,7 +36,7 @@ DE_IMPL void deccan_module_destroy(deccan_module_t *mod) {
 ////////////////////////////////////////////////////////////////////////////////
 
 DE_IMPL void deccan_module_sys_create(deccan_module_sys_t *modsys) {
-    zpl_array_init(modsys->mods, deccan_z_p_l_allocator());
+    zpl_array_init(modsys->mods, deccan_zpl_allocator());
 }
 
 ////////////////////////////////////////////////////////////////////////////////

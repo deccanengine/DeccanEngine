@@ -11,4 +11,4 @@
 DE_API void *deccan_alloc(size_t size, int count);
 DE_API void *deccan_realloc(void *mem, size_t size);
 DE_API void deccan_free(void *mem);
-DE_API zpl_allocator deccan_z_p_l_allocator(void);
+DE_API zpl_allocator deccan_zpl_allocator(void);
