@@ -1,3 +1,0 @@
-src += files([
-    'Sprite.c'
-])

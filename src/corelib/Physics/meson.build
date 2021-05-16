@@ -1,3 +1,0 @@
-src += files([
-    'Collision.c',
-])
