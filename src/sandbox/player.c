@@ -3,10 +3,6 @@
 bool selected = false;
 vec2 offset;
 
-deccan_color_t ColorList_White = (deccan_color_t){255, 255, 255, 255}, ColorList_Black = (deccan_color_t){0, 0, 0, 255},
-            ColorList_Red = (deccan_color_t){255, 0, 0, 255}, ColorList_Green = (deccan_color_t){0, 255, 0, 255},
-            ColorList_Orange = (deccan_color_t){255, 165, 0, 255};
-
 void _player_begin(deccan_game_object_t this) {
     deccan_object_info_t *info = deccan_object_get_component(this, "Info");
 
