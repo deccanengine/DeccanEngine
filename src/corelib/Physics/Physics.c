@@ -6,7 +6,7 @@ DE_PRIV struct {
 } physics_info = {0};
 
 DE_IMPL void deccan_physics_init(void) {
-    cpVect gravity = cpv(0, -100);
+    cpVect gravity = cpv(0, -9.6);
     physics_info.space = cpSpaceNew();
     cpSpaceSetGravity(physics_info.space, gravity);
 }
@@ -16,7 +16,7 @@ DE_IMPL void deccan_physics_quit(void) {
 }
 
 DE_IMPL void deccan_physics_step(void) {
-    cpSpaceStep(physics_info.space, deccan_core_get_delta_time());
+    cpSpaceStep(physics_info.space, 0.00666666666666f); //deccan_core_get_delta_time());
 }
 
 DE_IMPL cpSpace *deccan_physics_get_space(void) {

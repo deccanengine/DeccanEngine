@@ -10,8 +10,8 @@ DE_PRIV void physics_sim_init(deccan_flecs_iter_t *it) {
 
     for (int i = 0; i < it->count; i += 1) {
         cpVect position = cpBodyGetPosition(rigid_body[i].body);
-        transform[i].position.x = position.x * 1e-9f;
-        transform[i].position.y = position.y * 1e-9f;
+        transform[i].position.x = position.x;
+        transform[i].position.y = position.y;
     }
 } 
 
