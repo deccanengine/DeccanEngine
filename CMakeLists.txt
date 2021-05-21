@@ -44,7 +44,7 @@ else (WIN32)
     set_target_properties(deccancore PROPERTIES LINKER_LANGUAGE C)
 endif (WIN32)
 
-target_include_directories(deccancore PUBLIC
+target_include_directories(deccancore SYSTEM PUBLIC
     "."
     "depends/glad/include"
     "depends/zpl/code"
@@ -57,6 +57,12 @@ target_include_directories(deccancore PUBLIC
 )
 
 target_link_libraries(deccancore PUBLIC deimgui ${SDL2_LIBRARY} ${SDL2_TTF_LIBRARIES})
+
+if (CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(deccancore PRIVATE /W4)
+else (CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(deccancore PRIVATE -Wall -Wextra -pedantic)
+endif (CMAKE_C_COMPILER_ID STREQUAL "MSVC")
 
 ####################################################
 # Demo
