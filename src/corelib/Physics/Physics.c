@@ -16,7 +16,7 @@ DE_IMPL void deccan_physics_quit(void) {
 }
 
 DE_IMPL void deccan_physics_step(void) {
-    cpSpaceStep(physics_info.space, 0.00666666666666f); //deccan_core_get_delta_time());
+    cpSpaceStep(physics_info.space, 1.0f / 60.0f);
 }
 
 DE_IMPL cpSpace *deccan_physics_get_space(void) {
