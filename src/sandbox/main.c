@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
     settings.vsync = false; // Probably not working in some environments, report
     settings.resizable = false;
     settings.close_on_escape = true;
-    settings.fps = 60.0f;
+    settings.fps = 120.0f;
 
     if (deccan_app_init(&settings)) {
         deccan_game_scene_t *scene = deccan_scene_new_scene("scene0");

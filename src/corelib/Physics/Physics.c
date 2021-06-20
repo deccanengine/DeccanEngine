@@ -16,7 +16,8 @@ DE_IMPL void deccan_physics_quit(void) {
 }
 
 DE_IMPL void deccan_physics_step(void) {
-    cpSpaceStep(physics_info.space, 1.0f / 60.0f);
+    float limit = deccan_core_get_framerate_limit();
+    cpSpaceStep(physics_info.space, 1.0f / limit);
 }
 
 DE_IMPL cpSpace *deccan_physics_get_space(void) {
