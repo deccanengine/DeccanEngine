@@ -1,0 +1,36 @@
+####################################################
+# Deccan Engine
+####################################################
+
+# Git files
+!.gitignore
+
+# Build directories
+builddir/
+build/
+
+# Resources
+*.png
+*.ttf
+*.log
+*.txt
+*.dll
+*.so
+*.a
+
+# CMakeFiles
+!CMakeLists.txt
+
+# Vim text editor
+*.swp
+*.swo
+
+# Lite text editor
+.lite_*.lua
+
+# KDevelop IDE
+*.kdev4
+.kdev4/*
+
+# VS Cod(e/ium)
+.vscode/*

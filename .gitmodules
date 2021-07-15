@@ -1,0 +1,21 @@
+[submodule "depends/stb"]
+	path = depends/stb
+	url = https://github.com/nothings/stb.git
+[submodule "depends/cglm"]
+	path = depends/cglm
+	url = https://github.com/recp/cglm
+[submodule "depends/log.c"]
+	path = depends/log.c
+	url = https://github.com/rxi/log.c.git
+[submodule "depends/flecs"]
+	path = depends/flecs
+	url = https://github.com/SanderMertens/flecs.git
+[submodule "depends/sokol"]
+	path = depends/sokol
+	url = https://github.com/floooh/sokol.git
+[submodule "depends/zpl"]
+	path = depends/zpl
+	url = https://github.com/zpl-c/zpl.git
+[submodule "depends/Chipmunk2D"]
+	path = depends/Chipmunk2D
+	url = https://github.com/slembcke/Chipmunk2D

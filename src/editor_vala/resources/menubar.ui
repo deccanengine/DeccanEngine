@@ -1,0 +1,48 @@
+<?xml version = "1.0"? encoding = "UTF-8"?>
+<interface>
+    <menu id = "menubar">
+        <submenu>
+            <attribute name = "label">File</attribute>
+            <section>
+                <item>
+                    <attribute name = "label">New Scene</attribute>
+                    <attribute name = "action">app.new-scene</attribute>
+                </item>
+                <item>
+                    <attribute name = "label">Open Scene...</attribute>
+                    <attribute name = "action">app.open-scene</attribute>
+                </item>
+            </section>
+            <section>
+                <item>
+                    <attribute name = "label">Save Scene</attribute>
+                    <attribute name = "action">app.save-scene</attribute>
+                </item>
+                <item>
+                    <attribute name = "label">Save Scene As...</attribute>
+                </item>
+            </section>
+            <section>
+                <item>
+                    <attribute name = "label">Quit</attribute>
+                    <attribute name = "action">app.quit</attribute>
+                </item>
+                <item>
+                    <attribute name = "label">Quit to Projects</attribute>
+                </item>
+            </section>
+        </submenu>
+        <submenu>
+            <attribute name = "label">Edit</attribute>
+        </submenu>
+        <submenu>
+            <attribute name = "label">Create</attribute>
+        </submenu>
+        <submenu>
+            <attribute name = "label">Tools</attribute>
+        </submenu>
+        <submenu>
+            <attribute name = "label">Help</attribute>
+        </submenu>
+    </menu>
+</interface>
