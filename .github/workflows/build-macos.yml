@@ -1,0 +1,22 @@
+name: MacOS Build
+
+on: [ push, pull_request ]
+
+jobs: 
+  MacOS:
+    timeout-minutes: 10
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Get CMake
+        uses: symbitic/install-cmake@master
+      - name: Get SDL2 and SDL2_ttf
+        run: |
+          brew install sdl2
+          brew install sdl2_ttf
+      - name: Build
+        run: |
+          cmake -S . -B builddir -G Ninja -DCMAKE_CXX_FLAGS="-fPIC" -DCMAKE_C_FLAGS="-Wall"
+          cmake --build builddir
