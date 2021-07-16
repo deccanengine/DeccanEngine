@@ -5,6 +5,7 @@
  * See LICENSE.md included with this package for more info.
  */
 
+#include <deccanengine/physics/physics.h>
 #include <deccanengine/world/world.h>
 #include <deccanengine/world/scene_layer.h>
 #include <deccanengine/core/core.h>
