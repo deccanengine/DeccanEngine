@@ -32,8 +32,8 @@ typedef struct deccan_comp_rigid_body_t {
 // Force and Impulse
 ////////////////////////////////////////////////////////////////////////////////
 
-void deccan_comp_rigid_body_apply_force_world(deccan_object_t obj, vec2s force, vec2s point);
-void deccan_comp_rigid_body_apply_force_local(deccan_object_t obj, vec2s force, vec2s point);
+DE_API void deccan_comp_rigid_body_apply_force_world(deccan_object_t obj, vec2s force, vec2s point);
+DE_API void deccan_comp_rigid_body_apply_force_local(deccan_object_t obj, vec2s force, vec2s point);
 
-void deccan_comp_rigid_body_apply_impulse_world(deccan_object_t obj, vec2s force, vec2s point);
-void deccan_comp_rigid_body_apply_impulse_local(deccan_object_t obj, vec2s force, vec2s point);
+DE_API void deccan_comp_rigid_body_apply_impulse_world(deccan_object_t obj, vec2s force, vec2s point);
+DE_API void deccan_comp_rigid_body_apply_impulse_local(deccan_object_t obj, vec2s force, vec2s point);
